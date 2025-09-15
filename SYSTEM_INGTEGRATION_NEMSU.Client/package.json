@@ -1,0 +1,17 @@
+{
+  "name": "system_ingtegration_nemsu.client",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "watch": "npx @tailwindcss/cli -i wwwroot/css/site.css -o wwwroot/css/site.min.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "daisyui": "^5.1.12",
+    "tailwindcss": "^4.1.13"
+  }
+}

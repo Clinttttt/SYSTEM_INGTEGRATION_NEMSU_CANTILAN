@@ -1,0 +1,6 @@
+@SYSTEM_INGTEGRATION_NEMSU.Api_HostAddress = http://localhost:5294
+
+GET {{SYSTEM_INGTEGRATION_NEMSU.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
