@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 
@@ -22,7 +23,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(request);
         }
         [HttpPost("Login")]
-        public async Task<ActionResult<User>> LoginAsync(UserDto request)
+        public async Task<ActionResult<User>> LoginAsync(LoginDto request)
         {
             var response = await authservice.LoginAsync(request);
             if(response is null)

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
@@ -16,5 +17,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
 
         }
         public DbSet<User> users { get; set; }
+        public DbSet<Course> course { get; set; }
     }
 }

@@ -10,5 +10,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.DTOs
     {
         public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+
+        public string? StudentId { get; set; }
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? Course { get; set; }
+        public int YearLevel { get; set; }
     }
 }

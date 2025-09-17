@@ -11,9 +11,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations;
+using User = SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities.User;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 {
@@ -40,11 +43,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
                 .HashPassword(user, request.Password);
             user.Username = request.UserName;
             user.Password = passwordhasher;
+            user.Course = request.Course;
+            user.YearLevel = request.YearLevel;
+            user.FullName = request.FullName;
+            user.Email = request.Email;
+            user.StudentId = request.StudentId;
              context.Add(user);
             await context.SaveChangesAsync();
             return user;
         }
-        public async Task<TokenResponseDto?> LoginAsync( UserDto request)
+        public async Task<TokenResponseDto?> LoginAsync(LoginDto request)
         {
             var user = await context.users.FirstOrDefaultAsync(s => s.Username == request.UserName);
             if(user is null)
