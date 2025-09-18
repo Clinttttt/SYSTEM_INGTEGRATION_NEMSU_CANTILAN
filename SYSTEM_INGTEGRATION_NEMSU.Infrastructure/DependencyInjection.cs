@@ -40,7 +40,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure
 
             services.AddScoped<IAuthServices,AuthServices>();
             services.AddScoped<IHandlingCourse, HandlingCourse>();
-
+            services.AddScoped<IEnrollmentServices, EnrollmentServices>();
 
 
             return services;

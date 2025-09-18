@@ -8,6 +8,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
 {
     public class CourseDto
     {
+        public int Cost { get; set; }
         public Guid Id { get; set; }
         public Guid AdminId { get; set; }
         public string? CourseCode { get; set; }

@@ -13,7 +13,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities
         public string Password { get; set; } = string.Empty;
         public DateTime ExpiredRefreshToken { get; set; }
         public string? RefreshToken { get; set; }
-
         public string? StudentId { get; set; }
         public string? FullName { get; set; }
         public string? Email { get; set; }

@@ -11,7 +11,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HandlingServicesController(IHandlingCourse handlingCourse) : ControllerBase
+    public class CourseHandlingController(IHandlingCourse handlingCourse) : ControllerBase
     {
 
         [Authorize]

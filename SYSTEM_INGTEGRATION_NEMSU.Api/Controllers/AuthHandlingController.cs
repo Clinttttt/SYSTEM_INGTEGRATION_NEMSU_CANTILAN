@@ -10,7 +10,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthServicesController(IAuthServices authservice) : ControllerBase
+    public class AuthHandlingController(IAuthServices authservice) : ControllerBase
     {
         [HttpPost("Register")]
         public async Task<ActionResult<User>> RegisterAsync( UserDto request)

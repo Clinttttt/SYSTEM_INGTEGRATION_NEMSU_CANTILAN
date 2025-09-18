@@ -38,18 +38,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             request.CourseCode = course.CourseCode;
             request.Unit = course.Unit;
             request.Title = course.Title;
+            request.Cost = course.Cost;
           context.Update(request);
             await context.SaveChangesAsync();
             return request.Adapt<Course>();
         }
         public async Task<bool> DeleteCourseAsycnc( Guid course)
         {
-            var request = await context.users.FindAsync(course);
+            var request = await context.course.FindAsync(course);
             if(request is null)
             {
                 return false;
             }
-            context.users.Remove(request);
+            context.course.Remove(request);
             await context.SaveChangesAsync();
             return true;
         }

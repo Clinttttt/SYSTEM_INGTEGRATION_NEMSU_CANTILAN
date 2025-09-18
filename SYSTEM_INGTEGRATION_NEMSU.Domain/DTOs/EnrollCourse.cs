@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
+namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
 {
-    public class Course
+   public class EnrollCourse
     {
-        public Guid Id { get; set; }
-        public Guid AdminId { get; set; }
-        public int Cost { get; set; }
+        public Guid EnrollmentID { get; set; }
+        public string? StudentID { get; set; }
+        public Guid CourseID { get; set; }
+        public DateTime DateEnrolled { get; set; }
         public string? CourseCode { get; set; }
         public string? Title { get; set; }
         public int Unit { get; set; }
