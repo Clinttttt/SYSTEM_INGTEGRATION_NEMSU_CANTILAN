@@ -19,5 +19,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
         public DbSet<User> users { get; set; }
         public DbSet<Course> course { get; set; }
         public DbSet<EnrollmentCourse> enrollcourse { get; set; }
+        public DbSet<Invoice> invoice { get; set; }
     }
 }

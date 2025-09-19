@@ -35,7 +35,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
                 DateEnrolled = DateTime.UtcNow
 
             };
-            if (await context.enrollcourse.AnyAsync(s => s.StudentID == StudentID))
+            if (!await context.enrollcourse.AnyAsync(s => s.StudentID == StudentID))
             {
                 return null;
             }

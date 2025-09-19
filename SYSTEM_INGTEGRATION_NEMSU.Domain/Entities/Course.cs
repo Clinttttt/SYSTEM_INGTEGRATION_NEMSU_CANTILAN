@@ -10,7 +10,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
     {
         public Guid Id { get; set; }
         public Guid AdminId { get; set; }
-        public int Cost { get; set; }
+        public double Cost { get; set; }
         public string? CourseCode { get; set; }
         public string? Title { get; set; }
         public int Unit { get; set; }

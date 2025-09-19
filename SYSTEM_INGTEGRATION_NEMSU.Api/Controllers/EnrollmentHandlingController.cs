@@ -8,12 +8,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EnrollmentHandlingController(IEnrollmentServices enrollmenthandling) : ControllerBase
+    public class EnrollmentHandlingController(IPaymentServices enrollmenthandling, IEnrollmentServices enrollmentservices) : ControllerBase
     {
         [HttpPost("EnrollCourse")]
-        public async Task<ActionResult<EnrollCourse>> EnrollCourse(string StudentID, Guid CourseId)
+        public async Task<ActionResult<Invoice>> EnrollCourse( string StudentID, Guid CourseId, double Payment)
         {
-            var response = await enrollmenthandling.EnrollCourseAsync(StudentID, CourseId);
+            var response = await enrollmenthandling.InvoiceAsync(StudentID, CourseId, Payment);
             if(response is null)
             {
                 return BadRequest("Something went wrong");
@@ -23,7 +23,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("DisplayCourse")]
         public async Task<ActionResult<EnrollmentCourse>> DisplayCourse(int StudentId)
         {
-            var response = await enrollmenthandling.DisplayCourseAsync(StudentId);
+            var response = await enrollmentservices.DisplayCourseAsync(StudentId);
             if(response is null)
             {
                 return BadRequest("Nothing to Display");
