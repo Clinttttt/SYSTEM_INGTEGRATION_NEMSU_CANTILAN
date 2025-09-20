@@ -13,6 +13,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<CourseDto> AddCourseAsync(Course request);
         Task<IEnumerable<CourseDto>> DisplayCourseAsync(Guid adminid);
         Task<Course?> UpdateCourseAsync(UpdateCourseDto course);
-        Task<bool> DeleteCourseAsycnc(Guid course);
+        Task<bool> DeleteCourseAsycnc(Guid AdminId,Guid course);
     }
 }

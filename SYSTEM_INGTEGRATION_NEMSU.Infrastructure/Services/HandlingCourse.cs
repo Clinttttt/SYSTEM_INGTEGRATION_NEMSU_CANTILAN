@@ -43,9 +43,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await context.SaveChangesAsync();
             return request.Adapt<Course>();
         }
-        public async Task<bool> DeleteCourseAsycnc( Guid course)
+        public async Task<bool> DeleteCourseAsycnc(Guid AdminId, Guid course)
         {
-            var request = await context.course.FindAsync(course);
+            var request = await context.course.FirstOrDefaultAsync(s => s.Id == course && s.AdminId == AdminId);
             if(request is null)
             {
                 return false;

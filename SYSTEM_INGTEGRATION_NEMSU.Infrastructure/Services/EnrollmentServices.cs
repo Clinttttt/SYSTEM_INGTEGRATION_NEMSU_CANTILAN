@@ -15,9 +15,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 {
    public class EnrollmentServices(ApplicationDbContext context) : IEnrollmentServices
     {
-     public async Task<EnrollCourse?> EnrollCourseAsync(string StudentID,Guid CourseId)
+     public async Task<EnrollCourse?> EnrollCourseAsync(string StudentID,string CourseCode)
         {
-            var request = await context.course.FindAsync(CourseId);
+            var request = await context.course.FirstOrDefaultAsync(s => s.CourseCode == CourseCode.ToString());
             if(request is null)
             {
                 return null;
@@ -31,11 +31,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             {
                 Id = Guid.NewGuid(),
                 StudentID = StudentID,
-                CourseID = CourseId,
+                CourseCode = CourseCode,
                 DateEnrolled = DateTime.UtcNow
 
             };
-            if (!await context.enrollcourse.AnyAsync(s => s.StudentID == StudentID))
+            if (await context.enrollcourse.AnyAsync(s => s.StudentID == StudentID))
             {
                 return null;
             }
@@ -45,7 +45,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             {
                 EnrollmentID = enrollment.Id,
                 StudentID = enrollment.StudentID,
-                CourseID = enrollment.CourseID,
+                CourseID = enrollment.CourseCode,
                 DateEnrolled = enrollment.DateEnrolled,
                 CourseCode = request.CourseCode,
                 Title = request.Title,
@@ -54,15 +54,27 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             };                    
             return courseDto;
         }
-        public async Task<IEnumerable<EnrollmentCourse>?> DisplayCourseAsync(int StudentID)
+        public async Task<IEnumerable<EnrollmentCourse>?> DisplayCourseAsync(string StudentID)
         {
-            var request =  await context.enrollcourse.Where(s => s.StudentID == StudentID.ToString()).ToListAsync();
+            var request =  await context.enrollcourse.Where(s => s.StudentID == StudentID).ToListAsync();
             if(request is null)
             {
                 return null;
             }
             return request;
          
+        }
+        public async Task<bool> UnEnrollCourseAsync(string StudentId, string CourseCode )
+        {
+            var request = await context.enrollcourse.FirstOrDefaultAsync( s => s.CourseCode == CourseCode && s.StudentID == StudentId);
+            if(request is null)
+            {
+                return false;
+            }
+            context.enrollcourse.Remove(request);
+           
+            await context.SaveChangesAsync();
+            return true;
         }
     }
 }

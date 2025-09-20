@@ -14,9 +14,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 
   public class PaymentServices(ApplicationDbContext context, IEnrollmentServices enrollment) : IPaymentServices
     {
-         public async Task<Invoice?> InvoiceAsync( string StudentId, Guid CourseId, double Payment)
+         public async Task<Invoice?> InvoiceAsync( string StudentId, string CourseCode, double Payment)
           {
-            var request = await context.course.FirstOrDefaultAsync(s => s.Id == CourseId);
+            var request = await context.course.FirstOrDefaultAsync(s => s.CourseCode == CourseCode.ToString());
             if(request is null)
             {
                 return null;
@@ -25,19 +25,18 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             {
                 return null;
             }
-          
-            await enrollment.EnrollCourseAsync(StudentId, CourseId); 
-            
-            if(await context.invoice.AnyAsync(s => s.StudentId == StudentId && s.CourseId == CourseId))
+                
+            if(await context.enrollcourse.AnyAsync(s => s.StudentID == StudentId && s.CourseCode == CourseCode.ToString()))
             {
                 return null;
-            }          
+            }
+            await enrollment.EnrollCourseAsync(StudentId, CourseCode);
             var invoice_details = new Invoice()
             {
                 Id = Guid.NewGuid(),
                 Cost = request.Cost,
                 StudentId = StudentId,
-                CourseId = CourseId,
+                CourseCode = CourseCode,
                 DateCreated = DateTime.UtcNow,
                 Status = Payment >= request.Cost ? InvoiceStatus.Paid : InvoiceStatus.Unpaid,
                 DatePaid = Payment >= request.Cost ? DateTime.UtcNow : null

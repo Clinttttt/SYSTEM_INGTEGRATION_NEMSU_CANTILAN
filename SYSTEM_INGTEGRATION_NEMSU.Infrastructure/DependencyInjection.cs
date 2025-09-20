@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure
@@ -42,6 +43,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure
             services.AddScoped<IHandlingCourse, HandlingCourse>();
             services.AddScoped<IEnrollmentServices, EnrollmentServices>();
             services.AddScoped<IPaymentServices, PaymentServices>();
+            services.AddScoped<IUserRespository, UserRespository>();
 
 
             return services;

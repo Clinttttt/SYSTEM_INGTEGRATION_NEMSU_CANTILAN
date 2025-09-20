@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
@@ -11,7 +12,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseHandlingController(IHandlingCourse handlingCourse) : ControllerBase
+    public class CourseHandlingController(IHandlingCourse handlingCourse, IUserRespository respository) : ControllerBase
     {
 
         [Authorize]
@@ -59,7 +60,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpDelete("DeleteCourse")]
         public async Task<IActionResult> DeleteCourse(Guid course)
         {
-            var response = await handlingCourse.DeleteCourseAsycnc(course);
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if(FindUser is null)
+            {
+                return Unauthorized("Login First");
+            }
+            var GetUserId = Guid.Parse(FindUser.Value);
+            var user = await respository.UserInfo(GetUserId);
+            if(user is null)
+            {
+                return BadRequest("User not found ");
+            }
+            var AdminId = user.Id;
+            var response = await handlingCourse.DeleteCourseAsycnc(AdminId, course);
             if(response is false)
             {
                 return BadRequest("Nothing to Delete");
