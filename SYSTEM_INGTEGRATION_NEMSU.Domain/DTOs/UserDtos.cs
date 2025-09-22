@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
+
+namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
+{
+    public class UserDtos
+    {
+
+        public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public UserRole Role { get; set; }
+
+
+        public string? StudentId { get; set; }
+        public string? Course { get; set; }
+        public int YearLevel { get; set; }
+
+
+        public string? FacultyId { get; set; }
+        public List<string>? CoursesTaught { get; set; }
+    }
+}

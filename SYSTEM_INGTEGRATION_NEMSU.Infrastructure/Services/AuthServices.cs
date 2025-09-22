@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -31,7 +32,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             }
             return  await CreateTokenResponse(user);
         }
-        public async Task<User?> RegisterAsync( UserDto request )
+        public async Task<User?> RegisterAsync( UserDtos request )
         {
             if(await context.users.AnyAsync(s => s.Username == request.UserName))
             {
@@ -41,14 +42,38 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             var user = new User();
             var passwordhasher = new PasswordHasher<User>()
                 .HashPassword(user, request.Password);
+            user.Id = Guid.NewGuid();
             user.Username = request.UserName;
             user.Password = passwordhasher;
-            user.Course = request.Course;
-            user.YearLevel = request.YearLevel;
             user.FullName = request.FullName;
             user.Email = request.Email;
-            user.StudentId = request.StudentId;
-             context.Add(user);
+            user.Role = request.Role;
+
+        
+            if (request.Role == UserRole.Student)
+            {
+                var student = new StudentProfile();
+                student.Id = Guid.NewGuid();
+                student.StudentId_FK = user.Id;
+                student.StudentId = request.StudentId;
+                student.Course = request.Course;
+                student.YearLevel = request.YearLevel;
+
+                context.studentprofiles.Add(student);
+                await context.SaveChangesAsync();
+
+            }
+            else if (request.Role == UserRole.Facilitator)
+            {
+                var facilitator = new FacilitatorProfile();
+                facilitator.Id = Guid.NewGuid();
+                facilitator.Faculty_FK = user.Id;
+                facilitator.FacultyId = request.FacultyId;
+                facilitator.CoursesTaught = request.CoursesTaught!;
+                context.facilitatorprofiles.Add(facilitator);
+                await context.SaveChangesAsync();
+            }
+                context.Add(user);
             await context.SaveChangesAsync();
             return user;
         }

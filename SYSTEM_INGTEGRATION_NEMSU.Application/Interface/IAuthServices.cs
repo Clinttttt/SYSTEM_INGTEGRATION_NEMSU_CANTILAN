@@ -13,7 +13,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
    public interface IAuthServices
     {
          Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenDto request);
-         Task<User?> RegisterAsync(UserDto request);
+         Task<User?> RegisterAsync(UserDtos request);
          Task<TokenResponseDto?> LoginAsync(LoginDto request);
          Task<bool> LogoutAsync(Guid user);
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Mapster;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +10,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Application.CommandHandlers;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Command;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services;
@@ -18,7 +23,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure( this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
@@ -37,14 +42,21 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure
                 ValidateIssuerSigningKey = true,
                 RoleClaimType = ClaimTypes.Role,
                 NameClaimType = ClaimTypes.Name
-});
+            });
 
-            services.AddScoped<IAuthServices,AuthServices>();
+            TypeAdapterConfig<EnrollmentCourse, EnrollCourseDto>
+            .NewConfig()
+            .Map(dest => dest.CourseCode, src => src.Course.CourseCode)
+            .Map(dest => dest.Title, src => src.Course.Title)
+            .Map(dest => dest.Unit, src => src.Course.Unit);
+           
+            services.AddScoped<IAuthServices, AuthServices>();
             services.AddScoped<IHandlingCourse, HandlingCourse>();
             services.AddScoped<IEnrollmentServices, EnrollmentServices>();
             services.AddScoped<IPaymentServices, PaymentServices>();
             services.AddScoped<IUserRespository, UserRespository>();
-
+            services.AddScoped<IHandlingMessage, HandlingMessage>();
+            services.AddScoped<IRespondCommand, RespondCommand>();
 
             return services;
         }

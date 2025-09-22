@@ -14,39 +14,40 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 
   public class PaymentServices(ApplicationDbContext context, IEnrollmentServices enrollment) : IPaymentServices
     {
-         public async Task<Invoice?> InvoiceAsync( string StudentId, string CourseCode, double Payment)
-          {
-            var request = await context.course.FirstOrDefaultAsync(s => s.CourseCode == CourseCode.ToString());
-            if(request is null)
-            {
-                return null;
-            }
-            if (Payment < request.Cost)
-            {
-                return null;
-            }
-                
-            if(await context.enrollcourse.AnyAsync(s => s.StudentID == StudentId && s.CourseCode == CourseCode.ToString()))
-            {
-                return null;
-            }
-            await enrollment.EnrollCourseAsync(StudentId, CourseCode);
-            var invoice_details = new Invoice()
+        public async Task<Invoice?> InvoiceAsync(Guid studentId, string courseCode, double payment)
+        {
+        
+            var course = await context.course
+                .FirstOrDefaultAsync(c => c.CourseCode == courseCode);
+            if (course is null) return null;
+
+           
+            bool alreadyEnrolled = await context.enrollcourse
+                .AnyAsync(e => e.StudentId == studentId && e.CourseId == course.Id);
+            if (alreadyEnrolled) return null;
+
+          
+            await enrollment.EnrollCourseAsync(studentId, courseCode);
+
+    
+            var invoice = new Invoice
             {
                 Id = Guid.NewGuid(),
-                Cost = request.Cost,
-                StudentId = StudentId,
-                CourseCode = CourseCode,
+                StudentId = studentId,
+                CourseId = course.Id,
+                CourseCode = course.CourseCode,   
+                Cost = course.Cost,
                 DateCreated = DateTime.UtcNow,
-                Status = Payment >= request.Cost ? InvoiceStatus.Paid : InvoiceStatus.Unpaid,
-                DatePaid = Payment >= request.Cost ? DateTime.UtcNow : null
+                Status = payment >= course.Cost ? InvoiceStatus.Paid : InvoiceStatus.Unpaid,
+                DatePaid = payment >= course.Cost ? DateTime.UtcNow : null,
+                Standing = payment >= course.Cost ? "Enrolled" : "Temporary enrollment"
             };
-       
-            context.invoice.Add(invoice_details);
+
+            context.invoice.Add(invoice);
             await context.SaveChangesAsync();
-  
-            return invoice_details;
-          }
+
+            return invoice;
+        }
 
     }
 }

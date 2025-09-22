@@ -13,7 +13,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     public class AuthHandlingController(IAuthServices authservice) : ControllerBase
     {
         [HttpPost("Register")]
-        public async Task<ActionResult<User>> RegisterAsync( UserDto request)
+        public async Task<ActionResult<User>> RegisterAsync( UserDtos request)
         {
             var response = await authservice.RegisterAsync(request);
             if(response is null)

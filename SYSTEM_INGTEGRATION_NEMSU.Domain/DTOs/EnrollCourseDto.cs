@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
 {
-   public class EnrollCourse
+    public class EnrollCourseDto
     {
-        public Guid EnrollmentID { get; set; }
-        public string? StudentID { get; set; }
-        public string? CourseID { get; set; }
+    
+        public Guid StudentId { get; set; }      
+        public Guid CourseId { get; set; }    
         public DateTime DateEnrolled { get; set; }
-        public string? CourseCode { get; set; }
+
+       
+        public string? CourseCode { get; set; } 
         public string? Title { get; set; }
         public int Unit { get; set; }
     }
+
 }

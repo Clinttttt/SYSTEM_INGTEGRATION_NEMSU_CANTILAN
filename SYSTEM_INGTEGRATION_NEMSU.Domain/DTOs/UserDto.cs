@@ -15,5 +15,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.DTOs
         public string? Email { get; set; }
         public string? Course { get; set; }
         public int YearLevel { get; set; }
+       // public UserOption UserOption { get; set; }
     }
+    /* public enum UserOption
+      {
+          Student,
+          Facilitator
+
+      }*/
+
 }
