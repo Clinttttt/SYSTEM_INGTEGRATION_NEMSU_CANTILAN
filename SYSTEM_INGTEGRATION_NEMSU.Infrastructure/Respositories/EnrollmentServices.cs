@@ -6,7 +6,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 using Mapster;
 
-namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
+namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
     public class EnrollmentServices(ApplicationDbContext context) : IEnrollmentServices
     {

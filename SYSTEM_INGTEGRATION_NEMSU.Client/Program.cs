@@ -1,13 +1,26 @@
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Components;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddScoped<ProtectedLocalStorage>();
 
 
 
-// Add services to the container.
+builder.Services.AddHttpClient("WebAPI", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7072");
+});
+builder.Services.AddHttpClient<IAuthApiServices,AuthApiServices>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7072");
+});
+
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 

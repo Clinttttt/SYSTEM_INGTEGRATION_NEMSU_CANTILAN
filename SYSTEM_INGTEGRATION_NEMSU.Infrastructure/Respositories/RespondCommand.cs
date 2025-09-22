@@ -11,7 +11,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
-namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
+namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
     public class RespondCommand(ApplicationDbContext context) : IRespondCommand
     {
@@ -57,20 +57,22 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await context.SaveChangesAsync();
             return Response;
         }
-        public async Task<AnnouncementDto?> AnnouncementAsync(Guid StudentId, string Message, string CourseId)
+        public async Task<AnnouncementDto?> AnnouncementAsync(Guid StudentId, string Message, string CourseCode)
         {
 
-             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.Course.CourseCode == CourseId);
+             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.Course.CourseCode == CourseCode);
              if (request is null) return null;
 
             var Response = new AnnouncementDto()
             {
 
-                CourseCode = CourseId,
+                CourseCode = CourseCode,
                 Message = Message,
-                DateCreated = DateTime.UtcNow,
+                DateCreated = DateTime.UtcNow,   
                 Type = AnnouncementType.instructor,
                 StudentId = StudentId,
+                CourseId  = request.CourseId,
+               
 
             };
             var save = Response.Adapt<InstructorAnnouncement>();

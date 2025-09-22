@@ -13,7 +13,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
-namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
+namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
     public class HandlingCourse(ApplicationDbContext context) : IHandlingCourse
     {

@@ -19,7 +19,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations;
 using User = SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities.User;
 
-namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
+namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
    public class AuthServices(ApplicationDbContext context, IConfiguration configuration) : IAuthServices 
     {
@@ -88,7 +88,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             {
                 return null;
             }
-            return await CreateTokenResponse(user);
+            return await CharacterTypeAsync(user.Id);
         }
         public async Task<bool> LogoutAsync(Guid user)
         {
@@ -108,6 +108,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             {
                 new Claim(ClaimTypes.Name,user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Character!)
             };
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
@@ -159,6 +160,20 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
                 AccessToken = CreateToken(user),
                 RefreshToken =  await GenerateAndSaveRefreshToken(user)
             };
+        }
+        public async Task<TokenResponseDto?> CharacterTypeAsync(Guid Id)
+        {
+            var request = await context.users.FindAsync(Id);
+            if (request is null) return null;
+
+            request.Character = request.Role switch
+            {
+                UserRole.Facilitator => "Admin",
+                UserRole.Student => "Student",
+                _ => request.Character
+            };
+            await context.SaveChangesAsync();
+            return await CreateTokenResponse(request);
         }
       
     }

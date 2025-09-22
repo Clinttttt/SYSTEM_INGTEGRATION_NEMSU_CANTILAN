@@ -48,7 +48,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
 
         [Authorize]
-        [HttpDelete("UnEnrollCourse")]
+        [HttpDelete("UnEnrollCourse/{CourseId}")]
         public async Task<IActionResult> UnenrollCourse(string CourseId)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);

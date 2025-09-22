@@ -16,7 +16,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     {
 
         [Authorize]
-        [HttpGet("DisplayCourse")]
+        [HttpGet("DisplayCourse/{Adminid}")]
         public async Task<ActionResult<CourseDto>> DisplayAllCourse(Guid Adminid)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -57,7 +57,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpDelete("DeleteCourse")]
+        [HttpDelete("DeleteCourse/{course}")]
         public async Task<IActionResult> DeleteCourse(Guid course)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
