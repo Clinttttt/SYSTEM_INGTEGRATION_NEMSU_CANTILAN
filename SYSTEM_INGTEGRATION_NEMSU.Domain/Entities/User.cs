@@ -17,6 +17,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities
         public string? FullName { get; set; }
         public string? Email { get; set; }
         public string? Character { get; set; }
+
+        public string? GoogleId { get; set; }
     }
     public enum UserRole
     { 

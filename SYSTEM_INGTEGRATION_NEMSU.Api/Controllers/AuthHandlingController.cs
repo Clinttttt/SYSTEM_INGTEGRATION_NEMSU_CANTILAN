@@ -32,6 +32,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             }
             return Ok(response);
         }
+        [HttpPost("LoginWithGoogle")]
+        public async Task<ActionResult<TokenResponseDto>> LoginWithGoogleAsync(string googleId, string email, string Fullname)
+        {
+            var request = await authservice.LoginWithGoogleAsync(googleId, email, Fullname);
+            if(request is null)
+            {
+                return BadRequest("Login Failed");
+            }
+            return Ok(request);
+        }
         [HttpPost("Refreshtoken")]
         public async Task<ActionResult<TokenResponseDto>> RefreshTokenAsync( RefreshTokenDto request)
         {

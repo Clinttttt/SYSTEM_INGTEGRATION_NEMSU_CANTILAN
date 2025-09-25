@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using Azure.Core;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,25 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
    public class AuthServices(ApplicationDbContext context, IConfiguration configuration) : IAuthServices 
     {
+        public async Task<TokenResponseDto> LoginWithGoogleAsync(string googleId, string email, string Fullname)
+        {
+            var user = await context.users.FirstOrDefaultAsync(s => s.GoogleId == googleId);
+            if (user is null)
+            {
+                user = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Username = email,
+                    FullName = Fullname,
+                    Email = email,
+                    GoogleId = googleId,
+                };
+                context.users.Add(user);
+                await context.SaveChangesAsync();
+            }
+            return await CreateTokenResponse(user);
+        }
+
       public async Task<TokenResponseDto?> RefreshTokenAsync( RefreshTokenDto request)
         {
             var user = await ValidateRefreshToken(request.UserId, request.RefreshToken);

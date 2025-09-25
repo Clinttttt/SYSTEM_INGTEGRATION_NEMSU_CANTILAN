@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.DTOs
 {
- public   class UserDto
+ public  class UserDto
     {
         public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;

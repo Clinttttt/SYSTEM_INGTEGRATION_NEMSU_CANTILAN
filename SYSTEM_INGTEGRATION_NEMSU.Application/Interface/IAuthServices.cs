@@ -16,5 +16,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
          Task<User?> RegisterAsync(UserDtos request);
          Task<TokenResponseDto?> LoginAsync(LoginDto request);
          Task<bool> LogoutAsync(Guid user);
+        Task<TokenResponseDto> CreateTokenResponse(User user);
+        Task<TokenResponseDto> LoginWithGoogleAsync(string googleId, string email, string Fullname);
     }
 }

@@ -1,21 +1,30 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Components;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<ProtectedLocalStorage>();
+builder.Services.AddScoped<AuthStateProvider>();
+builder.Services.AddHttpContextAccessor();
 
 
 
-builder.Services.AddHttpClient("WebAPI", client =>
+builder.Services.AddHttpClient<IAuthApiServices, AuthApiServices>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7072");
 });
-builder.Services.AddHttpClient<IAuthApiServices,AuthApiServices>(client =>
+
+builder.Services.AddHttpClient("WebAPI", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7072");
 });
@@ -26,7 +35,9 @@ builder.Services.AddRazorComponents()
 
 var app = builder.Build();
 
-
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 // Configure the HTTP request pipeline.
@@ -44,5 +55,8 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+
+
 
 app.Run();

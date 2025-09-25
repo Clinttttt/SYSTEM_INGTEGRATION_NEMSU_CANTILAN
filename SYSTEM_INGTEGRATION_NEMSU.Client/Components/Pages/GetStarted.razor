@@ -1,0 +1,30 @@
+﻿@page "/GetStarted"
+
+  <div class="relative flex justify-center items-center h-full">
+        <!--register-->
+        <div style="background-color:rgb(210, 239, 255)"
+             class="mt-10 flex flex-col w-[25%] min-w-[300px] p-6 gap-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow border-2 border-cyan-400 hover:border-cyan-500">
+
+            <div class="w-16 h-16 bg-gradient-to-t from-sky-400 to-cyan-500 rounded-full flex items-center justify-center  mx-auto">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
+
+            <h3 class="text-xl font-semibold text-cyan-600 mb-2 text-center">Register</h3>
+
+            <input type="text" class="border p-2 rounded" placeholder="Username" />
+            <input type="password" class="border p-2 rounded" placeholder="Password" />
+            <input type="password" class="border p-2 rounded" placeholder="Confirm Password" />
+
+            <a href="GetStarted"
+               class="btn w-full bg-gradient-to-t from-sky-400 to-cyan-500 text-white py-3 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all text-center mt-2">
+                Get Started
+            </a>
+        </div>
+    </div>
+
+@code {
+
+}
