@@ -1,0 +1,50 @@
+﻿<div class="flex flex-col items-center justify-center h-full relative overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-teal-200/30 to-cyan-200/30 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-200/30 to-teal-200/30 rounded-full blur-3xl"></div>
+
+    <!-- Floating particles/dots -->
+    <div class="absolute top-10 left-10 w-2 h-2 bg-teal-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+    <div class="absolute top-20 right-16 w-3 h-3 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0.5s;"></div>
+    <div class="absolute bottom-16 left-20 w-2 h-2 bg-teal-300 rounded-full animate-bounce" style="animation-delay: 0.8s;"></div>
+    <!-- Main content -->
+
+    <div class="relative mt-1 z-10">
+        <!-- Animated Check Circle with multiple effects -->
+        <div class="relative mt-1 flex items-center justify-center">
+            <!-- Outer rotating ring -->
+            <div class="absolute w-23 h-23 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-teal-300 animate-spin" style="animation-duration: 8s;"></div>
+            <!-- Pulsing glow effect -->
+            <div class="absolute w-19 h-19 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 opacity-20 animate-pulse"></div>
+            <!-- Secondary pulse -->
+            <div class="absolute w-19 h-19  left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-cyan-400 to-teal-500 opacity-10 animate-ping"></div>
+            <!-- Main circle with hover effect -->
+            <div class="relative w-19 h-19  rounded-full bg-gradient-to-br from-teal-400 via-cyan-400 to-cyan-500 flex items-center justify-center shadow-2xl transform transition-all hover:scale-110 hover:rotate-12 duration-300">
+                <!-- Inner shine effect -->
+                <div class="absolute inset-2 rounded-full bg-gradient-to-br from-white/20 to-transparent"></div>
+                <svg class="w-20 h-20 text-white drop-shadow-lg relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+        </div>
+        <!-- Text content with animations -->
+        <div class="text-center space-y-3">
+            <h1 class="text-2xl mt-4 font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent  animate-fade-in">
+                Saved
+            </h1>
+            <div class="max-w-md mx-auto">
+                <p class="text-gray-600 text-center px-4 leading-relaxed">
+                    <span class="inline-block animate-fade-in-up">Your information has been saved.</span><br />
+                    <span class="inline-block animate-fade-in-up" style="animation-delay: 0.2s;">You have successfully completed this form.</span>
+                </p>
+            </div>
+            <!-- Success badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 border border-teal-200 rounded-full text-sm text-teal-700 mt-4">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+               Data saved successfully
+            </div>
+        </div>
+    </div>
+</div>

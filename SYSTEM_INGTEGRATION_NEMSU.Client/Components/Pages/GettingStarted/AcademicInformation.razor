@@ -1,0 +1,112 @@
+﻿@inject PageState pageState
+
+<h1 class="mt-2 text-center text-lg font-bold text-teal-600">Academic Information</h1>
+<div class=" mx-auto mt-4 p-2 gap-2">
+    <div class=" grid grid-cols-1 md:grid-cols-2 gap-1 justify-center">
+
+        <div>
+            <label class="block text-sm font-light mb-1 text-teal-700">Student Type</label>
+            <select class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
+         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
+                <option disabled selected class=" text-cyan-600  font-light">Select Type</option>
+                <option>New Student</option>
+                <option>Transferee</option>
+                <option>Returning Student</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-sm font-light mb-1 text-teal-700">Year Level</label>
+            <select class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
+         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
+                <option disabled selected class=" text-cyan-600  font-light">Select Year</option>
+                <option>1st Year</option>
+                <option>2nd Year</option>
+                <option>3rd Year </option>
+                <option>4th Year </option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-1 justify-center">
+
+        <div>
+            <label class="block text-sm font-light mb-1 text-teal-700">Semester</label>
+            <select class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
+         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
+                <option disabled selected class=" text-cyan-600  font-light">Select Semester</option>
+                <option>First Semester</option>
+                <option>Second Semester</option>
+
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-sm font-light mb-1 text-teal-700">Program</label>
+            <select class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
+         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
+                <option disabled selected class=" text-cyan-600  font-light">Select Program</option>
+                <option>BACHELOR OF SCIENCE IN CRIMINOLOGY </option>
+                <option>BACHELOR OF SCIENCE IN HOSPITALITY MANAGEMENT </option>
+                <option>BACHELOR OF SCIENCE IN BUSINESS  ADMINISTRATION </option>
+                <option>BACHELOR OF SCIENCE IN TOURISM  MANAGEMENT </option>
+                <option>BACHELOR OF SCIENCE IN INDUSTRIAL TECHNOLOGY </option>
+                <option>BACHELOR OF SCIENCE IN COMPUTER  ENGINEERING </option>
+                <option>BACHELOR OF SCIENCE IN COMPUTER  SCIENCE </option>
+                <option>BACHELOR OF SCIENCE IN COMPUTER  TECHNOLOGY </option>
+                <option>BACHELOR OF SECONDARY  EDUCATION </option>
+                <option>BACHELOR OF TECHNOLOGY AND LIVELIHOOD EDUCATION </option>
+                <option>BACHELOR OF TECHNICAL-VOCATIONAL TEACHER EDUCATION </option>
+            </select>
+        </div>
+
+        <div class="mt-2">
+            <label class="block text-sm font-light mb-1 text-teal-700">Major</label>
+            <select class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
+         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
+                <option disabled selected class=" text-cyan-600  font-light">Select Major</option>
+                <option>None</option>
+                <option>MAJOR IN FINANCIAL MANAGEMENT</option>
+                <option>MAJOR IN HUMAN RESOURCE MANAGEMENT</option>
+                <option>MAJOR IN ARCHITECTURAL DRAFTING TECHNOLOGY</option>
+                <option>MAJOR IN AUTOMOTIVE TECHNOLOGY</option>
+                <option>MAJOR IN ELECTRICAL TECHNOLOGY</option>
+                <option>MAJOR IN ELECTRONICS TECHNOLOGY</option>
+                <option>MAJOR IN FOOD TECHNOLOGY</option>
+                <option>MAJOR IN  GARMENTS TECHNOLOGY</option>
+                <option>MAJOR IN MECHANICAL TECHNOLOGY</option>
+                <option>MAJOR IN COMPUTER TECHNOLOGY</option>
+                <option>MAJOR IN  ENGLISH</option>
+                <option>MAJOR IN  MATHEMATICS</option>
+                <option>MAJOR IN  FILIPINO</option>
+                <option>MAJOR IN  SCIENCE</option>
+                <option>MAJOR IN  HOME ECONOMICS</option>
+                <option>MAJOR IN  FOODS AND SERVICES MANAGEMENT</option>
+                <option>MAJOR IN  FASHION AND DESIGN</option>
+                <option>MAJOR IN  GARMENTS</option>
+            </select>
+        </div>
+
+        <div class="mt-2">
+            <label class="block text-sm font-light mb-1 text-teal-700">Strand (Senior highschool)</label>
+            <select class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
+         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
+                <option disabled selected class=" text-cyan-600  font-light">Select Strand</option>
+                <option>STEM</option>
+                <option>ABM</option>
+                <option>HUMSS</option>
+                <option>GAS</option>
+                <option>TVL</option>
+
+            </select>
+        </div>
+
+
+    </div>
+    <div class="mt-4 justify-between flex p-1">
+        <button @onclick="()=> pageState.SetViewAcads(PageState.SaveAsDraftAcads.SaveASDraft)" class="btn text-neutral-700 font-light border-teal-600 bg-cyan-50">Save as Draft</button>
+        <button @onclick="()=> pageState.SetViewAcads(PageState.SaveAsDraftAcads.Save)" class="btn text-white bg-gradient-to-b from-cyan-500 to-teal-600">Save</button>
+    </div>
+
+</div>

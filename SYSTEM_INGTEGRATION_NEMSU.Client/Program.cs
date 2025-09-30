@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Components;
+using SYSTEM_INGTEGRATION_NEMSU.Client.Services;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services;
@@ -16,7 +17,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddScoped<AuthStateProvider>();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddScoped<PageState>();
 
 
 builder.Services.AddHttpClient<IAuthApiServices, AuthApiServices>(client =>
