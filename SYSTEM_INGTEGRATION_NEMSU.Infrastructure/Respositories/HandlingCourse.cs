@@ -17,13 +17,31 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
     public class HandlingCourse(ApplicationDbContext context) : IHandlingCourse
     {
-      public async Task<CourseDto?> AddCourseAsync(Course request)
+        public async Task<CourseDto?> AddCourseAsync(Course request)
         {
+            // Map DTO to EF entity
+            var course = new Course
+            {
+                Id = Guid.NewGuid(),
+                Title = request.Title,
+                CourseCode = request.CourseCode,
+                Unit = request.Unit,
+                AdminId = request.AdminId,
+                Category = await context.category.FindAsync(request.CategoryId)
+                ?? throw new Exception("Category not found")
+            };
 
-            context.course.Add(request);
+            context.course.Add(course);
             await context.SaveChangesAsync();
-            return request.Adapt<CourseDto>();
+
+            
+            var savedCourse = await context.course
+                .Include(c => c.Category)
+                .FirstAsync(c => c.Id == course.Id);
+
+            return savedCourse.Adapt<CourseDto>();
         }
+
         public async Task<IEnumerable<CourseDto>> DisplayCourseAsync(Guid adminid)
         {   
             var retrieve = await context.course.Where(s => s.AdminId == adminid).ToListAsync();

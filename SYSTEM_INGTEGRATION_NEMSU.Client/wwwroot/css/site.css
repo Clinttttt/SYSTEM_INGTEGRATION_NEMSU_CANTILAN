@@ -1,5 +1,6 @@
 ﻿@import "tailwindcss";
 @plugin "daisyui";
+@import 'tailwind-scrollbar-hide/v4';
 
 @theme {
 	--breakpoint-xs: 22.5rem;

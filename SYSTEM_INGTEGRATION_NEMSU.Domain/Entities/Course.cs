@@ -15,5 +15,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string? Title { get; set; }
         public int Unit { get; set; }
         public ICollection<EnrollmentCourse> Enrollments { get; set; } = new List<EnrollmentCourse>();
+
+        public Guid? CategoryId { get; set; }   
+       public Category Category { get; set; } = null!;
     }
+   
 }

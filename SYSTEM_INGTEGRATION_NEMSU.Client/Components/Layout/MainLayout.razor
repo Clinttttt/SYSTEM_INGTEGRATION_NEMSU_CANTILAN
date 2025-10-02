@@ -8,45 +8,92 @@
     <main class="bg-cyan-50">
         @if (Hides)
         {
-            <div class="top-row px-4 relative bg-gradient-to-b from-teal-50 to-cyan-50 ">
-             <div class="absolute  left-3 flex flex-row items-center gap-2">
+            <!--<div class="top-row px-4 relative bg-gradient-to-t from-teal-50 to-cyan-50 border-b-4 border-cyan-500 shadow-md">-->
+            @if (MenuHeader)
+            {
+                <div class=" bg-white/55   backdrop-blur-sm top-row px-4 relative backdrop-blur-lg  bg-gradient-to-t from-cyan-100 via-teal-100 to-blue-100 " style="border-bottom: 1px solid transparent; border-image: linear-gradient(to right, #06b6d4, #14b8a6, #06b6d4) 1; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(6, 182, 212, 0.2);">
+                    <div class="absolute  left-3 flex flex-row items-center gap-2">
 
-                    <svg viewBox="0 0 172 160" xmlns="http://www.w3.org/2000/svg" class=" w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 shadow-xl relative z-10" width="172" height="160">
-                        <!-- [Your existing SVG content remains the same] -->
-                        <defs>
-                            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:#f1f5f9;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
-                            </linearGradient>
-                            <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
-                            </linearGradient>
-                            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
-                            </linearGradient>
-                            <filter id="textShadow">
-                                <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.1" />
-                            </filter>
-                        </defs>
-                        <circle cx="86" cy="80" r="74" fill="none" stroke="url(#accentGradient)" stroke-width="0.5" opacity="0.3" />
-                        <circle cx="86" cy="80" r="72" fill="url(#bgGradient)" stroke="url(#accentGradient)" stroke-width="1.5" />
-                        <path d="M 65 45 Q 86 40 107 45" stroke="url(#goldGradient)" stroke-width="1.5" fill="none" opacity="0.8" />
-                        <text x="86" y="70" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" text-anchor="middle" fill="url(#accentGradient)" filter="url(#textShadow)">NEMSU</text>
-                        <path d="M 45 78 Q 86 73 127 78" stroke="url(#goldGradient)" stroke-width="2" fill="none" />
-                        <circle cx="45" cy="78" r="1.5" fill="url(#goldGradient)" />
-                        <circle cx="127" cy="78" r="1.5" fill="url(#goldGradient)" />
-                        <text x="86" y="90" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" text-anchor="middle" fill="#475569">NORTH EASTERN MINDANAO</text>
-                        <text x="86" y="100" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" text-anchor="middle" fill="#475569">STATE UNIVERSITY</text>
-                        <rect x="60" y="108" width="52" height="12" rx="6" fill="url(#accentGradient)" opacity="0.1" />
-                        <text x="86" y="116" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="500" text-anchor="middle" fill="url(#accentGradient)">CANTILAN CAMPUS</text>
-                    </svg>
-                    <h1 class="text-lg font-bold text-teal-500">STUDENT SERVICES PORTAL</h1>
+                        <svg viewBox="0 0 172 160" xmlns="http://www.w3.org/2000/svg" class=" w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 shadow-xl relative z-10" width="172" height="160">
+                            <!-- [Your existing SVG content remains the same] -->
+                            <defs>
+                                <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#f1f5f9;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+                                </linearGradient>
+                                <filter id="textShadow">
+                                    <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.1" />
+                                </filter>
+                            </defs>
+                            <circle cx="86" cy="80" r="74" fill="none" stroke="url(#accentGradient)" stroke-width="0.5" opacity="0.3" />
+                            <circle cx="86" cy="80" r="72" fill="url(#bgGradient)" stroke="url(#accentGradient)" stroke-width="1.5" />
+                            <path d="M 65 45 Q 86 40 107 45" stroke="url(#goldGradient)" stroke-width="1.5" fill="none" opacity="0.8" />
+                            <text x="86" y="70" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" text-anchor="middle" fill="url(#accentGradient)" filter="url(#textShadow)">NEMSU</text>
+                            <path d="M 45 78 Q 86 73 127 78" stroke="url(#goldGradient)" stroke-width="2" fill="none" />
+                            <circle cx="45" cy="78" r="1.5" fill="url(#goldGradient)" />
+                            <circle cx="127" cy="78" r="1.5" fill="url(#goldGradient)" />
+                            <text x="86" y="90" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" text-anchor="middle" fill="#475569">NORTH EASTERN MINDANAO</text>
+                            <text x="86" y="100" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" text-anchor="middle" fill="#475569">STATE UNIVERSITY</text>
+                            <rect x="60" y="108" width="52" height="12" rx="6" fill="url(#accentGradient)" opacity="0.1" />
+                            <text x="86" y="116" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="500" text-anchor="middle" fill="url(#accentGradient)">CANTILAN CAMPUS</text>
+                        </svg>
+                        <h1 class="text-lg font-bold text-teal-500">STUDENT SERVICES PORTAL</h1>
+                    </div>
+                    <NavLink href="/" target="_blank " class="rounded-md scale-90 text-cyan-600 font-semibold text-lg btn border bg-teal-500 text-white">Home</NavLink>
                 </div>
-                <NavLink href="/" target="_blank " class="text-cyan-600 font-semibold text-lg">Home</NavLink>
-        </div>
+            }
+            else
+            {
+                <div class="top-row px-4 relative backdrop-blur-lg" style="border-bottom: 1px solid transparent; border-image: linear-gradient(to right, #06b6d4, #14b8a6, #06b6d4) 1; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(6, 182, 212, 0.2);">
+                    <div class="absolute  left-3 flex flex-row items-center gap-2">
+
+                        <svg viewBox="0 0 172 160" xmlns="http://www.w3.org/2000/svg" class=" w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 shadow-xl relative z-10" width="172" height="160">
+                            <!-- [Your existing SVG content remains the same] -->
+                            <defs>
+                                <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#f1f5f9;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                                </linearGradient>
+                                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+                                </linearGradient>
+                                <filter id="textShadow">
+                                    <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.1" />
+                                </filter>
+                            </defs>
+                            <circle cx="86" cy="80" r="74" fill="none" stroke="url(#accentGradient)" stroke-width="0.5" opacity="0.3" />
+                            <circle cx="86" cy="80" r="72" fill="url(#bgGradient)" stroke="url(#accentGradient)" stroke-width="1.5" />
+                            <path d="M 65 45 Q 86 40 107 45" stroke="url(#goldGradient)" stroke-width="1.5" fill="none" opacity="0.8" />
+                            <text x="86" y="70" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" text-anchor="middle" fill="url(#accentGradient)" filter="url(#textShadow)">NEMSU</text>
+                            <path d="M 45 78 Q 86 73 127 78" stroke="url(#goldGradient)" stroke-width="2" fill="none" />
+                            <circle cx="45" cy="78" r="1.5" fill="url(#goldGradient)" />
+                            <circle cx="127" cy="78" r="1.5" fill="url(#goldGradient)" />
+                            <text x="86" y="90" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" text-anchor="middle" fill="#475569">NORTH EASTERN MINDANAO</text>
+                            <text x="86" y="100" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="400" text-anchor="middle" fill="#475569">STATE UNIVERSITY</text>
+                            <rect x="60" y="108" width="52" height="12" rx="6" fill="url(#accentGradient)" opacity="0.1" />
+                            <text x="86" y="116" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="500" text-anchor="middle" fill="url(#accentGradient)">CANTILAN CAMPUS</text>
+                        </svg>
+                        <h1 class="text-lg font-bold text-teal-500">STUDENT SERVICES PORTAL</h1>
+                    </div>
+                    <NavLink href="/" target="_blank " class="text-cyan-600 font-semibold text-lg">Home</NavLink>
+                </div>
+            }
+
         }
 
         <article class="content ">
@@ -62,4 +109,5 @@
 </div>
 @code{
     private bool Hides => !string.IsNullOrEmpty(navigation.ToBaseRelativePath(navigation.Uri));
+    private bool MenuHeader => navigation.ToBaseRelativePath(navigation.Uri).Equals("studentmenu", StringComparison.OrdinalIgnoreCase);
 }

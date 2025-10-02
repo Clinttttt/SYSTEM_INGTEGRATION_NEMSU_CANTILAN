@@ -1,0 +1,204 @@
+﻿@page "/studentmenu"
+
+
+<div class="h-screen content   overflow-hidden" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+    <!-- Top Navigation -->
+   <div class="flex justify-center">
+        <nav class="bg-white/65  w-[80%] backdrop-blur-sm shadow-xl rounded-2xl mx-4 mt-4 mb-8 p-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo Section -->
+                <div class="flex items-center gap-4">
+                    <div class="w-12 rounded-full border-2 border-amber-500 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-amber-400 to-orange-500 p-0.5">
+                        <img alt="NEMSU Cantilan Student Services"
+                             src="/img/student_logo.jpg"
+                             class="w-full h-full rounded-full object-cover bg-white" />
+                    </div>
+                    <div class="hidden md:block">
+                        <h1 class="text-lg font-semibold text-gray-700 italic"> What you learn is yours forever</h1>
+                    </div>
+                </div>
+
+                <!-- User Section -->
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:block text-right">
+                        <div class="text-sm font-semibold text-gray-700">@StudentName</div>
+                        <div class="text-xs text-gray-500">ID: @StudentId</div>
+                    </div>
+                    <div class="w-11 h-11 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+                        @StudentInitials
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile System Name -->
+            <div class="md:hidden mt-3 text-center">
+                <h1 class="text-sm font-semibold text-gray-800">Student Enrollment System</h1>
+            </div>
+        </nav>
+   </div>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto px-4 pb-12">
+        <!-- Welcome Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-3xl font-black mb-3" style="text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);">
+                <span class="text-white">Welcome Back, </span>
+                <span class="text-amber-400">Clint</span>
+                <span class="text-amber-400">! 👋</span>
+            </h1>
+            <p class="text-xl text-cyan-50 font-medium" style="text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);">
+                Your personalized student dashboard
+            </p>
+        </div>
+
+ 
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-[100%] mx-auto h-62">
+            
+            <!-- Enrollment Card -->
+            <NavLink href="/enrollment" class="bg-white/65  backdrop-blur-sm rounded-2xl p-5 shadow-xl hover:shadow-md hover:shadow-purple-100 transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative overflow-hidden group block">
+
+                <!--   <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 to-teal-700"></div>-->
+
+          
+                <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-700 rounded-2xl flex items-center justify-center text-white mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                </div>
+
+              
+                <h2 class="text-lg font-bold text-gray-700 mb-3">Enrollment</h2>
+
+         
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                    Enroll in courses, view enrollment status, and access payment history
+                </p>
+
+               
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-teal-100 text-cyan-700">
+                    Active
+                </span>
+            </NavLink>
+
+
+
+
+            <!-- Profile Card -->
+            <NavLink href="/profileinformation" class="bg-white/65   backdrop-blur-sm rounded-2xl p-5 shadow-xl hover:shadow-2xl hover:shadow-pink-200 transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative overflow-hidden group block">
+
+                <!--<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-600"></div>-->
+
+
+                <div class="w-16 h-16 bg-gradient-to-br  from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center text-white mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+
+               
+                <h2 class="text-lg font-bold text-gray-700 mb-3">Profile & Information</h2>
+
+              
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                    Manage personal information and view your student ID
+                </p>
+
+             
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-orange-100 text-amber-700">
+                    Complete
+                </span>
+            </NavLink>
+
+            <!-- Announcements Card -->
+            <NavLink href="/announcement" class="bg-white/65   backdrop-blur-sm rounded-2xl p-5 shadow-xl hover:shadow-2xl hover:shadow-blue-200 transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative overflow-hidden group block">
+
+                <!-- <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-500"></div>-->
+
+          
+                @if (HasNewAnnouncements)
+                {
+                    <div class="absolute top-5 right-5">
+                        <span class="flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                        </span>
+                    </div>
+                }
+
+           
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center text-white mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                    </svg>
+                </div>
+
+             
+                <h2 class="text-lg font-bold text-gray-700 mb-3">Announcements</h2>
+
+            
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                    Stay updated with important announcements and reminders
+                </p>
+
+               
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                    @NewAnnouncementsCount New
+                </span>
+            </NavLink>
+
+            <!-- Enrolled Courses Card -->
+            <NavLink href="/enrolledcourse" class="bg-white/65   backdrop-blur-sm rounded-2xl p-5 shadow-xl hover:shadow-2xl hover:shadow-green-200 transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative overflow-hidden group block">
+
+                <!-- <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-emerald-500"></div>-->
+
+         
+                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-2xl flex items-center justify-center text-white mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                </div>
+
+                
+                <h2 class="text-lg font-bold text-gray-700 mb-3">Enrolled Courses</h2>
+
+            
+                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                    Access your current courses, schedules, and course materials
+                </p>
+
+         
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                    @EnrolledCoursesCount Courses
+                </span>
+            </NavLink>
+
+        </div>
+    </div>
+</div>
+
+@code {
+    // Student properties - bind these to your actual data
+    private string StudentName { get; set; } = "Clint Villanueva";
+    private string StudentId { get; set; } = "2024-12345";
+    private string FirstName { get; set; } = "Clint";
+    private string StudentInitials { get; set; } = "CV";
+    
+    // Dynamic data properties
+    private bool HasNewAnnouncements { get; set; } = true;
+    private int NewAnnouncementsCount { get; set; } = 3;
+    private int EnrolledCoursesCount { get; set; } = 5;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load student data from your service/database
+        // Example:
+        // var student = await StudentService.GetCurrentStudentAsync();
+        // StudentName = student.FullName;
+        // StudentId = student.Id;
+        // etc...
+    }
+}

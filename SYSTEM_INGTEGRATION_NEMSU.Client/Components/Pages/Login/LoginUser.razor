@@ -1,12 +1,8 @@
 ﻿@page "/loginuser"
 
+<div class="relative flex justify-start h-screen content">
+    <div class="absolute inset-0 bg-gradient-to-br from-amber-700/30 to-amber-100/30 rounded-full blur-3xl"></div>
 
-
-
-<div class="relative flex justify-start h-screen content ">
-
-
-    <div class="absolute inset-0 bg-gradient-to-br from-amber-100/30 to-amber-100/30 rounded-full blur-3xl"></div>
     <!-- Particle Background -->
     <div class="particle-container">
         <div class="particle"></div>
@@ -41,13 +37,9 @@
         <div class="particle"></div>
     </div>
 
-
-
-
- <!-- LEFT: Login Form -->
-    <div class="flex z-10 justify-start items-start w-[30%] left-7 absolute ">
+    <!-- LEFT: Login Form -->
+    <div class="flex z-10 justify-start items-start w-[26%] left-6 absolute">
         <div class="flex flex-col w-full max-w-md p-8 gap-4 rounded-xl shadow-xl hover:shadow-2xl transition-shadow border-2 border-amber-400 bg-white/90 backdrop-blur">
-
             <!-- Avatar Icon -->
             <div class="w-16 h-16 bg-gradient-to-t from-amber-500 to-amber-600 rounded-full flex items-center justify-center mx-auto">
                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,7 +51,7 @@
             <!-- Title -->
             <h3 class="text-2xl font-semibold text-amber-600 text-center">Login</h3>
             <p class="text-gray-600 text-center text-sm mb-2">
-                Welcome back! Please sign in to continue.
+                Welcome back! <br /> Please sign in to continue.
             </p>
 
             <!-- Username Input -->
@@ -81,7 +73,7 @@
             </div>
 
             <!-- Login Button -->
-            <NavLink href="/FillOutRegistration"
+            <NavLink href="studentmenu"
                      class="w-full bg-gradient-to-t from-amber-500 to-amber-600 text-white py-3 rounded-lg font-medium hover:from-amber-600 hover:to-amber-700 transition-all text-center mt-2">
                 Login Now
             </NavLink>
@@ -93,14 +85,75 @@
             </div>
         </div>
     </div>
-    <div class="absolute right-0 top-0 h-full w-[65%]  z-0">
+
+    <!-- RIGHT: Background Image with Overlay Content -->
+    <div class="absolute right-0 top-0 h-full w-[70%] z-0">
         <img src="/img/nemsu_gate.png" class="object-cover w-full h-full" style="border-left: solid 5px rgb(240, 134, 0)" />
+
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
+
+        <!-- University Logo (Top Center) -->
+        <div class="absolute top-12 left-1/2 transform -translate-x-1/2 z-10">
+            <div class="bg-white/55  backdrop-blur-sm rounded-2xl p-6 shadow-2xl border-2 border-cyan-600">
+                <div class="flex items-center gap-4">
+                    <div class="w-20 h-20  rounded-full flex items-center justify-center">
+                      <img src="/img/logo_nemsu.png" />
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-cyan-900">North Eastern Mindanao</h2>
+                        <h2 class="text-xl font-bold text-cyan-900">State University Cantilan</h2>
+                        <p class="text-sm text-gray-600 mt-1">Student Services Portal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informational Cards -->
+        <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-[90%] z-10">
+            <div class="grid grid-cols-3 gap-6">
+                <!--Quick Access -->
+                <div class="bg-white/55   backdrop-blur-sm rounded-xl p-6 shadow-xl border-2 border-amber-600 hover:shadow-2xl transition-all hover:scale-105">
+                    <div class="w-12 h-12  bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Quick Access</h3>
+                    <p class="text-sm text-stone-800">Easily access registration forms, requirements, and application status</p>
+                </div>
+
+                <!-- 24/7 Available -->
+                <div class="bg-white/55   backdrop-blur-sm rounded-xl p-6 shadow-xl border-2 border-cyan-600 hover:shadow-2xl transition-all hover:scale-105">
+                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">24/7 Available</h3>
+                    <p class="text-sm text-stone-800">Access your student services anytime, anywhere with our portal</p>
+                </div>
+
+                <!--  Secure Platform -->
+                <div class="bg-white/55 backdrop-blur-sm rounded-xl p-6 shadow-xl border-2 border-teal-600 hover:shadow-2xl transition-all hover:scale-105">
+                    <div class="w-12 h-12 opacity-100 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 opacity-100 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Secure Platform</h3>
+                    <p class="text-sm text-stone-800">Your data is protected with enterprise-level security measures</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-
-
-
 
 @code {
 
 }
+
+  

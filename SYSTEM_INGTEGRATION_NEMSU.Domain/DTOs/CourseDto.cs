@@ -13,5 +13,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public string? CourseCode { get; set; }
         public string? Title { get; set; }
         public int Unit { get; set; }
+    
+        public CategoryDto Category { get; set; } = null!;
     }
+
+public class CategoryDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Icon { get; set; } = string.Empty;
+    public string Color { get; set; } = string.Empty;
+}
 }
