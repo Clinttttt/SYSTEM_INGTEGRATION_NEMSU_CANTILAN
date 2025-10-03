@@ -19,7 +19,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
     {
         public async Task<CourseDto?> AddCourseAsync(Course request)
         {
-            // Map DTO to EF entity
+            
             var course = new Course
             {
                 Id = Guid.NewGuid(),
