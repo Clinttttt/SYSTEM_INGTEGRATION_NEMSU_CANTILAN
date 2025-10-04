@@ -1,0 +1,49 @@
+﻿@page "/facultyprofile"
+
+<div class="relative h-screen content overflow-hidden ">
+    <div class="drawer lg:drawer-open h-screen">
+        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col items-center justify-center">
+
+            <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">
+                Open drawer
+            </label>
+
+
+        </div>
+        <div class="drawer-side">
+            <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
+            <ul class="menu min-h-full w-62 p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+                <!-- Sidebar content here -->
+                <li class="mx-auto mb-4">
+
+
+                    <div class="w-[92px] h-[92px] bg-gradient-to-br from-amber-50 to-amber-50 rounded-full flex items-center justify-center border-4 border-orange-300 shadow-lg">
+                        <svg class="w-13 h-13 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+
+
+
+
+                </li>
+                <li><a class="text-white text-2xl font-light btn btn-outline btn-dash  btn-primary">Profile</a></li>
+
+
+                <li class="mt-10"><NavLink href="/facultymanageprofile" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Manage Profile</NavLink></li>
+                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Settings</a></li>
+                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Logout</a></li>
+
+                <li class="mt-10"><NavLink href="/studentmanagement" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Student Records</NavLink></li>
+                <li class="mt-2"><NavLink href="/coursemanagemnt" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Course Management</NavLink></li>
+                <li class="mt-2"><NavLink href="/facultyannouncement" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Announcements</NavLink></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+@code {
+
+}

@@ -1,0 +1,220 @@
+﻿@page "/facultymainmenu"
+
+<div class="h-screen content overflow-hidden" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+
+    <div class="h-full flex flex-col p-6">
+   
+        <div class="flex items-center justify-between mb-8 bg-gradient-to-r from-cyan-500/20 to-transparent backdrop-blur-sm rounded-2xl p-6 border border-cyan-400/30">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center border-4 border-orange-300 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-white italic">What you teach is their future</h1>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="flex items-center gap-3">
+                    <div>
+                        <p class="text-white font-semibold text-lg">Prof. Jenellie Rose Guevarra</p>
+                        <p class="text-cyan-200 text-sm">ID: FAC-2024-001</p>
+                    </div>
+                    <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl border-2 border-white shadow-lg">
+                        JG
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-white mb-2">
+                Welcome Back, <span class="text-orange-400">Jenellie!</span>
+            </h2>
+            <p class="text-cyan-100 text-lg">Your faculty management dashboard</p>
+        </div>
+
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6   ">
+
+
+     
+            <!-- Student Management  -->
+            <NavLink href="/studentmanagement" class="cursor-pointer h-64 pb-6  bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-cyan-400/30 hover:border-cyan-400 transition-all hover:shadow-2xl hover:shadow-cyan-500/20 flex flex-col">
+                <div class="mt-1">
+                    <div class="w-13 h-13 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Student Management</h3>
+                    <p class="text-gray-300 mb-4">View, manage, and verify student information and enrollment data</p>
+                    <div class="mb-4">
+                        <span class="inline-block bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded-full text-sm font-semibold border border-cyan-500/30">
+                            234 Students
+                        </span>
+                    </div>
+                </div>
+            </NavLink>
+
+          
+
+           
+
+            <!-- Course Management  -->
+            <NavLink href="/coursemanagemnt" class=" cursor-pointer h-64 pb-6 bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-orange-400/30 hover:border-orange-400 transition-all hover:shadow-2xl hover:shadow-orange-500/20 flex flex-col">
+        
+              <div class="mt-1">
+                    <div class=" w-13 h-13 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Course Management</h3>
+                    <p class="text-gray-300 mb-4 flex-1">Manage course offerings, and curriculum information</p>
+                    <div class="mb-4">
+                        <span class="inline-block bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-sm font-semibold border border-orange-500/30">
+                          18 Courses
+                        </span>
+                    </div>
+              </div>
+            </NavLink>
+
+            <!-- Announcements  -->
+            <NavLink href="/facultyannouncement" class="cursor-pointer h-64 pb-6  bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-teal-400/30 hover:border-teal-400 transition-all hover:shadow-2xl hover:shadow-teal-500/20 flex flex-col">
+        
+              <div class="mt-1">
+                    <div class="w-13 h-13 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg ">
+                        <svg class=" w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Announcements</h3>
+                    <p class="text-gray-300 mb-4 flex-1"> manage faculty announcements and important notices</p>
+                    <div class="mb-4">
+                        <span class="inline-block bg-teal-500/20 text-teal-300 px-3 py-1 rounded-full text-sm font-semibold border border-teal-500/30">
+                         3 New 
+                        </span>
+                    </div>
+              </div>
+            </NavLink>
+
+            <!-- Profile  -->
+            <NavLink href="/facultyprofile" class="cursor-pointer h-64 pb-6 bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-emerald-400/30 hover:border-emerald-400 transition-all hover:shadow-2xl hover:shadow-emerald-500/20 flex flex-col">
+      
+               <div class="mt-1">
+                    <div class="w-13 h-13 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Profile & Settings</h3>
+                    <p class="text-gray-300 mb-4 flex-1">Manage your faculty profile information and account settings</p>
+                    <div class="mb-4">
+                        <span class="inline-block bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-semibold border border-emerald-500/30">
+                           Complete
+                        </span>
+                    </div>
+               </div>
+            </NavLink>
+
+          
+
+        </div>
+    </div>
+</div>
+
+@code {
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                @*  <!-- Enrollment Management Card -->
+            <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-orange-400/30 hover:border-orange-400 transition-all hover:shadow-2xl hover:shadow-orange-500/20 flex flex-col">
+                <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Enrollment Management</h3>
+                <p class="text-gray-300 mb-4 flex-1">Process enrollment requests and manage student course registrations</p>
+                <div class="mt-auto">
+                    <span class="inline-block bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-sm font-semibold border border-orange-500/30">
+                        12 Pending
+                    </span>
+                </div>
+            </div>
+            
+            
+            
+
+
+            <!-- Academic Records Card -->
+            <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-blue-400/30 hover:border-blue-400 transition-all hover:shadow-2xl hover:shadow-blue-500/20 flex flex-col">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Academic Records</h3>
+                <p class="text-gray-300 mb-4 flex-1">Access and manage student academic records, grades, and transcripts</p>
+                <div class="mt-auto">
+                    <span class="inline-block bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-semibold border border-blue-500/30">
+                        Updated
+                    </span>
+                </div>
+            </div>
+
+
+            
+           <!-- Reports & Analytics Card -->
+            <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-emerald-400/30 hover:border-emerald-400 transition-all hover:shadow-2xl hover:shadow-emerald-500/20 flex flex-col">
+                <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Reports & Analytics</h3>
+                <p class="text-gray-300 mb-4 flex-1">Generate reports and view analytics on student performance and enrollment</p>
+                <div class="mt-auto">
+                    <span class="inline-block bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-semibold border border-emerald-500/30">
+                        5 Reports
+                    </span>
+                </div>
+            </div>
+
+
+              <!-- Schedule Card -->
+            <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-teal-400/30 hover:border-teal-400 transition-all hover:shadow-2xl hover:shadow-teal-500/20 flex flex-col">
+                <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Teaching Schedule</h3>
+                <p class="text-gray-300 mb-4 flex-1">View and manage your teaching schedule and class timetables</p>
+                <div class="mt-auto">
+                    <span class="inline-block bg-teal-500/20 text-teal-300 px-3 py-1 rounded-full text-sm font-semibold border border-teal-500/30">
+                        This Week
+                    </span>
+                </div>
+            </div>
+            
+            *@
