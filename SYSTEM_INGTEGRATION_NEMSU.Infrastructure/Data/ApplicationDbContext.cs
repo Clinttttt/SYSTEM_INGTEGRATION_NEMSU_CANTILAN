@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
@@ -34,5 +35,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
         public DbSet<StudentProfile> studentprofiles { get; set; }
         public DbSet<FacilitatorProfile> facilitatorprofiles { get; set; }
         public DbSet<Category> category { get; set; }
+        public DbSet<AcademicInformation> academicInformation { get; set; }
+        public DbSet<ContactInformation> contactInformation { get; set; }
+        public DbSet<PersonalInformation> personalInformation { get; set; }
     }
 }

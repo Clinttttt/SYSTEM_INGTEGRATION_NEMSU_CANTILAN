@@ -58,6 +58,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure
             services.AddScoped<IUserRespository, UserRespository>();
             services.AddScoped<IHandlingMessage, HandlingMessage>();
             services.AddScoped<IRespondCommand, RespondCommand>();
+            services.AddScoped<IStudentRecordCommand, StudentRecordCommand>();
          
             return services;
         }

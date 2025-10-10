@@ -21,7 +21,7 @@
                     <div class="sticky relative h-25 top-0 bg-gradient-to-r from-cyan-600 to-teal-700 p-6 rounded-t-lg">
                         <div class="flex  justify-between items-center mb-2">
                             <h1 class="text-2xl font-bold mb-1 text-white">Enrollment Form</h1>
-                            <button onclick="my_modal_4.showModal()"  class="btn bg-white text-teal-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors font-medium text-sm">
+                            <button onclick="my_modal_2.showModal()" class="btn bg-white text-teal-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors font-medium text-sm">
                                 Edit Details
                             </button>
                         </div>
@@ -185,8 +185,8 @@
                                     <strong>Note:</strong> Payment must be completed within 48 hours to secure your enrollment.
                                 </p>
                             </div>
-
-                            <button class="w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition-colors font-bold shadow-md">
+                            <!--a-->
+                            <button onclick="my_modal_payment.showModal()" class=" w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition-colors font-bold shadow-md">
                                 Proceed to Payment
                             </button>
                         </div>
@@ -196,22 +196,22 @@
 
 
 
-            <!--modal edit-->
+         
 
 
-            <dialog id="my_modal_4" class="modal">
+            <dialog id="my_modal_2" class="modal">
                 <div class="modal-box w-11/12 max-w-5xl max-h-[90vh] p-0 overflow-hidden rounded-md">
-                    <!-- Modal Header -->
+                  
                     <div class="bg-gradient-to-r from-cyan-600 to-teal-700 p-6 sticky top-0 z-10">
                         <h3 class="text-2xl font-bold text-white">Edit Student Details</h3>
                         <p class="text-teal-100 text-sm mt-1">Update your personal and academic information</p>
                     </div>
 
-                    <!-- Scrollable Form Content -->
+                 
                     <div class="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
                         <form id="editStudentForm" class="space-y-6">
 
-                            <!-- Personal Information Section -->
+                           
                             <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
                                 <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                                     <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
@@ -355,6 +355,159 @@
                     <button>close</button>
                 </form>
             </dialog>
+
+
+            <!-- proceed to payment ni -->
+            <dialog id="my_modal_payment" class="modal">
+                <div class="modal-box max-w-2xl p-0 overflow-hidden rounded-sm">
+
+                    <div class="p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold">Purchase Confirmation</h3>
+                                <p class="text-cyan-100 text-[10px] mt-0.5">Review your enrollment details</p>
+                            </div>
+                        </div>
+                    </div>
+
+                 
+                    <div class="p-5 bg-gradient-to-br from-gray-50 to-cyan-50">
+
+                        <div class="grid grid-cols-2 gap-4">
+
+                        
+                            <div class="space-y-3 mt-3">
+                          
+                                <div class="bg-white rounded-lg shadow-sm border border-cyan-100 p-3">
+                                    <h4 class="text-xs font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                        <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                        </svg>
+                                        Course Information
+                                    </h4>
+
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center text-[10px]">
+                                            <span class="text-gray-600">Course Code:</span>
+                                            <span class="font-semibold text-gray-800">GE 101</span>
+                                        </div>
+                                        <div class="flex justify-between items-center text-[10px]">
+                                            <span class="text-gray-600">Course Name:</span>
+                                            <span class="font-semibold text-gray-800">Networking 2 </span>
+                                        </div>
+                                        <div class="flex justify-between items-center text-[10px]">
+                                            <span class="text-gray-600">Units:</span>
+                                            <span class="font-semibold text-gray-800">3 Units</span>
+                                        </div>
+                                        <div class="flex justify-between items-center text-[10px] pt-1.5 border-t border-gray-100">
+                                            <span class="text-gray-600">Course Fee:</span>
+                                            <span class="font-semibold text-gray-800">₱ 1,500.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Total Amount Card -->
+                                <div class="bg-gradient-to-r from-cyan-500 to-teal-600 rounded-lg shadow-lg p-3 btn h-[27%] w-full">
+                                    <div class="flex justify-between items-center w-full">
+                                        <div>
+                                            <p class="text-cyan-100 text-[10px] font-medium mb-0.5">Total Amount</p>
+                                            <p class="text-xl font-bold text-white">₱ 2,300.00</p>
+                                        </div>
+                                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="space-y-3 -mb-6">
+                            
+                                <div class="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-3">
+                                    <div class="flex gap-2">
+                                        <svg class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                        </svg>
+                                        <div>
+                                            <p class="text-[11px] font-semibold text-amber-800 mb-1">Important Notice</p>
+                                            <p class="text-[10px] text-amber-700 leading-relaxed">
+                                                Payment must be completed within 48 hours to secure your enrollment. Failure to complete payment may result in course cancellation.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Terms -->
+                                <div class="rounded-lg p-3 bg-amber-50 border-l-4  border-amber-500">
+                                    <div class="flex items-start gap-2">
+                                        <svg class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <p class="text-[10px] text-amber-700 leading-relaxed">
+                                            By clicking "Confirm Purchase", you agree to the enrollment terms and payment policies of the institution.
+                                        </p>
+                                    </div>
+                                </div>
+
+
+                                <div class="bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg shadow-lg p-3 btn h-[23%] w-full">
+                                    <div class="flex justify-between items-center  w-full">
+                                        <div>
+                                            <p class="text-cyan-100 text-[10px] font-medium mb-0.5">15 Days Conditional Access Payment Due</p>
+                                            <p class="text-lg font-bold text-white">Provisional Enrollment</p>
+                                        </div>
+                                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
+                                            </svg>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="bg-white border-t border-gray-200 px-5 py-3">
+                        <div class="flex gap-3">
+                            <form method="dialog" class="flex-1">
+                                <button class="w-full btn btn-ghost border border-gray-300 hover:bg-gray-100 text-sm h-10 min-h-10">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                    Cancel
+                                </button>
+                            </form>
+                            <button type="button" class="flex-1 btn bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-700 text-white border-0 shadow-lg text-sm h-10 min-h-10">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Start Provisional Access
+                            </button>
+                            <button type="button" class="flex-1 btn bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white border-0 shadow-lg text-sm h-10 min-h-10">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Confirm Purchase
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </dialog>
+
 
 
 

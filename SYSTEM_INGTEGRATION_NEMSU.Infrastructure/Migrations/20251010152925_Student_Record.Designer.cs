@@ -12,8 +12,8 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251002125226_clean")]
-    partial class clean
+    [Migration("20251010152925_Student_Record")]
+    partial class Student_Record
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,66 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("category");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            Color = "teal",
+                            Icon = "📐",
+                            Name = "Mathematics"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            Color = "purple",
+                            Icon = "🎨",
+                            Name = "Arts & Humanities"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            Color = "blue",
+                            Icon = "💻",
+                            Name = "Computer Science"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
+                            Color = "orange",
+                            Icon = "📚",
+                            Name = "Social Sciences"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
+                            Color = "gray",
+                            Icon = "⚗️",
+                            Name = "Natural Sciences"
+                        });
+                });
+
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", b =>
                 {
                     b.Property<Guid>("Id")
@@ -32,6 +92,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AdminId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Cost")
@@ -47,6 +110,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("course");
                 });
@@ -140,6 +205,105 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.ToTable("invoice");
                 });
 
+            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.PersonalInformation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CivilStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GuardianContact")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GuardianName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PermanentAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("personalInformation");
+                });
+
+            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord.AcademicInformation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Major")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Program")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Semester")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Strand")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("StudentType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("YearLevel")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("academicInformation");
+                });
+
+            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord.ContactInformation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmergencyContactNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MobileNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("contactInformation");
+                });
+
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities.FacilitatorProfile", b =>
                 {
                     b.Property<Guid>("Id")
@@ -224,6 +388,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.ToTable("users");
                 });
 
+            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", b =>
+                {
+                    b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Category", "Category")
+                        .WithMany("Courses")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.EnrollmentCourse", b =>
                 {
                     b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", "Course")
@@ -260,6 +433,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", b =>
