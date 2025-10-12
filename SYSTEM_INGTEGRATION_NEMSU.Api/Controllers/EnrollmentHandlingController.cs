@@ -6,6 +6,7 @@ using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
@@ -46,7 +47,22 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (response is null) { return BadRequest("Nothing to Display"); }
             return Ok(response);
         }
-
+        [Authorize]
+        [HttpGet("GetCourse")]
+        public async Task<ActionResult<CourseDto>?> GetCourse(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null)
+            {
+                return BadRequest("Login First");
+            }
+            var UserId = Guid.Parse(FindUser.Value);
+            var user = await respository.UserInfo(UserId);
+            if (user is null) return BadRequest("User not found or Student ID missing");
+            var StudentId = user.Id;
+            var response = await enrollmentservices.GetCourse(CourseId, StudentId);
+            return Ok(response);
+        }
         [Authorize]
         [HttpDelete("UnEnrollCourse/{CourseId}")]
         public async Task<IActionResult> UnenrollCourse(string CourseId)

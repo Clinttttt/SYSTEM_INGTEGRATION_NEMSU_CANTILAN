@@ -69,7 +69,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         {
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == academicInformation.StudentId);
             if (request is null) return null;
-            var currentdetails = await context.academicInformation.FirstOrDefaultAsync(s => s.Id == request.Id);
+            var currentdetails = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == request.Id);
             if (currentdetails is null) return null;
             currentdetails.StudentType = academicInformation.StudentType;
             currentdetails.YearLevel = academicInformation.YearLevel;
@@ -82,12 +82,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return filter;
         }
-        public async Task<IEnumerable<PersonalInformationDto>?> DisplayAcademicInformation(Guid Student)
+        public async Task<IEnumerable<AcademicInformationDto>?> DisplayAcademicInformation(Guid Student)
         {
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == Student);
             if (request is null) return null;
             var details = await context.academicInformation.Where(s => s.StudentId == request.Id).ToListAsync();
-            return details.Adapt<List<PersonalInformationDto>>();
+            return details.Adapt<List<AcademicInformationDto>>();
         }
         public async Task<ContactInformationDto?> AddContactInformationAsync(ContactInformation contactInformation)
         {

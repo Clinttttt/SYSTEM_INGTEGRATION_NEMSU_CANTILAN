@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251011135643_SaveStatusContact")]
+    partial class SaveStatusContact
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,24 +102,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.Property<string>("CourseCode")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CourseDescriptiion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Department")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Room")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Schedule")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SchoolYear")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Semester")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -218,25 +203,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("invoice");
-                });
-
-            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.LearningObjectives", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("LearningObjectives");
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.PersonalInformation", b =>
@@ -478,15 +444,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.LearningObjectives", b =>
-                {
-                    b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", null)
-                        .WithMany("LearningObjectives")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Courses");
@@ -495,8 +452,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", b =>
                 {
                     b.Navigation("Enrollments");
-
-                    b.Navigation("LearningObjectives");
                 });
 #pragma warning restore 612, 618
         }

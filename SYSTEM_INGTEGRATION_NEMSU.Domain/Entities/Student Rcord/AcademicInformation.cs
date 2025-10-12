@@ -17,6 +17,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         public ProgramChoice Program { get; set; }
         public MajorChoice Major { get; set; }
         public StrandChoice Strand { get; set; }
+        public SaveStatus Savestatus { get; set; }
     }
     public enum StudentTypeChoice
     {
@@ -54,6 +55,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
     }
     public enum MajorChoice
     {
+        None,
         Financial_Management,
         HumanResources_Management,
         Architectural_Drafting_Technology,
@@ -80,5 +82,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         Humss,
         Gas,
         Tvl
+    }
+    public enum SaveStatus
+    {
+        Save_As_Draft,
+        Save
     }
 }

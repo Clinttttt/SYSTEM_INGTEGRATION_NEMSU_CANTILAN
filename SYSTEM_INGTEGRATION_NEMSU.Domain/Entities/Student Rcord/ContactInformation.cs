@@ -14,6 +14,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         public string? MobileNumber { get; set; }
         public string? EmailAddress { get; set; }
         public string? EmergencyContactNumber { get; set; }
+        public SaveStatusContact Savestatus { get; set; }
 
+    }
+    public enum SaveStatusContact
+    {
+        Save_As_Draft,
+        Save
     }
 }

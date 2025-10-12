@@ -20,7 +20,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string? PermanentAddress { get; set; }
         public string? GuardianName { get; set; }
         public string? GuardianContact { get; set; }
-
+        public SaveStatus Savestatus { get; set; }
     }
     public enum GenderChoice
     {
@@ -33,5 +33,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         Single,
         Taken,
         Married
+    }
+    public enum SaveStatus
+    {
+        Save_As_Draft,
+        Save
     }
 }

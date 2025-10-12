@@ -20,18 +20,35 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         public async Task<ActionResult<CourseDto>> DisplayAllCourse(Guid Adminid)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            var UserId = Guid.Parse(FindUser!.Value);
+            if(FindUser is null) return BadRequest("Login First");
+            var UserId = Guid.Parse(FindUser.Value);
             var response = await handlingCourse.DisplayCourseAsync(Adminid);
 
             return response is not null && UserId == Adminid ? Ok(response) : BadRequest("Something went wrong");
         }
-
+        [Authorize]
+        [HttpGet("GetCourseAdmin")]
+        public async Task<ActionResult<CourseDto>> GetCourseAsync(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
+            var UserId = Guid.Parse(FindUser.Value);
+            var AdminId = await respository.UserInfo(UserId);
+            if (AdminId is null) return BadRequest("User not Found");
+            var StudentId = AdminId.Id;
+            var response = await handlingCourse.GetCourseAsync(StudentId, CourseId);
+            if (response is null)
+            {
+                return BadRequest("Nothings To Display");
+            }
+            return Ok(response);
+        }
         [Authorize]
         [HttpPost("AddCourse")]
         public async Task<ActionResult<CourseDto>> AddCourse([FromBody] CreateCourseDto course)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if(FindUser is null)
+            if (FindUser is null)
             {
                 return BadRequest("Login First");
             }
@@ -41,6 +58,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await handlingCourse.AddCourseAsync(filter);
             return Ok(response);
         }
+     
 
         [Authorize]
         [HttpPatch("UpdateCourse")]

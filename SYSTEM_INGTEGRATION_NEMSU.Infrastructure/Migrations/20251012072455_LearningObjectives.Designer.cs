@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251012072455_LearningObjectives")]
+    partial class LearningObjectives
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,18 +107,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Department")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Room")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Schedule")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SchoolYear")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Semester")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -480,11 +471,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.LearningObjectives", b =>
                 {
-                    b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", null)
+                    b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", "Course")
                         .WithMany("LearningObjectives")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Category", b =>

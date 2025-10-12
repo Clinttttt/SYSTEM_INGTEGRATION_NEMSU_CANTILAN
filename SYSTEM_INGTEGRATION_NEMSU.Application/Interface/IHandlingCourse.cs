@@ -8,11 +8,12 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 {
-   public interface IHandlingCourse
+    public interface IHandlingCourse
     {
         Task<CourseDto?> AddCourseAsync(Course request);
         Task<IEnumerable<CourseDto>> DisplayCourseAsync(Guid adminid);
         Task<Course?> UpdateCourseAsync(UpdateCourseDto course);
-        Task<bool> DeleteCourseAsycnc(Guid AdminId,Guid course);
+        Task<bool> DeleteCourseAsycnc(Guid AdminId, Guid course);
+        Task<CourseDto?> GetCourseAsync(Guid AdminId, Guid CourseId);
     }
 }

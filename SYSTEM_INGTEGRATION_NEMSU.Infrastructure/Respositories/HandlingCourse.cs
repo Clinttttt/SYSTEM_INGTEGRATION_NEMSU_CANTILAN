@@ -19,7 +19,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
     {
         public async Task<CourseDto?> AddCourseAsync(Course request)
         {
-            
+
             var course = new Course
             {
                 Id = Guid.NewGuid(),
@@ -27,46 +27,68 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 CourseCode = request.CourseCode,
                 Unit = request.Unit,
                 AdminId = request.AdminId,
+                Cost = request.Cost,
+                CourseDescriptiion = request.CourseDescriptiion,
+                Department = request.Department,
+                Room = request.Room,
+                Schedule = request.Schedule,
+                SchoolYear = request.SchoolYear,
+                Semester = request.Semester,
                 Category = await context.category.FindAsync(request.CategoryId)
                 ?? throw new Exception("Category not found")
             };
+            if (request.LearningObjectives is not null && request.LearningObjectives.Any())
+            {
+                foreach (var obj in request.LearningObjectives)
+                {
 
+                    course.LearningObjectives.Add(new LearningObjectives
+                    {
+                        description = obj.description,
+                    });
+                }
+            }
             context.course.Add(course);
             await context.SaveChangesAsync();
-
-            
-            var savedCourse = await context.course
-                .Include(c => c.Category)
-                .FirstAsync(c => c.Id == course.Id);
-
-            return savedCourse.Adapt<CourseDto>();
+            var filter = course.Adapt<CourseDto>();
+            return filter;
         }
 
         public async Task<IEnumerable<CourseDto>> DisplayCourseAsync(Guid adminid)
-        {   
+        {
             var retrieve = await context.course.Where(s => s.AdminId == adminid).ToListAsync();
             return retrieve.Adapt<List<CourseDto>>();
         }
         public async Task<Course?> UpdateCourseAsync(UpdateCourseDto course)
         {
-            var request = await context.course.FirstOrDefaultAsync( s => s.AdminId == course.Id);
-            if(request is null)
+            var request = await context.course.FirstOrDefaultAsync(s => s.AdminId == course.Id);
+            if (request is null)
             {
                 return null;
             }
-
             request.CourseCode = course.CourseCode;
             request.Unit = course.Unit;
             request.Title = course.Title;
             request.Cost = course.Cost;
-          context.Update(request);
+            context.Update(request);
             await context.SaveChangesAsync();
             return request.Adapt<Course>();
+        }
+        public async Task<CourseDto?> GetCourseAsync(Guid AdminId, Guid CourseId)
+        {
+            var request = await context.users.FirstOrDefaultAsync(s => s.Id == AdminId);
+            if (request is null) return null;
+            var GetCourse = await context.course.AsNoTracking()
+                .Include(s => s.Category)
+                .Include(s => s.LearningObjectives)
+                .FirstOrDefaultAsync(s => s.AdminId == request.Id && s.Id == CourseId);
+            if (GetCourse is null) return null;
+            return GetCourse.Adapt<CourseDto>();
         }
         public async Task<bool> DeleteCourseAsycnc(Guid AdminId, Guid course)
         {
             var request = await context.course.FirstOrDefaultAsync(s => s.Id == course && s.AdminId == AdminId);
-            if(request is null)
+            if (request is null)
             {
                 return false;
             }
@@ -74,7 +96,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return true;
         }
-       
+
     }
 }
 

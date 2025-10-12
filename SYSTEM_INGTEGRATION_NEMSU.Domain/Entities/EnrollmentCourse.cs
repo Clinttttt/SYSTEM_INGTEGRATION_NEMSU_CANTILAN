@@ -14,12 +14,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
 
       
         public Guid StudentId { get; set; }
-        [JsonIgnore]   // prevent loop
+        [JsonIgnore]   
         public User Student { get; set; } = null!;
 
       
         public Guid CourseId { get; set; }
-        [JsonIgnore]   // prevent loop
+        [JsonIgnore] 
         public Course Course { get; set; } = null!;
 
         

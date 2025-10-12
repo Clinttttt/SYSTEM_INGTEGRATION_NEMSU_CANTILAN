@@ -11,7 +11,7 @@
             <!--<div class="top-row px-4 relative bg-gradient-to-t from-teal-50 to-cyan-50 border-b-4 border-cyan-500 shadow-md">-->
             @if (MenuHeader || FacultyMenuHeader)
             {
-                <div class=" bg-white/55   backdrop-blur-sm top-row px-4 relative backdrop-blur-lg  bg-gradient-to-t from-cyan-100 via-teal-100 to-blue-100 " style="border-bottom: 1px solid transparent; border-image: linear-gradient(to right, #06b6d4, #14b8a6, #06b6d4) 1; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(6, 182, 212, 0.2);">
+                <div class="px-4  bg-white/55   backdrop-blur-sm top-row relative backdrop-blur-lg  bg-gradient-to-t from-cyan-100 via-teal-100 to-blue-100 " style="border-bottom: 1px solid transparent; border-image: linear-gradient(to right, #06b6d4, #14b8a6, #06b6d4) 1; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(6, 182, 212, 0.2);">
                     <div class="absolute  left-3 flex flex-row items-center gap-2">
 
                         <svg viewBox="0 0 172 160" xmlns="http://www.w3.org/2000/svg" class=" w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 shadow-xl relative z-10" width="172" height="160">
@@ -48,7 +48,7 @@
                         </svg>
                         <h1 class="text-lg font-bold text-teal-500">STUDENT SERVICES PORTAL</h1>
                     </div>
-                    <NavLink href="/" target="_blank " class="rounded-md scale-90 text-cyan-600 font-semibold text-lg btn border bg-teal-500 text-white">Home</NavLink>
+                    <NavLink href="/" target="_blank " class="hidden md:block rounded-md scale-90 text-cyan-600 font-semibold text-lg btn border bg-teal-500 text-white">Home</NavLink>
                 </div>
             }
             else
@@ -88,9 +88,19 @@
                             <rect x="60" y="108" width="52" height="12" rx="6" fill="url(#accentGradient)" opacity="0.1" />
                             <text x="86" y="116" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="500" text-anchor="middle" fill="url(#accentGradient)">CANTILAN CAMPUS</text>
                         </svg>
-                        <h1 class="text-lg font-bold text-teal-500">STUDENT SERVICES PORTAL</h1>
+                        <h1 class="text-md md:text-lg font-bold text-teal-500">STUDENT SERVICES PORTAL</h1>
                     </div>
-                    <NavLink href="/" target="_blank " class="text-cyan-600 font-semibold text-lg">Home</NavLink>
+                    <NavLink href="/" target="_blank " class="hidden lg:block text-cyan-600 font-semibold text-lg">Home</NavLink>
+
+                    @if (ProfileInformation_Bar)
+                    {
+                        <label for="my-drawer-2" class=" block lg:hidden absolute right-2 btn bg-cyan-500 p-2 drawer-button lg:hidden  shadow-lg hover:shadow-xl transition-all duration-300">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                   
+                        </label>
+                    }
                 </div>
             }
 
@@ -111,4 +121,6 @@
     private bool Hides => !string.IsNullOrEmpty(navigation.ToBaseRelativePath(navigation.Uri));
     private bool MenuHeader => navigation.ToBaseRelativePath(navigation.Uri).Equals("studentmenu", StringComparison.OrdinalIgnoreCase );
     private bool FacultyMenuHeader => navigation.ToBaseRelativePath(navigation.Uri).Equals("facultymainmenu", StringComparison.OrdinalIgnoreCase);
+    private bool ProfileInformation_Bar => navigation.ToBaseRelativePath(navigation.Uri).Equals("profileinformation", StringComparison.OrdinalIgnoreCase);
+
 }

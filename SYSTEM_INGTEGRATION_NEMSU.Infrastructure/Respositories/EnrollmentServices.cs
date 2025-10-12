@@ -57,7 +57,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             return enrollments.Adapt<List<EnrollCourseDto>>();
         }
-
+        public async Task<CourseDto?> GetCourse(Guid CourseId, Guid StudentId)
+        {
+            var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.CourseId == CourseId && s.StudentId == StudentId);
+            if (request is null) return null;
+            var retrieve = await context.course.FirstOrDefaultAsync(s => s.Id == request.CourseId);
+            if (retrieve is null)
+                return null;
+            return retrieve.Adapt<CourseDto>();
+        }
         public async Task<bool> UnEnrollCourseAsync(Guid studentId, string courseCode)
         {
             var enrollment = await context.enrollcourse

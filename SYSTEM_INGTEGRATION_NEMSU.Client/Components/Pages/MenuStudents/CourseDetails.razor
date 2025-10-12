@@ -1,0 +1,205 @@
+﻿@page "/coursedetails"
+
+<div class="relative h-screen content overflow-hidden">
+    <div class="drawer lg:drawer-open h-screen">
+        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col h-screen overflow-auto">
+
+          
+            <div class="flex-1 bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 p-6 pb-18">
+
+                
+                <div class="mb-6">
+                    <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden mb-4">☰ Menu</label>
+                    <div class="flex items-center gap-3 mb-2">
+                        <button onclick="history.back()" class="btn btn-circle btn-outline btn-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <h1 class="text-3xl font-bold text-gray-700">Course Details</h1>
+                    </div>
+                    <p class="text-gray-600 ml-14">Complete information about your enrolled course</p>
+                </div>
+
+                <div class="max-w-7xl mx-auto space-y-6">
+
+                    
+                    <div class="bg-gradient-to-r from-cyan-500 to-teal-600 rounded-2xl shadow-2xl p-8 text-white">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <div class="flex items-center gap-3 mb-3">
+                                    <span class="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">@courseCode</span>
+                                    <span class="px-4 py-1.5  bg-white/20 rounded-full text-sm font-semibold">@status</span>
+                                </div>
+                                <h2 class="text-3xl font-semibold mb-2">@courseName</h2>
+                                <p class="text-white/90 text-lg  mb-4">@instructor</p>
+                                <div class="flex flex-wrap gap-4 text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>@schedule</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>@room</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
+                                        </svg>
+                                        <span>@units Units</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-white/80 text-sm">Academic Year</p>
+                                <p class="text-2xl font-bold">@academicYear</p>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                    <div class="bg-gradient-to-r from-cyan-50 to-teal-50 border-1 border-cyan-200 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semi text-teal-600"> You’re Officially Enrolled!</h3>
+                                <p class="text-gray-700 text-sm">Thank you for enrolling in <strong>@courseName</strong>! We wish you the best in your learning journey.</p>
+                            </div>
+                            <span class="px-3 py-1 bg-teal-500 text-white rounded-full text-xs font-semibold">Enrolled</span>
+                        </div>
+                    </div>
+
+                   
+                    <div class="bg-white rounded-2xl shadow-xl p-6">
+                        <h3 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            Course Description
+                        </h3>
+                        <p class="text-gray-700 leading-relaxed mb-6">@courseDescription</p>
+
+                        <h4 class="font-bold text-gray-700 mb-3">Learning Objectives</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-700">Perform system reformatting and installation of operating systems</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-700">Configure device drivers, software applications, and system settings</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-700">Identify and troubleshoot common hardware and software problems</span>
+                            </li>
+                           
+                        </ul>
+                    </div>
+
+                   
+                    <div class="bg-white rounded-2xl shadow-xl p-6">
+                        <h3 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
+                                </svg>
+                            </div>
+                            Facilitator Announcements
+                        </h3>
+
+                        <div class="space-y-4">
+                          
+
+
+                            <div class="p-4 border-l-4 border-orange-400 bg-amber-50 rounded-r-lg">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="font-bold text-gray-700">Welcome to the Course!</h4>
+                                    <span class="text-xs text-gray-500">Oct 10, 2024</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-2">
+                                    Hello everyone! Welcome to Networking 2 I'm excited to have you all in this course.
+                                    Please make sure to check the syllabus and prepare for our first session.
+                                </p>
+                                <p class="text-sm text-amber-600 font-semibold">- @instructor</p>
+                            </div>
+
+                            <div class="p-4 border-l-4 border-cyan-500 bg-teal-50 rounded-r-lg">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="font-bold text-gray-700">Hands on Comlab</h4>
+                                    <span class="text-xs text-gray-500">Oct 12, 2024</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-2">
+                                    Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh  Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh   Blahh Blahh Blahh Blahh Blahh
+                                </p> 
+                                <p class="text-sm text-cyan-700 font-semibold">- @instructor</p>
+                            </div>
+                             <div class="p-4 border-l-4 border-cyan-500 bg-teal-50 rounded-r-lg">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="font-bold text-gray-700">Suspended</h4>
+                                    <span class="text-xs text-gray-500">Oct 12, 2024</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-2">
+                                    We will not meet Tommorow Class
+                                </p>
+                                <p class="text-sm text-cyan-700 font-semibold">- @instructor</p>
+                            </div>
+
+                           
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="drawer-side">
+            <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
+            <ul class="menu min-h-full w-62 p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+                <li class="mx-auto mb-4">
+                    <div class="w-[92px] h-[92px] rounded-full border border-primary flex items-center justify-center overflow-hidden bg-white">
+                        <img src="/img/student_logo.jpg" class="w-full h-full object-contain" />
+                    </div>
+                </li>
+                <li><a class="text-white text-2xl font-light btn btn-outline btn-primary">Enrolled Course</a></li>
+                <li class="mt-10"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Instructor</a></li>
+                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Settings</a></li>
+                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Logout</a></li>
+                <li class="mt-10"><NavLink href="/enrollment" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Enrollment</NavLink></li>
+                <li class="mt-2"><NavLink href="/profileinformation" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Profile</NavLink></li>
+                <li class="mt-2"><NavLink href="/announcement" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Announcement</NavLink></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+  
+    private string courseCode = "CS101";
+    private string courseName = "Networking 2";
+    private string instructor = "Lyndon Rizada Rosas";
+    private string schedule = "MWF 10:00-11:00 AM";
+    private string room = "Room 301";
+    private string units = "3";
+    private string status = "In Progress";
+    private string academicYear = "2024-2025";
+    private string courseDescription = "This course enhances skills from Computer Systems Servicing 1, focusing on computer installation, configuration, and maintenance. Students will perform system reformatting, OS installation, software setup, and basic network configuration while applying troubleshooting and industry-standard servicing procedures.";
+}

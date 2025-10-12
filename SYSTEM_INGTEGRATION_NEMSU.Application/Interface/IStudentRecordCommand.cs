@@ -22,7 +22,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 
         Task<AcademicInformation?> UpdateAcademicInformationAsync(AcademicInformationDto academicInformation);
 
-        Task<IEnumerable<PersonalInformationDto>?> DisplayAcademicInformation(Guid Student);
+        Task<IEnumerable<AcademicInformationDto>?> DisplayAcademicInformation(Guid Student);
 
         Task<ContactInformationDto?> AddContactInformationAsync(ContactInformation contactInformation);
 

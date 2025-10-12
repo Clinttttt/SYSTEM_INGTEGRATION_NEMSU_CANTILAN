@@ -25,7 +25,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var filter = personalInformation.Adapt<PersonalInformation>();
             filter.StudentId = UserId;
             var response = await studentRecordCommand.AddPersonalDetailsAsync(filter);
-            return Ok(response);
+            return Ok(filter);
         }
         [Authorize]
         [HttpPatch("UpdatePersonalDetails")]
@@ -58,7 +58,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var filter = academicInformation.Adapt<AcademicInformation>();
             filter.StudentId = UserId;
             var response = await studentRecordCommand.AddAcademicInformationAsync(filter);
-            return Ok(response);
+            return Ok(filter);
         }
         [Authorize]
         [HttpPatch("UpdateAcademicDetails")]
@@ -73,7 +73,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
         [Authorize]
         [HttpGet("DisplayAcademicDetails")]
-        public async Task<ActionResult<PersonalInformationDto>> DispalyAcademicDetailsAsync()
+        public async Task<ActionResult<AcademicInformationDto>> DispalyAcademicDetailsAsync()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return BadRequest("Login First");
@@ -91,7 +91,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var filter = contactInformation.Adapt<ContactInformation>();
             filter.StudentId = UserId;
             var response = await studentRecordCommand.AddContactInformationAsync(filter);
-            return Ok(response);
+            return Ok(filter);
         }
         [Authorize]
         [HttpPatch("UpdateContactDetails")]

@@ -22,14 +22,19 @@ builder.Services.AddScoped<PageState>();
 
 builder.Services.AddHttpClient<IAuthApiServices, AuthApiServices>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7072");
+      client.BaseAddress = new Uri("https://localhost:7072");
 });
+
+builder.Services.AddHttpClient<IStudentRecordApiCommand, StudentRecordApiCommand>(client =>
+{
+      client.BaseAddress = new Uri("https://localhost:7072");
+});
+
 
 builder.Services.AddHttpClient("WebAPI", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7072");
+      client.BaseAddress = new Uri("https://localhost:7072");
 });
-
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

@@ -20,5 +20,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto
         public string? PermanentAddress { get; set; }
         public string? GuardianName { get; set; }
         public string? GuardianContact { get; set; }
+        public SaveStatus Savestatus { get; set; }
     }
 }

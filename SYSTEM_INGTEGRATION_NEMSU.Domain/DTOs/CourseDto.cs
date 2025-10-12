@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
 {
@@ -13,12 +15,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public string? CourseCode { get; set; }
         public string? Title { get; set; }
         public int Unit { get; set; }
-    
         public CategoryDto Category { get; set; } = null!;
+        public CourseDepartment Department { get; set; }
+        public string? CourseDescriptiion { get; set; }
+        public List<LearningObjectives>? LearningObjectives { get; set; }
+        public string? SchoolYear { get; set; }
+        public CourseSemester Semester { get; set; }
+        public string? Schedule { get; set; }
+        public string? Room { get; set; }
     }
 
 public class CategoryDto
 {
+      
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Icon { get; set; } = string.Empty;

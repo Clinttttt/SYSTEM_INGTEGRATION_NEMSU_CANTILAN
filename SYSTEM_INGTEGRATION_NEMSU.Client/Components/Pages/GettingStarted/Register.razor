@@ -1,4 +1,5 @@
 ﻿@page "/Register"
+@using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities
 @rendermode InteractiveServer
 @inject IAuthApiServices Authservice
 @inject NavigationManager navigationManager
@@ -228,6 +229,7 @@
             Error = "Passwords do not match.";
             return;
         }
+        User.Role = UserRole.Student;
         var Results = await Authservice.RegisterAsync(User!);
        
         if(Results is null)
@@ -238,8 +240,5 @@
         {
             navigationManager.NavigateTo("/loginuser");
         }
-
     }
-
-
 }

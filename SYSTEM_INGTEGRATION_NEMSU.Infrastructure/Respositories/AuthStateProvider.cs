@@ -67,7 +67,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             try
             {
 
-                var tokenResult = await _localstorage.GetAsync<string>("access_token");
+                var tokenResult = await _localstorage.GetAsync<string>("AccessToken");
                 var token = tokenResult.Success ? tokenResult.Value : null;
                 if (!string.IsNullOrWhiteSpace(token))
                 {
@@ -75,14 +75,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 }
 
 
-                await _localstorage.DeleteAsync("access_token");
-                await _localstorage.DeleteAsync("refresh_token");
+                await _localstorage.DeleteAsync("AccessToken");
+                await _localstorage.DeleteAsync("RefreshToken");
             }
             catch
             {
 
-                await _localstorage.DeleteAsync("access_token");
-                await _localstorage.DeleteAsync("refresh_token");
+                await _localstorage.DeleteAsync("AccessToken");
+                await _localstorage.DeleteAsync("RefreshToken");
                 NotifyUserChanged();
             }
         }
