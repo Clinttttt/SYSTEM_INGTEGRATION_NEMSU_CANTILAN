@@ -15,7 +15,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
     public class RespondCommand(ApplicationDbContext context) : IRespondCommand
     {
-     
+
         public async Task<AutoResponsetDto?> AutoResponseAsync(Guid StudentId, string CourseCode)
         {
             var Response = new AutoResponsetDto();
@@ -28,11 +28,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Response.Type = AnnouncementType.System;
                 Response.DateCreated = DateTime.UtcNow;
 
-               var deadline = DateTime.UtcNow.AddDays(15);
-               var finduser = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == request.StudentId);
+                var deadline = DateTime.UtcNow.AddDays(15);
+                var finduser = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == request.StudentId);
                 if (finduser is null) return null;
 
-                if(request.DateCreated > deadline)
+                if (request.DateCreated > deadline)
                 {
                     context.enrollcourse.Remove(finduser);
                     await context.SaveChangesAsync();
@@ -57,22 +57,24 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return Response;
         }
-        public async Task<AnnouncementDto?> AnnouncementAsync(Guid StudentId, string Message, string CourseCode)
+        public async Task<AnnouncementDto?> AnnouncementAsync(AnnouncementDto announcement)
         {
 
-             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.Course.CourseCode == CourseCode);
-             if (request is null) return null;
+            var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.Course.CourseCode == announcement.CourseCode);
+            if (request is null) return null;
 
             var Response = new AnnouncementDto()
             {
 
-                CourseCode = CourseCode,
-                Message = Message,
-                DateCreated = DateTime.UtcNow,   
+                CourseCode = announcement.CourseCode,
+                Message = announcement.Message,
+                DateCreated = DateTime.UtcNow,
                 Type = AnnouncementType.instructor,
-                StudentId = StudentId,
-                CourseId  = request.CourseId,
-               
+                StudentId = announcement.StudentId,
+                CourseId = request.CourseId,
+                Title = announcement.Title,
+                Course = announcement.Course,
+                InformationType = announcement.InformationType,
 
             };
             var save = Response.Adapt<InstructorAnnouncement>();
@@ -80,6 +82,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return Response;
         }
-
+      
     }
 }

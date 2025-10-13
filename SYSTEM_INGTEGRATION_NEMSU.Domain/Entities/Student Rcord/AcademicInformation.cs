@@ -10,7 +10,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
     {
 
         public Guid Id { get; set; }
-        public Guid StudentId {get;set;}
+        public string? StudentSchoolId { get; set; }
+        public Guid StudentId { get; set; }
         public StudentTypeChoice StudentType { get; set; }
         public YearLevelChoice YearLevel { get; set; }
         public SemesterChoice Semester { get; set; }
@@ -32,7 +33,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         Second_Year,
         Third_Year,
         Fourth_Year
-       
+
     }
     public enum SemesterChoice
     {

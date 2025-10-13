@@ -31,7 +31,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         [Authorize]
         [HttpPost("Announcement")]
-        public async Task<ActionResult<AnnouncementDto>> Announcement(string CourseCode, string Message)
+        public async Task<ActionResult<AnnouncementDto>> Announcement(AnnouncementDto announcement)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if(FindUser is null) return Unauthorized("Login First");
@@ -39,9 +39,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var GetUserId = Guid.Parse(FindUser.Value);
             var user = await respository.UserInfo(GetUserId);
             if (user is null) return BadRequest("User not found or Student ID missing");
-            
-            var Student = user.Id;
-            var response = await messageresponse.AnnouncementCommand(Student, Message, CourseCode);
+
+            announcement.StudentId = user.Id;
+            var response = await messageresponse.AnnouncementCommand(announcement);
             return Ok(response);
         }
     }

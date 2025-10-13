@@ -19,10 +19,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Command
            return await respondcommand.AutoResponseAsync(Studentid, CourseCode!);
            
         }
-        public async Task<AnnouncementDto?> AnnouncementCommand(Guid StudentId, string Message, string CourseCode)
+        public async Task<AnnouncementDto?> AnnouncementCommand(AnnouncementDto announcement)
          {
          
-            return await respondcommand.AnnouncementAsync( StudentId, Message,CourseCode);
+            return await respondcommand.AnnouncementAsync(announcement);
         }
 
     }

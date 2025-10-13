@@ -1,0 +1,231 @@
+﻿@page "/facultyfillout"
+
+<div class="h-screen content overflow-hidden flex items-center justify-center p-4"
+     style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+
+    <div class="w-full max-w-6xl flex rounded-3xl overflow-hidden shadow-2xl bg-white h-[90%]">
+
+       
+        <div class="hidden lg:flex lg:w-2/5 relative p-12 flex-col justify-between text-white" style=" background-image: url('/img/faculty_nemsu.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div class="absolute inset-0 bg-gradient-to-br  from-cyan-500 to-teal-700 opacity-90"></div>
+            <div class="z-10 ">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-16 h-16 bg-white/40 rounded-full flex items-center justify-center">
+                        <img src="/img/logo_nemsu.png" alt="NEMSU" class="w-12 h-12 object-contain" />
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-semibold">NEMSU Cantilan</h1>
+                        <p class="text-cyan-100 text-sm">Faculty Portal</p>
+                    </div>
+                </div>
+                <h2 class="text-4xl font-bold mb-4">Welcome!</h2>
+                <p class="text-cyan-100 text-lg">Join our academic community. Fill out your information to get started.</p>
+            </div>
+            <div class="space-y-4 z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <span>Quick & Easy Process</span>
+                </div>
+                <div class="flex items-center gap-3 z-10">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <span>Secure Information</span>
+                </div>
+            </div>
+        </div>
+
+   
+        <div class="flex-1 overflow-y-auto p-8 pb-4 lg:p-12 lg:pb-6 scrollbar-hide ">
+            <div class="max-w-2xl mx-auto -mt-6">
+
+             
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-gray-700 mb-2">Faculty Registration</h2>
+                    <p class="text-gray-600">Please fill out all required information</p>
+                </div>
+
+         
+                <div class="-mt-3">
+                    <h3 class="text-xl font-bold text-cyan-600 mb-4 pb-2 border-b-2 border-cyan-200">Personal Information</h3>
+
+                    <div class="space-y-4">
+                      
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">First Name </span>
+                                </label>
+                                <input type="text" @bind="firstName" placeholder="Enter First Name" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">Middle Name</span>
+                                </label>
+                                <input type="text" @bind="middleName" placeholder="Enter Middle Name" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm ">Last Name</span>
+                                </label>
+                                <input type="text" @bind="lastName" placeholder="Enter Last Name" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                            </div>
+                        </div>
+
+                     
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">Gender</span>
+                                </label>
+                                <select @bind="gender" class="select select-bordered font-light focus:ring-0 focus:outline-none">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Prefer_not_to_say">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">Date of Birth</span>
+                                </label>
+                                <input type="date" @bind="dateOfBirth" class="input input-bordered font-light focus:ring-0 focus:outline-none" />
+                            </div>
+                        </div>
+
+                     
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">Contact Number</span>
+                                </label>
+                                <input type="tel" @bind="contactNumber" placeholder="+63 912 345 6789" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">Email Address</span>
+                                </label>
+                                <input type="email" @bind="emailAddress" placeholder="email@example.com" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none"  />
+                            </div>
+                        </div>
+
+                    
+                        <div class="form-control pt-2">
+                            <label class="label">
+                                <span class="label-text font-light text-sm">Address</span>
+                            </label>
+                            <textarea @bind="address" placeholder="Enter Complete Address" class="textarea textarea-bordered h-20 placeholder:font-light focus:ring-0 focus:outline-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold text-teal-600 mb-4 pb-2 border-b-2 border-teal-200">Academic Information</h3>
+
+                    <div class="space-y-4">
+                      
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-light text-sm">Faculty ID</span>
+                            </label>
+                            <input type="text" @bind="facultySchoolId" placeholder="Enter Faculty ID" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                        </div>
+
+                   
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">Department</span>
+                                </label>
+                                <select @bind="department" class="select select-bordered font-light focus:ring-0 focus:outline-none">
+                                    <option value="">Select Department</option>
+                                    <option value="BSHM">BSHM</option>
+                                    <option value="DIT">DIT</option>
+                                    <option value="DGTT">DGTT</option>
+                                    <option value="DBM">DBM</option>
+                                    <option value="DCS">DCS</option>
+                                </select>
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">Position</span>
+                                </label>
+                                <select @bind="position" class="select select-bordered font-light focus:ring-0 focus:outline-none">
+                                    <option value="">Select Position</option>
+                                    <option value="Contractual">Contractual</option>
+                                    <option value="Instructor_I">Instructor I</option>
+                                    <option value="Instructor_II">Instructor II</option>
+                                    <option value="Instructor_III">Instructor III</option>
+                                    <option value="Assistant_Professor_I">Assistant Professor I</option>
+                                    <option value="Assistant_Professor_II">Assistant Professor II</option>
+                                    <option value="Assistant_Professor_III">Assistant Professor III</option>
+                                    <option value="Assistant_Professor_IV">Assistant Professor IV</option>
+                                    <option value="Associate_Professor_I">Associate Professor I</option>
+                                    <option value="Associate_Professor_II">Associate Professor II</option>
+                                    <option value="Associate_Professor_III">Associate Professor III</option>
+                                    <option value="Associate_Professor_IV">Associate Professor IV</option>
+                                    <option value="Associate_Professor_V">Associate Professor V</option>
+                                    <option value="Professor_I">Professor I</option>
+                                    <option value="Professor_II">Professor II</option>
+                                    <option value="Professor_III">Professor III</option>
+                                    <option value="Professor_IV">Professor IV</option>
+                                    <option value="Professor_V">Professor V</option>
+                                </select>
+                            </div>
+                        </div>
+
+                     
+                        <div class="form-control pt-2">
+                            <label class="label">
+                                <span class="label-text font-light text-sm">Years of Teaching</span>
+                            </label>
+                            <input type="text" @bind="yearsOfTeaching" placeholder="e.g., 5 years" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="flex gap-4 mt-6">
+                    <NavLink href="/facultylogin" class="btn bg-teal-500  text-white flex-1">
+                        Save As Draft
+                    </NavLink>
+                    <button @onclick="SubmitForm" class="btn bg-cyan-500 text-white flex-1">
+                        Submit Registration
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+   
+    private string firstName = "";
+    private string middleName = "";
+    private string lastName = "";
+    private string gender = "";
+    private DateTime? dateOfBirth;
+    private string contactNumber = "";
+    private string emailAddress = "";
+    private string address = "";
+
+  
+    private string facultySchoolId = "";
+    private string department = "";
+    private string position = "";
+    private string yearsOfTeaching = "";
+
+    private void SubmitForm()
+    {
+       
+    }
+}

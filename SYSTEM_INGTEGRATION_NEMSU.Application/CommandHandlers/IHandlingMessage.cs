@@ -11,7 +11,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.CommandHandlers
     public interface IHandlingMessage
     {
         Task<AutoResponsetDto?> AutoResponseCommand(Guid StudentId, string CourseCode);
-        Task<AnnouncementDto?> AnnouncementCommand(Guid StudentId, string Message, string CourseId);
+        Task<AnnouncementDto?> AnnouncementCommand(AnnouncementDto announcement);
 
 
     }

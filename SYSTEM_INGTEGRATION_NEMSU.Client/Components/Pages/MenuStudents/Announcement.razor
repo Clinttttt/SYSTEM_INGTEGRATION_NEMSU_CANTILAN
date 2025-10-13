@@ -5,201 +5,124 @@
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col h-screen overflow-auto">
 
-            <!-- Main Content -->
-            <div class="flex-1 bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 p-6">
+           
+            <div class="flex-1 bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 p-6 pb-18">
 
-                <!-- Header -->
+             
                 <div class="mb-6">
                     <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden mb-4">☰ Menu</label>
                     <div class="flex items-center justify-between">
                         <div>
-                            <h1 class="text-4xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Announcements</h1>
+                            <h1 class="text-4xl font-bold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">Announcements</h1>
                             <p class="text-gray-600 mt-2">Stay updated with the latest news and important information</p>
                         </div>
-                        <div class="badge badge-lg badge-primary gap-2">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
-                            </svg>
-                            @totalAnnouncements New
-                        </div>
+                      
                     </div>
                 </div>
 
                 <div class="max-w-6xl mx-auto">
 
-                    <!-- Filter Tabs -->
+              
                     <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
-                        <button class="btn btn-primary btn-sm">All Announcements</button>
+                        <button class="btn bg-cyan-600 text-white btn-sm">All Announcements</button>
                         <button class="btn btn-outline btn-primary btn-sm">Academic</button>
                         <button class="btn btn-outline btn-primary btn-sm">Events</button>
                         <button class="btn btn-outline btn-primary btn-sm">Important</button>
                         <button class="btn btn-outline btn-primary btn-sm">General</button>
                     </div>
 
-                    <!-- Announcements List -->
+
                     <div class="space-y-4">
 
-                        <!-- Important Announcement -->
-                        <div class="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                     
+                        <div class="bg-gradient-to-r from-cyan-50 to-teal-50 border-l-4 border-cyan-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                            
                             <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
+                            
                                 <div class="flex-1">
                                     <div class="flex items-start justify-between mb-2">
                                         <div>
-                                            <span class="px-3 py-1 bg-red-500 text-white rounded-full text-xs font-bold mr-2">IMPORTANT</span>
+                                            <span class="px-3 py-1 bg-cyan-500 text-white rounded-full text-xs font-bold mr-2">IMPORTANT</span>
                                             <span class="text-gray-500 text-sm">Oct 15, 2024 • 2:30 PM</span>
                                         </div>
                                     </div>
-                                    <h3 class="text-xl font-bold text-gray-800 mb-2">Final Examination Schedule Released</h3>
+                                    <h3 class="text-xl font-bold text-gray-700 mb-2">Final Examination Schedule Released</h3>
                                     <p class="text-gray-700 mb-3">
-                                        The final examination schedule for the 1st Semester, A.Y. 2024-2025 has been posted.
-                                        Please check your student portal for your exam schedule. Make sure to prepare accordingly and arrive 15 minutes before the exam time.
-                                    </p>
-                                    <button class="text-red-600 font-semibold text-sm hover:underline">Read More →</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Academic Announcement -->
-                        <div class="bg-white border-l-4 border-blue-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"></path>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex items-start justify-between mb-2">
-                                        <div>
-                                            <span class="px-3 py-1 bg-blue-500 text-white rounded-full text-xs font-bold mr-2">ACADEMIC</span>
-                                            <span class="text-gray-500 text-sm">Oct 14, 2024 • 10:00 AM</span>
-                                        </div>
-                                    </div>
-                                    <h3 class="text-xl font-bold text-gray-800 mb-2">Midterm Grades Now Available</h3>
-                                    <p class="text-gray-700 mb-3">
-                                        Midterm grades for all courses are now available in your student portal.
-                                        Please review your grades and contact your instructors if you have any concerns or questions regarding your performance.
-                                    </p>
-                                    <button class="text-blue-600 font-semibold text-sm hover:underline">Read More →</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Event Announcement -->
-                        <div class="bg-white border-l-4 border-purple-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex items-start justify-between mb-2">
-                                        <div>
-                                            <span class="px-3 py-1 bg-purple-500 text-white rounded-full text-xs font-bold mr-2">EVENT</span>
-                                            <span class="text-gray-500 text-sm">Oct 13, 2024 • 3:00 PM</span>
-                                        </div>
-                                    </div>
-                                    <h3 class="text-xl font-bold text-gray-800 mb-2">Tech Summit 2024 - Registration Open</h3>
-                                    <p class="text-gray-700 mb-3">
-                                        Join us for the annual Tech Summit on November 5-6, 2024! This year's theme is "Innovation in the Digital Age".
-                                        Register now to secure your spot. Limited slots available for workshops and seminars.
-                                    </p>
-                                    <button class="text-purple-600 font-semibold text-sm hover:underline">Read More →</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- General Announcement -->
-                        <div class="bg-white border-l-4 border-green-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex items-start justify-between mb-2">
-                                        <div>
-                                            <span class="px-3 py-1 bg-green-500 text-white rounded-full text-xs font-bold mr-2">GENERAL</span>
-                                            <span class="text-gray-500 text-sm">Oct 12, 2024 • 9:00 AM</span>
-                                        </div>
-                                    </div>
-                                    <h3 class="text-xl font-bold text-gray-800 mb-2">Library Hours Extended During Finals Week</h3>
-                                    <p class="text-gray-700 mb-3">
-                                        The library will extend its operating hours during finals week (Oct 28 - Nov 1).
-                                        New hours: Monday-Friday 7:00 AM - 10:00 PM, Saturday-Sunday 8:00 AM - 8:00 PM.
-                                    </p>
-                                    <button class="text-green-600 font-semibold text-sm hover:underline">Read More →</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Academic Announcement 2 -->
-                        <div class="bg-white border-l-4 border-cyan-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex items-start justify-between mb-2">
-                                        <div>
-                                            <span class="px-3 py-1 bg-cyan-500 text-white rounded-full text-xs font-bold mr-2">ACADEMIC</span>
-                                            <span class="text-gray-500 text-sm">Oct 11, 2024 • 1:00 PM</span>
-                                        </div>
-                                    </div>
-                                    <h3 class="text-xl font-bold text-gray-800 mb-2">Online Learning Resources Available</h3>
-                                    <p class="text-gray-700 mb-3">
-                                        Access to premium online learning platforms is now available to all students.
-                                        Login to your student portal to access Coursera, LinkedIn Learning, and other educational resources.
+                                        Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh
+                                        Blahh Blahh Blahh   Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh
                                     </p>
                                     <button class="text-cyan-600 font-semibold text-sm hover:underline">Read More →</button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Holiday Announcement -->
-                        <div class="bg-white border-l-4 border-orange-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
-                                    </svg>
-                                </div>
+                   
+                        <div class="bg-gradient-to-r from-cyan-50 to-teal-50 border-l-4 border-teal-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                            <div class="flex items-start gap-4">                           
                                 <div class="flex-1">
                                     <div class="flex items-start justify-between mb-2">
                                         <div>
-                                            <span class="px-3 py-1 bg-orange-500 text-white rounded-full text-xs font-bold mr-2">GENERAL</span>
-                                            <span class="text-gray-500 text-sm">Oct 10, 2024 • 11:00 AM</span>
+                                            <span class="px-3 py-1 bg-teal-500 text-white rounded-full text-xs font-bold mr-2">ACADEMIC</span>
+                                            <span class="text-gray-500 text-sm">Oct 14, 2024 • 10:00 AM</span>
                                         </div>
                                     </div>
-                                    <h3 class="text-xl font-bold text-gray-800 mb-2">No Classes on November 1-2</h3>
+                                    <h3 class="text-xl font-bold text-gray-700 mb-2">Midterm Grades Now Available</h3>
                                     <p class="text-gray-700 mb-3">
-                                        In observance of All Saints' Day and All Souls' Day, there will be no classes on November 1-2, 2024.
-                                        Regular classes will resume on November 4, 2024.
+                                        Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh
+                                        Blahh Blahh Blahh   Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh
                                     </p>
-                                    <button class="text-orange-600 font-semibold text-sm hover:underline">Read More →</button>
+                                    <button class="text-teal-600 font-semibold text-sm hover:underline">Read More →</button>
                                 </div>
                             </div>
                         </div>
 
+                       
+                        <div class="bg-gradient-to-r from-teal-50 to-amber-50 border-l-4 border-amber-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                            <div class="flex items-start gap-4">
+                                <div class="flex-1">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <div>
+                                            <span class="px-3 py-1 bg-amber-500 text-white rounded-full text-xs font-bold mr-2">EVENT</span>
+                                            <span class="text-gray-500 text-sm">Oct 13, 2024 • 3:00 PM</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-700 mb-2">DCS Days!</h3>
+                                    <p class="text-gray-700 mb-3">
+                                        Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh
+                                        Blahh Blahh Blahh   Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh
+                                    </p>
+                                    <button class="text-amber-600 font-semibold text-sm hover:underline">Read More →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                      
+                        <div class="bg-gray-50 border-l-4 border-gray-500 rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                            <div class="flex items-start gap-4">
+                                
+                                <div class="flex-1">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <div>
+                                            <span class="px-3 py-1 bg-gray-500 text-white rounded-full text-xs font-bold mr-2">GENERAL</span>
+                                            <span class="text-gray-500 text-sm">Oct 12, 2024 • 9:00 AM</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-700 mb-2">Class Suspended</h3>
+                                    <p class="text-gray-700 mb-3">
+                                        Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh
+                                        Blahh Blahh Blahh   Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh    Blahh Blahh Blahh
+                                    </p>
+                                    <button class="text-gray-600 font-semibold text-sm hover:underline">Read More →</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                     
+
                     </div>
 
-                    <!-- Load More Button -->
-                    <div class="mt-8 text-center">
-                        <button class="btn btn-outline btn-primary gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                            </svg>
-                            Load More Announcements
-                        </button>
-                    </div>
+                  
                 </div>
             </div>
         </div>
@@ -226,5 +149,5 @@
 </div>
 
 @code {
-    private int totalAnnouncements = 6;
+    
 }
