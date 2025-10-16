@@ -1,11 +1,15 @@
 ﻿@page "/facultyfillout"
 
+
+@rendermode InteractiveServer
+@inject IFacultyRecordApi facultyRecordApi
+@inject NavigationManager navigation
 <div class="h-screen content overflow-hidden flex items-center justify-center p-4"
      style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
 
     <div class="w-full max-w-6xl flex rounded-3xl overflow-hidden shadow-2xl bg-white h-[90%]">
 
-       
+
         <div class="hidden lg:flex lg:w-2/5 relative p-12 flex-col justify-between text-white" style=" background-image: url('/img/faculty_nemsu.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
             <div class="absolute inset-0 bg-gradient-to-br  from-cyan-500 to-teal-700 opacity-90"></div>
             <div class="z-10 ">
@@ -41,191 +45,201 @@
             </div>
         </div>
 
-   
+
         <div class="flex-1 overflow-y-auto p-8 pb-4 lg:p-12 lg:pb-6 scrollbar-hide ">
-            <div class="max-w-2xl mx-auto -mt-6">
+            <EditForm Model="@PersonalRecord" OnValidSubmit="@HandleRecord" FormName="Filloutfaculty">
+                <div class="max-w-2xl mx-auto -mt-6">
 
-             
-                <div class="mb-8">
-                    <h2 class="text-3xl font-bold text-gray-700 mb-2">Faculty Registration</h2>
-                    <p class="text-gray-600">Please fill out all required information</p>
-                </div>
 
-         
-                <div class="-mt-3">
-                    <h3 class="text-xl font-bold text-cyan-600 mb-4 pb-2 border-b-2 border-cyan-200">Personal Information</h3>
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold text-gray-700 mb-2">Faculty Registration</h2>
+                        <p class="text-gray-600">Please fill out all required information</p>
+                    </div>
 
-                    <div class="space-y-4">
-                      
-                        <div class="grid md:grid-cols-3 gap-4">
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-light text-sm">First Name </span>
-                                </label>
-                                <input type="text" @bind="firstName" placeholder="Enter First Name" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
-                            </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-light text-sm">Middle Name</span>
-                                </label>
-                                <input type="text" @bind="middleName" placeholder="Enter Middle Name" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
-                            </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-light text-sm ">Last Name</span>
-                                </label>
-                                <input type="text" @bind="lastName" placeholder="Enter Last Name" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
-                            </div>
-                        </div>
 
-                     
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-light text-sm">Gender</span>
-                                </label>
-                                <select @bind="gender" class="select select-bordered font-light focus:ring-0 focus:outline-none">
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Prefer_not_to_say">Prefer not to say</option>
-                                </select>
-                            </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-light text-sm">Date of Birth</span>
-                                </label>
-                                <input type="date" @bind="dateOfBirth" class="input input-bordered font-light focus:ring-0 focus:outline-none" />
-                            </div>
-                        </div>
+                    <div class="-mt-3">
+                        <h3 class="text-xl font-bold text-cyan-600 mb-4 pb-2 border-b-2 border-cyan-200">Personal Information</h3>
 
-                     
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-light text-sm">Contact Number</span>
-                                </label>
-                                <input type="tel" @bind="contactNumber" placeholder="+63 912 345 6789" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
-                            </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-light text-sm">Email Address</span>
-                                </label>
-                                <input type="email" @bind="emailAddress" placeholder="email@example.com" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none"  />
-                            </div>
-                        </div>
+                        <div class="space-y-4">
 
-                    
-                        <div class="form-control pt-2">
-                            <label class="label">
-                                <span class="label-text font-light text-sm">Address</span>
-                            </label>
-                            <textarea @bind="address" placeholder="Enter Complete Address" class="textarea textarea-bordered h-20 placeholder:font-light focus:ring-0 focus:outline-none"></textarea>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-light text-sm">First Name </span>
+                                    </label>
+                                    <input type="text" @bind="PersonalRecord.FacultyPersonalInformationDto!.FirstName" placeholder="Enter First Name" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-light text-sm">Middle Name</span>
+                                    </label>
+                                    <input type="text" @bind="PersonalRecord.FacultyPersonalInformationDto.MiddleName" placeholder="Enter Middle Name" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-light text-sm ">Last Name</span>
+                                    </label>
+                                    <input type="text" @bind="PersonalRecord.FacultyPersonalInformationDto.LastName" placeholder="Enter Last Name" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                                </div>
+                            </div>
+
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-light text-sm">Gender</span>
+                                    </label>
+                                    <select @bind="PersonalRecord.FacultyPersonalInformationDto.FacultyGender" class="select select-bordered font-light focus:ring-0 focus:outline-none">
+                                        <option value="">Select Gender</option>
+                                        <option value="@FacultyGender.Male">Male</option>
+                                        <option value="@FacultyGender.Female">Female</option>
+                                        <option value="@FacultyGender.Prefer_not_to_say">Prefer not to say</option>
+                                    </select>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-light text-sm">Date of Birth</span>
+                                    </label>
+                                    <input type="date" @bind="PersonalRecord.FacultyPersonalInformationDto.DateofBirth" class="input input-bordered font-light focus:ring-0 focus:outline-none" />
+                                </div>
+                            </div>
+
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-light text-sm">Contact Number</span>
+                                    </label>
+                                    <input type="tel" @bind="PersonalRecord.FacultyPersonalInformationDto.ContactNumber" placeholder="+63 912 345 6789" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-light text-sm">Email Address</span>
+                                    </label>
+                                    <input type="email" @bind="PersonalRecord.FacultyPersonalInformationDto.EmailAddress" placeholder="email@example.com" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                                </div>
+                            </div>
+
+
+                            <div class="form-control pt-2">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">Address</span>
+                                </label>
+                                <textarea @bind="PersonalRecord.FacultyPersonalInformationDto.Address" placeholder="Enter Complete Address" class="textarea textarea-bordered h-20 placeholder:font-light focus:ring-0 focus:outline-none"></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-               
-                <div class="mt-6">
-                    <h3 class="text-xl font-bold text-teal-600 mb-4 pb-2 border-b-2 border-teal-200">Academic Information</h3>
 
-                    <div class="space-y-4">
-                      
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-light text-sm">Faculty ID</span>
-                            </label>
-                            <input type="text" @bind="facultySchoolId" placeholder="Enter Faculty ID" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
-                        </div>
+                    <div class="mt-6">
+                        <h3 class="text-xl font-bold text-teal-600 mb-4 pb-2 border-b-2 border-teal-200">Academic Information</h3>
 
-                   
-                        <div class="grid md:grid-cols-2 gap-4">
+                        <div class="space-y-4">
+
                             <div class="form-control">
                                 <label class="label">
-                                    <span class="label-text font-light text-sm">Department</span>
+                                    <span class="label-text font-light text-sm">Faculty ID</span>
                                 </label>
-                                <select @bind="department" class="select select-bordered font-light focus:ring-0 focus:outline-none">
-                                    <option value="">Select Department</option>
-                                    <option value="BSHM">BSHM</option>
-                                    <option value="DIT">DIT</option>
-                                    <option value="DGTT">DGTT</option>
-                                    <option value="DBM">DBM</option>
-                                    <option value="DCS">DCS</option>
-                                </select>
+                                <input type="text" @bind="PersonalRecord.FacultyAcademicInformationDto.FacultySchoolId" placeholder="Enter Faculty ID" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
                             </div>
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-light text-sm">Position</span>
-                                </label>
-                                <select @bind="position" class="select select-bordered font-light focus:ring-0 focus:outline-none">
-                                    <option value="">Select Position</option>
-                                    <option value="Contractual">Contractual</option>
-                                    <option value="Instructor_I">Instructor I</option>
-                                    <option value="Instructor_II">Instructor II</option>
-                                    <option value="Instructor_III">Instructor III</option>
-                                    <option value="Assistant_Professor_I">Assistant Professor I</option>
-                                    <option value="Assistant_Professor_II">Assistant Professor II</option>
-                                    <option value="Assistant_Professor_III">Assistant Professor III</option>
-                                    <option value="Assistant_Professor_IV">Assistant Professor IV</option>
-                                    <option value="Associate_Professor_I">Associate Professor I</option>
-                                    <option value="Associate_Professor_II">Associate Professor II</option>
-                                    <option value="Associate_Professor_III">Associate Professor III</option>
-                                    <option value="Associate_Professor_IV">Associate Professor IV</option>
-                                    <option value="Associate_Professor_V">Associate Professor V</option>
-                                    <option value="Professor_I">Professor I</option>
-                                    <option value="Professor_II">Professor II</option>
-                                    <option value="Professor_III">Professor III</option>
-                                    <option value="Professor_IV">Professor IV</option>
-                                    <option value="Professor_V">Professor V</option>
-                                </select>
-                            </div>
-                        </div>
 
-                     
-                        <div class="form-control pt-2">
-                            <label class="label">
-                                <span class="label-text font-light text-sm">Years of Teaching</span>
-                            </label>
-                            <input type="text" @bind="yearsOfTeaching" placeholder="e.g., 5 years" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-light text-sm">Department</span>
+                                    </label>
+                                    <select @bind="PersonalRecord.FacultyAcademicInformationDto.FacultyDepartment" class="select select-bordered font-light focus:ring-0 focus:outline-none">
+                                        <option value="">Select Department</option>
+                                        <option value="@FacultyDepartment.BSHM">BSHM</option>
+                                        <option value="@FacultyDepartment.DIT">DIT</option>
+                                        <option value="@FacultyDepartment.DGTT">DGTT</option>
+                                        <option value="@FacultyDepartment.DBM">DBM</option>
+                                        <option value="@FacultyDepartment.DCS">DCS</option>
+                                    </select>
+                                </div>
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-light text-sm">Position</span>
+                                    </label>
+                                 <select @bind="PersonalRecord.FacultyAcademicInformationDto.Position" class=" text-gray-700 select select-bordered font-light focus:ring-0 focus:outline-none">
+                                       
+                                        <option value="@Position.Contractual">Contractual</option>
+                                        <option value="@Position.Instructor_I">Instructor I</option>
+                                        <option value="@Position.Instructor_II">Instructor II</option>
+                                        <option value="@Position.Instructor_III">Instructor III</option>
+                                        <option value="@Position.Assistant_Professor_I">Assistant Professor I</option>
+                                        <option value="@Position.Assistant_Professor_II">Assistant Professor II</option>
+                                        <option value="@Position.Assistant_Professor_III">Assistant Professor III</option>
+                                        <option value="@Position.Assistant_Professor_IV">Assistant Professor IV</option>
+                                        <option value="@Position.Associate_Professor_I">Associate Professor I</option>
+                                        <option value="@Position.Associate_Professor_II">Associate Professor II</option>
+                                        <option value="@Position.Associate_Professor_III">Associate Professor III</option>
+                                        <option value="@Position.Associate_Professor_IV">Associate Professor IV</option>
+                                        <option value="@Position.Associate_Professor_V">Associate Professor V</option>
+                                        <option value="@Position.Professor_I">Professor I</option>
+                                        <option value="@Position.Professor_II">Professor II</option>
+                                        <option value="@Position.Professor_III">Professor III</option>
+                                        <option value="@Position.Professor_IV">Professor IV</option>
+                                        <option value="@Position.Professor_V">Professor V</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-control pt-2">
+                                <label class="label">
+                                    <span class="label-text font-light text-sm">Years of Teaching</span>
+                                </label>
+                                <input type="text" @bind="PersonalRecord.FacultyAcademicInformationDto.YearsOfTeaching" placeholder="e.g., 5 years" class="input input-bordered placeholder:font-light focus:ring-0 focus:outline-none" />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            
-                <div class="flex gap-4 mt-6">
-                    <NavLink href="/facultylogin" class="btn bg-teal-500  text-white flex-1">
-                        Save As Draft
-                    </NavLink>
-                    <button @onclick="SubmitForm" class="btn bg-cyan-500 text-white flex-1">
-                        Submit Registration
-                    </button>
-                </div>
 
-            </div>
+                    <div class="flex gap-4 mt-6">
+                        <button @onclick="()=> HandlingDraft()" class="btn bg-teal-500  text-white flex-1">
+                            Save As Draft
+                        </button>
+                        <button type="submit" class="btn bg-cyan-500 text-white flex-1">
+                            Submit Registration
+                        </button>
+                    </div>
+
+                </div>
+            </EditForm>
         </div>
 
     </div>
 </div>
 
 @code {
-   
-    private string firstName = "";
-    private string middleName = "";
-    private string lastName = "";
-    private string gender = "";
-    private DateTime? dateOfBirth;
-    private string contactNumber = "";
-    private string emailAddress = "";
-    private string address = "";
+    public FacultyRecordDto PersonalRecord { get; set; } = new();
+    private string? Error { get; set; }
 
-  
-    private string facultySchoolId = "";
-    private string department = "";
-    private string position = "";
-    private string yearsOfTeaching = "";
+ 
 
-    private void SubmitForm()
+    public async Task HandleRecord()
     {
-       
+        PersonalRecord.facultySaveStatus = FacultySaveStatus.Save;
+        var request = await facultyRecordApi.AddFacultyInformationAsync(PersonalRecord);
+        if (request is null)
+        {
+            Error = "Fill All the Requirements";
+            return;
+        }
+        navigation.NavigateTo("/facultymainmenu");
+
+    }
+    public async Task HandlingDraft()
+    {
+        PersonalRecord.facultySaveStatus = FacultySaveStatus.Save_As_Draft;
+        var request = await facultyRecordApi.AddFacultyInformationAsync(PersonalRecord);
+        if (request is null)
+        {
+            Error = "Fill All the Requirements";
+            return;
+        }
+        navigation.NavigateTo("/facultymainmenu");
     }
 }

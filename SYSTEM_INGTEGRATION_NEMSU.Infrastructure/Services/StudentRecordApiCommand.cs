@@ -7,6 +7,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
@@ -33,59 +34,67 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         public async Task<PersonalInformation?> AddPersonalDetailsAsync(PersonalInformationDto personalInformation)
         {
             await SetAuthHeaderAsync();
-            var results = await _http.PostAsJsonAsync("api/StudentRecord/AddPersonalDetails", personalInformation);
+            var results = await _http.PostAsJsonAsync("api/StudentRecord/Add%20Personal%20Details", personalInformation);
             if (!results.IsSuccessStatusCode) return null;
             return await results.Content.ReadFromJsonAsync<PersonalInformation>();
         }
         public async Task<PersonalInformation?> UpdatePersonalInformationAsync(PersonalInformationDto personalInformation)
         {
             await SetAuthHeaderAsync();
-            var results = await _http.PatchAsJsonAsync("api/StudentRecord/UpdatePersonalDetails", personalInformation);
+            var results = await _http.PatchAsJsonAsync("api/StudentRecord/Update%20Personal%20Details", personalInformation);
             if (!results.IsSuccessStatusCode) return null;
             return await results.Content.ReadFromJsonAsync<PersonalInformation>();
         }
         public async Task<IEnumerable<PersonalInformationDto>?> DisplayPersonalInformationAsync()
         {
             await SetAuthHeaderAsync();
-            return await _http.GetFromJsonAsync<IEnumerable<PersonalInformationDto>>("api/StudentRecord/DisplayPersonalDetails");
+            return await _http.GetFromJsonAsync<IEnumerable<PersonalInformationDto>>("api/StudentRecord/Display%20Personal%20Details");
         }
         public async Task<AcademicInformation?> AddAcademicDetailsAsync(AcademicInformationDto academicInformation)
         {
             await SetAuthHeaderAsync();
-            var results = await _http.PostAsJsonAsync("api/StudentRecord/AddAcademicDetails", academicInformation);
+            var results = await _http.PostAsJsonAsync("api/StudentRecord/Add%20Academic%20Details", academicInformation);
             if (!results.IsSuccessStatusCode) return null;
             return await results.Content.ReadFromJsonAsync<AcademicInformation>();
         }
         public async Task<AcademicInformation?> UpdateAcademicInformationAsync(AcademicInformationDto academicInformation)
         {
             await SetAuthHeaderAsync();
-            var results = await _http.PostAsJsonAsync("api/StudentRecord/UpdateAcademicDetails", academicInformation);
+            var results = await _http.PostAsJsonAsync("api/StudentRecord/Update%20Academic%20Details", academicInformation);
             if (!results.IsSuccessStatusCode) return null;
             return await results.Content.ReadFromJsonAsync<AcademicInformation>();
         }
         public async Task<IEnumerable<AcademicInformationDto>?> DisplayAcademicInformation()
         {
             await SetAuthHeaderAsync();
-            return await _http.GetFromJsonAsync<IEnumerable<AcademicInformationDto>>("api/StudentRecord/DisplayAcademicDetails");
+            return await _http.GetFromJsonAsync<IEnumerable<AcademicInformationDto>>("api/StudentRecord/Display%20Academic%20Details");
         }
         public async Task<ContactInformation?> AddContactInformationAsync(ContactInformationDto contactInformation)
         {
             await SetAuthHeaderAsync();
-            var results = await _http.PostAsJsonAsync("api/StudentRecord/AddContactDetails", contactInformation);
+            var results = await _http.PostAsJsonAsync("api/StudentRecord/Add%20Contact%20Details", contactInformation);
             if (!results.IsSuccessStatusCode) return null;
             return await results.Content.ReadFromJsonAsync<ContactInformation>();
         }
         public async Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation)
         {
             await SetAuthHeaderAsync();
-            var results = await _http.PostAsJsonAsync("api/StudentRecord/UpdateContactDetails", contactInformation);
+            var results = await _http.PostAsJsonAsync("api/StudentRecord/Update%20Contact%20Details", contactInformation);
             if (!results.IsSuccessStatusCode) return null;
             return await results.Content.ReadFromJsonAsync<ContactInformation>();
         }
         public async Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync()
         {
             await SetAuthHeaderAsync();
-            return await _http.GetFromJsonAsync<IEnumerable<ContactInformationDto>>("api/StudentRecord/DisplayContactDetails");
+            return await _http.GetFromJsonAsync<IEnumerable<ContactInformationDto>>("api/StudentRecord/Display%20Contact%20Details");
+        }
+        public async Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId)
+        {
+            await SetAuthHeaderAsync();
+           var request = await _http.PostAsJsonAsync("api/StudentRecord/Assign%20StudentID", SchoolId);
+            if (!request.IsSuccessStatusCode){ return null; }
+            return await request.Content.ReadFromJsonAsync<SchoolIdDto>();
+
         }
     }
 }

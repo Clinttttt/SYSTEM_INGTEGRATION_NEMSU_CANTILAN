@@ -26,6 +26,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var filterpersonal = details.FacultyPersonalInformationDto.Adapt<FacultyPersonalInformation>();
             if (filterpersonal is null) return null;
             filterpersonal.FacultyId = finduser.Id;
+            filterpersonal.facultySaveStatus = details.facultySaveStatus;
             context.facultyPersonalInformation.Add(filterpersonal);
 
             var filteracademic = details.FacultyAcademicInformationDto.Adapt<FacultyAcademicInformation>();

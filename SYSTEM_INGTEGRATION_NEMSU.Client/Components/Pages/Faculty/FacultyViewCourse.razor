@@ -1,4 +1,10 @@
-﻿@page "/viewcourse"
+﻿@page "/viewcourse/{CourseId:guid}"
+@using SYSTEM_INGTEGRATION_NEMSU.Client.Helper
+@using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
+@inject IHandlingApiCourse handlingApiCourse
+@inject IHandlingStudentsApi handlingStudentsApi
+@inject IStudentRecordApiCommand studentRecordApiCommand
+@rendermode InteractiveServer
 
 <div class="relative h-screen content overflow-hidden">
     <div class="drawer lg:drawer-open h-screen">
@@ -11,7 +17,7 @@
             <!-- Main Content -->
             <div class="flex-1 p-6 pb-17" style="background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);">
 
-        
+
                 <div class="mb-6">
                     <NavLink href="/coursemanagemnt" class="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700  font-semibold text-sm mb-4">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,217 +27,202 @@
                     </NavLink>
                 </div>
 
-              
-                <div class="max-w-6xl mx-auto -mt-4">
+                @if (course is not null && quickStats is not null && studentlist is not null)
+                {
+                    <div class="max-w-6xl mx-auto -mt-4">
 
-                 
-                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-cyan-500 mb-6">
-                        <div class=" p-6 text-white bg-gradient-to-r from-cyan-500 to-cyan-600">
-                            <div class="flex items-start justify-between ">
-                                <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <span class="px-3 py-1 bg-white/20 rounded-lg text-sm font-semi">CS101</span>
-                                        <span class="px-3 py-1 bg-teal-500 rounded-full text-xs font-semibold">Active</span>
+
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-cyan-500 mb-6">
+                            <div class=" p-6 text-white bg-gradient-to-r from-cyan-500 to-cyan-600">
+                                <div class="flex items-start justify-between ">
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <span class="px-3 py-1 bg-white/20 rounded-lg text-sm font-semi">@course.CourseCode</span>
+                                            <span class="px-3 py-1 bg-teal-500 rounded-full text-xs font-semibold">Active</span>
+                                        </div>
+                                        <h1 class="text-3xl font-semi mb-2">@course.Title</h1>
+                                        <p class="text-cyan-100 text-sm">@course.Department!.GetDisplayName()</p>
                                     </div>
-                                    <h1 class="text-3xl font-semi mb-2">Introduction to Computer Science</h1>
-                                    <p class="text-cyan-100 text-sm">Computer Science Department</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button onclick="my_modal_4.showModal()"  class="px-4 py-2 bg-white/75 text-cyan-600 rounded-lg text-sm font-semibold hover:bg-cyan-50 transition-colors flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                        </svg>
-                                        Edit
-                                    </button>
-                                    <button class="px-4 py-2  bg-red-500/75 text-white rounded-lg text-sm font-semibold  hover:bg-red-400 transition-colors  flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                        Delete
-                                    </button>
+                                    <div class="flex gap-2">
+                                        <button onclick="my_modal_4.showModal()"  class="px-4 py-2 bg-white/75 text-cyan-600 rounded-lg text-sm font-semibold hover:bg-cyan-50 transition-colors flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            Edit
+                                        </button>
+                                        <button class="px-4 py-2  bg-red-500/75 text-white rounded-lg text-sm font-semibold  hover:bg-red-400 transition-colors  flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-              
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                   
-                        <div class="lg:col-span-2 space-y-6">
 
-                        
-                            <div class="bg-cyan-50 rounded-xl shadow-lg p-6 border border-cyan-100">
-                                <h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Course Information
-                                </h2>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Course Code</p>
-                                        <p class="text-sm font-semibold text-gray-800">CS101</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Category</p>
-                                        <p class="text-sm font-semibold text-gray-800">Computer Science</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Department</p>
-                                        <p class="text-sm font-semibold text-gray-800">Computer Science Department</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Units</p>
-                                        <p class="text-sm font-semibold text-gray-800">3 Units</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Price</p>
-                                        <p class="text-lg font-bold text-cyan-600">₱5,000.00</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Status</p>
-                                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold border border-emerald-300">Active</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                            <div class="bg-cyan-50  rounded-xl shadow-lg p-6 border border-cyan-100">
-                                <h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
-                                    </svg>
-                                    Course Description
-                                </h2>
-                                <p class="text-sm text-gray-700 leading-relaxed">
-                                    This course provides a comprehensive introduction to the fundamental concepts of computer science.
-                                    Students will learn about programming basics, data structures, algorithms, and problem-solving techniques.
-                                    The course covers both theoretical foundations and practical applications, preparing students for advanced
-                                    courses in computer science and related fields.
-                                </p>
-                            </div>
 
-                            <!-- Enrolled Students -->
-                            <div class="bg-cyan-50 rounded-xl shadow-lg p-4 border border-cyan-100">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h2 class="text-lg font-bold text-gray-700 flex items-center gap-2">
+                            <div class="lg:col-span-2 space-y-6">
+
+
+                                <div class="bg-cyan-50 rounded-xl shadow-lg p-6 border border-cyan-100">
+                                    <h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
                                         <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
-                                        Enrolled Students
+                                        Course Information
                                     </h2>
-                                    <span class="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-xs font-bold">45 Students</span>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Course Code</p>
+                                            <p class="text-sm font-semibold text-gray-800">@course.CourseCode</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Category</p>
+                                            <p class="text-sm font-semibold text-gray-800">@course.Title</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Department</p>
+                                            <p class="text-sm font-semibold text-gray-800">@course.Department</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Units</p>
+                                            <p class="text-sm font-semibold text-gray-800">@course.Unit Unit</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Price</p>
+                                            <p class="text-lg font-bold text-cyan-600">₱ @course.Cost</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Status</p>
+                                            <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold border border-emerald-300">Active</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="space-y-2">
-                                    <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
-                                        <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                                            CV
+
+                                <div class="bg-cyan-50  rounded-xl shadow-lg p-6 border border-cyan-100">
+                                    <h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                                        </svg>
+                                        Course Description
+                                    </h2>
+                                    <p class="text-sm text-gray-700 leading-relaxed">
+                                        @course.CourseDescriptiion
+                                    </p>
+                                </div>
+
+                                <!-- Enrolled Students -->
+                                <div class="bg-cyan-50 rounded-xl shadow-lg p-4 border border-cyan-100">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h2 class="text-lg font-bold text-gray-700 flex items-center gap-2">
+                                            <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                            </svg>
+                                            Enrolled Students
+                                        </h2>
+                                        <span class="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-xs font-bold">45 Students</span>
+                                    </div>
+                                    <div class="space-y-2">
+                                        @foreach (var students in studentlist)
+                                        {
+                                            <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                                                <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                                    CV
+                                                </div>
+                                                <div class="flex-1">
+                                                    <p class="text-sm font-semibold text-gray-800">@students.StudentName</p>
+                                                    <p class="text-[10px] text-gray-500">@students.StudentSchoolId</p>
+                                                </div>
+                                            </div>
+                                        }
+
+
+
+                                       
+                                        <button class="w-full cursor-pointer  text-cyan-600 hover:text-cyan-700 text-xs font-semibold rounded-lg transition-colors">
+                                            View All Students →
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-6">
+
+
+                                <div class="bg-cyan-50 rounded-xl shadow-lg p-6 border border-cyan-100">
+                                    <h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        Schedule
+                                    </h2>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Semester</p>
+                                            <p class="text-sm font-semibold text-gray-800">@course.Semester!.GetDisplayName()</p>
                                         </div>
-                                        <div class="flex-1">
-                                            <p class="text-sm font-semibold text-gray-800">Clint Villanueva</p>
-                                            <p class="text-[10px] text-gray-500">2024-1234</p>
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">School Year</p>
+                                            <p class="text-sm font-semibold text-gray-800">@course.SchoolYear</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Class Schedule</p>
+                                            <p class="text-sm font-semibold text-gray-800">@course.Schedule</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Room</p>
+                                            <p class="text-sm font-semibold text-gray-800">@course.Room</p>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
-                                        <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                                            CV
+                                </div>
+
+                                <div class="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl shadow-lg p-6 text-white">
+                                    <h2 class="text-lg font-bold mb-4">Quick Stats</h2>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-cyan-100">Total Enrolled</span>
+                                            <span class="text-2xl font-bold">@quickStats.TotalEnrolled</span>
                                         </div>
-                                        <div class="flex-1">
-                                            <p class="text-sm font-semibold text-gray-800">Clint Villanueva</p>
-                                            <p class="text-[10px] text-gray-500">2024-5678</p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-cyan-100">Max Capacity</span>
+                                            <span class="text-2xl font-bold">@quickStats.MaxCapacity</span>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-cyan-100">Available Slots</span>
+                                            <span class="text-2xl font-bold">@quickStats.AvailableSlots</span>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
-                                        <div class="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                                            CV
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-sm font-semibold text-gray-800">Clint Villanueva</p>
-                                            <p class="text-[10px] text-gray-500">2024-9012</p>
-                                        </div>
+                                </div>
+
+
+                                <div class="bg-white rounded-xl shadow-lg p-6 border border-cyan-100">
+                                    <h2 class="text-lg font-bold text-gray-800 mb-4">Actions</h2>
+                                    <div class="space-y-2">
+                                        <button class="w-full px-4 py-2 bg-cyan-500 text-white rounded-lg text-sm font-semibold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                            Generate Report
+                                        </button>
+
+                                        <button class="w-full px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                                            </svg>
+                                            Archive Course
+                                        </button>
                                     </div>
-                                    <button class="w-full cursor-pointer  text-cyan-600 hover:text-cyan-700 text-xs font-semibold rounded-lg transition-colors">
-                                        View All Students →
-                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="space-y-6">
-
-                         
-                            <div class="bg-cyan-50 rounded-xl shadow-lg p-6 border border-cyan-100">
-                                <h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                    Schedule
-                                </h2>
-                                <div class="space-y-3">
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Semester</p>
-                                        <p class="text-sm font-semibold text-gray-800">1st Semester</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">School Year</p>
-                                        <p class="text-sm font-semibold text-gray-800">2024-2025</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Class Schedule</p>
-                                        <p class="text-sm font-semibold text-gray-800">MWF 10:00-11:00 AM</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Room</p>
-                                        <p class="text-sm font-semibold text-gray-800">Room 301</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl shadow-lg p-6 text-white">
-                                <h2 class="text-lg font-bold mb-4">Quick Stats</h2>
-                                <div class="space-y-3">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm text-cyan-100">Total Enrolled</span>
-                                        <span class="text-2xl font-bold">45</span>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm text-cyan-100">Max Capacity</span>
-                                        <span class="text-2xl font-bold">50</span>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm text-cyan-100">Available Slots</span>
-                                        <span class="text-2xl font-bold">5</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                 
-                            <div class="bg-white rounded-xl shadow-lg p-6 border border-cyan-100">
-                                <h2 class="text-lg font-bold text-gray-800 mb-4">Actions</h2>
-                                <div class="space-y-2">
-                                    <button class="w-full px-4 py-2 bg-cyan-500 text-white rounded-lg text-sm font-semibold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                        </svg>
-                                        Enroll Student
-                                    </button>
-                                    <button class="w-full px-4 py-2 bg-purple-500 text-white rounded-lg text-sm font-semibold hover:bg-purple-600 transition-colors flex items-center justify-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                        </svg>
-                                        Generate Report
-                                    </button>
-                                    <button class="w-full px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
-                                        </svg>
-                                        Archive Course
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
 
@@ -261,4 +252,39 @@
 </div>
 
 @code {
+    [Parameter]
+    public Guid CourseId { get; set; }
+    private bool Hasrender = false;
+    public CourseDto? course { get; set; } 
+    public QuickStatsDto? quickStats { get; set; }
+    public List<HandlingStudentsDto>? studentlist {get;set;}
+    public AcademicInformationDto? StudentId { get; set; }
+    private string? Error { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!Hasrender && firstRender)
+        {
+            Hasrender = true;
+            try
+            {
+                course = await handlingApiCourse.GetCourseAsync(CourseId);
+                if (course is null)
+                {
+                    Error = "Nothing to display";
+                    return;
+                }
+                quickStats = await handlingApiCourse.DisplayStatsAsync(course.CourseCode!);
+                studentlist = await handlingStudentsApi.DisplayStudentByCoursesAsync(course.CourseCode!);
+
+              
+
+        }
+            catch (HttpRequestException ex)
+            {
+                Error = $"Error fetching course: {ex.Message}";
+            }
+        }
+        StateHasChanged();
+    }
 }

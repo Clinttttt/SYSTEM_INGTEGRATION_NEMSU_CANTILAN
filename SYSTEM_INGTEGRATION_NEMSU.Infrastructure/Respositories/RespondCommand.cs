@@ -32,7 +32,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 var finduser = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == request.StudentId);
                 if (finduser is null) return null;
 
-                if (request.DateCreated > deadline)
+                if (DateTime.UtcNow > deadline)
                 {
                     context.enrollcourse.Remove(finduser);
                     await context.SaveChangesAsync();
@@ -45,10 +45,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Response.DateCreated = DateTime.UtcNow;
             }
 
-            var student_details = await context.studentprofiles.FirstOrDefaultAsync(s => s.StudentId_FK == StudentId);
-            if (student_details is null) return null;
-
-            Response.StudentNumber = student_details.StudentId;
             Response.CourseCode = request.CourseCode;
             Response.StudentId = StudentId;
 

@@ -24,24 +24,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
    public class AuthServices(ApplicationDbContext context, IConfiguration configuration) : IAuthServices 
     {
-        public async Task<TokenResponseDto> LoginWithGoogleAsync(string googleId, string email, string Fullname)
-        {
-            var user = await context.users.FirstOrDefaultAsync(s => s.GoogleId == googleId);
-            if (user is null)
-            {
-                user = new User()
-                {
-                    Id = Guid.NewGuid(),
-                    Username = email,
-                    FullName = Fullname,
-                    Email = email,
-                    GoogleId = googleId,
-                };
-                context.users.Add(user);
-                await context.SaveChangesAsync();
-            }
-            return await CreateTokenResponse(user);
-        }
+       
 
       public async Task<TokenResponseDto?> RefreshTokenAsync( RefreshTokenDto request)
         {
@@ -64,36 +47,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .HashPassword(user, request.Password);
             user.Id = Guid.NewGuid();
             user.Username = request.UserName;
-            user.Password = passwordhasher;
-            user.FullName = request.FullName;
-            user.Email = request.Email;
+            user.Password = passwordhasher;         
             user.Role = request.Role;
-
-        
-            if (request.Role == UserRole.Student)
-            {
-                var student = new StudentProfile();
-                student.Id = Guid.NewGuid();
-                student.StudentId_FK = user.Id;
-                student.StudentId = request.StudentId;
-                student.Course = request.Course;
-                student.YearLevel = request.YearLevel;
-
-                context.studentprofiles.Add(student);
-                await context.SaveChangesAsync();
-
-            }
-            else if (request.Role == UserRole.Facilitator)
-            {
-                var facilitator = new FacilitatorProfile();
-                facilitator.Id = Guid.NewGuid();
-                facilitator.Faculty_FK = user.Id;
-                facilitator.FacultyId = request.FacultyId;
-                facilitator.CoursesTaught = request.CoursesTaught!;
-                context.facilitatorprofiles.Add(facilitator);
-                await context.SaveChangesAsync();
-            }
-                context.Add(user);
+            context.users.Add(user);
             await context.SaveChangesAsync();
             return user;
         }

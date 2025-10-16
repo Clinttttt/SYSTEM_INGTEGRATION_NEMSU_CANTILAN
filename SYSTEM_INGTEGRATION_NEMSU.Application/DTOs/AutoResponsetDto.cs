@@ -12,8 +12,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.DTOs
         public string? Message { get; set; }
         public AnnouncementType? Type { get; set; }
         public DateTime DateCreated { get; set; }
-        public Guid StudentId { get; set; }
-        public string? StudentNumber { get; set; }
+        public Guid StudentId { get; set; }  
         public string? CourseCode { get; set; }
     }
 }

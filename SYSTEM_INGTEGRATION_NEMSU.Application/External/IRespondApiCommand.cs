@@ -10,6 +10,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
    public interface IRespondApiCommand
     {
         Task<AutoResponsetDto?> AutoResponse(string CourseCode);
-        Task<AnnouncementDto?> Announcement(string CourseCode, string Message);
+        Task<AnnouncementDto?> Announcement(AnnouncementDto announcement);
     }
 }

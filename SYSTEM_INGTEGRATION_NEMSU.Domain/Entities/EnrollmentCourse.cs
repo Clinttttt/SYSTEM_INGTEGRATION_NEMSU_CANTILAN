@@ -21,9 +21,18 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public Guid CourseId { get; set; }
         [JsonIgnore] 
         public Course Course { get; set; } = null!;
-
-        
+       
+        public Category? Category { get; set; }
         public DateTime DateEnrolled { get; set; }
+        public EnrollmentStatus EnrollmentStatus { get; set; }
+    }
+
+    public enum EnrollmentStatus
+    {
+        Provisioned,
+        Enrolled,     
+        Completed,   
+        Dropped,       
     }
 
 

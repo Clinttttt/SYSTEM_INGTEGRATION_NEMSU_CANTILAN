@@ -26,8 +26,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .AnyAsync(e => e.StudentId == studentId && e.CourseId == course.Id);
             if (alreadyEnrolled) return null;
 
+            if (course.Cost > payment) return null;
+           
           
-            await enrollment.EnrollCourseAsync(studentId, courseCode);
+            await enrollment.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Enrolled);
 
     
             var invoice = new Invoice
@@ -46,6 +48,34 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             context.invoice.Add(invoice);
             await context.SaveChangesAsync();
 
+            return invoice;
+        }
+        public async Task<Invoice?> ProvisionAsync(Guid studentId, string courseCode)
+        {
+            var course = await context.course
+               .FirstOrDefaultAsync(c => c.CourseCode == courseCode);
+            if (course is null) return null;
+
+
+            bool alreadyEnrolled = await context.enrollcourse
+                .AnyAsync(e => e.StudentId == studentId && e.CourseId == course.Id);
+            if (alreadyEnrolled) return null;
+
+            await enrollment.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Provisioned);
+            var invoice = new Invoice
+            {
+                Id = Guid.NewGuid(),
+                StudentId = studentId,
+                CourseId = course.Id,
+                CourseCode = course.CourseCode,
+                Cost = 0,
+                DateCreated = DateTime.UtcNow,
+                Status = InvoiceStatus.Unpaid,
+                DatePaid = null,
+                Standing = "Temporary enrollment"
+            };
+            context.invoice.Add(invoice);
+            await context.SaveChangesAsync();
             return invoice;
         }
 

@@ -13,10 +13,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     public class AuthHandlingController(IAuthServices authservice) : ControllerBase
     {
         [HttpPost("Register")]
-        public async Task<ActionResult<User>> RegisterAsync( UserDtos request)
+        public async Task<ActionResult<User>> RegisterAsync(UserDtos request)
         {
             var response = await authservice.RegisterAsync(request);
-            if(response is null)
+            if (response is null)
             {
                 return BadRequest("Account Already Exists");
             }
@@ -26,27 +26,18 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         public async Task<ActionResult<User>> LoginAsync(LoginDto request)
         {
             var response = await authservice.LoginAsync(request);
-            if(response is null)
+            if (response is null)
             {
                 return BadRequest("Login Failed");
             }
             return Ok(response);
         }
-        [HttpPost("LoginWithGoogle")]
-        public async Task<ActionResult<TokenResponseDto>> LoginWithGoogleAsync(string googleId, string email, string Fullname)
-        {
-            var request = await authservice.LoginWithGoogleAsync(googleId, email, Fullname);
-            if(request is null)
-            {
-                return BadRequest("Login Failed");
-            }
-            return Ok(request);
-        }
+
         [HttpPost("Refreshtoken")]
-        public async Task<ActionResult<TokenResponseDto>> RefreshTokenAsync( RefreshTokenDto request)
+        public async Task<ActionResult<TokenResponseDto>> RefreshTokenAsync(RefreshTokenDto request)
         {
             var user = await authservice.RefreshTokenAsync(request);
-            if(user is null || user.RefreshToken is null || request.RefreshToken is null)
+            if (user is null || user.RefreshToken is null || request.RefreshToken is null)
             {
                 return BadRequest("Unauthorized User");
             }
@@ -66,7 +57,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             {
                 return BadRequest("Logout Failed");
             }
-            return Ok (new { Message = " Login Successfully" });
+            return Ok(new { Message = " Login Successfully" });
         }
 
     }

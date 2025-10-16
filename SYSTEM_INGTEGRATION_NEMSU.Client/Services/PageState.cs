@@ -6,9 +6,21 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Client.Services
     {
         public event Action? Onchange;
 
+        public StudentsView Studentsview { get; set; } = StudentsView.CurrentStudents;
         public SaveAsDraftPerInfo CurrentViewPerInfo { get; set; } = SaveAsDraftPerInfo.ViewInfo;
         public SaveAsDraftAcads CurrentViewAcads { get; set; } = SaveAsDraftAcads.ViewInfo;
         public SaveAsDraftContact CurrentViewContact { get; set; } = SaveAsDraftContact.ViewInfo;
+        public enum StudentsView {
+            CurrentStudents,
+            AllStudents,
+            ByDepartment
+        }
+        public void SetViewStudent(StudentsView studentsView)
+        {
+            Studentsview = studentsView;
+            Onchange?.Invoke();
+        }
+
         public enum SaveAsDraftPerInfo
         {
             ViewInfo,
@@ -55,6 +67,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Client.Services
             CurrentViewTimeline = view;
             Onchange?.Invoke();
         }
+
 
     }
 }

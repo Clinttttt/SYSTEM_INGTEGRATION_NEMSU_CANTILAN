@@ -18,12 +18,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record
         public string? ContactNumber { get; set; }
         public string? EmailAddress { get; set; }
         public string? Address { get; set; }
-
+        public FacultySaveStatus facultySaveStatus { get; set; }
     }
     public enum FacultyGender 
     {
         Male,
         Female,
         Prefer_not_to_say
+    }
+    public enum FacultySaveStatus
+    {
+        Save_As_Draft,
+        Save
     }
 }

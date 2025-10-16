@@ -8,11 +8,13 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
@@ -23,11 +25,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         {
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == personalInformation.StudentId);
             if (request is null) return null;
-            var details = context.personalInformation.Add(personalInformation);
-            var filter = details.Adapt<PersonalInformationDto>();
+            context.personalInformation.Add(personalInformation);
+
+
+            request.StudentsDetails = personalInformation;
             await context.SaveChangesAsync();
-            return filter;
+            var dto = personalInformation.Adapt<PersonalInformationDto>();
+            return dto;
         }
+
         public async Task<PersonalInformation?> UpdatePersonalInformationAsync(PersonalInformationDto personalInformation)
         {
             var request = context.users.FirstOrDefault(s => s.Id == personalInformation.StudentId);
@@ -62,6 +68,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (request is null) return null;
             var details = context.Add(academicInformation);
             var filter = details.Adapt<AcademicInformationDto>();
+            request.StudentAcademicDetails = academicInformation;
             await context.SaveChangesAsync();
             return filter;
         }
@@ -98,7 +105,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return filter;
         }
-        public async Task<ContactInformation?> UpdateContactInformationAsync( ContactInformationDto contactInformation)
+        public async Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation)
         {
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == contactInformation.StudentId);
             if (request is null) return null;
@@ -110,14 +117,25 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             context.contactInformation.Update(currentdetails);
             var filter = currentdetails.Adapt<ContactInformation>();
             await context.SaveChangesAsync();
-            return filter;         
+            return filter;
         }
-        public async Task <IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync( Guid Student)
+        public async Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync(Guid Student)
         {
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == Student);
             if (request is null) return null;
             var details = await context.contactInformation.Where(s => s.StudentId == request.Id).ToListAsync();
             return details.Adapt<List<ContactInformationDto>>();
+        }
+
+        public async Task<SchoolIdDto?> StudentSchoolIdAsync(Guid StudentId, string SchoolId)
+        {
+         
+            var request = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == StudentId);
+            if (request is null) return null;
+            request.StudentSchoolId = SchoolId;
+          
+            await context.SaveChangesAsync();
+            return request.Adapt<SchoolIdDto>();
         }
     }
 }

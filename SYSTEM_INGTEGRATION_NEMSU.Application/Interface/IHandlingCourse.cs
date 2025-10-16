@@ -15,5 +15,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<Course?> UpdateCourseAsync(UpdateCourseDto course);
         Task<bool> DeleteCourseAsycnc(Guid AdminId, Guid course);
         Task<CourseDto?> GetCourseAsync(Guid AdminId, Guid CourseId);
+        Task<QuickStatsDto?> DisplayStatsAsync(Guid AdminId, string CourseCode);
     }
 }

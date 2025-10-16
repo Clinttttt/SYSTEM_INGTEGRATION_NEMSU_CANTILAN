@@ -4,19 +4,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentRecordController(IStudentRecordCommand studentRecordCommand) : ControllerBase
+    public class StudentRecordController(IStudentRecordCommand studentRecordCommand, IUserRespository user) : ControllerBase
     {
         [Authorize]
-        [HttpPost("AddPersonalDetails")]
+        [HttpPost("Add Personal Details")]
         public async Task<ActionResult<PersonalInformation>> AddPersonalDetailsAsync([FromBody] PersonalInformationDto personalInformation)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -28,7 +30,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(filter);
         }
         [Authorize]
-        [HttpPatch("UpdatePersonalDetails")]
+        [HttpPatch("Update Personal Details")]
         public async Task<ActionResult<PersonalInformation>> UpdatePersonalDetailsAsync( PersonalInformationDto personalInformationDto)
         {
             var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -39,7 +41,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpGet("DisplayPersonalDetails")]
+        [HttpGet("Display Personal Details")]
         public async Task<ActionResult<PersonalInformationDto>> DispalyPersonalDetailsAsync()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -49,7 +51,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpPost("AddAcademicDetails")]
+        [HttpPost("Add Academic Details")]
         public async Task<ActionResult<PersonalInformation>> AddAcademicDetailsAsync([FromBody] AcademicInformationDto academicInformation)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -61,7 +63,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(filter);
         }
         [Authorize]
-        [HttpPatch("UpdateAcademicDetails")]
+        [HttpPatch("Update Academic Details")]
         public async Task<ActionResult<PersonalInformation>> UpdateAcademicDetailsAsync(AcademicInformationDto academicInformation)
         {
             var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -72,7 +74,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpGet("DisplayAcademicDetails")]
+        [HttpGet("Display Academic Details")]
         public async Task<ActionResult<AcademicInformationDto>> DispalyAcademicDetailsAsync()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -82,7 +84,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpPost("AddContactDetails")]
+        [HttpPost("Add Contact Details")]
         public async Task<ActionResult<PersonalInformation>> AddContactDetailsAsync([FromBody] ContactInformationDto contactInformation)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -94,7 +96,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(filter);
         }
         [Authorize]
-        [HttpPatch("UpdateContactDetails")]
+        [HttpPatch("Update Contact Details")]
         public async Task<ActionResult<PersonalInformation>> UpdateContactDetailsAsync(ContactInformationDto contactInformationDto)
         {
             var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -105,7 +107,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpGet("DisplayContactDetails")]
+        [HttpGet("Display Contact Details")]
         public async Task<ActionResult<PersonalInformationDto>> DispalyContactDetailsAsync()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -113,6 +115,18 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var UserId = Guid.Parse(FindUser.Value);
             var response = await studentRecordCommand.DisplayContactInformationAsync(UserId);
             return Ok(response);
+        }
+        [Authorize]
+        [HttpPost("Assign StudentID")]
+        public async Task<ActionResult<SchoolIdDto>?> StudentSchoolIdAsync(string SchoolId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
+            var UserId = Guid.Parse(FindUser.Value);
+            var StudentId = await user.UserInfo(UserId);
+            if (StudentId is null) return BadRequest("User Cannot Find");
+            var request = await studentRecordCommand.StudentSchoolIdAsync(StudentId.Id, SchoolId);
+            return Ok(request);
         }
     }
 }

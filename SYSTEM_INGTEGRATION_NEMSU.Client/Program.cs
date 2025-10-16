@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Components;
+using SYSTEM_INGTEGRATION_NEMSU.Client.Helper;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Services;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
@@ -22,18 +23,54 @@ builder.Services.AddScoped<PageState>();
 
 builder.Services.AddHttpClient<IAuthApiServices, AuthApiServices>(client =>
 {
-      client.BaseAddress = new Uri("https://localhost:7072");
+    client.BaseAddress = new Uri("https://localhost:7072");
 });
 
 builder.Services.AddHttpClient<IStudentRecordApiCommand, StudentRecordApiCommand>(client =>
 {
-      client.BaseAddress = new Uri("https://localhost:7072");
+    client.BaseAddress = new Uri("https://localhost:7072");
 });
+
+builder.Services.AddHttpClient<IEnrollmentApiServices, EnrollmentApiServices>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7072");
+});
+
+builder.Services.AddHttpClient<IFacultyRecordApi, FacultyRecordApi>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7072");
+});
+
+builder.Services.AddHttpClient<IHandlingApiCourse, HandlingApiCourse>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7072");
+});
+
+builder.Services.AddHttpClient<IHandlingStudentsApi, HandlingStudentsApi>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7072");
+});
+
+builder.Services.AddHttpClient<IRespondApiCommand, RespondApiCommand>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7072");
+});
+
+builder.Services.AddHttpClient<IStudentRecordApiCommand, StudentRecordApiCommand>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7072");
+});
+builder.Services.AddHttpClient<IHandlingDepartmentApi, HandlingDepartmentApi>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7072");
+});
+
+
 
 
 builder.Services.AddHttpClient("WebAPI", client =>
 {
-      client.BaseAddress = new Uri("https://localhost:7072");
+    client.BaseAddress = new Uri("https://localhost:7072");
 });
 
 builder.Services.AddRazorComponents()

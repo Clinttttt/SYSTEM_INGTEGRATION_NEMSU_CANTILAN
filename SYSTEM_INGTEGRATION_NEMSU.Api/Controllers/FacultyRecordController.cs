@@ -12,7 +12,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     public class FacultyRecordController(IFacultyRecordCommand facultyRecord, IUserRespository user) : ControllerBase
     {
         [Authorize]
-        [HttpPost("AddFacultyInformation")]
+        [HttpPost("Add Faculty Information")]
         public async Task<ActionResult<FacultyRecordDto>> AddFacultyDetailsAsync(FacultyRecordDto facultydata)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -25,7 +25,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpPatch("UpdateFacultyInformation")]
+        [HttpPatch("Update Faculty Information")]
         public async Task<ActionResult<FacultyRecordDto>> UpdateFacultyDetailsAsync(FacultyRecordDto facultydata)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -38,7 +38,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpGet("DisplayFacultyInformation")]
+        [HttpGet("Display Faculty Information")]
         public async Task<ActionResult<FacultyRecordDto>> DisplayFacultyDetailsAsync()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);

@@ -65,13 +65,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await _localstorage.SetAsync("RefreshToken", NewToken.RefreshToken!);
             return true;
         }
-        public async Task<TokenResponseDto?> LoginWithGoogle(string googleid, string email, string fullname)
-        {
-            var payload = new { googleid, email, fullname };
-            var request = await _http.PostAsJsonAsync("api/AuthHandling/LoginWithGoogle", payload);
-            if (!request.IsSuccessStatusCode) return null;
-            return await request.Content.ReadFromJsonAsync<TokenResponseDto>();
-        }
+ 
 
     }
 }

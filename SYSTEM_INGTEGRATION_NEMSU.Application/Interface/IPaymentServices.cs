@@ -11,5 +11,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
    public interface IPaymentServices
     {
         Task<Invoice?> InvoiceAsync(Guid studentId, string courseCode, double payment);
+        Task<Invoice?> ProvisionAsync(Guid studentId, string courseCode);
     }
 }

@@ -13,7 +13,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     public class HandlingMessageController(IHandlingMessage messageresponse, IUserRespository respository) : ControllerBase
     {
         [Authorize]
-        [HttpPost("AutoResponse")]
+        [HttpPost("Auto Response")]
         public async Task<ActionResult<AutoResponsetDto>> AutoResponse(string CourseCode)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);

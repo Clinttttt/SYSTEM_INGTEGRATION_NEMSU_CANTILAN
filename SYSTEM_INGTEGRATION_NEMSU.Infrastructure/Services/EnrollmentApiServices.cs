@@ -5,12 +5,13 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 {
-   public class EnrollmentApiServices
+   public class EnrollmentApiServices : IEnrollmentApiServices
     {
         private readonly HttpClient _http;
         private readonly ProtectedLocalStorage _localstorage;
@@ -33,19 +34,20 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         {
             await SetAuthHeaderAsync();
             var payload = new { CourseId, Payment };
-            var response = await _http.PostAsJsonAsync("api/EnrollmentHandling/EnrollCourse", payload);
+            var response = await _http.PostAsJsonAsync("api/EnrollmentHandling/Enroll%20Course", payload);
             if (!response.IsSuccessStatusCode) return null;
             return await response.Content.ReadFromJsonAsync<Invoice>();
         }
+       
         public async Task<IEnumerable<EnrollmentCourse>?> DisplayCourseAsync()
         {
             await SetAuthHeaderAsync();
-            return await _http.GetFromJsonAsync<IEnumerable<EnrollmentCourse>>("api/EnrollmentHandling/DisplayCourse");           
+            return await _http.GetFromJsonAsync<IEnumerable<EnrollmentCourse>>("api/EnrollmentHandling/Display%20Course");           
         }
         public async Task<bool> UnenrollCourse(string CourseId)
         {
             await SetAuthHeaderAsync();
-            return await _http.DeleteFromJsonAsync<bool>($"api/EnrollmentHandling/UnEnrollCourse/{CourseId}");     
+            return await _http.DeleteFromJsonAsync<bool>($"api/EnrollmentHandling/UnEnroll%20Course/{CourseId}");     
         }
 
     }

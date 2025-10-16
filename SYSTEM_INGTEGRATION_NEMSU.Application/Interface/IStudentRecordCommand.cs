@@ -7,6 +7,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 {
@@ -29,6 +30,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation);
 
         Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync(Guid Student);
+        Task<SchoolIdDto?> StudentSchoolIdAsync(Guid StudentId, string SchoolId);
 
     }
 }

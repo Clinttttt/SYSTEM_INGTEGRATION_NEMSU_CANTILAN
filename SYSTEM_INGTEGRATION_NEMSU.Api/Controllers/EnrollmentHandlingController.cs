@@ -15,7 +15,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     public class EnrollmentHandlingController(IPaymentServices enrollmenthandling, IEnrollmentServices enrollmentservices, IUserRespository respository) : ControllerBase
     {
         [Authorize]
-        [HttpPost("EnrollCourse")]
+        [HttpPost("Enroll Course")]
         public async Task<ActionResult<Invoice>> EnrollCourse(string CourseId, double Payment)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -30,9 +30,25 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (response is null) { return BadRequest("Something went wrong"); }
             return Ok(response);
         }
+        [Authorize]
+        [HttpPost("Provision EnrollCourse")]
+        public async Task<ActionResult<Invoice>?> ProvisionAsync( string courseCode)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return Unauthorized("Login First");
+
+            var GetUserId = Guid.Parse(FindUser.Value);
+            var user = await respository.UserInfo(GetUserId);
+            if (user is null) return BadRequest("User not found or Student ID missing");
+
+            var StudentId = user.Id;
+            var response = await enrollmenthandling.ProvisionAsync(StudentId, courseCode);
+            if (response is null) { return BadRequest("Something went wrong"); }
+            return Ok(response);
+        }
 
         [Authorize]
-        [HttpGet("DisplayCourse")]
+        [HttpGet("Display Course")]
         public async Task<ActionResult<EnrollmentCourse>> DisplayCourse()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -48,7 +64,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpGet("GetCourse")]
+        [HttpGet("Get Course")]
         public async Task<ActionResult<CourseDto>?> GetCourse(Guid CourseId)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -64,7 +80,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpDelete("UnEnrollCourse/{CourseId}")]
+        [HttpDelete("UnEnroll Course/{CourseId}")]
         public async Task<IActionResult> UnenrollCourse(string CourseId)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);

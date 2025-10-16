@@ -11,18 +11,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
    public class CreateCourseDto
     {
        
-        public double Cost { get; set; }
+        public double? Cost { get; set; }
         public string? CourseCode { get; set; }
         public string? Title { get; set; }
-        public int Unit { get; set; }
-        public Guid CategoryId { get; set; }
-        public CourseDepartment Department { get; set; }
+        public int? Unit { get; set; }
+        public Guid? CategoryId { get; set; }
+        public CourseDepartment? Department { get; set; }
         public string? CourseDescriptiion { get; set; }
         public List<LearningObjectives>? LearningObjectives { get; set; }
         public string? SchoolYear { get; set; }
-        public CourseSemester Semester { get; set; }
+        public CourseSemester? Semester { get; set; }
         public string? Schedule { get; set; }
         public string? Room { get; set; }
+        public int MaxCapacity { get; set; }
 
     }
 }

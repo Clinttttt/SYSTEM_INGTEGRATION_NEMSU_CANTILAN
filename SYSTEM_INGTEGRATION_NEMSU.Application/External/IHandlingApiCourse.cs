@@ -10,8 +10,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
     public interface IHandlingApiCourse
     {
         Task<CourseDto?> AddCourse(CreateCourseDto course);
-        Task<IEnumerable<CourseDto>?> DisplayAllCourse(Guid Adminid);
+        Task<IEnumerable<CourseDto>?> DisplayAllCourse();
         Task<CourseDto?> UpdateCourse(UpdateCourseDto course);
         Task<bool> DeleteCourse(Guid course);
+        Task<CourseDto?> GetCourseAsync(Guid CourseId);
+        Task<QuickStatsDto?> DisplayStatsAsync(string CourseCode);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
@@ -21,5 +22,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<ContactInformation?> AddContactInformationAsync(ContactInformationDto contactInformation);
         Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation);
         Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync();
+        Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId);
     }
 }

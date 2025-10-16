@@ -27,14 +27,28 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
     new Category { Id = Guid.Parse("44444444-4444-4444-4444-444444444444"), Name = "Social Sciences", Icon = "📚", Color = "orange" },
     new Category { Id = Guid.Parse("55555555-5555-5555-5555-555555555555"), Name = "Natural Sciences", Icon = "⚗️", Color = "gray" }
 );
+            modelBuilder.Entity<User>()
+                .HasOne(s=> s.StudentsDetails)
+                .WithOne(c=> c.User)
+                .HasForeignKey<User>(v=> v.StudentsDetailsId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<User>()
+                 .HasOne(s => s.StudentAcademicDetails)
+                 .WithOne(s => s.User)
+                 .HasForeignKey<User>(s => s.StudentAcademicsId)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+
+
         }
+      
         public DbSet<User> users { get; set; }
         public DbSet<Course> course { get; set; }
         public DbSet<EnrollmentCourse> enrollcourse { get; set; }
         public DbSet<Invoice> invoice { get; set; }
         public DbSet<InstructorAnnouncement> announcements { get; set; }
-        public DbSet<StudentProfile> studentprofiles { get; set; }
-        public DbSet<FacilitatorProfile> facilitatorprofiles { get; set; }
+      
         public DbSet<Category> category { get; set; }
         public DbSet<AcademicInformation> academicInformation { get; set; }
         public DbSet<ContactInformation> contactInformation { get; set; }

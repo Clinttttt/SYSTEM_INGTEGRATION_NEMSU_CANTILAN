@@ -1,7 +1,10 @@
 ﻿@page "/facultylogin"
+@using System.Security.Claims
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
-
+@inject IAuthApiServices authApi
+@inject AuthStateProvider authState
+@inject ProtectedLocalStorage storage
 <div class="h-screen content overflow-hidden flex items-center justify-center p-4"
 style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
     <div class="w-full max-w-5xl flex rounded-3xl overflow-hidden shadow-2xl bg-white h-[90%]">
@@ -43,7 +46,7 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                 <h3 class="text-3xl font-bold text-stone-700 mb-2">Welcome Back</h3>
                 <p class="text-gray-600 mb-8">Sign in to access your faculty portal</p>
 
-                <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin" FormName="facultylogin">
+                <EditForm Model="@Login" OnValidSubmit="@HandleLogin" FormName="facultylogin">
                     <div class="space-y-5">
 
                         <div>
@@ -54,7 +57,7 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
                                     </svg>
                                 </div>
-                                <InputText @bind-Value="loginModel.Email"
+                                <input @bind="Login.UserName"
                                 class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                 placeholder="faculty@university.edu" />
                             </div>
@@ -69,8 +72,8 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                                     </svg>
                                 </div>
-                                <InputText type="@(showPassword ? "text" : "password")"
-                                @bind-Value="loginModel.Password"
+                                <input type="@(showPassword ? "text" : "password")"
+                                @bind="Login.Password"
                                 class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                 placeholder="••••••••" />
                                 <button type="button" @onclick="() => showPassword = !showPassword"
@@ -103,7 +106,7 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
 
 
                         <button type="submit"
-                                class="w-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl">
+                        class="w-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl">
                             Sign In
                         </button>
 
@@ -122,21 +125,48 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
 </div>
 
 @code {
-    private LoginModel loginModel = new();
+    private LoginDto Login = new();
     private bool showPassword = false;
+    private string? Error { get; set; }
+    private IEnumerable<Claim> claims = [];
+    private bool render = false;
 
-    private void HandleLogin()
+    protected override  async Task OnInitializedAsync()
     {
-
-        Navigation.NavigateTo("/facultymainmenu");
-
+        var state =  await authState.GetAuthenticationStateAsync();
+        claims = state.User.Claims;
     }
 
-    public class LoginModel
+
+    private async Task HandleLogin()
     {
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        if(string.IsNullOrEmpty(Login.UserName) || string.IsNullOrEmpty(Login.Password))
+        {
+            Error = "Enter Username and Password";
+            return;
+        }
+        var request = await authApi.LoginAsync(Login);
+        if(request is null)
+        {
+            Error = "User Not Found";
+            return;
+        }
+        await storage.SetAsync("AccessToken", request.AccessToken!);
+        await storage.SetAsync("RefreshToken", request.RefreshToken!);
+        await Task.Delay(100);
+        authState.NotifyUserChanged();
+        await Task.Delay(100);
+        Navigation.NavigateTo("/facultyfillout");
     }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(!render && firstRender)
+        {
+            render = true;
+             await authApi.TryRefreshTokenAsync();
+            StateHasChanged();
+        }
+    } 
 }
 
 

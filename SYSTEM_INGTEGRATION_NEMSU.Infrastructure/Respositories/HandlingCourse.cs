@@ -35,7 +35,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 SchoolYear = request.SchoolYear,
                 Semester = request.Semester,
                 Category = await context.category.FindAsync(request.CategoryId)
-                ?? throw new Exception("Category not found")
+                ?? throw new Exception("Category not found"),
+                MaxCapacity = request.MaxCapacity,
             };
             if (request.LearningObjectives is not null && request.LearningObjectives.Any())
             {
@@ -54,9 +55,23 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return filter;
         }
 
+        public async Task<QuickStatsDto?> DisplayStatsAsync(Guid AdminId, string CourseCode)
+        {
+            var requestcourse = await context.course.FirstOrDefaultAsync(s => s.AdminId == AdminId && s.CourseCode == CourseCode);
+            if (requestcourse is null) return null;
+            var stats = new QuickStatsDto
+            {
+                MaxCapacity = requestcourse.MaxCapacity,
+                TotalEnrolled = requestcourse.TotalEnrolled,
+                AvailableSlots = requestcourse.AvailableSlots,
+            };
+            return stats;
+
+        }
         public async Task<IEnumerable<CourseDto>> DisplayCourseAsync(Guid adminid)
         {
             var retrieve = await context.course.Where(s => s.AdminId == adminid).ToListAsync();
+           
             return retrieve.Adapt<List<CourseDto>>();
         }
         public async Task<Course?> UpdateCourseAsync(UpdateCourseDto course)
@@ -83,7 +98,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .Include(s => s.LearningObjectives)
                 .FirstOrDefaultAsync(s => s.AdminId == request.Id && s.Id == CourseId);
             if (GetCourse is null) return null;
-            return GetCourse.Adapt<CourseDto>();
+            var liststudent = await context.enrollcourse.Where(s => s.CourseId == CourseId).ToListAsync();
+            var r = GetCourse.Adapt<CourseDto>();
+            r.ListEnrolled = liststudent;
+            r.Id = GetCourse.Id;
+            return r;
         }
         public async Task<bool> DeleteCourseAsycnc(Guid AdminId, Guid course)
         {
@@ -96,6 +115,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return true;
         }
+       
 
     }
 }

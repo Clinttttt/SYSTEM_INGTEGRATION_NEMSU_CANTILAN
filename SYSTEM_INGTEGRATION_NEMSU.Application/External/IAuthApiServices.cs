@@ -16,6 +16,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<bool> LogoutAsync(string Accesstoken);
         Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenDto reqest);
         Task<bool> TryRefreshTokenAsync();
-        Task<TokenResponseDto?> LoginWithGoogle(string googleid, string email, string fullname);
+      
     }
 }

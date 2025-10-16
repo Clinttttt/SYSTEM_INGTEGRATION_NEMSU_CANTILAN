@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -24,15 +25,24 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string? Room { get; set; }
         public ICollection<EnrollmentCourse> Enrollments { get; set; } = new List<EnrollmentCourse>();
 
-        public Guid? CategoryId { get; set; }   
-       public Category? Category { get; set; } 
+        public Guid? CategoryId { get; set; }
+        public Category? Category { get; set; }
+
+        public int MaxCapacity { get; set; }
+        public int TotalEnrolled { get; set; }
+        public int AvailableSlots { get; set; }
     }
     public enum CourseDepartment
     {
-        BSHM,
+        [Display(Name = "College of Criminal Justice Education")]
+        CCJE,
+        [Display(Name = "Department of Industrial Technology")]
         DIT,
+        [Display(Name = "Department of General Teacher Training")]
         DGTT,
+        [Display(Name = "Department of Business Administration")]
         DBM,
+        [Display(Name = "Department Of Computer Studies")]
         DCS,
     }
     public class LearningObjectives
@@ -46,9 +56,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
     }
     public enum CourseSemester
     {
+        [Display(Name = "1st Semester")]
         First_Semester,
+        [Display(Name = "2nd Semester")]
         Second_Semester
     }
- 
+
 
 }

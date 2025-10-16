@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
 {
@@ -19,6 +21,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         public MajorChoice Major { get; set; }
         public StrandChoice Strand { get; set; }
         public SaveStatus Savestatus { get; set; }
+        [JsonIgnore]
+        public User? User { get; set; }
     }
     public enum StudentTypeChoice
     {

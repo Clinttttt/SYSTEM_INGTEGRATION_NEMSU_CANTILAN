@@ -32,15 +32,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         public async Task<AutoResponsetDto?> AutoResponse(string CourseCode)
         {
             await SetAuthHeaderAsync();
-            var response = await _http.PostAsJsonAsync("api/HandlingMessage/AutoResponse", CourseCode);
+            var response = await _http.PostAsJsonAsync("api/HandlingMessage/Auto%20Response", CourseCode);
             if (!response.IsSuccessStatusCode) return null;
             return await response.Content.ReadFromJsonAsync<AutoResponsetDto>();
         }
-        public async Task<AnnouncementDto?> Announcement(string CourseCode, string Message)
+        public async Task<AnnouncementDto?> Announcement(AnnouncementDto announcement)
         {
             await SetAuthHeaderAsync();
-            var payload = new { CourseCode, Message };
-            var response = await _http.PostAsJsonAsync("api/HandlingMessage/Announcement", payload);
+            
+            var response = await _http.PostAsJsonAsync("api/HandlingMessage/Announcement", announcement);
             if (!response.IsSuccessStatusCode) return null;
             return await response.Content.ReadFromJsonAsync<AnnouncementDto>();
         }
