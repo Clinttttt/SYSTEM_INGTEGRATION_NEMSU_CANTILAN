@@ -11,6 +11,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.DTOs
   public  class AnnouncementDto
     {
         public string? Title { get; set; }
+        public string? CourseName { get; set; }
         public string? Message { get; set; }
         [JsonIgnore]
         public AnnouncementType? Type { get; set; }
@@ -21,6 +22,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.DTOs
         public Guid? CourseId { get; set; }
         public string? CourseCode { get; set; }
         public InformationType InformationType { get; set; }
-        public Course_Subject Course { get; set; }
+    
     }
 }

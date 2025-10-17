@@ -15,5 +15,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<bool> DeleteCourse(Guid course);
         Task<CourseDto?> GetCourseAsync(Guid CourseId);
         Task<QuickStatsDto?> DisplayStatsAsync(string CourseCode);
+        Task<bool> ArchivedCourseAsync(string CourseCode);
+        Task<IEnumerable<CourseDto>?> DisplayArchiveCourseAsync();
     }
 }

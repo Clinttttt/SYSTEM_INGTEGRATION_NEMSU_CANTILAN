@@ -1,9 +1,10 @@
 ﻿@page "/viewcourse/{CourseId:guid}"
-@using SYSTEM_INGTEGRATION_NEMSU.Client.Helper
-@using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
+@using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
+
 @inject IHandlingApiCourse handlingApiCourse
 @inject IHandlingStudentsApi handlingStudentsApi
 @inject IStudentRecordApiCommand studentRecordApiCommand
+@inject NavigationManager navigation
 @rendermode InteractiveServer
 
 <div class="relative h-screen content overflow-hidden">
@@ -38,13 +39,13 @@
                                     <div>
                                         <div class="flex items-center gap-3 mb-2">
                                             <span class="px-3 py-1 bg-white/20 rounded-lg text-sm font-semi">@course.CourseCode</span>
-                                            <span class="px-3 py-1 bg-teal-500 rounded-full text-xs font-semibold">Active</span>
+                                            <span class="px-3 py-1  rounded-full text-xs font-semibold @(course.CourseStatus == CourseStatus.Archived ? "bg-orange-500 text-white" : "bg-teal-500 text-white")">@course.CourseStatus</span>
                                         </div>
                                         <h1 class="text-3xl font-semi mb-2">@course.Title</h1>
                                         <p class="text-cyan-100 text-sm">@course.Department!.GetDisplayName()</p>
                                     </div>
                                     <div class="flex gap-2">
-                                        <button onclick="my_modal_4.showModal()"  class="px-4 py-2 bg-white/75 text-cyan-600 rounded-lg text-sm font-semibold hover:bg-cyan-50 transition-colors flex items-center gap-2">
+                                        <button onclick="my_modal_editcourse.showModal()"  class="px-4 py-2 bg-white/75 text-cyan-600 rounded-lg text-sm font-semibold hover:bg-cyan-50 transition-colors flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                             </svg>
@@ -99,7 +100,11 @@
                                         </div>
                                         <div>
                                             <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Status</p>
-                                            <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold border border-emerald-300">Active</span>
+                                            <span class="px-3 py-1 rounded-full text-xs font-semibold
+                                              @(course.CourseStatus == CourseStatus.Archived ? "bg-orange-500 text-white" : "bg-teal-500 text-white")">
+                                                @course.CourseStatus
+                                            </span>
+
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +121,7 @@
                                     </p>
                                 </div>
 
-                                <!-- Enrolled Students -->
+
                                 <div class="bg-cyan-50 rounded-xl shadow-lg p-4 border border-cyan-100">
                                     <div class="flex items-center justify-between mb-4">
                                         <h2 class="text-lg font-bold text-gray-700 flex items-center gap-2">
@@ -143,7 +148,7 @@
 
 
 
-                                       
+
                                         <button class="w-full cursor-pointer  text-cyan-600 hover:text-cyan-700 text-xs font-semibold rounded-lg transition-colors">
                                             View All Students →
                                         </button>
@@ -203,14 +208,14 @@
                                 <div class="bg-white rounded-xl shadow-lg p-6 border border-cyan-100">
                                     <h2 class="text-lg font-bold text-gray-800 mb-4">Actions</h2>
                                     <div class="space-y-2">
-                                        <button class="w-full px-4 py-2 bg-cyan-500 text-white rounded-lg text-sm font-semibold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2">
+                                        <button onclick="my_modal_4.showModal()" class="w-full px-4 py-2 bg-cyan-500 text-white rounded-lg text-sm font-semibold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                             </svg>
                                             Generate Report
                                         </button>
 
-                                        <button class="w-full px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center gap-2">
+                                        <button @onclick="()=> ArchiveAsync()" class="w-full px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
                                             </svg>
@@ -227,7 +232,9 @@
         </div>
 
 
-        <FacultyEditCourseInformation/>
+        <FacultyEditCourseInformation CourseUpdate="udpatecourse" />
+        <FacultyCreateAnnouncement Announcement="Announcement" />
+
 
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -254,12 +261,16 @@
 @code {
     [Parameter]
     public Guid CourseId { get; set; }
+
+    public UpdateCourseDto udpatecourse { get; set; } = new();
+
     private bool Hasrender = false;
     public CourseDto? course { get; set; } 
     public QuickStatsDto? quickStats { get; set; }
     public List<HandlingStudentsDto>? studentlist {get;set;}
-    public AcademicInformationDto? StudentId { get; set; }
     private string? Error { get; set; }
+
+    public AnnouncementDto Announcement { get; set; } = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -276,15 +287,46 @@
                 }
                 quickStats = await handlingApiCourse.DisplayStatsAsync(course.CourseCode!);
                 studentlist = await handlingStudentsApi.DisplayStudentByCoursesAsync(course.CourseCode!);
+                foreach (var student in studentlist!)
+                {
+                    Announcement.StudentId = student.StudentId;
+                }
+                Announcement.CourseCode = course.CourseCode;
+                Announcement.CourseId = course.Id;
+                Announcement.CourseName = course.Title;
 
-              
+                udpatecourse.Id = course.Id;
+                udpatecourse.Title = course.Title;
+                udpatecourse.CategoryId = course.CategoryId;
+                udpatecourse.Department = course.Department!.Value;
+                udpatecourse.Unit = course.Unit;
+                udpatecourse.Cost = course.Cost;
+                udpatecourse.CourseDescription = course.CourseDescriptiion;
+                udpatecourse.Semester = course.Semester!.Value;
+                udpatecourse.Schedule = course.Schedule;
+                udpatecourse.MaxCapacity = course.MaxCapacity;
+                udpatecourse.SchoolYear = course.SchoolYear;
+                udpatecourse.Room = course.Room;
+                udpatecourse.CourseStatus = course.CourseStatus;
+                udpatecourse.CourseCode = course.CourseCode;
+       
 
-        }
+            }
             catch (HttpRequestException ex)
             {
                 Error = $"Error fetching course: {ex.Message}";
             }
         }
         StateHasChanged();
+    }
+    public async Task ArchiveAsync()
+    {
+        var request = await handlingApiCourse.ArchivedCourseAsync(course!.CourseCode!);
+        if(request is false)
+        {
+            Error = "Course not Found";
+            return;
+        }
+        navigation.NavigateTo("/coursemanagemnt");
     }
 }

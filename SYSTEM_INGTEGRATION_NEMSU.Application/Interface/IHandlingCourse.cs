@@ -12,9 +12,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
     {
         Task<CourseDto?> AddCourseAsync(Course request);
         Task<IEnumerable<CourseDto>> DisplayCourseAsync(Guid adminid);
-        Task<Course?> UpdateCourseAsync(UpdateCourseDto course);
+        Task<CourseDto?> UpdateCourseAsync(UpdateCourseDto course);
         Task<bool> DeleteCourseAsycnc(Guid AdminId, Guid course);
         Task<CourseDto?> GetCourseAsync(Guid AdminId, Guid CourseId);
         Task<QuickStatsDto?> DisplayStatsAsync(Guid AdminId, string CourseCode);
+        Task<bool> ArchivedCourseAsync(Guid AdminId, string CourseCode);
+        Task<IEnumerable<CourseDto>> DisplayArchiveCourseAsync(Guid adminid);
     }
 }

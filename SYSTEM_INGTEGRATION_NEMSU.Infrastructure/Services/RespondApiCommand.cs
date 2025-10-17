@@ -15,9 +15,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         private readonly HttpClient _http;
         private readonly ProtectedLocalStorage _localstorage;
 
-        public RespondApiCommand(IHttpClientFactory httpClient, ProtectedLocalStorage localstorage)
+        public RespondApiCommand(HttpClient http, ProtectedLocalStorage localstorage)
         {
-            _http = httpClient.CreateClient();
+            _http = http;
             _localstorage = localstorage;
         }
 

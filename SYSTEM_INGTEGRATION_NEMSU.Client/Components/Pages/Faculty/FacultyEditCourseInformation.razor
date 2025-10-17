@@ -1,201 +1,314 @@
-﻿
-<dialog id="my_modal_4" class="modal">
-    <div class="modal-box w-11/12 max-w-6xl p-0 overflow-hidden rounded-md ">
+﻿@using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
+@inject IHandlingApiCourse handlingApiCourse
+@rendermode InteractiveServer
+@inject IJSRuntime JS
 
-       
-        <div class="sticky top-0 z-10 p-6 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h3 class="text-2xl font-bold flex items-center gap-3">
-                        <div class="p-2 bg-white/20 rounded-lg">
+<dialog id="my_modal_editcourse" class="modal">
+    <div class="modal-box w-11/12 max-w-5xl p-0 overflow-auto rounded-2xl shadow-2xl">
+
+        <EditForm Model="@CourseUpdate" OnValidSubmit="@UpdateCourse" FormName="UpdateCourse">
+           
+            <div class="relative px-8 py-6 bg-gradient-to-br from-cyan-600 via-teal-600 to-blue-700 text-white overflow-hidden">
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6bTAgMTBjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
+
+                <div class="relative flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                         </div>
-                        Edit Course Information
-                    </h3>
-                    <p class="text-cyan-100 text-sm mt-2">Update course details for CS101</p>
-                </div>
-                <form method="dialog">
-                    <button class="btn btn-sm btn-circle btn-ghost text-white hover:bg-white/20">✕</button>
-                </form>
-            </div>
-        </div>
-
-     
-        <div class="p-6 bg-gradient-to-br -mb-5 from-gray-50 to-cyan-50 max-h-[calc(100vh-250px)] overflow-y-auto">
-
-         
-            <div class="bg-white rounded-xl shadow-sm border border-cyan-100 p-6 mb-4">
-                <h4 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-                    <div class="w-1 h-6 bg-cyan-500 rounded-full"></div>
-                    Basic Information
-                </h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Course Code</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <input type="text" value="CS101" placeholder="e.g., CS101" class="input input-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all" />
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Course Title</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <input type="text" value="Introduction to Computer Science" placeholder="Enter course title" class="input input-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all" />
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Category</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <select class="select select-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all">
-                            <option selected>Computer Science</option>
-                            <option>Information Technology</option>
-                            <option>Engineering</option>
-                            <option>Business</option>
-                            <option>Mathematics</option>
-                            <option>Arts & Humanities</option>
-                        </select>
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Department</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <input type="text" value="Computer Science Department" placeholder="Enter department" class="input input-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all" />
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Units</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <input type="number" value="3" min="1" max="6" placeholder="Enter units" class="input input-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all" />
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Price (₱)</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">₱</span>
-                            <input type="number" value="5000" step="100" placeholder="0.00" class="input input-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all pl-8" />
+                        <div>
+                            <h3 class="text-2xl font-bold">Edit Course Information</h3>
+                            <p class="text-cyan-100 text-sm mt-1">Update course details for CS101</p>
                         </div>
                     </div>
-
-                    <div class="form-control md:col-span-2">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Course Description</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <textarea class="textarea textarea-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all h-28 resize-none" placeholder="Enter course description">This course provides a comprehensive introduction to the fundamental concepts of computer science. Students will learn about programming basics, data structures, algorithms, and problem-solving techniques. The course covers both theoretical foundations and practical applications, preparing students for advanced courses in computer science and related fields.</textarea>
-                    </div>
-
-                </div>
-            </div>
-
-          
-            <div class="bg-white rounded-xl shadow-sm border border-cyan-100 p-6 mb-4">
-                <h4 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-                    <div class="w-1 h-6 bg-purple-500 rounded-full"></div>
-                    Schedule & Logistics
-                </h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Semester</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <select class="select select-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all">
-                            <option selected>1st Semester</option>
-                            <option>2nd Semester</option>
-                            <option>Summer</option>
-                        </select>
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">School Year</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <input type="text" value="2024-2025" placeholder="e.g., 2024-2025" class="input input-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all" />
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Class Schedule</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <input type="text" value="MWF 10:00-11:00 AM" placeholder="e.g., MWF 10:00-11:00 AM" class="input input-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all" />
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Room</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <input type="text" value="Room 301" placeholder="Enter room number" class="input input-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all" />
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Max Capacity</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <input type="number" value="50" min="1" placeholder="Enter max capacity" class="input input-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all" />
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-gray-700">Status</span>
-                            <span class="label-text-alt text-red-500">*</span>
-                        </label>
-                        <select class="select select-bordered border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none transition-all">
-                            <option selected>Active</option>
-                            <option>Inactive</option>
-                            <option>Archived</option>
-                        </select>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-        
-        <div class="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4">
-            <div class="flex flex-col sm:flex-row gap-3 justify-between items-center">
-                <p class="text-xs text-gray-500 flex items-center gap-1">
-                    <span class="text-red-500">*</span>
-                    Required fields
-                </p>
-                <div class="flex gap-3 w-full sm:w-auto">
-                    <form method="dialog" class="flex-1 sm:flex-none">
-                        <button class="btn btn-ghost w-full sm:w-auto border border-gray-300 hover:bg-gray-100">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <form method="dialog">
+                        <button class="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all flex items-center justify-center text-white">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
-                            Cancel
                         </button>
                     </form>
-                    <button type="button" class="btn bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white border-0 flex-1 sm:flex-none shadow-lg">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Save Changes
-                    </button>
                 </div>
             </div>
-        </div>
 
+           
+            <div class="p-8 bg-gray-50 max-h-[calc(100vh-280px)] overflow-y-auto">
+
+             
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-1 h-6 bg-gradient-to-b from-cyan-500 to-teal-500 rounded-full"></div>
+                        <h4 class="text-lg font-bold text-gray-800">Basic Information</h4>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                     
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Course Code</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <input @bind="CourseUpdate.CourseCode"
+                                   type="text"
+                                   placeholder="e.g., CS101"
+                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                        </div>
+
+                     
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Course Title</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <input @bind="CourseUpdate.Title"
+                                   type="text"
+                                   placeholder="Enter course title"
+                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                        </div>
+
+                    
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Theme</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <div class="relative">
+                                <select @bind="CourseUpdate.CategoryId"
+                                        class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
+                                    <option value="@Guid.Empty">Select Theme</option>
+                                    <option value="@Guid.Parse("11111111-1111-1111-1111-111111111111")">Mathematics</option>
+                                    <option value="@Guid.Parse("22222222-2222-2222-2222-222222222222")">Arts & Humanities</option>
+                                    <option value="@Guid.Parse("33333333-3333-3333-3333-333333333333")">Computer Science</option>
+                                    <option value="@Guid.Parse("44444444-4444-4444-4444-444444444444")">Social Sciences</option>
+                                    <option value="@Guid.Parse("55555555-5555-5555-5555-555555555555")">Natural Sciences</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                     
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Department</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                    </svg>
+                                </div>
+                                <select @bind="CourseUpdate.Department"
+                                        class="select select-bordered w-full  pr-10 bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none">
+                                    <option value="">Select Department</option>
+                                    <option value="@CourseDepartment.DIT">Department of Industrial Technology</option>
+                                    <option value="@CourseDepartment.DCS">Department of Computer Studies</option>
+                                    <option value="@CourseDepartment.DGTT">Department of General Teacher Training</option>
+                                    <option value="@CourseDepartment.CCJE">College of Criminal Justice Education</option>
+                                    <option value="@CourseDepartment.DBM">Department of Business Administration</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                     
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Units</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <input @bind="CourseUpdate.Unit"
+                                   type="number"
+                                   min="1"
+                                   max="6"
+                                   placeholder="Enter units"
+                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                        </div>
+
+                      
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Price (₱)</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">₱</span>
+                                <input @bind="CourseUpdate.Cost"
+                                       type="number"
+                                       step="100"
+                                       placeholder="0.00"
+                                       class="input input-bordered w-full  bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                            </div>
+                        </div>
+
+                   
+                        <div class="form-control md:col-span-2">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Course Description</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <textarea @bind="CourseUpdate.CourseDescription"
+                                      class="textarea textarea-bordered w-full h-28 resize-none bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all"
+                                      placeholder="Enter a comprehensive course description...">This course provides a comprehensive introduction to the fundamental concepts of computer science. Students will learn about programming basics, data structures, algorithms, and problem-solving techniques.</textarea>
+                        </div>
+                    </div>
+                </div>
+
+              
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-1 h-6 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
+                        <h4 class="text-lg font-bold text-gray-800">Schedule & Logistics</h4>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Semester</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <div class="relative">
+                                <select @bind="CourseUpdate.Semester"
+                                        class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
+                                    <option value="@CourseSemester.First_Semester">1st Semester</option>
+                                    <option value="@CourseSemester.Second_Semester">2nd Semester</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">School Year</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <input @bind="CourseUpdate.SchoolYear"
+                                   type="text"
+                                   placeholder="e.g., 2024-2025"
+                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                        </div>
+
+                      
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Class Schedule</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <input @bind="CourseUpdate.Schedule"
+                                   type="text"
+                                   placeholder="e.g., MWF 10:00-11:00 AM"
+                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                        </div>
+
+                       
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Room</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <input @bind="CourseUpdate.Room"
+                                   type="text"
+                                   placeholder="Enter room number"
+                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                        </div>
+
+                    
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Max Capacity</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <input @bind="CourseUpdate.MaxCapacity"
+                                   type="number"
+                                   min="1"
+                                   placeholder="Enter max capacity"
+                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                        </div>
+
+                    
+                        <div class="form-control">
+                            <label class="label pb-2">
+                                <span class="label-text font-semibold text-gray-700 text-sm">Status</span>
+                                <span class="text-red-500 text-xs">*</span>
+                            </label>
+                            <div class="relative">
+                                <select @bind="CourseUpdate.CourseStatus"
+                                        class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
+                                    <option value="@CourseStatus.Active">Active</option>
+                                    <option value="@CourseStatus.Archived">Archived</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+      
+            <div class="px-8 py-5 bg-white border-t border-gray-200">
+                <div class="flex flex-col sm:flex-row gap-3 justify-between items-center">
+                    <p class="text-xs text-gray-500 flex items-center gap-1.5">
+                        <span class="text-red-500">*</span>
+                        <span>Required fields</span>
+                    </p>
+                    <div class="flex gap-3 w-full sm:w-auto">
+                        <form method="dialog" class="flex-1 sm:flex-none">
+                            <button class="btn btn-ghost w-full sm:w-auto border border-gray-300 hover:bg-gray-50 normal-case font-medium">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                Cancel
+                            </button>
+                        </form>
+                        <button type="submit" class="btn bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white border-0 flex-1 sm:flex-none shadow-lg shadow-cyan-500/30 normal-case font-medium">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </EditForm>
     </div>
 </dialog>
+
+@code {
+    [Parameter]
+    public UpdateCourseDto CourseUpdate { get; set; } = new();
+    public string? Error { get; set; }
+
+    public async Task UpdateCourse()
+    {
+        var request = await handlingApiCourse.UpdateCourse(CourseUpdate);
+        if (request is null)
+        {
+            Error = "Nothing to display";
+            return;
+        }
+        await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_editcourse");
+
+    }
+}

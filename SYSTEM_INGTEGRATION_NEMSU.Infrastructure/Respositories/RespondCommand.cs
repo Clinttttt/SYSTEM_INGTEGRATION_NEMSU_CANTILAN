@@ -58,7 +58,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.Course.CourseCode == announcement.CourseCode);
             if (request is null) return null;
-
+         
             var Response = new AnnouncementDto()
             {
 
@@ -69,7 +69,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 StudentId = announcement.StudentId,
                 CourseId = request.CourseId,
                 Title = announcement.Title,
-                Course = announcement.Course,
+             
                 InformationType = announcement.InformationType,
 
             };

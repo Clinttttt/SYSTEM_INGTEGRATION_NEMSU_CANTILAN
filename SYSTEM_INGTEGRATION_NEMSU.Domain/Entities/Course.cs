@@ -24,13 +24,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string? Schedule { get; set; }
         public string? Room { get; set; }
         public ICollection<EnrollmentCourse> Enrollments { get; set; } = new List<EnrollmentCourse>();
-
         public Guid? CategoryId { get; set; }
         public Category? Category { get; set; }
 
         public int MaxCapacity { get; set; }
         public int TotalEnrolled { get; set; }
         public int AvailableSlots { get; set; }
+      
+        public CourseStatus CourseStatus { get; set; }
     }
     public enum CourseDepartment
     {
@@ -61,6 +62,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         [Display(Name = "2nd Semester")]
         Second_Semester
     }
+    public enum CourseStatus
+    {   
+        Active,
+        Archived,
+    };
 
 
 }

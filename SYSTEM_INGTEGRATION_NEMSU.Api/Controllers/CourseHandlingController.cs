@@ -67,12 +67,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             var userid = Guid.Parse(FindUser!.Value);
+            var user = await respository.UserInfo(userid);
+            if (user is null) return BadRequest("user not found");
+            course.AdminId = user.Id;
             var response = await handlingCourse.UpdateCourseAsync(course);
-            response!.AdminId = userid;
-            if (response is null)
-            {
-                return BadRequest("Something went wrong");
-            }
+
+            if (response is null) { return BadRequest("Something went wrong"); }
             return Ok(response);
         }
         [Authorize]
@@ -107,6 +107,31 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (user is null) { return BadRequest("User not found "); }
             var response = await handlingCourse.DisplayStatsAsync(user.Id, CourseCode);
             if (response is null) return BadRequest("Nothing to display");
+            return Ok(response);
+        }
+        [Authorize]
+        [HttpPatch("Archive Course")]
+        public async Task<ActionResult<bool>> ArchivedCourseAsync(string CourseCode)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
+
+            var GetUserId = Guid.Parse(FindUser.Value);
+            var user = await respository.UserInfo(GetUserId);
+            if (user is null) { return BadRequest("User not found "); }
+            var response = await handlingCourse.ArchivedCourseAsync(user.Id, CourseCode);
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet("Display ArchiveCourse")]
+        public async Task<ActionResult<CourseDto>> DisplayAllArchiveCourse()
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
+            var UserId = Guid.Parse(FindUser.Value);
+            var response = await handlingCourse.DisplayArchiveCourseAsync(UserId);
+            if (response is null) return BadRequest("nothing to dispaly");
             return Ok(response);
         }
     }
