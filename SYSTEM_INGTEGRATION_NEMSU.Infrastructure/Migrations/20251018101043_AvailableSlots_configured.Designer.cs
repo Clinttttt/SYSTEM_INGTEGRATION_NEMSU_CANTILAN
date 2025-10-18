@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251018101043_AvailableSlots_configured")]
+    partial class AvailableSlots_configured
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -473,9 +476,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Property<Guid?>("StudentAcademicsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("StudentContactsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("StudentsDetailsId")
                         .HasColumnType("uniqueidentifier");
 
@@ -488,10 +488,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.HasIndex("StudentAcademicsId")
                         .IsUnique()
                         .HasFilter("[StudentAcademicsId] IS NOT NULL");
-
-                    b.HasIndex("StudentContactsId")
-                        .IsUnique()
-                        .HasFilter("[StudentContactsId] IS NOT NULL");
 
                     b.HasIndex("StudentsDetailsId")
                         .IsUnique()
@@ -569,19 +565,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .HasForeignKey("SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities.User", "StudentAcademicsId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord.ContactInformation", "StudentContactDetails")
-                        .WithOne("User")
-                        .HasForeignKey("SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities.User", "StudentContactsId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.PersonalInformation", "StudentsDetails")
                         .WithOne("User")
                         .HasForeignKey("SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities.User", "StudentsDetailsId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("StudentAcademicDetails");
-
-                    b.Navigation("StudentContactDetails");
 
                     b.Navigation("StudentsDetails");
                 });
@@ -604,11 +593,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord.AcademicInformation", b =>
-                {
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord.ContactInformation", b =>
                 {
                     b.Navigation("User");
                 });

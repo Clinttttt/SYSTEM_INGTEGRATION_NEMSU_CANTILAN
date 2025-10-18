@@ -1,0 +1,431 @@
+﻿@page "/facultyviewallenrolled/{CourseId:guid}"
+@inject IHandlingApiCourse handlingApiCourse
+@inject IHandlingStudentsApi handlingStudentsApi
+@inject IStudentRecordApiCommand studentRecordApiCommand
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+
+<div class="relative h-screen content overflow-hidden">
+    <div class="drawer lg:drawer-open h-screen">
+        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col h-screen overflow-auto">
+            <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden m-4">
+                Open drawer
+            </label>
+            <div class="flex-1 relative  p-8 pb-20" style="background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 50%, #e0f2fe 100%);">
+
+
+                <div >
+                    <NavLink href="/coursemanagemnt" class="inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700  font-semibold text-sm mb-4">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Back to Courses
+                    </NavLink>
+                </div>
+
+                @if (IsLoading)
+                {
+                    <div class="flex justify-center items-center py-32">
+                        <div class="text-center">
+                            <div class="relative">
+                                <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                            </div>
+                            <p class="text-gray-600 mt-6 text-lg font-semibold">Loading students...</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @if (Course is not null )
+                    {
+                        <div class="mb-10 text-center">
+                            <div class="inline-block mb-4">
+                                <div class="bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-8 py-3 rounded-full text-sm font-bold uppercase tracking-wider shadow-lg">
+                                    Class Roster
+                                </div>
+                            </div>
+                            <h1 class="text-4xl font-extrabold mb-4 bg-gradient-to-r from-cyan-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                                @Course.Title
+                            </h1>
+                            <div class="flex items-center justify-center gap-3 text-2xl text-gray-600">
+                                <span class="font-semibold text-cyan-600">@Course.CourseCode</span>
+                                <span class="text-gray-300">•</span>
+                                <span class="font-medium">Academic Year @Course.SchoolYear</span>
+                            </div>
+                        </div>
+                    }
+
+
+                    @if (quickStats is not null)
+                    {
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-3xl mx-auto">
+
+                            <div class="group relative">
+                                <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/40 to-cyan-600/40 rounded-3xl blur opacity-45 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="relative bg-white/50 rounded-3xl shadow-2xl p-8 transform transition-all group-hover:scale-105">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl p-4 shadow-lg">
+                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-500 text-sm font-bold uppercase tracking-wide mb-2">Total Enrolled</p>
+                                    <p class="text-4xl font-extrabold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">@quickStats.TotalEnrolled</p>
+                                    <p class="text-gray-500 mt-2 font-medium">Active Students</p>
+                                </div>
+                            </div>
+
+                            <div class="group relative">
+                                <div class="absolute inset-0 bg-gradient-to-br from-teal-400/40 to-teal-600/40 rounded-3xl blur opacity-45 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="relative bg-white/50 rounded-3xl shadow-2xl p-8 transform transition-all group-hover:scale-105">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl p-4 shadow-lg">
+                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-500 text-sm font-bold uppercase tracking-wide mb-2">Max Capacity</p>
+                                    <p class="text-4xl font-extrabold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">@quickStats.MaxCapacity</p>
+                                    <p class="text-gray-500 mt-2 font-medium">Maximum Slots</p>
+                                </div>
+                            </div>
+
+                            <div class="group relative">
+                                <div class="absolute inset-0 bg-gradient-to-br from-amber-400/40 to-amber-600/40 rounded-3xl blur opacity-45 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="relative bg-white/50 rounded-3xl shadow-2xl p-8 transform transition-all group-hover:scale-105">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-4 shadow-lg">
+                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-500 text-sm font-bold uppercase tracking-wide mb-2">Available Slots</p>
+                                    <p class="text-4xl font-extrabold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">@quickStats.AvailableSlots</p>
+                                    <p class="text-gray-500 mt-2 font-medium">Open Positions</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+
+
+                <div class="max-w-4xl mx-auto mb-12">
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/40 to-teal-400/40 rounded-2xl blur-lg opacity-40 group-hover:opacity-75 transition-opacity"></div>
+                        <div class="relative bg-white rounded-2xl shadow-2xl p-2">
+                            <div class="relative">
+                                <input type="text"
+                                @bind="SearchQuery"
+                                @bind:event="oninput"
+                                @onkeyup="FilterStudents"
+                                placeholder="Search by name, student ID, or email..."
+                                class="input w-full pl-14 pr-14 py-4 text-lg border-0 focus:outline-none focus:ring-0 bg-transparent" />
+                                <div class="absolute left-5 top-1/2 -translate-y-1/2">
+                                    <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                @if (!string.IsNullOrEmpty(SearchQuery))
+                                {
+                                    <button @onclick="ClearSearch" class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                @if (IsLoading)
+                {
+                    <div class="flex justify-center items-center py-32">
+                        <div class="text-center">
+                            <div class="relative">
+                                <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                            </div>
+                            <p class="text-gray-600 mt-6 text-lg font-semibold">Loading students...</p>
+                        </div>
+                    </div>
+                }
+                else if (FilteredStudents == null || !FilteredStudents.Any())
+                {
+                    <div class="max-w-xl mx-auto">
+                        <div class="bg-white rounded-3xl shadow-2xl p-16 text-center">
+                            <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-full w-32 h-32 flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-800 mb-3">No Students Found</h3>
+                            <p class="text-gray-500 text-lg">@(string.IsNullOrEmpty(SearchQuery) ? "This course doesn't have any enrolled students yet." : "Try adjusting your search terms.")</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="max-w-7xl mx-auto">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            @if (studentlist is not null)
+                            {
+                                @foreach (var student in studentlist)
+                                {
+                                    <div class="group relative">
+                                        <div class="absolute inset-0 bg-gradient-to-br from-cyan-400 to-teal-400 rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
+                                        <div class="relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transform group-hover:-translate-y-1">
+                                            <div class="relative h-20 bg-gradient-to-br from-cyan-500 via-teal-500 to-cyan-500 overflow-hidden">
+                                                <div class="absolute inset-0 opacity-20">
+                                                    <div class="absolute top-0 -left-4 w-32 h-32 bg-white rounded-full"></div>
+                                                    <div class="absolute bottom-0 -right-13 w-33 h-33 bg-white rounded-full"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="relative px-5 -mt-10 mb-2">
+                                                <div class="inline-block">
+                                                    <div class="relative">
+                                                        <div class="avatar placeholder ">
+                                                            <img src="/img/student_logo.jpg" class=" bg-contain rounded-full !w-16 !h-16 flex items-center justify-center shadow-xl border-3 border-white ring-2 ring-cyan-100" />
+                                                            @*   <span class="text-2xl   font-extrabold">@GetInitials(student.Name)</span>*@
+
+                                                        </div>
+                                                        <div class="absolute bottom-0  right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-5 pb-5">
+                                                <h3 class="text-lg font-bold text-gray-800 mb-0.5 truncate">@student.StudentName</h3>
+                                                <p class="text-cyan-600 font-bold text-sm mb-3">@student.StudentSchoolId</p>
+
+                                                <div class="space-y-2.5 mb-4">
+                                                    <div class="flex items-start gap-2">
+                                                        <div class="flex-shrink-0 w-7 h-7 bg-cyan-50 rounded-lg flex items-center justify-center">
+                                                            <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="flex-1 min-w-0">
+                                                            <p class="text-xs text-gray-500 font-semibold mb-0.5">Email</p>
+                                                            <p class="text-xs text-gray-700 font-medium truncate">@student.Email</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex items-start gap-2">
+                                                        <div class="flex-shrink-0 w-7 h-7 bg-teal-50 rounded-lg flex items-center justify-center">
+                                                            <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="flex-1">
+                                                            <p class="text-xs text-gray-500 font-semibold mb-0.5">Enrolled</p>
+                                                            <p class="text-xs text-gray-700 font-medium">@student.DateEnrolled.ToString("MMM dd, yyyy")</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <button @onclick="() => ViewStudentProfile(student.StudentSchoolId!)"
+                                                        class="w-full bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 text-white font-semibold py-2.5 text-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group">
+                                                    <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                                    </svg>
+                                                    View Profile
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="drawer-side">
+            <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
+            <ul class="menu min-h-full w-62 p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+                <li class="mx-auto mb-4">
+                    <div class="w-[92px] h-[92px] bg-gradient-to-br from-amber-50 to-amber-50 rounded-full flex items-center justify-center border-4 border-orange-300 shadow-lg">
+                        <svg class="w-13 h-13 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                </li>
+                <li><a class="text-white text-2xl font-light btn btn-outline btn-dash btn-primary">Course Records</a></li>
+                <li class="mt-10"><NavLink href="/createcourse" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Create Course</NavLink></li>
+                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Settings</a></li>
+                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Logout</a></li>
+                <li class="mt-10"><NavLink href="/studentmanagement" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Student Records</NavLink></li>
+                <li class="mt-2"><NavLink href="/facultyannouncement" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Announcements</NavLink></li>
+                <li class="mt-2"><NavLink href="/facultyprofile" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Profile</NavLink></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Guid CourseId { get; set; }
+
+    private string CourseName = "Integrative Programming";
+    private string CourseCode = "IT201";
+    private int TotalStudents = 0;
+    private int MaxCapacity = 40;
+    private int AvailableSlots = 0;
+
+    public bool Hasrender = false;
+    private bool IsLoading = true;
+    private string SearchQuery = "";
+
+    public List<HandlingStudentsDto>? studentlist { get; set; }
+    private CourseDto? Course { get; set; }
+    public QuickStatsDto? quickStats { get; set; }
+    private string? Error { get; set; }
+
+
+
+    private List<StudentEnrollment> AllStudents = new();
+    private List<StudentEnrollment> FilteredStudents = new();
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!Hasrender && firstRender)
+        {
+            Hasrender = true;
+            Course = await handlingApiCourse.GetCourseAsync(CourseId);        
+            studentlist = await handlingStudentsApi.DisplayStudentByCoursesAsync(Course!.CourseCode!);
+            quickStats = await handlingApiCourse.DisplayStatsAsync(Course.CourseCode!);
+
+
+        }
+        StateHasChanged();
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCourseData();
+        await LoadStudents();
+    }
+
+    private async Task LoadCourseData()
+    {
+        // Load course information from API
+        // var course = await handlingApiCourse.GetCourseById(CourseId);
+        // CourseName = course.Name;
+        // CourseCode = course.Code
+        // MaxCapacity = course.MaxCapacity;
+    }
+
+    private async Task LoadStudents()
+    {
+        IsLoading = true;
+
+        // Simulate API call - replace with actual API call
+        await Task.Delay(500);
+
+        // Replace this with: AllStudents = await handlingStudentsApi.GetEnrolledStudents(CourseId);
+        AllStudents = new List<StudentEnrollment>
+        {
+            new StudentEnrollment
+            {
+                StudentId = "2025-1234",
+                Name = "Bato Dela",
+                Email = "bato.dela@example.com",
+                EnrollmentDate = DateTime.Now.AddDays(-30)
+            },
+            new StudentEnrollment
+            {
+                StudentId = "2025-1243",
+                Name = "Bobby Mercado",
+                Email = "bobby.mercado@example.com",
+                EnrollmentDate = DateTime.Now.AddDays(-28)
+            },
+            new StudentEnrollment
+            {
+                StudentId = "2025-1256",
+                Name = "Maria Santos",
+                Email = "maria.santos@example.com",
+                EnrollmentDate = DateTime.Now.AddDays(-25)
+            },
+            new StudentEnrollment
+            {
+                StudentId = "2025-1267",
+                Name = "Juan Cruz",
+                Email = "juan.cruz@example.com",
+                EnrollmentDate = DateTime.Now.AddDays(-22)
+            },
+            new StudentEnrollment
+            {
+                StudentId = "2025-1278",
+                Name = "Ana Reyes",
+                Email = "ana.reyes@example.com",
+                EnrollmentDate = DateTime.Now.AddDays(-20)
+            },
+            new StudentEnrollment
+            {
+                StudentId = "2025-1289",
+                Name = "Carlos Garcia",
+                Email = "carlos.garcia@example.com",
+                EnrollmentDate = DateTime.Now.AddDays(-18)
+            }
+        };
+
+        FilteredStudents = AllStudents;
+        TotalStudents = AllStudents.Count;
+        AvailableSlots = MaxCapacity - TotalStudents;
+
+        IsLoading = false;
+    }
+
+    private void FilterStudents()
+    {
+        if (string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            FilteredStudents = AllStudents;
+        }
+        else
+        {
+            var query = SearchQuery.ToLower();
+            FilteredStudents = AllStudents.Where(s =>
+                s.Name.ToLower().Contains(query) ||
+                s.StudentId.ToLower().Contains(query) ||
+                s.Email.ToLower().Contains(query)
+            ).ToList();
+        }
+    }
+
+    private void ClearSearch()
+    {
+        SearchQuery = "";
+        FilteredStudents = AllStudents;
+    }
+
+    private string GetInitials(string name)
+    {
+        var parts = name.Split(' ');
+        if (parts.Length >= 2)
+            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+        return name.Length >= 2 ? name.Substring(0, 2).ToUpper() : name.ToUpper();
+    }
+
+    private void ViewStudentProfile(string studentId)
+    {
+        navigation.NavigateTo($"/studentprofile/{studentId}");
+    }
+
+    public class StudentEnrollment
+    {
+        public string StudentId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public DateTime EnrollmentDate { get; set; }
+    }
+}

@@ -22,6 +22,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .FirstOrDefaultAsync(u => u.Id == studentId && u.Role == UserRole.Student);
             if (student is null) return null;
 
+            if (course.AvailableSlots <= 0) { return null; }
 
             bool alreadyEnrolled = await context.enrollcourse
                 .AnyAsync(e => e.StudentId == studentId && e.CourseId == course.Id);
@@ -37,8 +38,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 EnrollmentStatus = status,
                 
             };
-            course.TotalEnrolled += 1;
-            course.AvailableSlots = course.MaxCapacity - course.TotalEnrolled;
+            course.TotalEnrolled += 1;                 
             context.enrollcourse.Add(enrollment);
             await context.SaveChangesAsync();
 
@@ -80,7 +80,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (enrollment is null) return false;
                   
             enrollment.Course.TotalEnrolled -= 1;
-            enrollment.Course.AvailableSlots = enrollment.Course.MaxCapacity - enrollment.Course.TotalEnrolled;
+       
 
             context.enrollcourse.Remove(enrollment);
             await context.SaveChangesAsync();

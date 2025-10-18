@@ -19,6 +19,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .Include(s => s.Student)
                     .ThenInclude(s => s.StudentsDetails)
                 .Include(s => s.Course)
+             
                 .Where(s => s.Course.AdminId == AdminId)
                 .Select(s => new HandlingStudentsDto
                 {
@@ -28,6 +29,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                         : "N/A",
                     CourseTitle = s.Course != null ? s.Course.Title! : "N/A",
                     DateEnrolled = s.DateEnrolled,
+                    Email = s.Student.StudentContactDetails != null ? s.Student.StudentContactDetails.EmailAddress : "N/A",
+                    StudentSchoolId = s.Student.StudentAcademicDetails != null ? s.Student.StudentAcademicDetails.StudentSchoolId : "0000-0000",
                 })
                 .ToListAsync();
 
@@ -39,9 +42,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.enrollcourse
                 .Include(s => s.Student)
                  .ThenInclude(s => s.StudentsDetails)
-                   .Include(s => s.Student)
-                .ThenInclude(s => s.StudentAcademicDetails)
-
+                
+              
                 .Include(s => s.Course)
                 .Where(s => s.Course.AdminId == AdminId && s.Course.CourseCode == CourseCode)
                 .Select(s => new HandlingStudentsDto
@@ -52,7 +54,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                         : "N/A",
                     CourseTitle = s.Course != null ? s.Course.Title! : "N/A",
                     DateEnrolled = s.DateEnrolled,
-                    StudentSchoolId = s.Student.StudentAcademicDetails != null ? s.Student.StudentAcademicDetails.StudentSchoolId : "0000-0000"
+                    StudentSchoolId = s.Student.StudentAcademicDetails != null ? s.Student.StudentAcademicDetails.StudentSchoolId : "0000-0000",
+                   Email = s.Student.StudentContactDetails != null ? s.Student.StudentContactDetails.EmailAddress : "N/A",
                 })
                 .ToListAsync();
 

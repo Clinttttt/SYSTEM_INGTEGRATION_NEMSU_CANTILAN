@@ -102,6 +102,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (request is null) return null;
             var details = context.contactInformation.Add(contactInformation);
             var filter = details.Adapt<ContactInformationDto>();
+            request.StudentContactDetails = contactInformation;
             await context.SaveChangesAsync();
             return filter;
         }

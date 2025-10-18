@@ -39,10 +39,20 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
                  .HasForeignKey<User>(s => s.StudentAcademicsId)
                  .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<User>()
+                .HasOne(s=> s.StudentContactDetails)
+                .WithOne(s=> s.User)
+                .HasForeignKey<User>(s=> s.StudentContactsId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<Course>()
+    .Property(c => c.AvailableSlots)
+    .HasComputedColumnSql("[MaxCapacity] - [TotalEnrolled]", stored: true);
 
 
         }
-      
+
         public DbSet<User> users { get; set; }
         public DbSet<Course> course { get; set; }
         public DbSet<EnrollmentCourse> enrollcourse { get; set; }

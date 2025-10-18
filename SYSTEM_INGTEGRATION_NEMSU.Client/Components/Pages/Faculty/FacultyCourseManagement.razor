@@ -1,4 +1,5 @@
 ﻿@page "/coursemanagemnt"
+@using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
 
 @inject IHandlingApiCourse handlingApiCourse
 @rendermode InteractiveServer
@@ -53,8 +54,8 @@
                                 </svg>
                             </div>
                             <input type="text"
-                            class="w-full pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
-                            placeholder="Search by course code, name..." />
+                                   class="w-full pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
+                                   placeholder="Search by course code, name..." />
                         </div>
                     </div>
 
@@ -79,7 +80,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-13">
 
-                    @if(Course is not null)
+                    @if (Course is not null)
                     {
                         @foreach (var course in Course)
                         {
@@ -88,9 +89,9 @@
                                 <div class="bg-gradient-to-r from-cyan-500 to-cyan-600 p-3 text-white">
                                     <div class="flex items-center justify-between mb-2">
                                         <span class="text-xs font-bold uppercase tracking-wide">@course.CourseCode</span>
-                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-400 text-white">Active</span>
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold @(course.CourseStatus == CourseStatus.Archived ? "bg-orange-500 text-white" : "bg-emerald-400 text-white") text-white">@course.CourseStatus</span>
                                     </div>
-                                    <h3 class="text-sm font-bold">Introduction to Computer </h3>
+                                    <h3 class="text-sm font-bold">@course.Title</h3>
                                 </div>
                                 <div class="p-3 space-y-2">
                                     <div class="flex items-center gap-2 text-xs text-gray-600">
@@ -118,7 +119,7 @@
                                         <NavLink href="@($"/viewcourse/{course.Id}")" class=" btn flex-1 px-2 py-1 bg-cyan-50 text-cyan-600 rounded text-[10px] font-semibold hover:bg-cyan-100 transition-colors">
                                             View
                                         </NavLink>
-                                        <button onclick="my_modal_4.showModal()" class="flex-1 px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-semibold hover:bg-gray-100 transition-colors">
+                                        <button onclick="my_modal_editcourse.showModal()" class="flex-1 px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-semibold hover:bg-gray-100 transition-colors">
                                             Edit
                                         </button>
                                     </div>
@@ -130,18 +131,13 @@
                     }
 
 
-
-
-
-
                 </div>
             </div>
         </div>
 
-        <FacultyEditCourseInformation />
+        <FacultyEditCourseInformation OnCourseUpdated="ReloadCourseData" CourseUpdate="udpatecourse" />
 
-
-        <!-- Sidebar -->
+ 
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <ul class="menu min-h-full w-62 p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
@@ -170,19 +166,53 @@
     private string? Error { get; set; }
     private bool hasrender = false;
 
+
+
+    public UpdateCourseDto udpatecourse { get; set; } = new();
+    private bool Hasrender = false;
+    public CourseDto? course { get; set; }
+    public EventCallback Reload { get; set; }
+
+    public List<HandlingStudentsDto>? studentlist { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(!hasrender && firstRender)
+        if (!hasrender && firstRender)
         {
             hasrender = true;
             Course = await handlingApiCourse.DisplayAllCourse();
+            StateHasChanged();
             if (Course is null)
             {
                 Error = "Nothing to display";
                 return;
-            }          
-        }
-        StateHasChanged();
+            }
+            var firstCourse = Course.FirstOrDefault();
+            if (firstCourse is null)
+            {
+                Error = "Nothing to display";
+                return;
+            }
+            udpatecourse.Id = firstCourse.Id;
+            udpatecourse.Title = firstCourse.Title;
+            udpatecourse.CategoryId = firstCourse.CategoryId;
+            udpatecourse.Department = firstCourse.Department!.Value;
+            udpatecourse.Unit = firstCourse.Unit;
+            udpatecourse.Cost = firstCourse.Cost;
+            udpatecourse.CourseDescription = firstCourse.CourseDescriptiion;
+            udpatecourse.Semester = firstCourse.Semester!.Value;
+            udpatecourse.Schedule = firstCourse.Schedule;
+            udpatecourse.MaxCapacity = firstCourse.MaxCapacity;
+            udpatecourse.SchoolYear = firstCourse.SchoolYear;
+            udpatecourse.Room = firstCourse.Room;
+            udpatecourse.CourseStatus = firstCourse.CourseStatus;
+            udpatecourse.CourseCode = firstCourse.CourseCode;
+            StateHasChanged();
 
+        }
+    }
+    public async Task ReloadCourseData()
+    {
+        Course = await handlingApiCourse.DisplayAllCourse();
     }
 }

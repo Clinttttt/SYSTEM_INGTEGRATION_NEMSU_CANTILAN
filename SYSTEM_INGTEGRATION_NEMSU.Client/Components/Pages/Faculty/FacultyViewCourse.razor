@@ -1,5 +1,5 @@
 ﻿@page "/viewcourse/{CourseId:guid}"
-@using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
+
 
 @inject IHandlingApiCourse handlingApiCourse
 @inject IHandlingStudentsApi handlingStudentsApi
@@ -15,7 +15,7 @@
                 Open drawer
             </label>
 
-            <!-- Main Content -->
+
             <div class="flex-1 p-6 pb-17" style="background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);">
 
 
@@ -33,8 +33,8 @@
                     <div class="max-w-6xl mx-auto -mt-4">
 
 
-                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-cyan-500 mb-6">
-                            <div class=" p-6 text-white bg-gradient-to-r from-cyan-500 to-cyan-600">
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-cyan-600 mb-6">
+                            <div class=" p-6 text-white bg-gradient-to-r from-cyan-600 to-cyan-600">
                                 <div class="flex items-start justify-between ">
                                     <div>
                                         <div class="flex items-center gap-3 mb-2">
@@ -51,7 +51,7 @@
                                             </svg>
                                             Edit
                                         </button>
-                                        <button class="px-4 py-2  bg-red-500/75 text-white rounded-lg text-sm font-semibold  hover:bg-red-400 transition-colors  flex items-center gap-2">
+                                        <button onclick="my_modal_delete.showModal()" class="px-4 py-2  bg-red-500/75 text-white rounded-lg text-sm font-semibold  hover:bg-red-400 transition-colors  flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                             </svg>
@@ -61,8 +61,6 @@
                                 </div>
                             </div>
                         </div>
-
-
 
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -130,10 +128,10 @@
                                             </svg>
                                             Enrolled Students
                                         </h2>
-                                        <span class="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-xs font-bold">45 Students</span>
+                                        <span class="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-xs font-semibold">@StudentCount Students</span>
                                     </div>
                                     <div class="space-y-2">
-                                        @foreach (var students in studentlist)
+                                        @foreach (var students in studentlist.Take(3))
                                         {
                                             <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg transition-colors">
                                                 <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
@@ -149,9 +147,9 @@
 
 
 
-                                        <button class="w-full cursor-pointer  text-cyan-600 hover:text-cyan-700 text-xs font-semibold rounded-lg transition-colors">
+                                        <NavLink href="@($"/facultyviewallenrolled/{course.Id}")" class="w-full cursor-pointer  text-cyan-600 hover:text-cyan-700 text-xs font-semibold rounded-lg transition-colors">
                                             View All Students →
-                                        </button>
+                                        </NavLink>
                                     </div>
                                 </div>
                             </div>
@@ -215,7 +213,7 @@
                                             Generate Report
                                         </button>
 
-                                        <button @onclick="()=> ArchiveAsync()" class="w-full px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center gap-2">
+                                        <button onclick="my_modal_archive.showModal()" class="w-full px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
                                             </svg>
@@ -232,9 +230,10 @@
         </div>
 
 
-        <FacultyEditCourseInformation CourseUpdate="udpatecourse" />
+        <FacultyEditCourseInformation CourseUpdate="udpatecourse" OnCourseUpdated="ReloadCourseData" />
         <FacultyCreateAnnouncement Announcement="Announcement" />
-
+        <DeleteRespond OnClickHandler="DeleteCourse" />
+        <ArchiveRespond OnClickHandler="ArchiveAsync" />
 
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -263,13 +262,15 @@
     public Guid CourseId { get; set; }
 
     public UpdateCourseDto udpatecourse { get; set; } = new();
-
     private bool Hasrender = false;
+
+    [Parameter]
     public CourseDto? course { get; set; } 
     public QuickStatsDto? quickStats { get; set; }
     public List<HandlingStudentsDto>? studentlist {get;set;}
     private string? Error { get; set; }
-
+    public int StudentCount { get; set; }
+    
     public AnnouncementDto Announcement { get; set; } = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -287,9 +288,12 @@
                 }
                 quickStats = await handlingApiCourse.DisplayStatsAsync(course.CourseCode!);
                 studentlist = await handlingStudentsApi.DisplayStudentByCoursesAsync(course.CourseCode!);
+                StudentCount = studentlist!.Count();
+
                 foreach (var student in studentlist!)
                 {
                     Announcement.StudentId = student.StudentId;
+                
                 }
                 Announcement.CourseCode = course.CourseCode;
                 Announcement.CourseId = course.Id;
@@ -309,7 +313,7 @@
                 udpatecourse.Room = course.Room;
                 udpatecourse.CourseStatus = course.CourseStatus;
                 udpatecourse.CourseCode = course.CourseCode;
-       
+
 
             }
             catch (HttpRequestException ex)
@@ -327,6 +331,19 @@
             Error = "Course not Found";
             return;
         }
+        navigation.NavigateTo("/coursemanagemnt");
+    }
+
+    public async Task ReloadCourseData()
+    {
+        course = await handlingApiCourse.GetCourseAsync(CourseId);
+        quickStats = await handlingApiCourse.DisplayStatsAsync(course!.CourseCode!);
+        studentlist = await handlingStudentsApi.DisplayStudentByCoursesAsync(course.CourseCode!);
+        StateHasChanged();
+    }
+    public async Task DeleteCourse()
+    {
+        await handlingApiCourse.DeleteCourse(CourseId);
         navigation.NavigateTo("/coursemanagemnt");
     }
 }

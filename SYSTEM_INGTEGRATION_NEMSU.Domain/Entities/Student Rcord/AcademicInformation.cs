@@ -20,7 +20,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         public ProgramChoice Program { get; set; }
         public MajorChoice Major { get; set; }
         public StrandChoice Strand { get; set; }
-        public SaveStatus Savestatus { get; set; }
+        public SaveStatusAcademic Savestatus { get; set; }
         [JsonIgnore]
         public User? User { get; set; }
     }
@@ -88,7 +88,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         Gas,
         Tvl
     }
-    public enum SaveStatus
+    public enum SaveStatusAcademic
     {
         Save_As_Draft,
         Save

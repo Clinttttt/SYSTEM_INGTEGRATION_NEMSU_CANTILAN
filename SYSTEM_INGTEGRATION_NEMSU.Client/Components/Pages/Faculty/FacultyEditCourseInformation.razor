@@ -7,8 +7,8 @@
     <div class="modal-box w-11/12 max-w-5xl p-0 overflow-auto rounded-2xl shadow-2xl">
 
         <EditForm Model="@CourseUpdate" OnValidSubmit="@UpdateCourse" FormName="UpdateCourse">
-           
-            <div class="relative px-8 py-6 bg-gradient-to-br from-cyan-600 via-teal-600 to-blue-700 text-white overflow-hidden">
+
+            <div class="relative px-8 py-6 bg-gradient-to-br from-cyan-600 via-teal-600 to-cyan-700 text-white overflow-hidden">
                 <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6bTAgMTBjMC0yLjIxIDEuNzktNCA0LTRzNCAxLjc5IDQgNC0xLjc5IDQtNCA0LTQtMS43OS00LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
 
                 <div class="relative flex items-center justify-between">
@@ -33,10 +33,10 @@
                 </div>
             </div>
 
-           
+
             <div class="p-8 bg-gray-50 max-h-[calc(100vh-280px)] overflow-y-auto">
 
-             
+
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="w-1 h-6 bg-gradient-to-b from-cyan-500 to-teal-500 rounded-full"></div>
@@ -44,31 +44,31 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                     
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Course Code</span>
                                 <span class="text-red-500 text-xs">*</span>
                             </label>
                             <input @bind="CourseUpdate.CourseCode"
-                                   type="text"
-                                   placeholder="e.g., CS101"
-                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                            type="text"
+                            placeholder="e.g., CS101"
+                            class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
                         </div>
 
-                     
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Course Title</span>
                                 <span class="text-red-500 text-xs">*</span>
                             </label>
                             <input @bind="CourseUpdate.Title"
-                                   type="text"
-                                   placeholder="Enter course title"
-                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                            type="text"
+                            placeholder="Enter course title"
+                            class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
                         </div>
 
-                    
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Theme</span>
@@ -76,7 +76,7 @@
                             </label>
                             <div class="relative">
                                 <select @bind="CourseUpdate.CategoryId"
-                                        class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
+                                class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
                                     <option value="@Guid.Empty">Select Theme</option>
                                     <option value="@Guid.Parse("11111111-1111-1111-1111-111111111111")">Mathematics</option>
                                     <option value="@Guid.Parse("22222222-2222-2222-2222-222222222222")">Arts & Humanities</option>
@@ -92,7 +92,7 @@
                             </div>
                         </div>
 
-                     
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Department</span>
@@ -105,7 +105,7 @@
                                     </svg>
                                 </div>
                                 <select @bind="CourseUpdate.Department"
-                                        class="select select-bordered w-full  pr-10 bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none">
+                                class="select select-bordered w-full  pr-10 bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none">
                                     <option value="">Select Department</option>
                                     <option value="@CourseDepartment.DIT">Department of Industrial Technology</option>
                                     <option value="@CourseDepartment.DCS">Department of Computer Studies</option>
@@ -121,21 +121,21 @@
                             </div>
                         </div>
 
-                     
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Units</span>
                                 <span class="text-red-500 text-xs">*</span>
                             </label>
                             <input @bind="CourseUpdate.Unit"
-                                   type="number"
-                                   min="1"
-                                   max="6"
-                                   placeholder="Enter units"
-                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                            type="number"
+                            min="1"
+                            max="6"
+                            placeholder="Enter units"
+                            class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
                         </div>
 
-                      
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Price (₱)</span>
@@ -144,35 +144,35 @@
                             <div class="relative">
                                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">₱</span>
                                 <input @bind="CourseUpdate.Cost"
-                                       type="number"
-                                       step="100"
-                                       placeholder="0.00"
-                                       class="input input-bordered w-full  bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                                type="number"
+                                step="100"
+                                placeholder="0.00"
+                                class="input input-bordered w-full  bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
                             </div>
                         </div>
 
-                   
+
                         <div class="form-control md:col-span-2">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Course Description</span>
                                 <span class="text-red-500 text-xs">*</span>
                             </label>
                             <textarea @bind="CourseUpdate.CourseDescription"
-                                      class="textarea textarea-bordered w-full h-28 resize-none bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all"
-                                      placeholder="Enter a comprehensive course description...">This course provides a comprehensive introduction to the fundamental concepts of computer science. Students will learn about programming basics, data structures, algorithms, and problem-solving techniques.</textarea>
+                            class="textarea textarea-bordered w-full h-28 resize-none bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all"
+                            placeholder="Enter a comprehensive course description...">This course provides a comprehensive introduction to the fundamental concepts of computer science. Students will learn about programming basics, data structures, algorithms, and problem-solving techniques.</textarea>
                         </div>
                     </div>
                 </div>
 
-              
+
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-1 h-6 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
+                        <div class="w-1 h-6 bg-gradient-to-b from-teal-500 to-cyan-500 rounded-full"></div>
                         <h4 class="text-lg font-bold text-gray-800">Schedule & Logistics</h4>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Semester</span>
@@ -180,7 +180,7 @@
                             </label>
                             <div class="relative">
                                 <select @bind="CourseUpdate.Semester"
-                                        class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
+                                class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
                                     <option value="@CourseSemester.First_Semester">1st Semester</option>
                                     <option value="@CourseSemester.Second_Semester">2nd Semester</option>
                                 </select>
@@ -192,56 +192,56 @@
                             </div>
                         </div>
 
-                       
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">School Year</span>
                                 <span class="text-red-500 text-xs">*</span>
                             </label>
                             <input @bind="CourseUpdate.SchoolYear"
-                                   type="text"
-                                   placeholder="e.g., 2024-2025"
-                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                            type="text"
+                            placeholder="e.g., 2024-2025"
+                            class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
                         </div>
 
-                      
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Class Schedule</span>
                                 <span class="text-red-500 text-xs">*</span>
                             </label>
                             <input @bind="CourseUpdate.Schedule"
-                                   type="text"
-                                   placeholder="e.g., MWF 10:00-11:00 AM"
-                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                            type="text"
+                            placeholder="e.g., MWF 10:00-11:00 AM"
+                            class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
                         </div>
 
-                       
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Room</span>
                                 <span class="text-red-500 text-xs">*</span>
                             </label>
                             <input @bind="CourseUpdate.Room"
-                                   type="text"
-                                   placeholder="Enter room number"
-                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                            type="text"
+                            placeholder="Enter room number"
+                            class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
                         </div>
 
-                    
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Max Capacity</span>
                                 <span class="text-red-500 text-xs">*</span>
                             </label>
                             <input @bind="CourseUpdate.MaxCapacity"
-                                   type="number"
-                                   min="1"
-                                   placeholder="Enter max capacity"
-                                   class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
+                            type="number"
+                            min="1"
+                            placeholder="Enter max capacity"
+                            class="input input-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all" />
                         </div>
 
-                    
+
                         <div class="form-control">
                             <label class="label pb-2">
                                 <span class="label-text font-semibold text-gray-700 text-sm">Status</span>
@@ -249,7 +249,7 @@
                             </label>
                             <div class="relative">
                                 <select @bind="CourseUpdate.CourseStatus"
-                                        class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
+                                class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
                                     <option value="@CourseStatus.Active">Active</option>
                                     <option value="@CourseStatus.Archived">Archived</option>
                                 </select>
@@ -265,7 +265,7 @@
 
             </div>
 
-      
+
             <div class="px-8 py-5 bg-white border-t border-gray-200">
                 <div class="flex flex-col sm:flex-row gap-3 justify-between items-center">
                     <p class="text-xs text-gray-500 flex items-center gap-1.5">
@@ -298,6 +298,10 @@
 @code {
     [Parameter]
     public UpdateCourseDto CourseUpdate { get; set; } = new();
+
+    [Parameter]
+    public EventCallback  OnCourseUpdated  { get; set; }
+
     public string? Error { get; set; }
 
     public async Task UpdateCourse()
@@ -308,7 +312,8 @@
             Error = "Nothing to display";
             return;
         }
-        await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_editcourse");
 
+        await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_editcourse");
+        await OnCourseUpdated.InvokeAsync();
     }
 }

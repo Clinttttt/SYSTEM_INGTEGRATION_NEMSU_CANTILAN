@@ -1,5 +1,5 @@
-﻿@using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
-@using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
+﻿
+
 @inject PageState pageState
 @inject IStudentRecordApiCommand studentRecordApi
 @rendermode InteractiveServer
@@ -122,7 +122,7 @@
 
     public async Task HandleAcademicInformation()
     {
-        Academicinformation.Savestatus = SaveStatus.Save;
+        Academicinformation.Savestatus = SaveStatusAcademic.Save;
         var results =   await studentRecordApi.AddAcademicDetailsAsync(Academicinformation);
         if(results is null)
         {
@@ -132,7 +132,7 @@
     }
     public async Task HandleSaveAsDraft()
     {
-        Academicinformation.Savestatus = SaveStatus.Save_As_Draft;
+        Academicinformation.Savestatus = SaveStatusAcademic.Save_As_Draft;
         var results = await studentRecordApi.AddAcademicDetailsAsync(Academicinformation);
         if (results is null)
         {

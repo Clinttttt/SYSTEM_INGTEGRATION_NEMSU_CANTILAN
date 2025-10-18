@@ -29,8 +29,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (course.Cost > payment) return null;
            
           
-            await enrollment.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Enrolled);
-
+            var request  = await enrollment.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Enrolled);
+            if (request is null) return null;
     
             var invoice = new Invoice
             {

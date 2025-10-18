@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -29,8 +30,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
 
         public int MaxCapacity { get; set; }
         public int TotalEnrolled { get; set; }
-        public int AvailableSlots { get; set; }
-      
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public int AvailableSlots { get; private set; }
+
+
+
+
         public CourseStatus CourseStatus { get; set; }
     }
     public enum CourseDepartment

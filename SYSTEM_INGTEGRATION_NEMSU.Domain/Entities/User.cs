@@ -23,6 +23,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities
         public PersonalInformation? StudentsDetails { get; set; }
         public Guid? StudentAcademicsId { get; set; }
         public AcademicInformation? StudentAcademicDetails { get; set; }
+        public Guid? StudentContactsId { get; set; }
+        public ContactInformation? StudentContactDetails { get; set; }
     }
     public enum UserRole
     { 

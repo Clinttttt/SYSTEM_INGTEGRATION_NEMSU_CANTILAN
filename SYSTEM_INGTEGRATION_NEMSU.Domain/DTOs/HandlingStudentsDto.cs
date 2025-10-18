@@ -13,5 +13,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public string CourseTitle { get; set; } = string.Empty;
         public DateTime DateEnrolled { get; set; }
         public string? StudentSchoolId { get; set; }
+        public string? Email { get; set; }
     }
 }

@@ -1,9 +1,16 @@
 ﻿@page "/archivecourse"
+@using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
 
-@inject IHandlingApiCourse handlingApiCourse
+
 @rendermode InteractiveServer
 @inject ProtectedLocalStorage storage
 @inject IAuthApiServices authApi
+@inject IHandlingApiCourse handlingApiCourse
+
+@inject ProtectedLocalStorage storage
+@inject IAuthApiServices authApi
+
+
 <div class="relative h-screen content overflow-hidden">
     <div class="drawer lg:drawer-open h-screen">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
@@ -17,25 +24,31 @@
 
                 <div class="mb-6 flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-2xl font-bold text-orange-600">Archived Course</h1>
-                            <p class="text-gray-500 text-xs">View and manage Archived courses</p>
+                            <h1 class="text-2xl font-bold text-cyan-700">Course Management</h1>
+                            <p class="text-gray-500 text-xs">View and manage all courses</p>
                         </div>
                     </div>
+                    <span class="flex gap-2">
+                        <NavLink href="/archivecourse" class=" px-4 py-2 bg-orange-500 text-white flex  items-center rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors  gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                            </svg>
+                            Archive Course
+                        </NavLink>
+                        <NavLink href="/coursemanagemnt" class="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-md flex items-center gap-2">
+                            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 7.205c4.418 0 8-1.165 8-2.602C20 3.165 16.418 2 12 2S4 3.165 4 4.603c0 1.437 3.582 2.602 8 2.602ZM12 22c4.963 0 8-1.686 8-2.603v-4.404c-.052.032-.112.06-.165.09a7.75 7.75 0 0 1-.745.387c-.193.088-.394.173-.6.253-.063.024-.124.05-.189.073a18.934 18.934 0 0 1-6.3.998c-2.135.027-4.26-.31-6.3-.998-.065-.024-.126-.05-.189-.073a10.143 10.143 0 0 1-.852-.373 7.75 7.75 0 0 1-.493-.267c-.053-.03-.113-.058-.165-.09v4.404C4 20.315 7.037 22 12 22Zm7.09-13.928a9.91 9.91 0 0 1-.6.253c-.063.025-.124.05-.189.074a18.935 18.935 0 0 1-6.3.998c-2.135.027-4.26-.31-6.3-.998-.065-.024-.126-.05-.189-.074a10.163 10.163 0 0 1-.852-.372 7.816 7.816 0 0 1-.493-.268c-.055-.03-.115-.058-.167-.09V12c0 .917 3.037 2.603 8 2.603s8-1.686 8-2.603V7.596c-.052.031-.112.059-.165.09a7.816 7.816 0 0 1-.745.386Z" />
+                            </svg>
 
-                    <NavLink href="/createcourse" class=" px-4 py-2 bg-orange-500 text-white flex  items-center rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors  gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
-                        </svg>
-                        Archive Course
-                    </NavLink>
-
-
+                          All Course
+                        </NavLink>
+                    </span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
@@ -48,8 +61,8 @@
                                 </svg>
                             </div>
                             <input type="text"
-                            class="w-full pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
-                            placeholder="Search by course code, name..." />
+                                   class="w-full pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
+                                   placeholder="Search by course code, name..." />
                         </div>
                     </div>
 
@@ -83,7 +96,7 @@
                                 <div class="bg-gradient-to-r from-cyan-500 to-cyan-600 p-3 text-white">
                                     <div class="flex items-center justify-between mb-2">
                                         <span class="text-xs font-bold uppercase tracking-wide">@course.CourseCode</span>
-                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-400 text-white">Active</span>
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold @(course.CourseStatus == CourseStatus.Archived ? "bg-orange-500 text-white" : "bg-emerald-400 text-white") text-white">@course.CourseStatus</span>
                                     </div>
                                     <h3 class="text-sm font-bold">Introduction to Computer </h3>
                                 </div>
@@ -113,7 +126,7 @@
                                         <NavLink href="@($"/viewcourse/{course.Id}")" class=" btn flex-1 px-2 py-1 bg-cyan-50 text-cyan-600 rounded text-[10px] font-semibold hover:bg-cyan-100 transition-colors">
                                             View
                                         </NavLink>
-                                        <button onclick="my_modal_4.showModal()" class="flex-1 px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-semibold hover:bg-gray-100 transition-colors">
+                                        <button onclick="my_modal_editcourse.showModal()" class="flex-1 px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-semibold hover:bg-gray-100 transition-colors">
                                             Edit
                                         </button>
                                     </div>
@@ -125,18 +138,13 @@
                     }
 
 
-
-
-
-
                 </div>
             </div>
         </div>
 
-        <FacultyEditCourseInformation />
+        <FacultyEditCourseInformation OnCourseUpdated="ReloadCourseData" CourseUpdate="udpatecourse" />
 
-
-        <!-- Sidebar -->
+ 
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <ul class="menu min-h-full w-62 p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
@@ -165,19 +173,55 @@
     private string? Error { get; set; }
     private bool hasrender = false;
 
+
+
+    public UpdateCourseDto udpatecourse { get; set; } = new();
+    private bool Hasrender = false;
+    public CourseDto? course { get; set; }
+    public EventCallback Reload { get; set; }
+
+    public List<HandlingStudentsDto>? studentlist { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!hasrender && firstRender)
         {
             hasrender = true;
             Course = await handlingApiCourse.DisplayArchiveCourseAsync();
+            StateHasChanged();
             if (Course is null)
             {
                 Error = "Nothing to display";
                 return;
             }
-        }
-        StateHasChanged();
+            var firstCourse = Course.FirstOrDefault();
+            if (firstCourse is null)
+            {
+                Error = "Nothing to display";
+                return;
+            }
+            udpatecourse.Id = firstCourse.Id;
+            udpatecourse.Title = firstCourse.Title;
+            udpatecourse.CategoryId = firstCourse.CategoryId;
+            udpatecourse.Department = firstCourse.Department!.Value;
+            udpatecourse.Unit = firstCourse.Unit;
+            udpatecourse.Cost = firstCourse.Cost;
+            udpatecourse.CourseDescription = firstCourse.CourseDescriptiion;
+            udpatecourse.Semester = firstCourse.Semester!.Value;
+            udpatecourse.Schedule = firstCourse.Schedule;
+            udpatecourse.MaxCapacity = firstCourse.MaxCapacity;
+            udpatecourse.SchoolYear = firstCourse.SchoolYear;
+            udpatecourse.Room = firstCourse.Room;
+            udpatecourse.CourseStatus = firstCourse.CourseStatus;
+            udpatecourse.CourseCode = firstCourse.CourseCode;
+            StateHasChanged();
 
+        }
+    }
+    public async Task ReloadCourseData()
+    {
+        Course = await handlingApiCourse.DisplayArchiveCourseAsync();
     }
 }
+    
+    
