@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
@@ -19,9 +21,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return BadRequest("Login First");
             var UserId = Guid.Parse(FindUser.Value);
-            var StudentId = await user.UserInfo(UserId);
-            if (StudentId is null) return BadRequest("User Cannot Find");
-            var request = await handlingStudents.DisplayStudentsAsync(StudentId.Id);
+            var AdminId = await user.UserInfo(UserId);
+            if (AdminId is null) return BadRequest("User Cannot Find");
+            var request = await handlingStudents.DisplayStudentsAsync(AdminId.Id);
             return Ok(request);
         }
         [Authorize]
@@ -31,11 +33,40 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return BadRequest("Login First");
             var UserId = Guid.Parse(FindUser.Value);
-            var StudentId = await user.UserInfo(UserId);
-            if (StudentId is null) return BadRequest("User Cannot Find");
-            var request = await handlingStudents.DisplayStudentByCoursesAsync(StudentId.Id,CourseCode);
+            var AdminId = await user.UserInfo(UserId);
+            if (AdminId is null) return BadRequest("User Cannot Find");
+            var request = await handlingStudents.DisplayStudentByCoursesAsync(AdminId.Id,CourseCode);
             return Ok(request);
         }
-        
+        [Authorize]
+        [HttpGet("GetAll StudentDetails")]
+        public async Task<ActionResult<HandlingAllStudentsDetailsDto>> DisplayAllStudentsDetails(Guid StudentId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
+
+            var UserId = Guid.Parse(FindUser.Value);
+            var AdminId = await user.UserInfo(UserId);
+            if (AdminId is null) return BadRequest("User not found");
+            var request = await handlingStudents.DisplayAllStudentsDetailsAsync(AdminId.Id, StudentId);      
+            return Ok(request);
+        }
+
+
+        [Authorize]
+        [HttpGet("Display Students ByDepartment")]
+        public async Task<ActionResult<HandlingStudentsDto>> DisplayStudentByDepartmentAsync(CourseDepartment department)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
+            var UserId = Guid.Parse(FindUser.Value);
+            var AdminId = await user.UserInfo(UserId);
+            if (AdminId is null) return BadRequest("User Cannot Find");
+            var request = await handlingStudents.DisplayStudentByDepartmentAsync(AdminId.Id, department);
+            return Ok(request);
+        }
+
+
+      
     }
 }

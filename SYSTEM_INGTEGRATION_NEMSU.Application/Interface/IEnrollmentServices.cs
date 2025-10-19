@@ -14,5 +14,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<IEnumerable<EnrollCourseDto>> DisplayCourseAsync(Guid studentId);
         Task<bool> UnEnrollCourseAsync(Guid studentId, string courseCode);
         Task<CourseDto?> GetCourse(Guid CourseId, Guid StudentId);
+        Task<bool> InactiveCourseAsync(Guid StudentId, Guid CourseId);
+        Task<bool> IctiveCourseAsync(Guid StudentId, Guid CourseId);
     }
 }

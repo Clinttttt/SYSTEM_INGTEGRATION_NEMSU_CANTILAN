@@ -36,7 +36,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 CourseId = course.Id,
                 DateEnrolled = DateTime.UtcNow,
                 EnrollmentStatus = status,
-                
+                studentCourseStatus = StudentCourseStatus.Active,
+
             };
             course.TotalEnrolled += 1;                 
             context.enrollcourse.Add(enrollment);
@@ -86,5 +87,25 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> InactiveCourseAsync(Guid StudentId, Guid CourseId)
+        {
+            var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
+            if (request is null) { return false; }
+            request.studentCourseStatus = StudentCourseStatus.Inactive;
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> IctiveCourseAsync(Guid StudentId, Guid CourseId)
+        {
+            var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
+            if (request is null) { return false; }
+            request.studentCourseStatus = StudentCourseStatus.Active;
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+
     }
 }

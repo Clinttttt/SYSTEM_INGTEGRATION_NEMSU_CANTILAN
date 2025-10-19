@@ -60,10 +60,6 @@ builder.Services.AddHttpClient<IStudentRecordApiCommand, StudentRecordApiCommand
 {
     client.BaseAddress = new Uri("https://localhost:7072");
 });
-builder.Services.AddHttpClient<IHandlingDepartmentApi, HandlingDepartmentApi>(client =>
-{
-    client.BaseAddress = new Uri("https://localhost:7072");
-});
 
 
 

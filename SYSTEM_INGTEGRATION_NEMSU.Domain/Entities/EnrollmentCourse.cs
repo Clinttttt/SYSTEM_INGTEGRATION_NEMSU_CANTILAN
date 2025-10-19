@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -16,17 +17,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public Guid StudentId { get; set; }
         [JsonIgnore]   
         public User Student { get; set; } = null!;
+        public StudentCourseStatus studentCourseStatus { get; set; }
 
-      
         public Guid CourseId { get; set; }
         [JsonIgnore] 
         public Course Course { get; set; } = null!;
+
        
         public Category? Category { get; set; }
         public DateTime DateEnrolled { get; set; }
         public EnrollmentStatus EnrollmentStatus { get; set; }
     }
-
     public enum EnrollmentStatus
     {
         Provisioned,
@@ -34,6 +35,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         Completed,   
         Dropped,       
     }
-
+    public enum StudentCourseStatus
+    {
+        [Display(Name = "Active")]
+        Active,
+        [Display(Name = "Inactive ")]
+        Inactive
+    }
 
 }

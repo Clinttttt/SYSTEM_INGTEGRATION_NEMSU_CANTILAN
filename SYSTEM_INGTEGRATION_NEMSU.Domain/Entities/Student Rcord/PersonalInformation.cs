@@ -15,7 +15,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string? FirstName { get; set; }
         public string? MiddleName { get; set; }
         public string? LastName { get; set; }
-        public DateOnly DateOfBirth { get; set; }
+        public DateOnly? DateOfBirth { get; set; }
         public GenderChoice Gender { get; set; }
         public CivilStatusChoice CivilStatus { get; set; }
         public string? Nationality { get; set; }

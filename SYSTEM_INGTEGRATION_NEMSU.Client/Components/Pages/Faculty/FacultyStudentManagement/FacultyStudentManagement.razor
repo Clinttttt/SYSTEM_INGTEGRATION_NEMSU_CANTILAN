@@ -1,6 +1,8 @@
 ﻿@page "/studentmanagement"
 @inject PageState pageState
 @rendermode InteractiveServer
+@inject IHandlingStudentsApi handlingStudentsApi
+
 
 <div class="relative h-screen content overflow-hidden">
     <div class="drawer lg:drawer-open h-screen">
@@ -21,6 +23,7 @@
                 </div>
 
 
+              
                 <div class="grid grid-cols-4 gap-3 mb-4 ">
 
                     <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-3 border border-cyan-100 ">
@@ -32,8 +35,8 @@
                                 </svg>
                             </div>
                             <input type="text"
-                                   class="w-[100%] pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
-                                   placeholder="Search by name, ID, or email..." />
+                            class="w-[100%] pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
+                            placeholder="Search by name, ID, or email..." />
                         </div>
                     </div>
 
@@ -75,30 +78,37 @@
                 </div>
 
 
-
-            
-
-                    @if (pageState.Studentsview == PageState.StudentsView.CurrentStudents)
-                    {
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pb-12 ">
-                        <FacultyCurrentStudents />
+                @if (!hasrender)
+                {
+                    <div class="flex justify-center items-center py-32">
+                        <div class="text-center">
+                            <div class="relative">
+                                <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                            </div>
+                            <p class="text-gray-600 mt-6 text-lg font-semibold">Loading Course...</p>
                         </div>
-                    }
-                    else if (pageState.Studentsview == PageState.StudentsView.AllStudents)
-                    {
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pb-12 ">
-                        <FacultyAllStudents />
                     </div>
-                    }
-                    else if (pageState.Studentsview == PageState.StudentsView.ByDepartment)
-                    {
-                        <FacultyByDepartmentView />
-                    }
+                }
 
 
+                @if (pageState.Studentsview == PageState.StudentsView.CurrentStudents)
+                {
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pb-12 ">
+                        <FacultyCurrentStudents Students="Students" />
+                    </div>
+                }
+                else if (pageState.Studentsview == PageState.StudentsView.AllStudents)
+                {
 
-              
+
+                    <FacultyAllStudents />
+
+                }
+                else if (pageState.Studentsview == PageState.StudentsView.ByDepartment)
+                {
+                    <FacultyByDepartmentView />
+                }
+
             </div>
         </div>
 
@@ -126,4 +136,18 @@
 </div>
 
 @code {
+    [Parameter]
+    public List<HandlingStudentsDto>? Students { get; set; }
+    private bool hasrender = false;
+    protected override async Task OnAfterRenderAsync(bool render)
+
+    {
+        if (!hasrender && render)
+        {
+            hasrender = true;
+            Students = await handlingStudentsApi.DisplayStudentsAsync();
+        }
+        StateHasChanged();
+
+    }
 }

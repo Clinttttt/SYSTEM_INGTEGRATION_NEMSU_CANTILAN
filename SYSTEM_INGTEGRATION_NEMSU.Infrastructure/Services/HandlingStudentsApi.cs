@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
@@ -40,6 +41,18 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await SetAuthentication();
             return await _http.GetFromJsonAsync<List<HandlingStudentsDto>>($"api/HandlingStudents/Display%20Students%20ByCourses?CourseCode={CourseCode}");
         }
-        
+        public async Task<HandlingAllStudentsDetailsDto?> DisplayAllStudentsDetailsAsync(Guid StudentId)
+        {
+            await SetAuthentication();
+            return await _http.GetFromJsonAsync<HandlingAllStudentsDetailsDto>($"api/HandlingStudents/GetAll%20StudentDetails?StudentId={StudentId}");
+
+        }
+        public async Task<List<HandlingStudentsDto>?> DisplayStudentByDepartmentAsync( CourseDepartment department)
+        {
+            await SetAuthentication();
+            return await _http.GetFromJsonAsync<List<HandlingStudentsDto>>($"api/HandlingStudents/Display%20Students%20ByDepartment?department={department}");
+        }
+
+
     }
 }

@@ -95,5 +95,27 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (response is false) return BadRequest("Something went wrong");      
             return Ok(response);
         }
+        [Authorize]
+        [HttpPatch("Inactive Course")]
+        public async Task<ActionResult<bool>> InactiveCourse(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if(FindUser is null) { return BadRequest("User not found"); }
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.InactiveCourseAsync(UserId, CourseId);
+            return Ok(request);
+
+        }
+        [Authorize]
+        [HttpPatch("Active Course")]
+        public async Task<ActionResult<bool>> ActiveCourse(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) { return BadRequest("User not found"); }
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.InactiveCourseAsync(UserId, CourseId);
+            return Ok(request);
+
+        }
     }
 }

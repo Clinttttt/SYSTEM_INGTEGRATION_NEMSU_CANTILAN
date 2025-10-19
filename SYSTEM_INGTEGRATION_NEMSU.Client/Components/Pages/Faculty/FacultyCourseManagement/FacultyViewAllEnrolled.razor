@@ -175,7 +175,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             @if (studentlist is not null)
                             {
-                                @foreach (var student in studentlist)
+                                @foreach (var student in FilteredStudents)
                                 {
                                     <div class="group relative">
                                         <div class="absolute inset-0 bg-gradient-to-br from-cyan-400 to-teal-400 rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
@@ -195,7 +195,7 @@
                                                             @*   <span class="text-2xl   font-extrabold">@GetInitials(student.Name)</span>*@
 
                                                         </div>
-                                                        <div class="absolute bottom-0  right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                                                        <div class="absolute bottom-0  right-0 w-4 h-4 @(student.studentCourseStatus == StudentCourseStatus.Inactive ? "bg-amber-500" : "bg-green-500") rounded-full border-2 border-white"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -230,13 +230,13 @@
                                                     </div>
                                                 </div>
 
-                                                <button @onclick="() => ViewStudentProfile(student.StudentSchoolId!)"
-                                                        class="w-full bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 text-white font-semibold py-2.5 text-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group">
+                                                <NavLink href="@($"facultyviewtudents/{student.StudentId}")"
+                                                class="w-full bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 text-white font-semibold py-2.5 text-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group">
                                                     <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                                     </svg>
                                                     View Profile
-                                                </button>
+                                                </NavLink>
                                             </div>
                                         </div>
                                     </div>
@@ -274,25 +274,20 @@
     [Parameter]
     public Guid CourseId { get; set; }
 
-    private string CourseName = "Integrative Programming";
-    private string CourseCode = "IT201";
-    private int TotalStudents = 0;
-    private int MaxCapacity = 40;
-    private int AvailableSlots = 0;
 
     public bool Hasrender = false;
     private bool IsLoading = true;
     private string SearchQuery = "";
 
+    [Parameter]
     public List<HandlingStudentsDto>? studentlist { get; set; }
     private CourseDto? Course { get; set; }
     public QuickStatsDto? quickStats { get; set; }
+    public int StudentEnrolled { get; set; }
+
     private string? Error { get; set; }
 
-
-
-    private List<StudentEnrollment> AllStudents = new();
-    private List<StudentEnrollment> FilteredStudents = new();
+    private List<HandlingStudentsDto>? FilteredStudents = new();
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -303,85 +298,21 @@
             Course = await handlingApiCourse.GetCourseAsync(CourseId);        
             studentlist = await handlingStudentsApi.DisplayStudentByCoursesAsync(Course!.CourseCode!);
             quickStats = await handlingApiCourse.DisplayStatsAsync(Course.CourseCode!);
-
-
+            StudentEnrolled = studentlist!.Count();
+            await  LoadStudents();
         }
         StateHasChanged();
 
     }
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadCourseData();
-        await LoadStudents();
-    }
-
-    private async Task LoadCourseData()
-    {
-        // Load course information from API
-        // var course = await handlingApiCourse.GetCourseById(CourseId);
-        // CourseName = course.Name;
-        // CourseCode = course.Code
-        // MaxCapacity = course.MaxCapacity;
-    }
+   
 
     private async Task LoadStudents()
     {
         IsLoading = true;
 
-        // Simulate API call - replace with actual API call
+    
         await Task.Delay(500);
-
-        // Replace this with: AllStudents = await handlingStudentsApi.GetEnrolledStudents(CourseId);
-        AllStudents = new List<StudentEnrollment>
-        {
-            new StudentEnrollment
-            {
-                StudentId = "2025-1234",
-                Name = "Bato Dela",
-                Email = "bato.dela@example.com",
-                EnrollmentDate = DateTime.Now.AddDays(-30)
-            },
-            new StudentEnrollment
-            {
-                StudentId = "2025-1243",
-                Name = "Bobby Mercado",
-                Email = "bobby.mercado@example.com",
-                EnrollmentDate = DateTime.Now.AddDays(-28)
-            },
-            new StudentEnrollment
-            {
-                StudentId = "2025-1256",
-                Name = "Maria Santos",
-                Email = "maria.santos@example.com",
-                EnrollmentDate = DateTime.Now.AddDays(-25)
-            },
-            new StudentEnrollment
-            {
-                StudentId = "2025-1267",
-                Name = "Juan Cruz",
-                Email = "juan.cruz@example.com",
-                EnrollmentDate = DateTime.Now.AddDays(-22)
-            },
-            new StudentEnrollment
-            {
-                StudentId = "2025-1278",
-                Name = "Ana Reyes",
-                Email = "ana.reyes@example.com",
-                EnrollmentDate = DateTime.Now.AddDays(-20)
-            },
-            new StudentEnrollment
-            {
-                StudentId = "2025-1289",
-                Name = "Carlos Garcia",
-                Email = "carlos.garcia@example.com",
-                EnrollmentDate = DateTime.Now.AddDays(-18)
-            }
-        };
-
-        FilteredStudents = AllStudents;
-        TotalStudents = AllStudents.Count;
-        AvailableSlots = MaxCapacity - TotalStudents;
-
+        FilteredStudents = studentlist;
         IsLoading = false;
     }
 
@@ -389,15 +320,15 @@
     {
         if (string.IsNullOrWhiteSpace(SearchQuery))
         {
-            FilteredStudents = AllStudents;
+            FilteredStudents = studentlist;
         }
         else
         {
             var query = SearchQuery.ToLower();
-            FilteredStudents = AllStudents.Where(s =>
-                s.Name.ToLower().Contains(query) ||
-                s.StudentId.ToLower().Contains(query) ||
-                s.Email.ToLower().Contains(query)
+            FilteredStudents = studentlist!.Where(s =>
+                s.StudentName.ToLower().Contains(query) ||
+                s.StudentSchoolId!.ToLower().Contains(query) ||
+                s.Email!.ToLower().Contains(query)
             ).ToList();
         }
     }
@@ -405,27 +336,27 @@
     private void ClearSearch()
     {
         SearchQuery = "";
-        FilteredStudents = AllStudents;
+        FilteredStudents = studentlist;
     }
 
-    private string GetInitials(string name)
-    {
-        var parts = name.Split(' ');
-        if (parts.Length >= 2)
-            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
-        return name.Length >= 2 ? name.Substring(0, 2).ToUpper() : name.ToUpper();
-    }
+ 
 
     private void ViewStudentProfile(string studentId)
     {
         navigation.NavigateTo($"/studentprofile/{studentId}");
     }
 
-    public class StudentEnrollment
-    {
-        public string StudentId { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public DateTime EnrollmentDate { get; set; }
-    }
+ 
 }
+
+
+
+
+
+    @*   private string GetInitials(string name)
+    {
+        var parts = name.Split(' ');
+        if (parts.Length >= 2)
+            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+        return name.Length >= 2 ? name.Substring(0, 2).ToUpper() : name.ToUpper();
+    }*@
