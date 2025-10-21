@@ -1,0 +1,212 @@
+﻿@rendermode InteractiveServer
+@page "/studentmainpage"
+@inject IHandlingStudentsApi handlingStudentsApi
+@if (summaryStatistics is not null)
+{
+    <div class="p-6 space-y-8 pb-14">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
+
+            <div class="card rounded-sm bg-gradient-to-br from-cyan-500 to-cyan-600 text-white shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 hover:-translate-y-1">
+                <div class="card-body p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <p class="text-cyan-100 text-xs font-bold uppercase tracking-wider mb-3">Total Students</p>
+                            <h3 class="text-4xl font-bold mb-2">@summaryStatistics.TotalStudent</h3>
+                            <p class="text-cyan-50 text-sm">Enrolled in system</p>
+                        </div>
+                        <div class="bg-white/25 backdrop-blur-sm p-3.5 rounded-xl shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+
+           
+            <div class="card rounded-sm bg-gradient-to-br from-teal-500 to-teal-600 text-white shadow-2xl hover:shadow-green-500/50 transition-all duration-300 hover:-translate-y-1">
+                <div class="card-body p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <p class="text-green-100 text-xs font-bold uppercase tracking-wider mb-3">Total Active</p>
+                            <h3 class="text-4xl font-bold mb-2">@summaryStatistics.TotalActive</h3>
+                            <p class="text-green-50 text-sm">Currently active</p>
+                        </div>
+                        <div class="bg-white/25 backdrop-blur-sm p-3.5 rounded-xl shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card rounded-sm bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 hover:-translate-y-1">
+                <div class="card-body p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <p class="text-orange-100 text-xs font-bold uppercase tracking-wider mb-3">Total Inactive</p>
+                            <h3 class="text-4xl font-bold mb-2">@summaryStatistics.TotalInactive</h3>
+                            <p class="text-orange-50 text-sm">Not active</p>
+                        </div>
+                        <div class="bg-white/25 backdrop-blur-sm p-3.5 rounded-xl shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card  rounded-sm bg-gradient-to-br from-gray-500 to-stone-600 text-white shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:-translate-y-1">
+                <div class="card-body p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <p class="text-purple-100 text-xs font-bold uppercase tracking-wider mb-3">Total Department</p>
+                            <h3 class="text-4xl font-bold mb-2">@summaryStatistics.TotalDepartment</h3>
+                            <p class="text-purple-50 text-sm">Total departments</p>
+                        </div>
+                        <div class="bg-white/25 backdrop-blur-sm p-3.5 rounded-xl shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      
+        <div class="card bg-white shadow-2xl border border-gray-200 rounded-2xl overflow-hidden">
+            <div class="card-body p-8">
+          
+                <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-200">
+                    <div>
+                        <h2 class="text-3xl font-semibold text-gray-700 mb-2">
+                            Student Distribution by Department
+                        </h2>
+                        <p class="text-gray-600 text-lg">Overview of student enrollment across all departments</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-4 rounded-xl shadow-lg">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <span class="text-3xl font-bold">@departmentStats?.Sum(d => d.Count)</span>
+                    </div>
+                </div>
+
+            
+                <div class="space-y-6">
+                    @if (departmentStats is not null)
+                    {
+                        @foreach (var dept in departmentStats)
+                        {
+                            <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 group">
+
+                            
+                                <div class="flex justify-between items-center mb-5">
+                                    <div class="flex items-center gap-4 flex-1">
+                                        <div class="w-14 h-14 rounded-xl shadow-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300"
+                                             style="background: linear-gradient(135deg, @dept.Color, @dept.LightColor)">
+                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-xl text-gray-700 group-hover:text-gray-700 transition-colors">
+                                                @dept.DepartmentName
+                                            </h3>
+                                            <p class="text-gray-500 text-sm mt-1">Academic Department</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                    
+                                        <div class="text-right">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <svg class="w-5 h-5 " style="@($"color: {@dept.Color}")" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                                </svg>
+                                                <span class="text-2xl font-bold" style="@($"color: {@dept.Color}")">
+                                                    @dept.Percentage%
+                                                </span>
+                                            </div>
+                                            <p class="text-gray-500 text-xs font-light">of total students</p>
+                                        </div>
+
+                                   
+                                        <div class="px-5 py-2 rounded-xl shadow-lg text-white font-bold text-2xl  text-center transform group-hover:scale-105 transition-transform"
+                                             style="@($"background: linear-gradient(135deg, {@dept.Color}, {@dept.LightColor})")">
+                                            @dept.Count
+                                        </div>
+                                    </div>
+                                </div>
+
+                           
+                                <div class="relative">
+                                    <div class="w-full bg-gray-200 rounded-full h-5 overflow-hidden shadow-inner">
+                                        <div class="h-full rounded-full transition-all duration-700 ease-out relative overflow-hidden"
+                                             style="width: @(dept.Percentage)%; background: linear-gradient(90deg, @dept.Color, @dept.LightColor)">
+                                            <div class="absolute inset-0 bg-white opacity-20 animate-pulse"></div>
+                                        </div>
+                                    </div>
+
+                                 
+                                    <div class="flex justify-between mt-2 text-xs font-medium text-gray-600">
+                                        <span>0%</span>
+                                        <span>50%</span>
+                                        <span>100%</span>
+                                    </div>
+                                </div>
+
+                               
+                                @if (dept.Count > 0)
+                                {
+                                    <div class="mt-4 pt-4 border-t border-gray-200 flex items-center gap-2 text-sm text-gray-600">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="font-medium">Active enrollment</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mt-4 pt-4 border-t border-gray-200 flex items-center gap-2 text-sm text-gray-500">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span>No students enrolled yet</span>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+     
+    </div>
+}
+
+@code {
+    private SummaryStatisticsDto? summaryStatistics { get; set; }
+    private List<DepartmentStatsDto>? departmentStats { get; set; }
+    private bool hasrender = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(!hasrender && firstRender)
+        {
+            summaryStatistics = await handlingStudentsApi.SummaryStatisticsAsync();
+            departmentStats = await handlingStudentsApi.DepartmentStatsAsync();
+        }
+        StateHasChanged();
+    }
+   
+
+  
+
+}

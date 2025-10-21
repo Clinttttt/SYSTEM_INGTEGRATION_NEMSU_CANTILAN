@@ -12,18 +12,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
     public class EnrollmentCourse
     {
         public Guid Id { get; set; }
-
-      
         public Guid StudentId { get; set; }
         [JsonIgnore]   
         public User Student { get; set; } = null!;
-        public StudentCourseStatus studentCourseStatus { get; set; }
+        public StudentCourseStatus StudentCourseStatus { get; set; }
 
         public Guid CourseId { get; set; }
         [JsonIgnore] 
         public Course Course { get; set; } = null!;
 
        
+        public string? ProfileColor { get; set; }
         public Category? Category { get; set; }
         public DateTime DateEnrolled { get; set; }
         public EnrollmentStatus EnrollmentStatus { get; set; }

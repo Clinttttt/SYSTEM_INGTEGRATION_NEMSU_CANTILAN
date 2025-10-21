@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251021124920_AddingCourse_in_Announcement")]
+    partial class AddingCourse_in_Announcement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,9 +258,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CourseCode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("CourseId")
                         .HasColumnType("uniqueidentifier");
@@ -545,7 +545,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.InstructorAnnouncement", b =>
                 {
                     b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", "course")
-                        .WithMany("Announcements")
+                        .WithMany()
                         .HasForeignKey("CourseId");
 
                     b.Navigation("course");
@@ -610,8 +610,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", b =>
                 {
-                    b.Navigation("Announcements");
-
                     b.Navigation("Enrollments");
 
                     b.Navigation("LearningObjectives");

@@ -19,4 +19,8 @@
     <ProjectReference Include="..\SYSTEM_INGTEGRATION_NEMSU.Infrastructure\SYSTEM_INGTEGRATION_NEMSU.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helper\" />
+  </ItemGroup>
+
 </Project>

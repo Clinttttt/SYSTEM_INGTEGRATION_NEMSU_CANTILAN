@@ -13,7 +13,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Client.Services
         public enum StudentsView {
             CurrentStudents,
             AllStudents,
-            ByDepartment
+            ByDepartment,
+            SearchStudents
         }
         public void SetViewStudent(StudentsView studentsView)
         {

@@ -5,6 +5,7 @@
 @rendermode InteractiveServer
 @inject ProtectedLocalStorage storage
 @inject IAuthApiServices authApi
+@inject IJSRuntime JS
 <div class="relative h-screen content overflow-hidden">
     <div class="drawer lg:drawer-open h-screen">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
@@ -130,7 +131,7 @@
                                         <NavLink href="@($"/viewcourse/{course.Id}")" class=" btn flex-1 px-2 py-1 bg-cyan-50 text-cyan-600 rounded text-[10px] font-semibold hover:bg-cyan-100 transition-colors">
                                             View
                                         </NavLink>
-                                        <button onclick="my_modal_editcourse.showModal()" class="flex-1 px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-semibold hover:bg-gray-100 transition-colors">
+                                        <button @onclick="() => OpenEditModal(course)" class="flex-1 px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-semibold hover:bg-gray-100 transition-colors">
                                             Edit
                                         </button>
                                     </div>
@@ -178,7 +179,7 @@
     private bool hasrender = false;
 
 
-
+    [Parameter]
     public UpdateCourseDto udpatecourse { get; set; } = new();
     private bool Hasrender = false;
     public CourseDto? course { get; set; }
@@ -204,24 +205,36 @@
                 Error = "Nothing to display";
                 return;
             }
-            udpatecourse.Id = firstCourse.Id;
-            udpatecourse.Title = firstCourse.Title;
-            udpatecourse.CategoryId = firstCourse.CategoryId;
-            udpatecourse.Department = firstCourse.Department!.Value;
-            udpatecourse.Unit = firstCourse.Unit;
-            udpatecourse.Cost = firstCourse.Cost;
-            udpatecourse.CourseDescription = firstCourse.CourseDescriptiion;
-            udpatecourse.Semester = firstCourse.Semester!.Value;
-            udpatecourse.Schedule = firstCourse.Schedule;
-            udpatecourse.MaxCapacity = firstCourse.MaxCapacity;
-            udpatecourse.SchoolYear = firstCourse.SchoolYear;
-            udpatecourse.Room = firstCourse.Room;
-            udpatecourse.CourseStatus = firstCourse.CourseStatus;
-            udpatecourse.CourseCode = firstCourse.CourseCode;
+          
             StateHasChanged();
 
         }
     }
+    private async Task OpenEditModal(CourseDto course)
+    {
+        
+        udpatecourse.Id = course.Id;
+        udpatecourse.Title = course.Title;
+        udpatecourse.CategoryId = course.CategoryId;
+        udpatecourse.Department = course.Department!.Value;
+        udpatecourse.Unit = course.Unit;
+        udpatecourse.Cost = course.Cost;
+        udpatecourse.CourseDescription = course.CourseDescriptiion;
+        udpatecourse.Semester = course.Semester!.Value;
+        udpatecourse.Schedule = course.Schedule;
+        udpatecourse.MaxCapacity = course.MaxCapacity;
+        udpatecourse.SchoolYear = course.SchoolYear;
+        udpatecourse.Room = course.Room;
+        udpatecourse.CourseStatus = course.CourseStatus;
+        udpatecourse.CourseCode = course.CourseCode;
+
+        StateHasChanged();
+
+    
+        await JS.InvokeVoidAsync("eval", "my_modal_editcourse.showModal()");
+    }
+
+
     public async Task ReloadCourseData()
     {
         Course = await handlingApiCourse.DisplayAllCourse();

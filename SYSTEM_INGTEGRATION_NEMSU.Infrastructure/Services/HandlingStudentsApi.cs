@@ -52,7 +52,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await SetAuthentication();
             return await _http.GetFromJsonAsync<List<HandlingStudentsDto>>($"api/HandlingStudents/Display%20Students%20ByDepartment?department={department}");
         }
-
-
+        public async Task<SummaryStatisticsDto?> SummaryStatisticsAsync()
+        {
+            await SetAuthentication();
+            return await _http.GetFromJsonAsync<SummaryStatisticsDto>("api/HandlingStudents/Summary%20Statistics");
+        }
+        public async Task<List<DepartmentStatsDto>?> DepartmentStatsAsync()
+        {
+            await SetAuthentication();
+            return await _http.GetFromJsonAsync<List<DepartmentStatsDto>>("api/HandlingStudents/Department%20Statistics");
+        }
     }
 }

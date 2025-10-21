@@ -30,7 +30,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
         public string? EmergencyContactNumber { get; set; }
         public DateTime DateEnrolled { get; set; }
         public StudentCourseStatus? studentCourseStatus { get; set; }
-
+        public string? ProfileColor { get; set; }
 
     }
 }

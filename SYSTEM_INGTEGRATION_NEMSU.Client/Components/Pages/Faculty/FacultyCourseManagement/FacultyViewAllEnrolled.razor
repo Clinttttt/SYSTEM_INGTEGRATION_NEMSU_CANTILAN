@@ -180,7 +180,7 @@
                                     <div class="group relative">
                                         <div class="absolute inset-0 bg-gradient-to-br from-cyan-400 to-teal-400 rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                                         <div class="relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transform group-hover:-translate-y-1">
-                                            <div class="relative h-20 bg-gradient-to-br from-cyan-500 via-teal-500 to-cyan-500 overflow-hidden">
+                                            <div class="relative h-20  overflow-hidden" style="background-color:@student.ProfileColor">
                                                 <div class="absolute inset-0 opacity-20">
                                                     <div class="absolute top-0 -left-4 w-32 h-32 bg-white rounded-full"></div>
                                                     <div class="absolute bottom-0 -right-13 w-33 h-33 bg-white rounded-full"></div>
@@ -191,7 +191,7 @@
                                                 <div class="inline-block">
                                                     <div class="relative">
                                                         <div class="avatar placeholder ">
-                                                            <img src="/img/student_logo.jpg" class=" bg-contain rounded-full !w-16 !h-16 flex items-center justify-center shadow-xl border-3 border-white ring-2 ring-cyan-100" />
+                                                            <img src="/img/student_logo.jpg" class=" bg-contain rounded-full !w-16 !h-16 flex items-center justify-center shadow-xl border-3 border-white ring-2 " style="box-shadow: 0 0 0 1px @student.ProfileColor;" />
                                                             @*   <span class="text-2xl   font-extrabold">@GetInitials(student.Name)</span>*@
 
                                                         </div>
@@ -338,8 +338,6 @@
         SearchQuery = "";
         FilteredStudents = studentlist;
     }
-
- 
 
     private void ViewStudentProfile(string studentId)
     {

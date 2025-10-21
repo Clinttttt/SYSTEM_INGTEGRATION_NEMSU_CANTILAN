@@ -9,7 +9,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 {
   public interface IRespondCommand
     {
-        Task<AutoResponsetDto?> AutoResponseAsync(Guid StudentId, string CourseCode);
-        Task<AnnouncementDto?> AnnouncementAsync(AnnouncementDto announcement);
+        Task<AutoResponsetDto?> AutoResponseAsync(Guid StudentId, string CourseCode);    
+        Task<List<AnnouncementDto>?> DisplayAnnouncementAsync(Guid AdminId);
+        Task<AnnouncementDto?> AddAnnouncementAsync(CreateAnnouncementDto announcement);
+        Task<bool> DeleteAnnouncementAsync(Guid AdminId, Guid CourseId);
+        Task<AnnouncementDto?> EditAnnouncementAsync(EditAnnouncementDto announcement);
     }
 }

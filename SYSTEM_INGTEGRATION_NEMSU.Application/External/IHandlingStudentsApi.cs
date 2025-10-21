@@ -15,5 +15,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<List<HandlingStudentsDto>?> DisplayStudentByCoursesAsync(string CourseCode);
         Task<HandlingAllStudentsDetailsDto?> DisplayAllStudentsDetailsAsync(Guid StudentId);
         Task<List<HandlingStudentsDto>?> DisplayStudentByDepartmentAsync(CourseDepartment department);
+        Task<SummaryStatisticsDto?> SummaryStatisticsAsync();
+        Task<List<DepartmentStatsDto>?> DepartmentStatsAsync();
+
+
     }
 }

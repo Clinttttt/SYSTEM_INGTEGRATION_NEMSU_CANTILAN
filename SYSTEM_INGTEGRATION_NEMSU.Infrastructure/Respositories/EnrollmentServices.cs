@@ -5,6 +5,8 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 using Mapster;
+using SYSTEM_INGTEGRATION_NEMSU.Client.Helper;
+using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
@@ -36,7 +38,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 CourseId = course.Id,
                 DateEnrolled = DateTime.UtcNow,
                 EnrollmentStatus = status,
-                studentCourseStatus = StudentCourseStatus.Active,
+                StudentCourseStatus = StudentCourseStatus.Active,
+                ProfileColor = RandomColor.Generate(),
 
             };
             course.TotalEnrolled += 1;                 
@@ -92,7 +95,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         {
             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
             if (request is null) { return false; }
-            request.studentCourseStatus = StudentCourseStatus.Inactive;
+            request.StudentCourseStatus = StudentCourseStatus.Inactive;
             await context.SaveChangesAsync();
             return true;
         }
@@ -101,9 +104,28 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         {
             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
             if (request is null) { return false; }
-            request.studentCourseStatus = StudentCourseStatus.Active;
+            request.StudentCourseStatus = StudentCourseStatus.Active;
             await context.SaveChangesAsync();
             return true;
+        }
+        public async Task<List<AnnouncementDto>> DisplayAnnounceMentAsync(Guid StudentId, string CourseCode)
+        {
+            var request = await context.announcements
+                .Include(s => s.course)
+                .ThenInclude(s => s.Enrollments)
+                .Where(s => s.course.CourseCode == CourseCode && s.course.Enrollments.Any(s => s.StudentId == StudentId))
+                .Select(s => new AnnouncementDto
+                {
+                    Title = s.Title,
+                    Message = s.Message,
+                    CourseName = s.course.Title,
+                    InformationType = s.InformationType,
+                    DateCreated = s.DateCreated,
+                    CourseCode = s.course.CourseCode,
+
+                })
+                .ToListAsync();
+            return request;
         }
 
 

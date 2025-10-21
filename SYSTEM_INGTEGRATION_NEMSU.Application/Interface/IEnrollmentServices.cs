@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 
@@ -16,5 +17,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<CourseDto?> GetCourse(Guid CourseId, Guid StudentId);
         Task<bool> InactiveCourseAsync(Guid StudentId, Guid CourseId);
         Task<bool> IctiveCourseAsync(Guid StudentId, Guid CourseId);
+        Task<List<AnnouncementDto>> DisplayAnnounceMentAsync(Guid StudentId, string CourseCode);
     }
 }

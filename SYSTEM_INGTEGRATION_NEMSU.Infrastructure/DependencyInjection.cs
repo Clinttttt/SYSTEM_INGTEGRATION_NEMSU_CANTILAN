@@ -10,12 +10,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using SYSTEM_INGTEGRATION_NEMSU.Application.CommandHandlers;
+
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
-using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Command;
+
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services;
@@ -56,7 +56,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure
             services.AddScoped<IEnrollmentServices, EnrollmentServices>();
             services.AddScoped<IPaymentServices, PaymentServices>();
             services.AddScoped<IUserRespository, UserRespository>();
-            services.AddScoped<IHandlingMessage, HandlingMessage>();
+          
             services.AddScoped<IRespondCommand, RespondCommand>();
             services.AddScoped<IStudentRecordCommand, StudentRecordCommand>();
             services.AddScoped<IFacultyRecordCommand, FacultyRecordCommand>();
