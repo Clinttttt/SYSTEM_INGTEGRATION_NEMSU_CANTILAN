@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
+using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
@@ -116,6 +117,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.InactiveCourseAsync(UserId, CourseId);
             return Ok(request);
 
+        }
+        [Authorize]
+        [HttpGet("Display Announcement")]
+        public async  Task<ActionResult<AnnouncementDto>> DisplayAnnounceMentAsync(string CourseCode)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) { return BadRequest("User not found"); }
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.DisplayAnnounceMentAsync(UserId, CourseCode);
+            return Ok(request);
         }
     }
 }

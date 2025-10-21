@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
+using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
@@ -65,8 +67,31 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await handlingStudents.DisplayStudentByDepartmentAsync(AdminId.Id, department);
             return Ok(request);
         }
-
-
+        [Authorize]
+        [HttpGet("Summary Statistics")]
+        public async Task<ActionResult<SummaryStatisticsDto>> SummaryStatisticsAsync()
+        {
+            var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if(Finduser is null) { return BadRequest("Login First"); }
+            var UserId = Guid.Parse(Finduser.Value);
+            var AdminId = await user.UserInfo(UserId);
+            if(AdminId is null) { return BadRequest("User Cannot Find"); }
+            var request = await handlingStudents.SummaryStatisticsAsync(AdminId.Id);
+            return Ok(request);
+        }
+        [Authorize]
+        [HttpGet("Department Statistics")]
+        public async Task<ActionResult<DepartmentStatsDto>> DepartmentStatsAsync()
+        {
+            var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (Finduser is null) { return BadRequest("Login First"); }
+            var UserId = Guid.Parse(Finduser.Value);
+            var AdminId = await user.UserInfo(UserId);
+            if (AdminId is null) { return BadRequest("User Cannot Find"); }
+            var request = await handlingStudents.DepartmentStatsAsync(AdminId.Id);
+            return Ok(request);
+        }
       
+
     }
 }
