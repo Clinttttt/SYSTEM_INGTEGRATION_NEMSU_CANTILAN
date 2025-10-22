@@ -1,10 +1,15 @@
-﻿<dialog id="edit_announcement" class="modal">
+﻿@rendermode InteractiveServer
+@inject IRespondApiCommand respondApiCommand
+@inject IJSRuntime JS
+
+
+<dialog id="edit_announcement" class="modal">
     <div class="modal-box w-11/12 max-w-5xl max-h-[90vh] overflow-y-auto rounded-sm">
 
         <div class="flex items-center justify-between mb-6 pb-4 border-b-1 border-teal-500">
             <div>
                 <h3 class="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
-                Edit Announcement
+                    Edit Announcement
                 </h3>
                 <p class="text-gray-600 text-sm mt-1">Update your announcement</p>
             </div>
@@ -13,28 +18,33 @@
             </form>
         </div>
 
-        <div class="space-y-6">
-            <label class="label">
-                <span class="label-text-alt text-gray-500 font-light">💡 Tip: Students enrolled in the selected course will see this announcement</span>
-            </label>
+        @if (announcements is not null)
+        {
+            {
+                <div class="space-y-6">
+                    <label class="label">
+                        <span class="label-text-alt text-gray-500 font-light">💡 Tip: Students enrolled in the selected course will see this announcement</span>
+                    </label>
 
 
-            <div class="form-control flex gap-1">
+                    <div class="form-control flex gap-1">
 
-                <input type="text"
-                       placeholder="Enter announcement title"
-                       class="border-teal-500 w-full placeholder:font-light input input-lg  focus:outline-none focus:ring-0 focus:border-cyan-400  focus:ring-1 " />
+                        <input @bind="@announcements.Title" type="text"
+                        placeholder="Enter announcement title"
+                        class="border-teal-500 w-full placeholder:font-light input input-lg  focus:outline-none focus:ring-0 focus:border-cyan-400  focus:ring-1 " />
 
-            </div>
+                    </div>
 
-            <div class="form-control flex gap-1">
+                    <div class="form-control flex gap-1">
 
-                <textarea class="placeholder:font-light border-teal-500  w-full textarea textarea-bordered h-40 text-base  focus:outline-none focus:ring-0 focus:border-cyan-400  focus:ring-1" placeholder="Write your announcement message here...
+                        <textarea @bind="@announcements.Message" class="placeholder:font-light border-teal-500  w-full textarea textarea-bordered h-40 text-base  focus:outline-none focus:ring-0 focus:border-cyan-400  focus:ring-1" placeholder="Write your announcement message here...
 Example: The final examination schedule for the 1st Semester, A.Y. 2024-2025 has been posted. Please check your student portal for your exam schedule."></textarea>
 
-            </div>
+                    </div>
 
-        </div>
+                </div>
+            }
+        }
 
 
         <div class="mt-6 p-4 bg-gradient-to-r from-cyan-50 to-teal-50 rounded-xl border border-cyan-200">
@@ -61,7 +71,7 @@ Example: The final examination schedule for the 1st Semester, A.Y. 2024-2025 has
                     </svg>
                     Cancel
                 </button>
-                <button class="btn bg-teal-500 text-white btn-lg gap-2 shadow-lg hover:shadow-xl transition-all">
+                <button @onclick="()=> EditAnnouncememt()" class="btn bg-teal-500 text-white btn-lg gap-2 shadow-lg hover:shadow-xl transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
@@ -71,3 +81,18 @@ Example: The final examination schedule for the 1st Semester, A.Y. 2024-2025 has
         </div>
     </div>
 </dialog>
+
+
+@code{
+    [Parameter]
+    public EditAnnouncementDto announcements { get; set; } = new();
+    [Parameter]
+    public EventCallback AnnouncementUpdate { get; set; }
+
+    public async Task EditAnnouncememt()
+    {
+        await respondApiCommand.EditAnnouncementAsync(announcements);
+        await JS.InvokeVoidAsync("dialogHelper.closeDialog", "edit_announcement.showModal");
+        await AnnouncementUpdate.InvokeAsync();
+    }
+}

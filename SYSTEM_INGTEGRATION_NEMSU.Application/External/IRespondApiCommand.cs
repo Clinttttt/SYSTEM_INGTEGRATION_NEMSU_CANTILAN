@@ -11,5 +11,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
     {
         Task<AutoResponsetDto?> AutoResponse(string CourseCode);
         Task<AnnouncementDto?> Announcement(AnnouncementDto announcement);
+        Task<List<AnnouncementDto>?> DisplayAnnouncementAsync();
+        Task<AnnouncementDto?> EditAnnouncementAsync(EditAnnouncementDto announcement);
+        Task<bool> DeleteAnnouncementAsync(Guid AnnouncementId);
     }
 }

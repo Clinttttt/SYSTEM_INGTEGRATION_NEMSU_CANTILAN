@@ -1,0 +1,244 @@
+﻿@inject IFacultyRecordApi facultyRecordApi
+@rendermode InteractiveServer
+@page "/facultyprofile"
+
+<div class="relative h-screen content overflow-hidden animate-fade-in">
+    <div class="drawer lg:drawer-open h-screen">
+        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col overflow-y-auto">
+
+            <div class="flex-1  bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 p-6 pb-21">
+
+                <div class="mb-8 ">
+                    <div>
+                        <NavLink href="/facultymainmenu" class="cursor-pointer inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold text-sm mb-4">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                            Back to Menu
+                        </NavLink>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class=" text-3xl md:text-4xl font-semibold bg-gradient-to-r from-amber-600 to-orange-500 bg-clip-text text-transparent">
+                                Profile Information
+                            </h1>
+                            <p class="text-gray-600 mt-2 flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                                View and manage your personal details
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="max-w-7xl mx-auto">
+                    @if (!hasrender)
+                    {
+
+                        <div class="flex justify-center items-center py-32">
+                            <div class="text-center">
+                                <div class="relative">
+                                    <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                                </div>
+                                <p class="text-gray-600 mt-6 text-lg font-semibold">Loading data...</p>
+                            </div>
+                        </div>
+
+                    }
+
+                    @if (facultyRecord is not null && facultyRecord.FacultyPersonalInformationDto is not null && facultyRecord.FacultyAcademicInformationDto is not null)
+                    {
+
+                        <div class="relative bg-gradient-to-r from-amber-600 to-orange-600 rounded-2xl shadow-2xl p-8 mb-8 overflow-hidden  transition-all duration-300">
+
+                            <div class="absolute inset-0 opacity-10">
+                                <div class="absolute transform rotate-45 -right-20 -top-20 w-40 h-40 bg-white rounded-full"></div>
+                                <div class="absolute transform -rotate-12 -left-10 -bottom-10 w-32 h-32 bg-white rounded-full"></div>
+                            </div>
+
+                            <div class="relative flex flex-col lg:flex-row items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-8">
+                                <div class="relative group">
+                                    <div class="w-[102px] h-[102px] bg-gradient-to-br from-amber-50 to-amber-50 rounded-full flex items-center justify-center border-4 border-orange-300 shadow-lg">
+                                        <svg class="w-13 h-13 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="absolute bottom-0 right-0 w-10 h-10 bg-amber-400 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="flex-1 text-center lg:text-left text-white">
+                                    <h2 class="text-3xl lg:text-4xl font-medium mb-3">@Fullname</h2>
+                                    <div class="flex flex-col lg:flex-row items-center lg:items-center gap-3 mb-3">
+                                        <span class="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6.75v10.5m-7.5 0V6.75m-3 12.75h12.75a2.25 2.25 0 002.25-2.25V8.25a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 8.25v9a2.25 2.25 0 002.25 2.25z" />
+                                            </svg>
+
+                                            @facultyRecord.FacultyAcademicInformationDto.FacultyDepartment
+                                        </span>
+                                        <span class="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
+                                            @facultyRecord.FacultyAcademicInformationDto.Position
+                                        </span>
+                                    </div>
+                                    <p class="text-white/90 text-lg mb-4">@facultyRecord.FacultyAcademicInformationDto.FacultyDepartment.GetDisplayName()</p>
+                                    <div class="flex flex-wrap gap-2 justify-center lg:justify-start">
+                                        <span class="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-xs">@facultyRecord.FacultyAcademicInformationDto.FacultySchoolId</span>
+
+                                        <span class="px-3 py-1 bg-green-400/60 backdrop-blur-sm rounded-full text-xs font-semibold">Active</span>
+                                    </div>
+                                </div>
+
+                                <button onclick="my_modal_4.showModal()" class="btn btn-outline  text-white hover:bg-white hover:text-cyan-600 gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                    Edit Profile
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 ">
+
+                            <div class="bg-white w-full rounded-2xl shadow-xl p-6  border border-gray-100">
+                                <div class="flex items-center justify-between mb-6">
+                                    <h3 class="text-2xl font-bold text-gray-700 flex items-center">
+                                        <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+                                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                        Instructor Details
+                                    </h3>
+                                </div>
+
+
+                                <div class="grid lg:grid-cols-3 gap-8 ">
+
+
+                                    <div class="space-y-4">
+                                        <h4 class="font-semibold text-amber-600 text-lg mb-4 pb-2 border-b-2 border-amber-200">Personal Information</h4>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Full Name</label><p class="font-light text-gray-900">@Fullname</p></div>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Date of Birth</label><p class=" font-light text-gray-800">@facultyRecord.FacultyPersonalInformationDto.DateofBirth.ToString("MM/dd/yyyy")</p></div>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Gender</label><p class=" font-light text-gray-800">@facultyRecord.FacultyPersonalInformationDto.FacultyGender</p></div>
+
+
+                                    </div>
+
+
+                                    <div class="space-y-4">
+                                        <h4 class="font-semibold text-orange-600 text-lg mb-4 pb-2 border-b-2 border-orange-200">Academic Information</h4>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Department</label><p class=" font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.FacultyDepartment</p></div>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Position</label><p class="font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.Position</p></div>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Year of Teaching</label><p class="font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.YearsOfTeaching</p></div>
+
+                                    </div>
+
+
+                                    <div class="space-y-4">
+                                        <h4 class="font-semibold text-stone-600 text-lg mb-4 pb-2 border-b-2 border-stone-300">Contact Information</h4>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Mobile Number</label><p class="font-light text-gray-800">@facultyRecord.FacultyPersonalInformationDto.ContactNumber</p></div>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Email Address</label><p class="font-light text-gray-800 break-all">@facultyRecord.FacultyPersonalInformationDto.EmailAddress</p></div>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Permanent Address</label><p class="font-light text-gray-800">@facultyRecord.FacultyPersonalInformationDto.Address</p></div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+
+
+
+
+                        <div class="mt-8 p-6 bg-amber-50 border border-amber-200 rounded-xl">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                                <div>
+                                    <h4 class="font-bold text-amber-800 mb-1">Need to update your information?</h4>
+                                    <p class="text-amber-800 text-sm">
+                                        Contact the registrar's office or click the "Edit Profile" button above. Make sure all information is accurate for proper communication and record-keeping.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+
+
+                </div>
+            </div>
+        </div>
+        <div class="drawer-side">
+            <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
+            <ul class="menu min-h-full w-62 p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+                <li class="mx-auto mb-4">
+
+
+                    <div class="w-[92px] h-[92px] bg-gradient-to-br from-amber-50 to-amber-50 rounded-full flex items-center justify-center border-4 border-orange-300 shadow-lg">
+                        <svg class="w-13 h-13 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+
+
+
+
+                </li>
+                <li><a class="text-white text-2xl font-light btn btn-outline btn-dash  btn-primary">Profile</a></li>
+
+
+                <li class="mt-10"><NavLink href="/facultymanageprofile" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Manage Profile</NavLink></li>
+                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Settings</a></li>
+                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Logout</a></li>
+
+                <li class="mt-10"><NavLink href="/studentmanagement" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Student Records</NavLink></li>
+                <li class="mt-2"><NavLink href="/coursemanagemnt" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Course Management</NavLink></li>
+                <li class="mt-2"><NavLink href="/facultyannouncement" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Announcements</NavLink></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+@code {
+    public bool hasrender = false;
+    public FacultyRecordDto? facultyRecord { get; set; } = null;
+    public string? Fullname { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!hasrender && firstRender)
+        {
+            hasrender = true;
+            try
+            {
+                facultyRecord = await facultyRecordApi.DisplayFacultyDetailsAsync();
+                Fullname = $"{facultyRecord?.FacultyPersonalInformationDto?.FirstName} " +
+                           $"{facultyRecord?.FacultyPersonalInformationDto?.MiddleName} " +
+                           $"{facultyRecord?.FacultyPersonalInformationDto?.LastName}";
+            }catch(Exception e)
+            {
+                Console.WriteLine("Error" + e.Message);
+            }
+
+        }
+        StateHasChanged();
+
+    }
+   
+}

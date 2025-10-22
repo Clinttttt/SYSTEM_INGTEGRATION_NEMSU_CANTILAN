@@ -39,10 +39,38 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         public async Task<AnnouncementDto?> Announcement(AnnouncementDto announcement)
         {
             await SetAuthHeaderAsync();
-            
+
             var response = await _http.PostAsJsonAsync("api/HandlingMessage/Announcement", announcement);
-            if (!response.IsSuccessStatusCode) return null;
-            return await response.Content.ReadFromJsonAsync<AnnouncementDto>();
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+           
+            if (response.Content.Headers.ContentLength > 0)
+            {
+                return await response.Content.ReadFromJsonAsync<AnnouncementDto>();
+            }
+
+           
+            return announcement;
+        }
+        public async Task<List<AnnouncementDto>?> DisplayAnnouncementAsync()
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<List<AnnouncementDto>>("api/HandlingMessage/Display%20Announcement");
+        }
+
+        public async Task<AnnouncementDto?> EditAnnouncementAsync(EditAnnouncementDto announcement)
+        {
+            await SetAuthHeaderAsync();
+            var request = await _http.PatchAsJsonAsync("api/HandlingMessage/Edit%20Announcement", announcement);
+            if (!request.IsSuccessStatusCode) return null;
+            return await request.Content.ReadFromJsonAsync<AnnouncementDto>();
+        }
+        public async Task<bool> DeleteAnnouncementAsync(Guid AnnouncementId)
+        {
+            await SetAuthHeaderAsync();
+            return await _http.DeleteFromJsonAsync<bool>($"api/HandlingMessage/Delete%20Announcement/{AnnouncementId}");
         }
     }
 

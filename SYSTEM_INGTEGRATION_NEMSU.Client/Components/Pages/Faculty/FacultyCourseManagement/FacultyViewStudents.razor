@@ -1,10 +1,11 @@
 ﻿@page "/facultyviewtudents/{StudentId:guid}"
 
-
-@inject IHandlingStudentsApi handlingStudentsApi
 @rendermode InteractiveServer
 
-<div class="relative h-screen content overflow-hidden">
+@inject IHandlingStudentsApi handlingStudentsApi
+
+
+<div class="relative h-screen content overflow-hidden animate-fade-in">
     <div class="drawer lg:drawer-open h-screen">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col h-screen overflow-auto">
@@ -24,7 +25,7 @@
             }
             @if (studentsDetailsDto is not null)
             {
-                <div class="flex-1 p-6 pb-19" style="background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);">
+                <div class="flex-1 p-6 pb-19 " style="background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);">
 
 
                     <div class="relative rounded-3xl shadow-2xl overflow-hidden mb-6" style="background-color:@(studentsDetailsDto.ProfileColor ?? "#06b6d4") ">

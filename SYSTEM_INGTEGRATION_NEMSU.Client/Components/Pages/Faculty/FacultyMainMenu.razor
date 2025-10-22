@@ -1,9 +1,14 @@
-﻿@page "/facultymainmenu"
+﻿@inject IFacultyRecordApi facultyRecordApi
+@inject IHandlingStudentsApi handlingStudentsApi
+@rendermode InteractiveServer
 
-<div class="h-screen content overflow-hidden" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+
+@page "/facultymainmenu"
+
+<div class="h-screen  content overflow-hidden" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
 
     <div class="h-full flex flex-col p-6">
-   
+
         <div class="flex items-center justify-between mb-8 bg-gradient-to-r from-cyan-500/20 to-transparent backdrop-blur-sm rounded-2xl p-6 border border-cyan-400/30">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center border-4 border-orange-300 shadow-lg">
@@ -18,30 +23,33 @@
             <div class="text-right">
                 <div class="flex items-center gap-3">
                     <div>
-                        <p class="text-white font-semibold text-lg">Prof. Jenellie Rose Guevarra</p>
-                        <p class="text-cyan-200 text-sm">ID: FAC-2024-001</p>
+                        <p class="text-white font-semibold text-lg">Prof. @Fullname</p>
+                        <p class="text-cyan-200 text-sm">ID: FAC-@info?.FacultyAcademicInformationDto?.FacultySchoolId</p>
                     </div>
                     <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl border-2 border-white shadow-lg">
-                        JG
+                        @(Fullname?.Split(' ').Length >= 2
+                                         ? $"{Fullname.Split(' ')[0][0]}{Fullname.Split(' ')[1][0]}"
+                                         : Fullname?[0].ToString())
+
                     </div>
                 </div>
             </div>
         </div>
 
-      
+
         <div class="text-center mb-8">
             <h2 class="text-3xl font-bold text-white mb-2">
-                Welcome Back, <span class="text-orange-400">Jenellie!</span>
+                Welcome Back, <span class="text-orange-400">@info?.FacultyPersonalInformationDto?.FirstName!</span>
             </h2>
             <p class="text-cyan-100 text-lg">Your faculty management dashboard</p>
         </div>
 
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6   ">
 
 
-     
-            <!-- Student Management  -->
+
+
             <NavLink href="/studentmanagement" class="cursor-pointer h-64 pb-6  bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-cyan-400/30 hover:border-cyan-400 transition-all hover:shadow-2xl hover:shadow-cyan-500/20 flex flex-col">
                 <div class="mt-1">
                     <div class="w-13 h-13 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
@@ -53,20 +61,20 @@
                     <p class="text-gray-300 mb-4">View, manage, and verify student information and enrollment data</p>
                     <div class="mb-4">
                         <span class="inline-block bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded-full text-sm font-semibold border border-cyan-500/30">
-                            234 Students
+                            @stats?.TotalStudent Students
                         </span>
                     </div>
                 </div>
             </NavLink>
 
-          
 
-           
 
-            <!-- Course Management  -->
+
+
+
             <NavLink href="/coursemanagemnt" class=" cursor-pointer h-64 pb-6 bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-orange-400/30 hover:border-orange-400 transition-all hover:shadow-2xl hover:shadow-orange-500/20 flex flex-col">
-        
-              <div class="mt-1">
+
+                <div class="mt-1">
                     <div class=" w-13 h-13 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                         <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
@@ -76,16 +84,16 @@
                     <p class="text-gray-300 mb-4 flex-1">Manage course offerings, and curriculum information</p>
                     <div class="mb-4">
                         <span class="inline-block bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-sm font-semibold border border-orange-500/30">
-                          18 Courses
+                            @stats?.TotalCourse Courses
                         </span>
                     </div>
-              </div>
+                </div>
             </NavLink>
 
-            <!-- Announcements  -->
+
             <NavLink href="/facultyannouncement" class="cursor-pointer h-64 pb-6  bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-teal-400/30 hover:border-teal-400 transition-all hover:shadow-2xl hover:shadow-teal-500/20 flex flex-col">
-        
-              <div class="mt-1">
+
+                <div class="mt-1">
                     <div class="w-13 h-13 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg ">
                         <svg class=" w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
@@ -96,16 +104,16 @@
                     <p class="text-gray-300 mb-4 flex-1"> manage faculty announcements and important notices</p>
                     <div class="mb-4">
                         <span class="inline-block bg-teal-500/20 text-teal-300 px-3 py-1 rounded-full text-sm font-semibold border border-teal-500/30">
-                         3 New 
+                            Post now
                         </span>
                     </div>
-              </div>
+                </div>
             </NavLink>
 
-            <!-- Profile  -->
+
             <NavLink href="/facultyprofile" class="cursor-pointer h-64 pb-6 bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-emerald-400/30 hover:border-emerald-400 transition-all hover:shadow-2xl hover:shadow-emerald-500/20 flex flex-col">
-      
-               <div class="mt-1">
+
+                <div class="mt-1">
                     <div class="w-13 h-13 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                         <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -116,19 +124,38 @@
                     <p class="text-gray-300 mb-4 flex-1">Manage your faculty profile information and account settings</p>
                     <div class="mb-4">
                         <span class="inline-block bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-semibold border border-emerald-500/30">
-                           Complete
+                            Complete
                         </span>
                     </div>
-               </div>
+                </div>
             </NavLink>
 
-          
+
 
         </div>
     </div>
 </div>
 
 @code {
+    public FacultyRecordDto? info { get; set; } = null;
+    public SummaryStatisticsDto? stats { get; set; } = null;
+    private bool hasrender = false;
+    private string? Fullname { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstrender)
+    {
+
+        if (!hasrender && firstrender)
+        {
+            hasrender = true;
+            stats = await handlingStudentsApi.SummaryStatisticsAsync();
+            info = await facultyRecordApi.DisplayFacultyDetailsAsync();
+            Fullname = $"{info?.FacultyPersonalInformationDto?.FirstName}" + " " +                    
+                       $"{info?.FacultyPersonalInformationDto?.LastName}";
+           
+        }
+        StateHasChanged();
+    }
+
 }
 
 
@@ -161,9 +188,9 @@
                     </span>
                 </div>
             </div>
-            
-            
-            
+
+
+
 
 
             <!-- Academic Records Card -->
@@ -183,7 +210,7 @@
             </div>
 
 
-            
+
            <!-- Reports & Analytics Card -->
             <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl p-6 border border-emerald-400/30 hover:border-emerald-400 transition-all hover:shadow-2xl hover:shadow-emerald-500/20 flex flex-col">
                 <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
@@ -216,5 +243,5 @@
                     </span>
                 </div>
             </div>
-            
+
             *@

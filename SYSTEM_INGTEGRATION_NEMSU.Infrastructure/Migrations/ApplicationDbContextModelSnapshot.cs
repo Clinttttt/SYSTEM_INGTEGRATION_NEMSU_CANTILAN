@@ -42,7 +42,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("category");
+                    b.ToTable("category", (string)null);
 
                     b.HasData(
                         new
@@ -142,7 +142,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("course");
+                    b.ToTable("course", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.EnrollmentCourse", b =>
@@ -180,7 +180,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("enrollcourse");
+                    b.ToTable("enrollcourse", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record.FacultyAcademicInformation", b =>
@@ -206,7 +206,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("facultyAcademics");
+                    b.ToTable("facultyAcademics", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record.FacultyPersonalInformation", b =>
@@ -247,7 +247,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("facultyPersonalInformation");
+                    b.ToTable("facultyPersonalInformation", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.InstructorAnnouncement", b =>
@@ -284,7 +284,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("announcements");
+                    b.ToTable("announcements", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Invoice", b =>
@@ -323,7 +323,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("invoice");
+                    b.ToTable("invoice", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.LearningObjectives", b =>
@@ -342,7 +342,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("LearningObjectives");
+                    b.ToTable("LearningObjectives", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.PersonalInformation", b =>
@@ -389,7 +389,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("personalInformation");
+                    b.ToTable("personalInformation", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord.AcademicInformation", b =>
@@ -427,7 +427,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("academicInformation");
+                    b.ToTable("academicInformation", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord.ContactInformation", b =>
@@ -453,7 +453,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("contactInformation");
+                    b.ToTable("contactInformation", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities.User", b =>
@@ -505,7 +505,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[StudentsDetailsId] IS NOT NULL");
 
-                    b.ToTable("users");
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", b =>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -17,7 +18,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string? Title { get; set; }
         public string? Message { get; set; }
         public InformationType InformationType { get; set; }
-        [JsonIgnore] // 👈 prevents recursive serialization
+        [JsonIgnore] 
         public Course course { get; set; } = null!;
         public DateTime DateCreated { get; set; }
     }
@@ -28,9 +29,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
     }
     public enum InformationType
     {
+        [Display(Name = "Academic")]
         Academic,
+        [Display(Name = "Events")]
         Events,
+        [Display(Name = "Important")]
         Important,
+        [Display(Name = "General")]
         General
     };
     

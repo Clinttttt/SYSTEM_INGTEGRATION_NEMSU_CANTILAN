@@ -108,6 +108,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .Where(s => s.Type == AnnouncementType.instructor && s.course.AdminId == AdminId)
               .Select(a => new AnnouncementDto
               {
+                  AnnouncementId = a.Id,
                   Title = a.Title,
                   Message = a.Message,
                   InformationType = a.InformationType,
@@ -118,9 +119,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return request;
         }
                        
-        public async Task<bool> DeleteAnnouncementAsync(Guid AdminId, Guid CourseId)
+        public async Task<bool> DeleteAnnouncementAsync(Guid AdminId, Guid AnnouncementId)
         {
-            var request = await context.announcements.Where(s => s.course.AdminId == AdminId && s.CourseId == CourseId).FirstOrDefaultAsync();
+            var request = await context.announcements.Where(s => s.course.AdminId == AdminId && s.Id == AnnouncementId).FirstOrDefaultAsync();
             if(request is null)
             {
                return false; 
@@ -146,6 +147,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             var filter = new AnnouncementDto
             {
+                AnnouncementId = request.Id,
                 Title = request.Title,
                 Message = request.Message,
                 InformationType = request.InformationType,

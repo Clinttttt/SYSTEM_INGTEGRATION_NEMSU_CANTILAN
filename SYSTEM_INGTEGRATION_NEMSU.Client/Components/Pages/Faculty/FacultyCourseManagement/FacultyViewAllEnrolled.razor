@@ -5,7 +5,8 @@
 @inject NavigationManager navigation
 @rendermode InteractiveServer
 
-<div class="relative h-screen content overflow-hidden">
+
+<div class="relative h-screen content overflow-hidden animate-fade-in">
     <div class="drawer lg:drawer-open h-screen">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col h-screen overflow-auto">
@@ -39,7 +40,7 @@
                 {
                     @if (Course is not null )
                     {
-                        <div class="mb-10 text-center">
+                        <div class="mb-10 text-center animate-fade-in">
                             <div class="inline-block mb-4">
                                 <div class="bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-8 py-3 rounded-full text-sm font-bold uppercase tracking-wider shadow-lg">
                                     Class Roster
@@ -59,7 +60,7 @@
 
                     @if (quickStats is not null)
                     {
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-3xl mx-auto">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-3xl mx-auto animate-fade-in">
 
                             <div class="group relative">
                                 <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/40 to-cyan-600/40 rounded-3xl blur opacity-45 group-hover:opacity-100 transition-opacity"></div>
@@ -77,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <div class="group relative">
+                            <div class="group relative ">
                                 <div class="absolute inset-0 bg-gradient-to-br from-teal-400/40 to-teal-600/40 rounded-3xl blur opacity-45 group-hover:opacity-100 transition-opacity"></div>
                                 <div class="relative bg-white/50 rounded-3xl shadow-2xl p-8 transform transition-all group-hover:scale-105">
                                     <div class="flex items-start justify-between mb-4">

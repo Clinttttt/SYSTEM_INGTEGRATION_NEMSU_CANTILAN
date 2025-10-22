@@ -60,8 +60,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(response);
         }
         [Authorize]
-        [HttpDelete("Delete Announcement")]
-        public async Task<ActionResult<bool>> DeleteAnnouncementAsync(Guid CourseId)
+        [HttpDelete("Delete Announcement/{AnnouncementId}")]
+        public async Task<ActionResult<bool>> DeleteAnnouncementAsync(Guid AnnouncementId)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return Unauthorized("Login First");
@@ -69,7 +69,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var GetUserId = Guid.Parse(FindUser.Value);
             var user = await respository.UserInfo(GetUserId);
             if (user is null) return BadRequest("User not found or Student ID missing");
-            var response = await respondCommand.DeleteAnnouncementAsync(user.Id, CourseId);
+            var response = await respondCommand.DeleteAnnouncementAsync(user.Id, AnnouncementId);
             return Ok(response);
         }
         [Authorize]

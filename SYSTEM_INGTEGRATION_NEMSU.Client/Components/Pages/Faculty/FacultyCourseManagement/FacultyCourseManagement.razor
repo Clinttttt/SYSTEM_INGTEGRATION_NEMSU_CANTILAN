@@ -3,10 +3,11 @@
 
 @inject IHandlingApiCourse handlingApiCourse
 @rendermode InteractiveServer
+
 @inject ProtectedLocalStorage storage
 @inject IAuthApiServices authApi
 @inject IJSRuntime JS
-<div class="relative h-screen content overflow-hidden">
+<div class="relative h-screen content overflow-hidden animate-fade-in">
     <div class="drawer lg:drawer-open h-screen">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col h-screen overflow-auto">
@@ -16,7 +17,14 @@
 
 
             <div class="flex-1 p-6" style="background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);">
-
+                <div>
+                    <NavLink href="/facultymainmenu" class="cursor-pointer inline-flex items-center gap-2 text-cyan-700 hover:text-cyan-700 font-semibold text-sm mb-4">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Back to Menu
+                    </NavLink>
+                </div>
                 <div class="mb-6 flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -24,6 +32,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                             </svg>
                         </div>
+
                         <div>
                             <h1 class="text-2xl font-bold text-cyan-700">Course Management</h1>
                             <p class="text-gray-500 text-xs">View and manage all courses</p>
@@ -55,8 +64,11 @@
                                 </svg>
                             </div>
                             <input type="text"
-                                   class="w-full pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
-                                   placeholder="Search by course code, name..." />
+                            @bind="SearchQuery"
+                            @bind:event="oninput"
+                            @onkeyup="SearchFilter"
+                            class="w-full pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
+                            placeholder="Search by course code, name..." />
                         </div>
                     </div>
 
@@ -92,9 +104,9 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-13">
 
-                    @if (Course is not null)
+                    @if (Filtered is not null)
                     {
-                        @foreach (var course in Course)
+                        @foreach (var course in Filtered)
                         {
 
                             <div class="bg-white rounded-xl shadow-md border border-cyan-100 hover:shadow-xl transition-all overflow-hidden">
@@ -149,7 +161,7 @@
 
         <FacultyEditCourseInformation OnCourseUpdated="ReloadCourseData" CourseUpdate="udpatecourse" />
 
- 
+
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <ul class="menu min-h-full w-62 p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
@@ -185,7 +197,9 @@
     public CourseDto? course { get; set; }
     public EventCallback Reload { get; set; }
 
-    public List<HandlingStudentsDto>? studentlist { get; set; }
+    public List<CourseDto>? Filtered { get; set; }
+    public string SearchQuery = "";
+    public IEnumerable<HandlingStudentsDto>? studentlist { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -205,14 +219,29 @@
                 Error = "Nothing to display";
                 return;
             }
-          
+            Filtered = Course.ToList();
             StateHasChanged();
 
         }
     }
+    public void SearchFilter()
+    {
+        if (string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            Filtered = Course?.ToList();
+        }
+        else
+        {
+            var query = SearchQuery.ToLower();
+            Filtered = Course?.Where(s => s.CourseCode!.ToLower().Contains(query) ||
+            s.Title!.ToLower().Contains(query)).ToList();
+        }
+        StateHasChanged();
+    }
+
     private async Task OpenEditModal(CourseDto course)
     {
-        
+
         udpatecourse.Id = course.Id;
         udpatecourse.Title = course.Title;
         udpatecourse.CategoryId = course.CategoryId;
@@ -230,7 +259,7 @@
 
         StateHasChanged();
 
-    
+
         await JS.InvokeVoidAsync("eval", "my_modal_editcourse.showModal()");
     }
 

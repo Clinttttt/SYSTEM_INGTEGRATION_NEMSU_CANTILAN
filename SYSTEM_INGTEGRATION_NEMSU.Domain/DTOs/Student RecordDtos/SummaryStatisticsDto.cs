@@ -12,5 +12,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
         public int TotalActive { get; set; }
         public int TotalInactive { get; set; }
         public int TotalDepartment { get; set; }
+        public int TotalCourse { get; set; }
     }
 }

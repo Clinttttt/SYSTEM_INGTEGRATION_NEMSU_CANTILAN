@@ -1,40 +1,45 @@
-﻿@using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
-
+﻿@inject IHandlingApiCourse handlingcourseApi
 @inject IRespondApiCommand respondApiCommand
 @inject IJSRuntime JS
 @rendermode InteractiveServer
 
-<dialog id="my_modal_4" class="modal" >
+<dialog id="my_modal_create_announcement" class="modal">
     <div class="modal-box w-11/12 max-w-5xl max-h-[90vh] overflow-y-auto rounded-sm">
         <EditForm Model="@Announcement" OnValidSubmit="@HandlingAnnouncement" FormName="AddingAnnouncement">
             <div class="flex items-center justify-between mb-6 pb-4 border-b-1 border-teal-500">
-            <div>
-                <h3 class="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
-                    Create Announcement
-                </h3>
-                <p class="text-gray-600 text-sm mt-1">Share updates with your students</p>
+                <div>
+                    <h3 class="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+                        Create Announcement
+                    </h3>
+                    <p class="text-gray-600 text-sm mt-1">Share updates with your students</p>
+                </div>
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost">✕</button>
+                </form>
             </div>
-            <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost">✕</button>
-            </form>
-        </div>
 
-        @if (Announcement is not null)
-        {
-          
+            @if (Announcement is not null)
+            {
+
                 <div class="space-y-6">
-                <label class="label">
-                    <span class="label-text-alt text-gray-500 font-light">💡 Tip: Students enrolled in the selected course will see this announcement</span>
-                </label>
-       
+                    <label class="label">
+                        <span class="label-text-alt text-gray-500 font-light">💡 Tip: Students enrolled in the selected course will see this announcement</span>
+                    </label>
+
 
                     <div class="form-control">
 
-                        <select @bind="SelectedCourseCode" class=" font-light border-teal-500 select text-gray-700 text-md select-bordered select-lg  focus:outline-none focus:ring-0 focus:border-cyan-400  focus:ring-1">
+                        @if (course is not null)
+                        {
 
-                            <option value="@Announcement.CourseId">@Announcement.CourseName</option>
-
-                        </select>
+                            <select @bind="Announcement.CourseCode" class="font-light border-teal-500 select text-gray-700 text-md select-bordered select-lg focus:outline-none focus:ring-0 focus:border-cyan-400 focus:ring-1">
+                                <option value="">Select a course</option>
+                                @foreach (var coursename in course)
+                                {
+                                    <option value="@coursename.CourseCode">@coursename.CourseCode</option>
+                                }
+                            </select>
+                        }
 
                     </div>
 
@@ -97,42 +102,42 @@
                     <div class="form-control flex gap-1">
 
                         <input @bind="Announcement.Title" type="text"
-                               placeholder="Enter announcement title"
-                    class="border-teal-500 w-full placeholder:font-light input input-lg  focus:outline-none focus:ring-0 focus:border-cyan-400  focus:ring-1 " />
+                        placeholder="Enter announcement title"
+                        class="border-teal-500 w-full placeholder:font-light input input-lg  focus:outline-none focus:ring-0 focus:border-cyan-400  focus:ring-1 " />
 
-                </div>
+                    </div>
 
-                <div class="form-control flex gap-1">
+                    <div class="form-control flex gap-1">
 
-                    <textarea @bind="Announcement.Message" class="placeholder:font-light border-teal-500  w-full textarea textarea-bordered h-40 text-base  focus:outline-none focus:ring-0 focus:border-cyan-400  focus:ring-1" placeholder="Write your announcement message here...
+                        <textarea @bind="Announcement.Message" class="placeholder:font-light border-teal-500  w-full textarea textarea-bordered h-40 text-base  focus:outline-none focus:ring-0 focus:border-cyan-400  focus:ring-1" placeholder="Write your announcement message here...
 Example: The final examination schedule for the 1st Semester, A.Y. 2024-2025 has been posted. Please check your student portal for your exam schedule."></textarea>
 
+                    </div>
+
                 </div>
 
-            </div>
-         
-        }
+            }
 
 
-        <div class="mt-6 p-4 bg-gradient-to-r from-cyan-50 to-teal-50 rounded-xl border border-cyan-200">
-            <div class="flex items-start gap-3">
-                <svg class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                </svg>
-                <div>
-                    <h4 class="font-semibold text-cyan-800 mb-1">Preview</h4>
-                    <p class="text-cyan-700 text-sm">
-                        Your announcement will appear in the selected course feed with your name and timestamp.
-                        All enrolled students will be notified.
-                    </p>
+            <div class="mt-6 p-4 bg-gradient-to-r from-cyan-50 to-teal-50 rounded-xl border border-cyan-200">
+                <div class="flex items-start gap-3">
+                    <svg class="w-6 h-6 text-cyan-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                        <h4 class="font-semibold text-cyan-800 mb-1">Preview</h4>
+                        <p class="text-cyan-700 text-sm">
+                            Your announcement will appear in the selected course feed with your name and timestamp.
+                            All enrolled students will be notified.
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="modal-action mt-8 pt-4 border-t-1 border-gray-400">
-            
-                <button @onclick="@(() => JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_4"))"
-                    class="btn btn-gray-700 text-gray-700 btn-lg">
+            <div class="modal-action mt-8 pt-4 border-t-1 border-gray-400">
+
+                <button @onclick="@(() => JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_create_announcement"))"
+                class="btn btn-gray-700 text-gray-700 btn-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
@@ -144,10 +149,10 @@ Example: The final examination schedule for the 1st Semester, A.Y. 2024-2025 has
                     </svg>
                     Post Announcement
                 </button>
-           
-        </div>
-            </EditForm>
-        </div>
+
+            </div>
+        </EditForm>
+    </div>
 </dialog>
 
 <script>
@@ -155,26 +160,43 @@ Example: The final examination schedule for the 1st Semester, A.Y. 2024-2025 has
 </script>
 
 @code {
-     
 
-    [Parameter]
+
+  
+
     public AnnouncementDto Announcement { get; set; } = new();
 
-    
+    public IEnumerable<CourseDto>? course { get; set; }
+
+    [Parameter]
+    public EventCallback AnnouncementUpdate { get; set; }
 
     private bool Hasrendered = false;
     public string? SelectedCourseCode { get; set; }
     private string? Error { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!Hasrendered && firstRender)
+        {
+            Hasrendered = true;
+            course = await handlingcourseApi.DisplayAllCourse();
+        }
+    }
+
     public async Task HandlingAnnouncement()
     {
         var request = await respondApiCommand.Announcement(Announcement);
-        if(request is null)
+        if (request is null)
         {
             Error = "Fill up all requirements";
             return;
         }
-        await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_4");
-
+     
+        await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_create_announcement");
+        await AnnouncementUpdate.InvokeAsync();
+        Announcement = new AnnouncementDto();
+        Error = null;
 
     }
 }

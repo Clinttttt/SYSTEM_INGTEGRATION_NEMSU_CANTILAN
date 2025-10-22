@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +19,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record
     }
     public enum FacultyDepartment
     {
-        BSHM,
+        [Display(Name = "College of Criminal Justice Education")]
+      CCJE,
+        [Display(Name = "Department of Industrial Technology")]
         DIT,
+        [Display(Name = "Department of Digital Teacher Training")]
         DGTT,
+        [Display(Name = "Department of Business and Management")]
         DBM,
+        [Display(Name = "Department of Computer Studies")]
         DCS,
     }
     public enum Position

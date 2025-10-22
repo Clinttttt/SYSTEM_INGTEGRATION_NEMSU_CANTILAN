@@ -143,12 +143,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         public async Task<SummaryStatisticsDto> SummaryStatisticsAsync(Guid Admin)
         {
             var request = await context.enrollcourse.Where(s => s.Course.AdminId == Admin).ToListAsync();
-
+            var course = await context.course.Where(s => s.AdminId == Admin).ToListAsync();
             var filter = new SummaryStatisticsDto();
             filter.TotalStudent = request.Count();
             filter.TotalActive = request.Where(s => s.StudentCourseStatus == StudentCourseStatus.Active).Count();
             filter.TotalInactive = request.Where(s => s.StudentCourseStatus == StudentCourseStatus.Inactive).Count();
             filter.TotalDepartment = 5;
+            filter.TotalCourse = course.Count();
             return filter;
         }
 
