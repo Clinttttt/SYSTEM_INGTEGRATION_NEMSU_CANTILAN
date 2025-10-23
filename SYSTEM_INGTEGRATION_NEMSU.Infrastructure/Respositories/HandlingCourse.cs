@@ -71,7 +71,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         }
         public async Task<IEnumerable<CourseDto>> DisplayCourseAsync(Guid adminid)
         {
-            var retrieve = await context.course.Where(s => s.AdminId == adminid && s.CourseStatus == CourseStatus.Active).ToListAsync();
+            var retrieve = await context.course
+                .Include(s=> s.Category)
+                .Where(s => s.AdminId == adminid && s.CourseStatus == CourseStatus.Active).ToListAsync();
 
             return retrieve.Adapt<List<CourseDto>>();
         }
@@ -109,7 +111,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (GetCourse is null) return null;
             var liststudent = await context.enrollcourse.Where(s => s.CourseId == CourseId).ToListAsync();
             var r = GetCourse.Adapt<CourseDto>();
-            r.ListEnrolled = liststudent;
+           
             r.Id = GetCourse.Id;
             r.CategoryId = GetCourse.Id;
             r.CourseStatus = GetCourse.CourseStatus;

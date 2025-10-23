@@ -6,6 +6,7 @@ using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 
@@ -50,7 +51,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         [Authorize]
         [HttpGet("Display Course")]
-        public async Task<ActionResult<EnrollmentCourse>> DisplayCourse()
+        public async Task<ActionResult<CourseDto>> DisplayCourse()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if(FindUser is null) return Unauthorized("Login First");
@@ -128,5 +129,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayAnnounceMentAsync(UserId, CourseCode);
             return Ok(request);
         }
+        [Authorize]
+        [HttpGet("Display PreviewCourse")]
+        public async Task<ActionResult<CourseDto>> PreviewCourseAsync(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) { return BadRequest("User not found"); }
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.PreviewCourseAsync(UserId, CourseId);
+            return Ok(request);
+        }
+
+
     }
 }

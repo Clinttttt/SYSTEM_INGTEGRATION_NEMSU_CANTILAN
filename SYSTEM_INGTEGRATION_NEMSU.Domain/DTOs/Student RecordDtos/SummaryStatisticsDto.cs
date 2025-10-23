@@ -14,4 +14,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
         public int TotalDepartment { get; set; }
         public int TotalCourse { get; set; }
     }
+    public class StudentStats
+    {
+        public Guid StudentId { get; set; }
+        public int TotalEnrolled { get; set; }
+        public int MaxCapacity { get; set; }
+        public Guid CourseId {get;set;}
+    }
 }

@@ -16,7 +16,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string Icon { get; set; } = string.Empty;
 
         public string Color { get; set; } = string.Empty;
-        [JsonIgnore]
+ 
         public ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }

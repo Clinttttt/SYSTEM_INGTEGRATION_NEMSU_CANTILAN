@@ -7,6 +7,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 using Mapster;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Helper;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
@@ -55,16 +56,20 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return dto;
         }
 
-
-        public async Task<IEnumerable<EnrollCourseDto>> DisplayCourseAsync(Guid studentId)
+        public async Task<IEnumerable<CourseDto>?> DisplayCourseAsync(Guid StudentId)
         {
-            var enrollments = await context.enrollcourse
-                .Include(e => e.Course)
-                .Where(e => e.StudentId == studentId)
-                .ToListAsync();
+            var FindUser = await context.users.FindAsync(StudentId);
+            if (FindUser is null)
+                return Enumerable.Empty<CourseDto>();
 
-            return enrollments.Adapt<List<EnrollCourseDto>>();
+            var course = await context.course
+                .Include(s => s.Category)
+                .ToListAsync();
+           
+      return course.Adapt<List<CourseDto>>();
+          
         }
+
         public async Task<CourseDto?> GetCourse(Guid CourseId, Guid StudentId)
         {
             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.CourseId == CourseId && s.StudentId == StudentId);
@@ -75,6 +80,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (retrieve is null)
                 return null;
             return retrieve.Adapt<CourseDto>();
+        }
+        public async Task<CourseDto?> PreviewCourseAsync(Guid StudentId,Guid CourseId)
+        {
+            var request = await context.users.FindAsync(StudentId);
+            if(request is null)
+            {
+                return null;
+            }
+            var course = await context.course.FirstOrDefaultAsync(s => s.Id == CourseId);
+            return course.Adapt<CourseDto>();
         }
         public async Task<bool> UnEnrollCourseAsync(Guid studentId, string courseCode)
         {
@@ -127,7 +142,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .ToListAsync();
             return request;
         }
-
-
+     
     }
 }

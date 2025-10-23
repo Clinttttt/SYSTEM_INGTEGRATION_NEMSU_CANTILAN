@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -28,14 +29,20 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
     }
     public enum GenderChoice
     {
+        [Display(Name = "Male")]
         Male,
+        [Display(Name = "Female")]
         Female,
+        [Display(Name = "Prefer not to say")]
         Prefer_not_to_say
     }
     public enum CivilStatusChoice
     {
+        [Display(Name = "Single")]
         Single,
+        [Display(Name = "Taken")]
         Taken,
+        [Display(Name = "Married")]
         Married
     }
     public enum SaveStatus

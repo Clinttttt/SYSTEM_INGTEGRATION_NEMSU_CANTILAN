@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251023012421_updating_category_courses")]
+    partial class updating_category_courses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,14 +155,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Property<int>("Unit")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("userId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("course");
                 });
@@ -533,13 +531,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId");
-
                     b.Navigation("Category");
-
-                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.EnrollmentCourse", b =>

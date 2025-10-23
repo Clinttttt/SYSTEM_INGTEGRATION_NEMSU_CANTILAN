@@ -21,12 +21,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public CourseDepartment? Department { get; set; }
         public string? CourseDescriptiion { get; set; }
         public int MaxCapacity { get; set; }
+        public int TotalEnrolled { get; set; }
         public List<LearningObjectives>? LearningObjectives { get; set; }
         public string? SchoolYear { get; set; }
         public CourseSemester? Semester { get; set; }
         public string? Schedule { get; set; }
         public string? Room { get; set; }
-        public List<EnrollmentCourse>? ListEnrolled { get; set; }
+
         [JsonIgnore]
         public Guid CategoryId { get; set; }
    

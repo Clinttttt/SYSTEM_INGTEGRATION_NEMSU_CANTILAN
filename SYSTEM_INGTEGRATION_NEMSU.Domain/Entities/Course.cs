@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
 {
@@ -24,7 +25,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string? SchoolYear { get; set; }
         public string? Schedule { get; set; }
         public string? Room { get; set; }
-        [JsonIgnore]
+        public User? user { get; set; }
         public ICollection<EnrollmentCourse> Enrollments { get; set; } = new List<EnrollmentCourse>();
         [JsonIgnore] 
         public ICollection<InstructorAnnouncement> Announcements { get; set; } = new List<InstructorAnnouncement>();
