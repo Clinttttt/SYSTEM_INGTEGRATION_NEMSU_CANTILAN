@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251024124256_adding_PaymentDetails")]
+    partial class adding_PaymentDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -372,9 +375,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.Property<string>("AccountNumber")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Cost")
-                        .HasColumnType("float");
 
                     b.Property<string>("CourseCode")
                         .HasColumnType("nvarchar(max)");

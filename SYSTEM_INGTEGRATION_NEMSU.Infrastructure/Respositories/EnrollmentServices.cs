@@ -8,6 +8,8 @@ using Mapster;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Helper;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System.Text.Json.Serialization;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
@@ -43,18 +45,32 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 ProfileColor = RandomColor.Generate(),
 
             };
-            course.TotalEnrolled += 1;                 
+            course.TotalEnrolled += 1;
             context.enrollcourse.Add(enrollment);
             await context.SaveChangesAsync();
 
 
-            var dto = enrollment.Adapt<EnrollCourseDto>();
-            dto.CourseCode = course.CourseCode;
-            dto.Title = course.Title;
-            dto.Unit = course.Unit;
-            dto.Category = course.Category;
+            var dto = new EnrollCourseDto
+            {
+                CourseCode = course.CourseCode,
+                Title = course.Title,
+                Unit = course.Unit,
+             
+                StudentId = studentId,
+                CourseId = enrollment.CourseId,
+                DateEnrolled = enrollment.DateEnrolled,
+                EnrollmentStatus = status,
+
+            };
+
+
             return dto;
         }
+
+       
+    
+
+
 
         public async Task<IEnumerable<CourseDto>?> DisplayCourseAsync(Guid StudentId)
         {
@@ -65,9 +81,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var course = await context.course
                 .Include(s => s.Category)
                 .ToListAsync();
-           
-      return course.Adapt<List<CourseDto>>();
-          
+
+            return course.Adapt<List<CourseDto>>();
+
         }
 
         public async Task<CourseDto?> GetCourse(Guid CourseId, Guid StudentId)
@@ -81,10 +97,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 return null;
             return retrieve.Adapt<CourseDto>();
         }
-        public async Task<CourseDto?> PreviewCourseAsync(Guid StudentId,Guid CourseId)
+        public async Task<CourseDto?> PreviewCourseAsync(Guid StudentId, Guid CourseId)
         {
             var request = await context.users.FindAsync(StudentId);
-            if(request is null)
+            if (request is null)
             {
                 return null;
             }
@@ -97,9 +113,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .Include(e => e.Course)
                 .FirstOrDefaultAsync(e => e.StudentId == studentId && e.Course.CourseCode == courseCode);
             if (enrollment is null) return false;
-                  
+
             enrollment.Course.TotalEnrolled -= 1;
-       
+
 
             context.enrollcourse.Remove(enrollment);
             await context.SaveChangesAsync();
@@ -142,6 +158,45 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .ToListAsync();
             return request;
         }
-     
+        public async Task<PaymentDetailsDto?> AddPaymentAsync(PaymentDetailsDto payment)
+        {
+            var request = await context.users.FindAsync(payment.StudentId);
+            if (request is null)
+            {
+                return null;
+            }
+            var Add = new PaymentDetails
+            {
+                StudentId = payment.StudentId,
+                AccountNumber = payment.AccountNumber ?? "N/A",
+                paymentMethod = payment.paymentMethod,
+                PurchaseDate = DateTime.UtcNow,
+                CourseCode = payment.CourseCode,
+                Cost = payment.cost,
+            };
+            context.paymentDetails.Add(Add);
+            await context.SaveChangesAsync();
+            var filter = new PaymentDetailsDto
+            {
+                StudentId = payment.StudentId,
+                AccountNumber = payment.AccountNumber ?? "N/A",
+                paymentMethod = payment.paymentMethod,
+                PurchaseDate = Add.PurchaseDate,
+                CourseCode = payment.CourseCode,
+                cost = payment.cost,
+            };
+            return filter;
+        }
+        public async Task<List<PaymentDetailsDto>?> DisplayPaymentAsync(Guid StudentVerification, Guid StudentId)
+        {
+            var User = await context.users.FindAsync(StudentVerification);
+            if (User is null)
+            {
+                return null;
+            }
+            var request = await context.paymentDetails.Where(s => s.StudentId == StudentId).ToListAsync();
+            return request.Adapt<List<PaymentDetailsDto>>();
+        }
+
     }
 }

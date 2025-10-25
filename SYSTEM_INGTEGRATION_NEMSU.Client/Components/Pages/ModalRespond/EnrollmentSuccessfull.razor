@@ -1,0 +1,73 @@
+﻿<input type="checkbox" id="my_modal_successfull" class="modal-toggle" />
+<div class="modal" role="dialog">
+    <div class="modal-box max-w-md rounded-sm">
+
+        <div class="flex justify-center mb-6">
+            <div class="w-13 h-13 bg-success rounded-full flex items-center justify-center">
+                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+        </div>
+
+
+        <h3 class="text-xl font-bold text-center mb-3 text-gray-700">Purchase Successful!</h3>
+        <p class="text-center text-base-content/70 mb-6">
+            Your enrollment has been confirmed.
+        </p>
+
+
+        <div class="bg-base-200 rounded-lg p-4 mb-4">
+            <div class="space-y-3">
+                <div class="flex justify-between items-center pb-2 border-b border-base-300">
+                    <span class="text-sm text-gray-700">Course Code:</span>
+                    <span class="font-semibold text-gray-700">@previewCourse?.CourseCode</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-base-300">
+                    <span class="text-sm text-base-content/70">Course Name:</span>
+                    <span class="font-semibold text-gray-700 ">@previewCourse?.Title</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-base-300">
+                    <span class="text-sm text-base-content/70">Units:</span>
+                    <span class="font-semibold text-gray-700 ">@previewCourse?.Unit Units</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-base-300">
+                    <span class="text-sm text-base-content/70">Amount Paid:</span>
+                    <span class="font-semibold text-lg text-gray-700">₱ @previewCourse?.Cost</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-base-300">
+                    <span class="text-sm text-base-content/70">Payment Method:</span>
+                    <span class="font-semibold text-gray-700">@paymentDetails.paymentMethod</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-base-content/70">Transaction Date:</span>
+                    <span class="font-semibold text-gray-700">@DateEnrolled</span>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="modal-action">
+            <NavLink href="/enrollment" class="btn btn-outline text-teal-600">Close</NavLink>
+            <NavLink href="/enrolledcourse" class="btn bg-teal-600 text-white">My Course</NavLink>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public CourseDto? previewCourse { get; set; }
+    [Parameter]
+    public PaymentDetailsDto paymentDetails { get; set; } = new();
+
+    public DateTime DateEnrolled { get; set; }
+
+    protected override void OnAfterRender(bool hasrender)
+    {
+        if (hasrender)
+        {
+            DateEnrolled = DateTime.UtcNow;
+        }
+    }
+}

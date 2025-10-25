@@ -12,45 +12,46 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
 
-  public class PaymentServices(ApplicationDbContext context, IEnrollmentServices enrollment) : IPaymentServices
+  public class PaymentServices(ApplicationDbContext context, IEnrollmentServices enrollment, IEnrollmentServices enrollmentServices) : IPaymentServices
     {
-        public async Task<Invoice?> InvoiceAsync(Guid studentId, string courseCode, double payment)
+        public async Task<PaymentDetailsDto?> InvoiceAsync( PaymentDetailsDto paymentdetails)
         {
         
             var course = await context.course
-                .FirstOrDefaultAsync(c => c.CourseCode == courseCode);
+                .FirstOrDefaultAsync(c => c.CourseCode == paymentdetails.CourseCode);
             if (course is null) return null;
 
            
             bool alreadyEnrolled = await context.enrollcourse
-                .AnyAsync(e => e.StudentId == studentId && e.CourseId == course.Id);
+                .AnyAsync(e => e.StudentId == paymentdetails.StudentId && e.CourseId == course.Id);
             if (alreadyEnrolled) return null;
-
-            if (course.Cost > payment) return null;
+            if (course.Cost > paymentdetails.cost) return null;
            
           
-            var request  = await enrollment.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Enrolled);
+            var request  = await enrollment.EnrollCourseAsync(paymentdetails.StudentId, paymentdetails.CourseCode!, EnrollmentStatus.Enrolled);
+            var purchase = await enrollmentServices.AddPaymentAsync(paymentdetails);
+
             if (request is null) return null;
-    
+            if (purchase is null) return null;        
             var invoice = new Invoice
             {
                 Id = Guid.NewGuid(),
-                StudentId = studentId,
+                StudentId = paymentdetails.StudentId,
                 CourseId = course.Id,
                 CourseCode = course.CourseCode,   
                 Cost = course.Cost,
                 DateCreated = DateTime.UtcNow,
-                Status = payment >= course.Cost ? InvoiceStatus.Paid : InvoiceStatus.Unpaid,
-                DatePaid = payment >= course.Cost ? DateTime.UtcNow : null,
-                Standing = payment >= course.Cost ? "Enrolled" : "Temporary enrollment"
+                Status = paymentdetails.cost >= course.Cost ? InvoiceStatus.Paid : InvoiceStatus.Unpaid,
+                DatePaid = paymentdetails.cost >= course.Cost ? DateTime.UtcNow : null,
+                Standing = paymentdetails.cost >= course.Cost ? "Enrolled" : "Temporary enrollment"
             };
 
             context.invoice.Add(invoice);
             await context.SaveChangesAsync();
 
-            return invoice;
+            return purchase;
         }
-        public async Task<Invoice?> ProvisionAsync(Guid studentId, string courseCode)
+        public async Task<ProvisionDto?> ProvisionAsync(Guid studentId, string courseCode)
         {
             var course = await context.course
                .FirstOrDefaultAsync(c => c.CourseCode == courseCode);
@@ -74,9 +75,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 DatePaid = null,
                 Standing = "Temporary enrollment"
             };
+            var filter = new ProvisionDto
+            {
+                CourseCode = invoice.CourseCode,
+                Status = invoice.Status,
+                Standing = invoice.Standing,
+               
+            };
             context.invoice.Add(invoice);
             await context.SaveChangesAsync();
-            return invoice;
+            return filter;
         }
 
     }

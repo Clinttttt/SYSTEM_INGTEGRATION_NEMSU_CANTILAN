@@ -26,6 +26,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string? Schedule { get; set; }
         public string? Room { get; set; }
         public User? user { get; set; }
+        [JsonIgnore]
         public ICollection<EnrollmentCourse> Enrollments { get; set; } = new List<EnrollmentCourse>();
         [JsonIgnore] 
         public ICollection<InstructorAnnouncement> Announcements { get; set; } = new List<InstructorAnnouncement>();

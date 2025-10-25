@@ -1,0 +1,65 @@
+﻿<input type="checkbox" id="my_modal_failed_enrolled" class="modal-toggle" />
+<div class="modal" role="dialog">
+    <div class="modal-box max-w-md p-5 rounded-sm">
+
+        <div class="flex justify-center mb-2">
+            <div class="w-13 h-13 bg-error rounded-full flex items-center justify-center">
+                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+        </div>
+
+
+        <h3 class="text-xl font-semibold text-center mb-1 text-error">Purchase Failed</h3>
+        <p class="text-center text-base-content/70 mb-3">
+            We couldn't process your enrollment payment. Please try again.
+        </p>
+
+
+        <div class="bg-error/10 border-l-4 border-error rounded-lg p-4 mb-4">
+            <div class="space-y-3">
+                <div class="flex justify-between items-center pb-2 border-b border-error/20">
+                    <span class="text-sm text-base-content/70">Course Code:</span>
+                    <span class="font-semibold  text-gray-700">@previewCourse?.CourseCode</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-error/20">
+                    <span class="text-sm text-base-content/70">Course Name:</span>
+                    <span class="font-semibold text-gray-700">@previewCourse?.Title</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-error/20">
+                    <span class="text-sm text-base-content/70">Amount:</span>
+                    <span class="font-semibold text-lg  text-gray-700">₱ @previewCourse?.Cost</span>
+                </div>
+                <div class="flex justify-between items-center pb-2 border-b border-error/20">
+                    <span class="text-sm text-base-content/70">Payment Method:</span>
+                    <span class="font-semibold  text-gray-700">@paymentDetails.paymentMethod</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-base-content/70">Error Code:</span>
+                    <span class="font-semibold text-error ">PAYMENT_DECLINED</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="alert alert-error mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-sm">Please check your payment details and ensure you have sufficient funds before trying again.</span>
+        </div>
+
+
+        <div class="modal-action">
+
+            <label for="my_modal_failed_enrolled" class="btn btn-accent">Try Again</label>
+        </div>
+    </div>
+</div>
+@code{
+    [Parameter]
+    public CourseDto? previewCourse { get; set; }
+    [Parameter]
+    public PaymentDetailsDto paymentDetails { get; set; } = new();
+}

@@ -23,25 +23,33 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.enrollcourse
                 .Include(s => s.Student)
                     .ThenInclude(s => s.StudentsDetails)
+                .Include(s => s.Student)
+                .ThenInclude(s => s.StudentAcademicDetails)
+                .Include(s => s.Student)
+                .ThenInclude(s => s.StudentContactDetails)
                 .Include(s => s.Course)
+                .Where(s => s.Course.AdminId == AdminId).ToListAsync();
 
-                .Where(s => s.Course.AdminId == AdminId)
-                .Select(s => new HandlingStudentsDto
-                {
-                    StudentId = s.StudentId,
-                    StudentName = s.Student.StudentsDetails != null
+            var distinctStudents = request
+      .GroupBy(s => s.StudentId)
+      .Select(g => g.OrderByDescending(s => s.DateEnrolled).First())
+
+              .Select(s => new HandlingStudentsDto
+              {
+                  StudentId = s.StudentId,
+                  StudentName = s.Student.StudentsDetails != null
                         ? s.Student.StudentsDetails.FirstName + " " + s.Student.StudentsDetails.LastName
                         : "N/A",
-                    CourseTitle = s.Course != null ? s.Course.Title! : "N/A",
-                    DateEnrolled = s.DateEnrolled,
-                    Email = s.Student.StudentContactDetails != null ? s.Student.StudentContactDetails.EmailAddress : "N/A",
-                    StudentSchoolId = s.Student.StudentAcademicDetails != null ? s.Student.StudentAcademicDetails.StudentSchoolId : "0000-0000",
-                    studentCourseStatus = s.StudentCourseStatus,
-                    ProfileColor = s.ProfileColor,
-                })
-                .ToListAsync();
+                  DateEnrolled = s.DateEnrolled,
+                  Email = s.Student.StudentContactDetails != null ? s.Student.StudentContactDetails.EmailAddress : "N/A",
+                  StudentSchoolId = s.Student.StudentAcademicDetails != null ? s.Student.StudentAcademicDetails.StudentSchoolId : "0000-0000",
+                  studentCourseStatus = s.StudentCourseStatus,
+                  ProfileColor = s.ProfileColor,
+                  Coursedepartment = s.Course!.Department.GetDisplayName(),
+              }).ToList();
 
-            return request;
+
+            return distinctStudents;
         }
 
 
@@ -121,37 +129,50 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.enrollcourse
                 .Include(s => s.Student)
                     .ThenInclude(s => s.StudentsDetails)
+                    .Include(s => s.Student)
+                .ThenInclude(s => s.StudentContactDetails)
+                .Include(s => s.Student)
+                .ThenInclude(s => s.StudentAcademicDetails)
                 .Include(s => s.Course)
+                .Where(s => s.Course.AdminId == AdminId && s.Course.Department == department).ToListAsync();
 
-                .Where(s => s.Course.AdminId == AdminId && s.Course.Department == department)
+            var disctinctResults = request
+                .GroupBy(s => s.StudentId)
+                .Select(s => s.OrderByDescending(s => s.DateEnrolled).First())
+
                 .Select(s => new HandlingStudentsDto
                 {
                     StudentId = s.StudentId,
                     StudentName = s.Student.StudentsDetails != null
                         ? s.Student.StudentsDetails.FirstName + " " + s.Student.StudentsDetails.LastName
                         : "N/A",
-                    CourseTitle = s.Course != null ? s.Course.Title! : "N/A",
+                
                     DateEnrolled = s.DateEnrolled,
                     Email = s.Student.StudentContactDetails != null ? s.Student.StudentContactDetails.EmailAddress : "N/A",
                     StudentSchoolId = s.Student.StudentAcademicDetails != null ? s.Student.StudentAcademicDetails.StudentSchoolId : "0000-0000",
                     studentCourseStatus = s.StudentCourseStatus,
-                    Coursedepartment = department,
+                    Coursedepartment = department.GetDisplayName(),
                     ProfileColor = s.ProfileColor,
-                })
-                .ToListAsync();
+                }).ToList();
 
-            return request;
+
+            return disctinctResults;
         }
         public async Task<SummaryStatisticsDto> SummaryStatisticsAsync(Guid Admin)
         {
-            var request = await context.enrollcourse.Where(s => s.Course.AdminId == Admin).ToListAsync();
+            var request = await context.enrollcourse.Where(s => s.Course.AdminId == Admin)
+               .ToListAsync();
+
+            var distinctStudent = request
+                .GroupBy(s => s.StudentId)
+                .Select(s => s.OrderByDescending(s => s.DateEnrolled).First()).ToList();
+
             var course = await context.course.Where(s => s.AdminId == Admin).ToListAsync();
             var filter = new SummaryStatisticsDto();
-            filter.TotalStudent = request.Count();
-            filter.TotalActive = request.Where(s => s.StudentCourseStatus == StudentCourseStatus.Active).Count();
-            filter.TotalInactive = request.Where(s => s.StudentCourseStatus == StudentCourseStatus.Inactive).Count();
+            filter.TotalStudent = distinctStudent.Count();
+            filter.TotalActive = distinctStudent.Where(s => s.StudentCourseStatus == StudentCourseStatus.Active).Count();
+            filter.TotalInactive = distinctStudent.Where(s => s.StudentCourseStatus == StudentCourseStatus.Inactive).Count();
             filter.TotalDepartment = 5;
-            filter.TotalCourse = course.Count();
             return filter;
         }
 
@@ -160,11 +181,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         {
             var departmentColors = new Dictionary<CourseDepartment, (string Color, string LightColor)>
     {
-        { CourseDepartment.DIT, ("#dc2626", "#f87171") },      // R
-        { CourseDepartment.DCS, ("#ea580c", "#fb923c") },      // O
-        { CourseDepartment.DGTT, ("#16a34a", "#4ade80") },     // G
-        { CourseDepartment.CCJE, ("#0891b2", "#06b6d4") },     // B
-        { CourseDepartment.DBM, ("#eab308", "#fde047") }       // Y
+        { CourseDepartment.DIT, ("#dc2626", "#f87171") },     
+        { CourseDepartment.DCS, ("#ea580c", "#fb923c") },     
+        { CourseDepartment.DGTT, ("#16a34a", "#4ade80") },   
+        { CourseDepartment.CCJE, ("#0891b2", "#06b6d4") },    
+        { CourseDepartment.DBM, ("#eab308", "#fde047") }     
     };
 
 
@@ -174,25 +195,34 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             var departmentCounts = await context.enrollcourse
                 .Include(s => s.Course)
-                .Where(s => s.Course.AdminId == AdminId)
+                .Where(s => s.Course.AdminId == AdminId).ToListAsync();
+
+            var distinctResults = departmentCounts
+                .GroupBy(s => s.StudentId)
+                .Select(s => s.OrderByDescending(s => s.DateEnrolled).First()).ToList();
+
+
+            var disctinct = distinctResults
                 .GroupBy(s => s.Course.Department)
                 .Select(g => new
                 {
                     Department = g.Key,
                     Count = g.Count()
-                })
-                .ToListAsync();
+                }).ToList();
 
-          
-            var totalStudents = departmentCounts.Sum(d => d.Count);
 
-         
+
+
+
+            var totalStudents = disctinct.Sum(d => d.Count);
+
+
             var GetData = allDepartments.Select((dept, index) =>
             {
-                var deptCount = departmentCounts.FirstOrDefault(d => d.Department == dept);
+                var deptCount = disctinct.FirstOrDefault(d => d.Department == dept);
                 var count = deptCount?.Count ?? 0;
 
-                var colors = departmentColors.ContainsKey(dept) 
+                var colors = departmentColors.ContainsKey(dept)
                 ? departmentColors[dept]
                 : ("#6b7280", "#9ca3af");
                 return new DepartmentStatsDto
@@ -204,12 +234,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     Percentage = totalStudents > 0 ? Math.Round((count * 100.0) / totalStudents, 1) : 0
                 };
             })
-            .OrderByDescending(d => d.Count)  
+            .OrderByDescending(d => d.Count)
             .ToList();
 
             return GetData;
         }
-     
+
 
     }
 }

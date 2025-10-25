@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 
@@ -13,7 +14,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public Guid StudentId { get; set; }      
         public Guid CourseId { get; set; }    
         public DateTime DateEnrolled { get; set; }
+        [JsonIgnore]
         public Course? Course { get; set; }
+        [JsonIgnore]
         public Category? Category { get; set; }
         public string? CourseCode { get; set; } 
         public string? Title { get; set; }

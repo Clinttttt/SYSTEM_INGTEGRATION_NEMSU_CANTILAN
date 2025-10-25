@@ -31,15 +31,26 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
                 _http.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", results);
         }
-        public async Task<Invoice?> EnrollCourseAsync(string CourseId, double Payment)
+        public async Task<PaymentDetailsDto?> EnrollCourseAsync(PaymentDetailsDto paymentdetails)
+        {
+            await SetAuthHeaderAsync();        
+            var response = await _http.PostAsJsonAsync("api/EnrollmentHandling/Enroll%20Course", paymentdetails);
+            if (!response.IsSuccessStatusCode) return null;
+            return await response.Content.ReadFromJsonAsync<PaymentDetailsDto>();
+        }
+        public async Task<ProvisionDto?> ProvisionAsync(string courseCode)
         {
             await SetAuthHeaderAsync();
-            var payload = new { CourseId, Payment };
-            var response = await _http.PostAsJsonAsync("api/EnrollmentHandling/Enroll%20Course", payload);
-            if (!response.IsSuccessStatusCode) return null;
-            return await response.Content.ReadFromJsonAsync<Invoice>();
+            var response = await _http.PostAsync($"api/EnrollmentHandling/ProvisionEnrollCourse?courseCode={courseCode}",null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return await response.Content.ReadFromJsonAsync<ProvisionDto>();
         }
-       
+
+
         public async Task<IEnumerable<CourseDto>?> DisplayCourseAsync()
         {
             await SetAuthHeaderAsync();
@@ -54,6 +65,21 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         {
             await SetAuthHeaderAsync();
             return await _http.GetFromJsonAsync<CourseDto>($"api/EnrollmentHandling/Display%20PreviewCourse?CourseId={CourseId}");
+        }
+        public async Task<PaymentDetailsDto?> AddPaymentAsync( PaymentDetailsDto payment)
+        {
+            await SetAuthHeaderAsync();
+            var request = await _http.PostAsJsonAsync("api/EnrollmentHandling/Add Payment", payment);
+            if (!request.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return await request.Content.ReadFromJsonAsync<PaymentDetailsDto>();
+        }
+        public async Task<List<PaymentDetailsDto>?> DisplayPaymentAsync(Guid StudentId)
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<List<PaymentDetailsDto>>($"api/EnrollmentHandling/Display%20Payment?StudentId={StudentId}");
         }
 
 

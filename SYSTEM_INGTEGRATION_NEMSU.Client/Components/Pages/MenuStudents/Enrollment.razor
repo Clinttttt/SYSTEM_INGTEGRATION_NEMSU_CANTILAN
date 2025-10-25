@@ -21,7 +21,16 @@
                 <div class="w-full h-full overflow-y-auto scrollbar-hide pb-18">
 
                     <div class="mb-6">
-                        <h1 class="text-3xl font-bold text-gray-600 mb-2">Available Courses</h1>
+                        <div class="flex gap-3">
+                            <button onclick="history.back()" class="btn btn-circle btn-outline btn-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <h1 class="text-xl font-semibold text-gray-600 mb-2">Available Courses</h1>
+
+                        </div>
+
                         <p class="text-gray-600">Select courses you want to enroll in for the semester</p>
                     </div>
 
@@ -38,7 +47,17 @@
                         </select>
                     </div>
 
-
+                    @if (!hasrender)
+                    {
+                        <div class="flex justify-center items-center py-32">
+                            <div class="text-center">
+                                <div class="relative">
+                                    <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                                </div>
+                                <p class="text-gray-600 mt-6 text-lg font-semibold">Loading Course...</p>
+                            </div>
+                        </div>
+                    }
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         @if (course is not null)
                         {
@@ -239,6 +258,7 @@
     {
         if (!hasrender && firstrender)
         {
+            hasrender = true;
             course = await enrollmentApi.DisplayCourseAsync();
 
             StateHasChanged();

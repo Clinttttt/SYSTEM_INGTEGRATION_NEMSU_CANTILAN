@@ -18,23 +18,22 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     {
         [Authorize]
         [HttpPost("Enroll Course")]
-        public async Task<ActionResult<Invoice>> EnrollCourse(string CourseId, double Payment)
+        public async Task<ActionResult<PaymentDetailsDto>> EnrollCourse(PaymentDetailsDto paymentdetails)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null)  return Unauthorized("Login First");
             
             var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) return BadRequest("User not found or Student ID missing");
-            
-            var StudentId = user.Id;
-            var response = await enrollmenthandling.InvoiceAsync(StudentId, CourseId, Payment);
+           
+                    
+            paymentdetails.StudentId = GetUserId;
+            var response = await enrollmenthandling.InvoiceAsync(paymentdetails);
             if (response is null) { return BadRequest("Something went wrong"); }
             return Ok(response);
         }
         [Authorize]
-        [HttpPost("Provision EnrollCourse")]
-        public async Task<ActionResult<Invoice>?> ProvisionAsync( string courseCode)
+        [HttpPost("ProvisionEnrollCourse")]
+        public async Task<ActionResult<ProvisionDto>?> ProvisionAsync( string courseCode)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return Unauthorized("Login First");
@@ -139,7 +138,30 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.PreviewCourseAsync(UserId, CourseId);
             return Ok(request);
         }
-
-
+        [Authorize]
+        [HttpPost("Add Payment")]
+        public async Task<ActionResult<PaymentDetailsDto>> AddPaymentAsync(PaymentDetailsDto payment)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) { return BadRequest("User not found"); }
+            var UserId = Guid.Parse(FindUser.Value);
+            payment.StudentId = UserId;
+            if(UserId != payment.StudentId)
+            {
+                return BadRequest("User Not found");
+            }
+            var request = await enrollmentservices.AddPaymentAsync(payment);
+            return Ok(request);
+        }
+        [Authorize]
+        [HttpGet("Display Payment")]
+        public async Task<ActionResult<PaymentDetailsDto>> DisplayPaymentAsync(Guid StudentId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) { return BadRequest("User not found"); }
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.DisplayPaymentAsync(UserId, StudentId);
+            return Ok(request);
+        }
     }
 }

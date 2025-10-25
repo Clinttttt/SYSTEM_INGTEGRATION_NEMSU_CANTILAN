@@ -61,12 +61,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
         public DbSet<EnrollmentCourse> enrollcourse { get; set; }
         public DbSet<Invoice> invoice { get; set; }
         public DbSet<InstructorAnnouncement> announcements { get; set; }
-      
         public DbSet<Category> category { get; set; }
         public DbSet<AcademicInformation> academicInformation { get; set; }
         public DbSet<ContactInformation> contactInformation { get; set; }
         public DbSet<PersonalInformation> personalInformation { get; set; }
         public DbSet<FacultyPersonalInformation> facultyPersonalInformation { get; set; }
         public DbSet<FacultyAcademicInformation> facultyAcademics { get; set; }
+        public DbSet<PaymentDetails> paymentDetails { get; set; }
     }
 }

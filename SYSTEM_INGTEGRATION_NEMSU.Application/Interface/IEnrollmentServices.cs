@@ -20,5 +20,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<bool> IctiveCourseAsync(Guid StudentId, Guid CourseId);
         Task<List<AnnouncementDto>> DisplayAnnounceMentAsync(Guid StudentId, string CourseCode);
         Task<CourseDto?> PreviewCourseAsync(Guid StudentId, Guid CourseId);
+        Task<PaymentDetailsDto?> AddPaymentAsync( PaymentDetailsDto payment);
+        Task<List<PaymentDetailsDto>?> DisplayPaymentAsync(Guid StudentVerification, Guid StudentId);
     }
 }
