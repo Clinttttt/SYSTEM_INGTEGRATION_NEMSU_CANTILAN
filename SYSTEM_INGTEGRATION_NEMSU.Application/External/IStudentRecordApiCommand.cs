@@ -23,5 +23,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation);
         Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync();
         Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId);
+        Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate);
     }
 }

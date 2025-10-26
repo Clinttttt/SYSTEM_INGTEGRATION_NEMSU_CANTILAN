@@ -33,6 +33,33 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var dto = personalInformation.Adapt<PersonalInformationDto>();
             return dto;
         }
+        public async Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate)
+        {
+            var personal = await context.personalInformation.FirstOrDefaultAsync(s=> s.StudentId == studentUpdate.StudentId);
+            var academic = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == studentUpdate.StudentId);
+            var contact = await context.contactInformation.FirstOrDefaultAsync(s => s.StudentId == studentUpdate.StudentId);
+            if (personal is null || academic is null || contact is null) { return null; }
+
+            personal.FirstName = studentUpdate.personalInformation?.FirstName;
+            personal.MiddleName = studentUpdate.personalInformation?.MiddleName;
+            personal.LastName = studentUpdate.personalInformation?.LastName;
+            personal.DateOfBirth = studentUpdate.personalInformation?.DateOfBirth;
+            personal.Gender = studentUpdate.personalInformation!.Gender;
+            personal.CivilStatus = studentUpdate.personalInformation.CivilStatus;
+            personal.Nationality = studentUpdate.personalInformation.Nationality;
+            personal.PermanentAddress = studentUpdate.personalInformation.PermanentAddress;
+            contact.MobileNumber = studentUpdate.contactInformation?.MobileNumber;
+            contact.EmailAddress = studentUpdate.contactInformation?.EmailAddress;
+            academic.StudentType = studentUpdate.academicInformation!.StudentType;
+            academic.YearLevel = studentUpdate.academicInformation.YearLevel;
+            academic.Semester = studentUpdate.academicInformation.Semester;
+            academic.Strand = studentUpdate.academicInformation.Strand;
+            academic.Program = studentUpdate.academicInformation.Program;
+
+            await context.SaveChangesAsync();
+            return studentUpdate;
+        }
+
 
         public async Task<PersonalInformation?> UpdatePersonalInformationAsync(PersonalInformationDto personalInformation)
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -95,6 +96,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             if (!request.IsSuccessStatusCode){ return null; }
             return await request.Content.ReadFromJsonAsync<SchoolIdDto>();
 
+        }
+        public async Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate)
+        {
+            await SetAuthHeaderAsync();
+            var request = await _http.PatchAsJsonAsync("api/StudentRecord/UpdateAll%20Details", studentUpdate);
+            if (!request.IsSuccessStatusCode) { return null; }
+            return await request.Content.ReadFromJsonAsync<StudentUpdateInformationDto>();
         }
     }
 }

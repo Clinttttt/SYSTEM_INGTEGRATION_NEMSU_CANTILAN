@@ -128,5 +128,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecordCommand.StudentSchoolIdAsync(StudentId.Id, SchoolId);
             return Ok(request);
         }
+        [Authorize]
+        [HttpPatch("UpdateAll Details")]
+        public async Task<ActionResult> UpdateAllDetailsAsync(StudentUpdateInformationDto udpate)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
+            var UserId = Guid.Parse(FindUser.Value);
+            var StudentId = await user.UserInfo(UserId);
+            if (StudentId is null) return BadRequest("User Cannot Find");
+            udpate.StudentId = StudentId.Id;
+            var request = await studentRecordCommand.UpdateAllDetailsAsync(udpate);
+            if (request is null) return BadRequest("Something Went Wrong");
+            return Ok(request);
+        }
     }
 }

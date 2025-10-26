@@ -32,5 +32,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync(Guid Student);
         Task<SchoolIdDto?> StudentSchoolIdAsync(Guid StudentId, string SchoolId);
 
+        Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate);
     }
 }
