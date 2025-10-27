@@ -18,7 +18,7 @@
 
 
             <div class="flex w-full  flex-col lg:flex-row flex justify-start items-start w-full p-4 gap-3 overflow-auto h-screen">
-              
+
                 <div class="w-[100%] lg:w-[45%] h-[90%] bg-white rounded-lg shadow-md overflow-y-auto  ">
 
                     <div class="sticky relative h-25 top-0 bg-gradient-to-r from-cyan-600 to-teal-700 p-6 rounded-t-lg">
@@ -30,8 +30,8 @@
                         </div>
                         <p class="text-teal-100 absolute bottom-5 text-sm">Academic Year 2024-2025</p>
                     </div>
-                
-                  
+
+
                     <div class="p-6 space-y-6">
 
                         @if (!hasrender)
@@ -87,7 +87,7 @@
                             {
                                 foreach (var C in ContactInformation)
                                 {
-                                    
+
                                     <div class="border-b border-gray-200 pb-6">
                                         <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                                             <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
@@ -117,7 +117,7 @@
                             {
 
 
-                            
+
                                 <div>
                                     <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                                         <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
@@ -151,7 +151,7 @@
                     </div>
                 </div>
 
-               
+
                 <div class="w-[100%] lg:w-[55%]  bg-white rounded-lg shadow-md overflow-y-auto h-[90%]">
 
                     <div class=" sticky h-25 top-0 bg-gradient-to-l from-cyan-600 to-teal-700 p-6 rounded-t-lg">
@@ -171,7 +171,7 @@
                                         <h3 class="text-xl font-bold text-gray-800">@PreviewCourse?.Title</h3>
                                         <p class="text-sm text-gray-600 mt-1">@PreviewCourse?.CourseCode • @PreviewCourse?.Unit Units</p>
                                     </div>
-                                    <button class="text-red-500 hover:text-red-700 text-sm font-medium">Remove</button>
+                                    <NavLink href="/enrollment" class="text-red-500 hover:text-red-700 text-sm font-medium">Remove</NavLink>
                                 </div>
 
                                 <p class="text-gray-700 text-sm mb-4">@PreviewCourse?.CourseDescriptiion</p>
@@ -191,7 +191,7 @@
                             </div>
                         </div>
 
-                       
+
                         <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
                             <h2 class="text-lg font-bold text-gray-800 mb-5">Payment Invoice</h2>
 
@@ -220,7 +220,7 @@
                                     <strong>Note:</strong> Payment must be completed within 48 hours to secure your enrollment.
                                 </p>
                             </div>
-                       
+
                             <button onclick="my_modal_payment.showModal()" class=" w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition-colors font-bold shadow-md">
                                 Proceed to Payment
                             </button>
@@ -238,13 +238,13 @@
 
 
             <PurchaseConfirmation PreviewCourse="PreviewCourse" />
-            <EnrollmentEditInformation PersonalInformation="PersonalInformation" AcademicInformation="AcademicInformation" ContactInformation="ContactInformation" />
+            <EnrollmentEditInformation PersonalInformation="PersonalInformation" AcademicInformation="AcademicInformation" ContactInformation="ContactInformation" UpdateInformation="ReloadInformation" />
 
         </div>
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <ul class="menu min-h-full w-62 p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
-              
+
                 <li class="mx-auto mb-4">
                     <div class="w-[92px] h-[92px]  border-4 border-amber-500 rounded-full  flex items-center justify-center overflow-hidden bg-white">
                         <img src="/img/student_logo.jpg" class="w-full h-full object-contain" />
@@ -280,6 +280,7 @@
 
     public CourseDto? PreviewCourse { get; set; }
 
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(!hasrender && firstRender)
@@ -290,6 +291,14 @@
             ContactInformation = await studentRecordCommand.DisplayContactInformationAsync();
             PreviewCourse = await enrollmentApiServices.PreviewCourseAsync(CouresId);
         }
+        StateHasChanged();
+    }
+    public async Task ReloadInformation()
+    {
+        PersonalInformation = await studentRecordCommand.DisplayPersonalInformationAsync();
+        AcademicInformation = await studentRecordCommand.DisplayAcademicInformation();
+        ContactInformation = await studentRecordCommand.DisplayContactInformationAsync();
+        PreviewCourse = await enrollmentApiServices.PreviewCourseAsync(CouresId);
         StateHasChanged();
     }
 }

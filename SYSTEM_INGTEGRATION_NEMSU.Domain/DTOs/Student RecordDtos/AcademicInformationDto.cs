@@ -11,7 +11,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
     public class AcademicInformationDto
     {
         public Guid StudentId { get; set; }
-        [JsonIgnore]
         public string? StudentSchoolId { get; set; }
         public StudentTypeChoice StudentType { get; set; }
         public YearLevelChoice YearLevel { get; set; }

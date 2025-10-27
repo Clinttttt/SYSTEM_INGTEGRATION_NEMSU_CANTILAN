@@ -116,6 +116,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return filter;
         }
+
         public async Task<IEnumerable<AcademicInformationDto>?> DisplayAcademicInformation(Guid Student)
         {
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == Student);

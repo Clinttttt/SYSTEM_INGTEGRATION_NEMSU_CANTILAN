@@ -163,5 +163,27 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayPaymentAsync(UserId, StudentId);
             return Ok(request);
         }
+
+        [Authorize]
+        [HttpGet("Display AllAnnouncement")]
+        public async Task<ActionResult<AnnouncementDto>> DisplayAllAnnouncementAsync(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("User not found");
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.DisplayAllAnnouncementAsync(CourseId, UserId);
+            return Ok(request);
+        }
+        [Authorize]
+        [HttpGet("Display CourseAnnouncement")]
+        public async Task<ActionResult<AnnouncementDto>> DisplayCourseAnnouncementAsync(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("User not found");
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.DisplayAnnouncementAsync(CourseId, UserId);
+            return Ok(request);
+        }
+
     }
 }

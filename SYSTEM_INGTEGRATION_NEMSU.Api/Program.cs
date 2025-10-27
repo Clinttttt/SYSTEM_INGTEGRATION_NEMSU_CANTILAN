@@ -9,12 +9,19 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+     
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 
 // Add services to the container.
 builder.Services.AddControllers();

@@ -71,7 +71,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
          
             var entity = new InstructorAnnouncement
             {
-               
+               AdminId = course.AdminId,
                 CourseId = course.Id,           
                 Title = announcement.Title,
                 Message = announcement.Message,

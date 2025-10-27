@@ -75,6 +75,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
         [Authorize]
         [HttpGet("Display Academic Details")]
+
         public async Task<ActionResult<AcademicInformationDto>> DispalyAcademicDetailsAsync()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);

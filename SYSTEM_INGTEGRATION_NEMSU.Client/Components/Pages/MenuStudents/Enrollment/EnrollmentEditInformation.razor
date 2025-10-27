@@ -191,6 +191,9 @@
             academicInformation = new AcademicInformationDto()
 
         };
+
+    [Parameter]
+    public EventCallback UpdateInformation {get;set;}
     public bool hasloaded = false;
     protected override void OnParametersSet()
     {
@@ -231,7 +234,9 @@
     public async Task HandlingEdit()
     {
         await studentRecordCommand.UpdateAllDetailsAsync(studentUpdateInformation!);
-        hasloaded = false;
+      
         await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_2");
+        await UpdateInformation.InvokeAsync();
+
     }
 }

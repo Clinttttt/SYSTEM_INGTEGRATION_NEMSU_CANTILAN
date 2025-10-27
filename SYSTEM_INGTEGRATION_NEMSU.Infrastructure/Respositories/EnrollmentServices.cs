@@ -55,7 +55,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 CourseCode = course.CourseCode,
                 Title = course.Title,
                 Unit = course.Unit,
-             
+
                 StudentId = studentId,
                 CourseId = enrollment.CourseId,
                 DateEnrolled = enrollment.DateEnrolled,
@@ -66,11 +66,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             return dto;
         }
-
-       
-    
-
-
 
         public async Task<IEnumerable<CourseDto>?> DisplayCourseAsync(Guid StudentId)
         {
@@ -85,7 +80,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return course.Adapt<List<CourseDto>>();
 
         }
-
         public async Task<CourseDto?> GetCourse(Guid CourseId, Guid StudentId)
         {
             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.CourseId == CourseId && s.StudentId == StudentId);
@@ -197,6 +191,34 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.paymentDetails.Where(s => s.StudentId == StudentId).ToListAsync();
             return request.Adapt<List<PaymentDetailsDto>>();
         }
+        public async Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync(Guid CourseId,Guid StudentId)
+        {
+            var FindUser = await context.users.FindAsync(StudentId);
+            if (FindUser is null) return null;
+            var CourseAdmin = await context.course.FindAsync(CourseId);
+            if (CourseAdmin is null) return null;
+            var request = await context.announcements
+                .AsNoTracking()
+                .Where(s => s.Type == AnnouncementType.instructor && s.AdminId == CourseAdmin.AdminId).ToListAsync();
+            return request.Adapt<List<AnnouncementDto>>();
+        }
+        public async Task<List<AnnouncementDto>?> DisplayAnnouncementAsync(Guid CourseId, Guid StudentId)
+        {
+            var FindUser = await context.users.FindAsync(StudentId);
+            if (FindUser is null) return null;
+            var CourseAdmin = await context.course.FindAsync(CourseId);
+            if (CourseAdmin is null) return null;
+            var request = await context.announcements
+                .AsNoTracking()
+                .Where(s => s.CourseId == CourseId && s.AdminId == CourseAdmin.AdminId && s.Type == AnnouncementType.instructor)
+                .ToListAsync();
+            return request.Adapt<List<AnnouncementDto>>();
+        }
+      
+
+
+
+
 
     }
 }

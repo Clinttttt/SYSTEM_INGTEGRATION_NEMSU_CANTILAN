@@ -11,7 +11,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
   public class InstructorAnnouncement
     {
         public Guid Id { get; set; }
-        public Guid? StudentId { get; set; }
+        public Guid? AdminId { get; set; }
         public Guid? CourseId { get; set; }
         public AnnouncementType? Type { get; set; }
         public string? CourseCode { get; set; }
