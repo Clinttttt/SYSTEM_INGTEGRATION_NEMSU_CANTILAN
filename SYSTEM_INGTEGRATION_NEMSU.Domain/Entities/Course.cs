@@ -30,6 +30,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public ICollection<EnrollmentCourse> Enrollments { get; set; } = new List<EnrollmentCourse>();
         [JsonIgnore] 
         public ICollection<InstructorAnnouncement> Announcements { get; set; } = new List<InstructorAnnouncement>();
+
         public Guid? CategoryId { get; set; }
         public Category? Category { get; set; }
 

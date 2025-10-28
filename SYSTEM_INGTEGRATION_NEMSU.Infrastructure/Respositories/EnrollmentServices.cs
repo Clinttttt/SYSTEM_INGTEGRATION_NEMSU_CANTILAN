@@ -10,6 +10,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Text.Json.Serialization;
+using System.Runtime.InteropServices;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
@@ -133,25 +134,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return true;
         }
-        public async Task<List<AnnouncementDto>> DisplayAnnounceMentAsync(Guid StudentId, string CourseCode)
-        {
-            var request = await context.announcements
-                .Include(s => s.course)
-                .ThenInclude(s => s.Enrollments)
-                .Where(s => s.course.CourseCode == CourseCode && s.course.Enrollments.Any(s => s.StudentId == StudentId))
-                .Select(s => new AnnouncementDto
-                {
-                    Title = s.Title,
-                    Message = s.Message,
-                    CourseName = s.course.Title,
-                    InformationType = s.InformationType,
-                    DateCreated = s.DateCreated,
-                    CourseCode = s.course.CourseCode,
-
-                })
-                .ToListAsync();
-            return request;
-        }
+      
         public async Task<PaymentDetailsDto?> AddPaymentAsync(PaymentDetailsDto payment)
         {
             var request = await context.users.FindAsync(payment.StudentId);
@@ -191,15 +174,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.paymentDetails.Where(s => s.StudentId == StudentId).ToListAsync();
             return request.Adapt<List<PaymentDetailsDto>>();
         }
-        public async Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync(Guid CourseId,Guid StudentId)
+        public async Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync(Guid StudentId)
         {
             var FindUser = await context.users.FindAsync(StudentId);
             if (FindUser is null) return null;
-            var CourseAdmin = await context.course.FindAsync(CourseId);
-            if (CourseAdmin is null) return null;
+            var response = await context.enrollcourse
+                .Include(s=> s.Course)
+                .FirstOrDefaultAsync(s=> s.StudentId == StudentId);
+            if (response is null) return null;
             var request = await context.announcements
                 .AsNoTracking()
-                .Where(s => s.Type == AnnouncementType.instructor && s.AdminId == CourseAdmin.AdminId).ToListAsync();
+                .Where(s => s.Type == AnnouncementType.instructor && s.AdminId == response.Course.AdminId).ToListAsync();
             return request.Adapt<List<AnnouncementDto>>();
         }
         public async Task<List<AnnouncementDto>?> DisplayAnnouncementAsync(Guid CourseId, Guid StudentId)
@@ -212,6 +197,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .AsNoTracking()
                 .Where(s => s.CourseId == CourseId && s.AdminId == CourseAdmin.AdminId && s.Type == AnnouncementType.instructor)
                 .ToListAsync();
+            return request.Adapt<List<AnnouncementDto>>();
+        }
+        public async Task<List<AnnouncementDto>?> DisplayAnnouncementByType(Guid StudentId, InformationType type)
+        {
+            var FindUser = await context.users.FindAsync(StudentId);
+            if (FindUser is null) return null;
+            var response = await context.enrollcourse
+             .Include(s => s.Course)
+             .FirstOrDefaultAsync(s => s.StudentId == StudentId);
+            if (response is null) return null;
+            var request = await context.announcements
+                .AsNoTracking()
+                .Where(s => s.InformationType == type && s.AdminId == response.Course.AdminId).ToListAsync();
             return request.Adapt<List<AnnouncementDto>>();
         }
       

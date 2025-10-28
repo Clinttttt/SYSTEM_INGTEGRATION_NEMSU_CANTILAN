@@ -118,16 +118,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(request);
 
         }
-        [Authorize]
-        [HttpGet("Display Announcement")]
-        public async  Task<ActionResult<AnnouncementDto>> DisplayAnnounceMentAsync(string CourseCode)
-        {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("User not found"); }
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DisplayAnnounceMentAsync(UserId, CourseCode);
-            return Ok(request);
-        }
+     
         [Authorize]
         [HttpGet("Display PreviewCourse")]
         public async Task<ActionResult<CourseDto>> PreviewCourseAsync(Guid CourseId)
@@ -166,12 +157,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         [Authorize]
         [HttpGet("Display AllAnnouncement")]
-        public async Task<ActionResult<AnnouncementDto>> DisplayAllAnnouncementAsync(Guid CourseId)
+        public async Task<ActionResult<AnnouncementDto>> DisplayAllAnnouncementAsync()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return BadRequest("User not found");
             var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DisplayAllAnnouncementAsync(CourseId, UserId);
+            var request = await enrollmentservices.DisplayAllAnnouncementAsync(UserId);
             return Ok(request);
         }
         [Authorize]
@@ -184,6 +175,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayAnnouncementAsync(CourseId, UserId);
             return Ok(request);
         }
-
+        [Authorize]
+        [HttpGet("Display AnnouncementByType")]
+        public async Task<ActionResult<AnnouncementDto>> DisplayAnnouncementByType(InformationType type)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("User not found");
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.DisplayAnnouncementByType(UserId, type);
+            return Ok(request);
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
@@ -81,7 +82,22 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await SetAuthHeaderAsync();
             return await _http.GetFromJsonAsync<List<PaymentDetailsDto>>($"api/EnrollmentHandling/Display%20Payment?StudentId={StudentId}");
         }
-
+        public async Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync()
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<List<AnnouncementDto>>($"api/EnrollmentHandling/Display%20AllAnnouncement");
+        }
+        public async Task<List<AnnouncementDto>?> DisplayAnnouncementAsync(Guid CourseId)
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<List<AnnouncementDto>>($"api/EnrollmentHandling/Display%20CourseAnnouncement?CourseId={CourseId}");
+        }
+        public async Task<List<AnnouncementDto>?> DisplayAnnouncementByType(InformationType type)
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<List<AnnouncementDto>>($"api/EnrollmentHandling/Display%20AnnouncementByType?type={type}");
+            
+        }
 
 
 

@@ -121,9 +121,25 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         {
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == Student);
             if (request is null) return null;
-            var details = await context.academicInformation.Where(s => s.StudentId == request.Id).ToListAsync();
-            return details.Adapt<List<AcademicInformationDto>>();
+            var details = await context.academicInformation
+                .AsNoTracking()
+                .Where(s => s.StudentId == request.Id)
+                .Select(s=> new AcademicInformationDto
+                {
+                    StudentId = s.StudentId,
+                    StudentSchoolId = s.StudentSchoolId,
+                    StudentType = s.StudentType,
+                    YearLevel = s.YearLevel,
+                    Semester  = s.Semester,
+                    Program = s.Program,
+                    Major = s.Major,
+                    Strand = s.Strand
+                })
+                .ToListAsync();
+            return details;
+           
         }
+       
         public async Task<ContactInformationDto?> AddContactInformationAsync(ContactInformation contactInformation)
         {
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == contactInformation.StudentId);

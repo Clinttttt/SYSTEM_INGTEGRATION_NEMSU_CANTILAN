@@ -33,7 +33,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.DTOs
         public string? Title { get; set; }
         public string? Message { get; set; }
         public string? CourseName { get; set; }
-
         public Guid CourseId { get; set; }
         public InformationType InformationType { get; set; }
         public AnnouncementType Type { get; set; }

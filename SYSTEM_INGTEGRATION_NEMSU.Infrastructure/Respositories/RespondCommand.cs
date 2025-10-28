@@ -21,7 +21,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         public async Task<AutoResponsetDto?> AutoResponseAsync(Guid StudentId, string CourseCode)
         {
             var Response = new AutoResponsetDto();
-            var request = await context.invoice.FirstOrDefaultAsync(s => s.CourseCode == CourseCode && s.StudentId == StudentId);
+            var request = await context.invoice
+                .Include(s=> s.Course)
+                .FirstOrDefaultAsync(s => s.CourseCode == CourseCode && s.StudentId == StudentId);
             if (request is null) return null;
 
             if (request.Status == InvoiceStatus.Unpaid)
@@ -29,6 +31,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Response.Message = "Your Course will Automaticaly Unenrolled if not paid After 15 Days";
                 Response.Type = AnnouncementType.System;
                 Response.DateCreated = DateTime.UtcNow;
+                Response.CourseName = request.Course.Title;
 
                 var deadline = DateTime.UtcNow.AddDays(15);
                 var finduser = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == request.StudentId);
@@ -71,6 +74,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
          
             var entity = new InstructorAnnouncement
             {
+               CourseName = course.Title,
                AdminId = course.AdminId,
                 CourseId = course.Id,           
                 Title = announcement.Title,
@@ -87,7 +91,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
        
             var response = new AnnouncementDto
             {
-                CourseName = course.Title,
+                CourseName = entity.CourseName,
                 CourseCode = course.CourseCode,
                 Title = announcement.Title,
                 Message = announcement.Message,
@@ -108,11 +112,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .Where(s => s.Type == AnnouncementType.instructor && s.course.AdminId == AdminId)
               .Select(a => new AnnouncementDto
               {
+                  CourseName = a.CourseName,
                   AnnouncementId = a.Id,
                   Title = a.Title,
                   Message = a.Message,
-                  InformationType = a.InformationType,
-                  CourseName = a.course.Title,
+                  InformationType = a.InformationType,               
                   CourseCode = a.course.CourseCode,
                   DateCreated = a.DateCreated
               }).ToListAsync();
