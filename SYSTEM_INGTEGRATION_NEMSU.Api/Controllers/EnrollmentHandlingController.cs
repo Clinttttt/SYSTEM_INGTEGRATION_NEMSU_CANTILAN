@@ -21,11 +21,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         public async Task<ActionResult<PaymentDetailsDto>> EnrollCourse(PaymentDetailsDto paymentdetails)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null)  return Unauthorized("Login First");
-            
+            if (FindUser is null) return Unauthorized("Login First");
+
             var GetUserId = Guid.Parse(FindUser.Value);
-           
-                    
+
+
             paymentdetails.StudentId = GetUserId;
             var response = await enrollmenthandling.InvoiceAsync(paymentdetails);
             if (response is null) { return BadRequest("Something went wrong"); }
@@ -33,7 +33,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
         [Authorize]
         [HttpPost("ProvisionEnrollCourse")]
-        public async Task<ActionResult<ProvisionDto>?> ProvisionAsync( string courseCode)
+        public async Task<ActionResult<ProvisionDto>?> ProvisionAsync(string courseCode)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return Unauthorized("Login First");
@@ -49,16 +49,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
 
         [Authorize]
-        [HttpGet("Display Course")]
+        [HttpGet("Display AllCourseDetails")]
         public async Task<ActionResult<CourseDto>> DisplayCourse()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if(FindUser is null) return Unauthorized("Login First");
-            
+            if (FindUser is null) return Unauthorized("Login First");
+
             var GetUserId = Guid.Parse(FindUser.Value);
             var user = await respository.UserInfo(GetUserId);
-            if(user is null) return BadRequest("User not found or Student ID missing");
-            
+            if (user is null) return BadRequest("User not found or Student ID missing");
+
             var StudentId = user.Id;
             var response = await enrollmentservices.DisplayCourseAsync(StudentId);
             if (response is null) { return BadRequest("Nothing to Display"); }
@@ -85,15 +85,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         public async Task<IActionResult> UnenrollCourse(string CourseId)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if(FindUser is null) return Unauthorized("Login First");
-            
+            if (FindUser is null) return Unauthorized("Login First");
+
             var GetUserId = Guid.Parse(FindUser.Value);
             var user = await respository.UserInfo(GetUserId);
-            if(user is null || string.IsNullOrEmpty(CourseId)) return BadRequest("User not found or Student ID missing");
-            
+            if (user is null || string.IsNullOrEmpty(CourseId)) return BadRequest("User not found or Student ID missing");
+
             var StudentId = user.Id;
-            var response = await enrollmentservices.UnEnrollCourseAsync(StudentId,CourseId);
-            if (response is false) return BadRequest("Something went wrong");      
+            var response = await enrollmentservices.UnEnrollCourseAsync(StudentId, CourseId);
+            if (response is false) return BadRequest("Something went wrong");
             return Ok(response);
         }
         [Authorize]
@@ -101,7 +101,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         public async Task<ActionResult<bool>> InactiveCourse(Guid CourseId)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if(FindUser is null) { return BadRequest("User not found"); }
+            if (FindUser is null) { return BadRequest("User not found"); }
             var UserId = Guid.Parse(FindUser.Value);
             var request = await enrollmentservices.InactiveCourseAsync(UserId, CourseId);
             return Ok(request);
@@ -118,7 +118,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(request);
 
         }
-     
+
         [Authorize]
         [HttpGet("Display PreviewCourse")]
         public async Task<ActionResult<CourseDto>> PreviewCourseAsync(Guid CourseId)
@@ -137,7 +137,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FindUser is null) { return BadRequest("User not found"); }
             var UserId = Guid.Parse(FindUser.Value);
             payment.StudentId = UserId;
-            if(UserId != payment.StudentId)
+            if (UserId != payment.StudentId)
             {
                 return BadRequest("User Not found");
             }
@@ -183,6 +183,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FindUser is null) return BadRequest("User not found");
             var UserId = Guid.Parse(FindUser.Value);
             var request = await enrollmentservices.DisplayAnnouncementByType(UserId, type);
+            return Ok(request);
+        }
+        [Authorize]
+        [HttpGet("Display AllEnrolledCourse")]
+        public async Task<ActionResult<EnrollCourseDto>> DisplayAllCourseEnrolledAsync()
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("User not found");
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.DisplayAllCourseEnrolledAsync(UserId);
             return Ok(request);
         }
     }

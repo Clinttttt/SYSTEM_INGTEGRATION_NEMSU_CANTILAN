@@ -10,14 +10,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
 {
     public class CourseDto
     {
-        public int Cost { get; set; }
+        public double Cost { get; set; }
         public Guid? AdminId { get; set; }
         public string? CourseCode { get; set; }
-   
+
         public Guid Id { get; set; }
         public string? Title { get; set; }
         public int Unit { get; set; }
-        public CategoryDto? Category { get; set; } = null!;
+        public CategoryDto? Category { get; set; }
         public CourseDepartment? Department { get; set; }
         public string? CourseDescriptiion { get; set; }
         public int MaxCapacity { get; set; }

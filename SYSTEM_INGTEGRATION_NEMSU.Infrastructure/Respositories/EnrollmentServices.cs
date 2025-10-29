@@ -77,10 +77,41 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var course = await context.course
                 .Include(s => s.Category)
                 .ToListAsync();
-
             return course.Adapt<List<CourseDto>>();
-
         }
+        public async Task<List<EnrollCourseDto>?> DisplayAllCourseEnrolledAsync(Guid StudentId)
+        {
+            var FindUser = await context.users.FindAsync(StudentId);
+            if (FindUser is null) return null;
+            var request = await context.enrollcourse
+                .Include(s=> s.Course)
+                .Where(s => s.StudentId == StudentId)
+                .ToListAsync();
+            var E = new List<EnrollCourseDto>();
+            foreach (var r in request)
+            {
+                var course = await context.course
+                    .Include(s=> s.FacultyPersonals)
+                    .AsNoTracking()
+                    .Where(s => s.CourseCode!.Contains(r.Course.CourseCode!))
+                    .Select(s => new EnrollCourseDto
+                    {
+                         StudentId = r.StudentId,
+                         CourseId = s.Id,
+                         DateEnrolled = r.DateEnrolled,
+                         Category = r.Category,
+                         Title = s.Title,
+                         Unit = s.Unit,
+                         EnrollmentStatus = r.EnrollmentStatus,
+                         CourseCode = s.CourseCode,
+                         FacultyFullName = s.FacultyPersonals!.FirstName + " " + s.FacultyPersonals.LastName
+
+                    }).ToListAsync();
+                E.AddRange(course);
+            }
+            return E;
+        }
+
         public async Task<CourseDto?> GetCourse(Guid CourseId, Guid StudentId)
         {
             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.CourseId == CourseId && s.StudentId == StudentId);
@@ -134,7 +165,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return true;
         }
-      
+
         public async Task<PaymentDetailsDto?> AddPaymentAsync(PaymentDetailsDto payment)
         {
             var request = await context.users.FindAsync(payment.StudentId);
@@ -179,13 +210,20 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var FindUser = await context.users.FindAsync(StudentId);
             if (FindUser is null) return null;
             var response = await context.enrollcourse
-                .Include(s=> s.Course)
-                .FirstOrDefaultAsync(s=> s.StudentId == StudentId);
+                .Include(s => s.Course)
+                .Where(s => s.StudentId == StudentId).ToListAsync();
             if (response is null) return null;
-            var request = await context.announcements
-                .AsNoTracking()
-                .Where(s => s.Type == AnnouncementType.instructor && s.AdminId == response.Course.AdminId).ToListAsync();
-            return request.Adapt<List<AnnouncementDto>>();
+            var t = new List<AnnouncementDto>();
+
+            foreach (var r in response)
+            {
+                var request = await context.announcements
+            .AsNoTracking()            
+            .Where(s => s.Type == AnnouncementType.instructor && s.AdminId == r.Course.AdminId && s.course.CourseCode!.Contains(r.Course.CourseCode!))
+            .ToListAsync();
+            t.AddRange(request.Adapt<List<AnnouncementDto>>());
+            }
+            return t;
         }
         public async Task<List<AnnouncementDto>?> DisplayAnnouncementAsync(Guid CourseId, Guid StudentId)
         {
@@ -204,15 +242,22 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var FindUser = await context.users.FindAsync(StudentId);
             if (FindUser is null) return null;
             var response = await context.enrollcourse
-             .Include(s => s.Course)
-             .FirstOrDefaultAsync(s => s.StudentId == StudentId);
+                 .Include(s => s.Course)
+                 .Where(s => s.StudentId == StudentId).ToListAsync();
             if (response is null) return null;
-            var request = await context.announcements
-                .AsNoTracking()
-                .Where(s => s.InformationType == type && s.AdminId == response.Course.AdminId).ToListAsync();
-            return request.Adapt<List<AnnouncementDto>>();
+            var t = new List<AnnouncementDto>();
+            foreach (var r in response)
+            {
+                var request = await context.announcements
+            .AsNoTracking()
+
+            .Where(s => s.Type == AnnouncementType.instructor && s.AdminId == r.Course.AdminId && s.course.CourseCode!.Contains(r.Course.CourseCode!) && s.InformationType == type)
+            .ToListAsync();
+                t.AddRange(request.Adapt<List<AnnouncementDto>>());
+            }
+            return t;
         }
-      
+
 
 
 

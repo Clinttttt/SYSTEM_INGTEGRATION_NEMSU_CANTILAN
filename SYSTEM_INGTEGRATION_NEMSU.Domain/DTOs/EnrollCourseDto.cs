@@ -13,6 +13,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
     
         public Guid StudentId { get; set; }      
         public Guid CourseId { get; set; }    
+        public string? FacultyFullName { get; set; }
         public DateTime DateEnrolled { get; set; }
         [JsonIgnore]
         public Course? Course { get; set; }

@@ -29,11 +29,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
                 new Category { Id = Guid.Parse("66666666-6666-6666-6666-666666666666"), Name = "Business & Management", Icon = "💼", Color = "indigo" },
                 new Category { Id = Guid.Parse("77777777-7777-7777-7777-777777777777"), Name = "Languages & Communication", Icon = "💬", Color = "pink" }
             );
-        
-        modelBuilder.Entity<User>()
-                .HasOne(s=> s.StudentsDetails)
-                .WithOne(c=> c.User)
-                .HasForeignKey<User>(v=> v.StudentsDetailsId)
+
+            /*one to one ni*/
+            modelBuilder.Entity<User>()
+                .HasOne(s => s.StudentsDetails)
+                .WithOne(c => c.User)
+                .HasForeignKey<User>(v => v.StudentsDetailsId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>()
@@ -43,10 +44,20 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
                  .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>()
-                .HasOne(s=> s.StudentContactDetails)
-                .WithOne(s=> s.User)
-                .HasForeignKey<User>(s=> s.StudentContactsId)
+                .HasOne(s => s.StudentContactDetails)
+                .WithOne(s => s.User)
+                .HasForeignKey<User>(s => s.StudentContactsId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            /*one to many ni*/
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.FacultyPersonals)
+                .WithMany()
+                .HasForeignKey(c => c.FacultyPersonalsId)
+                .HasPrincipalKey(f => f.FacultyId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+
 
 
             modelBuilder.Entity<Course>()

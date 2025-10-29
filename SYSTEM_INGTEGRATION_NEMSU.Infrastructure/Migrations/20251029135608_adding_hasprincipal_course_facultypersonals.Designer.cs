@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251029135608_adding_hasprincipal_course_facultypersonals")]
+    partial class adding_hasprincipal_course_facultypersonals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,11 +158,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Property<int>("Unit")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("userId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("FacultyPersonalsId");
+
+                    b.HasIndex("userId");
 
                     b.ToTable("course");
                 });
@@ -571,9 +579,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .HasPrincipalKey("FacultyId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities.User", "user")
+                        .WithMany()
+                        .HasForeignKey("userId");
+
                     b.Navigation("Category");
 
                     b.Navigation("FacultyPersonals");
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.EnrollmentCourse", b =>

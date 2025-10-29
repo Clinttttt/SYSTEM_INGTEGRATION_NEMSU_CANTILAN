@@ -14,6 +14,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
     {
         Task<EnrollCourseDto?> EnrollCourseAsync(Guid studentId, string courseCode, EnrollmentStatus status);
         Task<IEnumerable<CourseDto>?> DisplayCourseAsync(Guid StudentId);
+        Task<List<EnrollCourseDto>?> DisplayAllCourseEnrolledAsync(Guid StudentId);
         Task<bool> UnEnrollCourseAsync(Guid studentId, string courseCode);
         Task<CourseDto?> GetCourse(Guid CourseId, Guid StudentId);
         Task<bool> InactiveCourseAsync(Guid StudentId, Guid CourseId);
@@ -25,5 +26,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync(Guid StudentId);
         Task<List<AnnouncementDto>?> DisplayAnnouncementAsync(Guid CourseId, Guid StudentId);
         Task<List<AnnouncementDto>?> DisplayAnnouncementByType(Guid StudentId, InformationType type);
+    
     }
 }

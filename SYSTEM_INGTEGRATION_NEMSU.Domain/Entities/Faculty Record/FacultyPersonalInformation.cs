@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record
@@ -19,6 +20,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record
         public string? EmailAddress { get; set; }
         public string? Address { get; set; }
         public FacultySaveStatus facultySaveStatus { get; set; }
+    
+
     }
     public enum FacultyGender 
     {
@@ -31,4 +34,5 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record
         Save_As_Draft,
         Save
     }
+   
 }

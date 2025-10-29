@@ -272,7 +272,7 @@
         if (!hasrender && firstrender)
         {
             hasrender = true;
-            course = await enrollmentApi.DisplayCourseAsync();
+            course = await enrollmentApi.DisplayAllCourseDetailsAsync();
             filtered = course?.ToList();
             StateHasChanged();
         }

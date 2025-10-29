@@ -14,7 +14,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
     public interface IEnrollmentApiServices
     {
         Task<PaymentDetailsDto?> EnrollCourseAsync(PaymentDetailsDto paymentdetails);
-        Task<IEnumerable<CourseDto>?> DisplayCourseAsync();
+        Task<IEnumerable<CourseDto>?> DisplayAllCourseDetailsAsync();
+        Task<List<EnrollCourseDto>?> DisplayAllCourseEnrolledAsync();
         Task<bool> UnenrollCourse(string CourseId);
         Task<ProvisionDto?> ProvisionAsync(string courseCode);
         Task<CourseDto?> PreviewCourseAsync(Guid CourseId);

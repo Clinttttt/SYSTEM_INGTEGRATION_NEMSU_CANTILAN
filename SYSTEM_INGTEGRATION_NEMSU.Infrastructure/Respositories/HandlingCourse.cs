@@ -27,6 +27,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 CourseCode = request.CourseCode,
                 Unit = request.Unit,
                 AdminId = request.AdminId,
+                FacultyPersonalsId = request.AdminId,
                 Cost = request.Cost,
                 CourseDescriptiion = request.CourseDescriptiion,
                 Department = request.Department,

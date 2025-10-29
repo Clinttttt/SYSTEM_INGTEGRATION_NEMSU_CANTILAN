@@ -15,7 +15,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public Guid? CategoryId { get; set; }
         public CourseDepartment Department { get; set; }
         public int Unit { get; set; }
-        public int Cost { get; set; }
+        public double Cost { get; set; }
         public string? CourseDescription { get; set; }
         public CourseSemester Semester { get; set; }
         public string? SchoolYear { get; set; }

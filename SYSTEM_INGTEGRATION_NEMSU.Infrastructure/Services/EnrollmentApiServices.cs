@@ -51,11 +51,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             return await response.Content.ReadFromJsonAsync<ProvisionDto>();
         }
 
-
-        public async Task<IEnumerable<CourseDto>?> DisplayCourseAsync()
+        public async Task<List<EnrollCourseDto>?> DisplayAllCourseEnrolledAsync()
         {
             await SetAuthHeaderAsync();
-            return await _http.GetFromJsonAsync<IEnumerable<CourseDto>>("api/EnrollmentHandling/Display%20Course");           
+            return await _http.GetFromJsonAsync<List<EnrollCourseDto>>("api/EnrollmentHandling/Display%20AllEnrolledCourse");
+        }
+        public async Task<IEnumerable<CourseDto>?> DisplayAllCourseDetailsAsync()
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<IEnumerable<CourseDto>>("api/EnrollmentHandling/Display%20AllCourseDetails");           
         }
         public async Task<bool> UnenrollCourse(string CourseId)
         {
