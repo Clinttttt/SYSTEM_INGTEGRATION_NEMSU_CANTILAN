@@ -39,7 +39,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.DTOs
         public DateTime DateCreated { get; set; }
         public string? CourseCode { get; set; }
         public Guid AnnouncementId { get; set; }
-
-
+        public string? FacultyName { get; set; }
     }
 }

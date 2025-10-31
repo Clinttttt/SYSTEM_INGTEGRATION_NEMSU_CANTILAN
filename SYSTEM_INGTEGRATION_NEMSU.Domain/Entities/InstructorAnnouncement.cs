@@ -8,18 +8,19 @@ using System.Threading.Tasks;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
 {
-  public class InstructorAnnouncement
+    public class InstructorAnnouncement
     {
         public Guid Id { get; set; }
         public Guid? AdminId { get; set; }
         public Guid? CourseId { get; set; }
         public AnnouncementType? Type { get; set; }
+        public Guid? StudentId { get; set; }
         public string? CourseName { get; set; }
         public string? CourseCode { get; set; }
         public string? Title { get; set; }
         public string? Message { get; set; }
         public InformationType InformationType { get; set; }
-        [JsonIgnore] 
+        [JsonIgnore]
         public Course course { get; set; } = null!;
         public DateTime DateCreated { get; set; }
     }
@@ -37,8 +38,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         [Display(Name = "Important")]
         Important,
         [Display(Name = "General")]
-        General
+        General,
+        [Display(Name = "System")]
+        System
     };
-    
+
 
 }

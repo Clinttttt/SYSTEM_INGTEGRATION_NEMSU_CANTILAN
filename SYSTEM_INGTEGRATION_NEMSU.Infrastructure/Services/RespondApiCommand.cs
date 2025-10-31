@@ -13,33 +13,24 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
     public class RespondApiCommand : IRespondApiCommand
     {
         private readonly HttpClient _http;
-        private readonly ProtectedLocalStorage _localstorage;
+        private readonly IAuthHelper _IAuthHelper;
 
-        public RespondApiCommand(HttpClient http, ProtectedLocalStorage localstorage)
+        public RespondApiCommand(HttpClient http, IAuthHelper authHelper)
         {
             _http = http;
-            _localstorage = localstorage;
-        }
+            _IAuthHelper = authHelper;
 
-        public async Task SetAuthHeaderAsync()
-        {
-            var token = await _localstorage.GetAsync<string>("AccessToken");
-            var results = token.Success ? token.Value : null;
-            if (!string.IsNullOrEmpty(results))
-                _http.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", results);
         }
         public async Task<AutoResponsetDto?> AutoResponse(string CourseCode)
         {
-            await SetAuthHeaderAsync();
+            await _IAuthHelper.SetAuthHeaderAsync(_http);
             var response = await _http.PostAsJsonAsync("api/HandlingMessage/Auto%20Response", CourseCode);
             if (!response.IsSuccessStatusCode) return null;
             return await response.Content.ReadFromJsonAsync<AutoResponsetDto>();
         }
         public async Task<AnnouncementDto?> Announcement(AnnouncementDto announcement)
         {
-            await SetAuthHeaderAsync();
-
+            await _IAuthHelper.SetAuthHeaderAsync(_http);
             var response = await _http.PostAsJsonAsync("api/HandlingMessage/Announcement", announcement);
 
             if (!response.IsSuccessStatusCode)
@@ -49,27 +40,24 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             if (response.Content.Headers.ContentLength > 0)
             {
                 return await response.Content.ReadFromJsonAsync<AnnouncementDto>();
-            }
-
-           
+            }        
             return announcement;
         }
         public async Task<List<AnnouncementDto>?> DisplayAnnouncementAsync()
         {
-            await SetAuthHeaderAsync();
+            await _IAuthHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<List<AnnouncementDto>>("api/HandlingMessage/Display%20Announcement");
         }
-
         public async Task<AnnouncementDto?> EditAnnouncementAsync(EditAnnouncementDto announcement)
         {
-            await SetAuthHeaderAsync();
+            await _IAuthHelper.SetAuthHeaderAsync(_http);
             var request = await _http.PatchAsJsonAsync("api/HandlingMessage/Edit%20Announcement", announcement);
             if (!request.IsSuccessStatusCode) return null;
             return await request.Content.ReadFromJsonAsync<AnnouncementDto>();
         }
         public async Task<bool> DeleteAnnouncementAsync(Guid AnnouncementId)
         {
-            await SetAuthHeaderAsync();
+            await _IAuthHelper.SetAuthHeaderAsync(_http);
             return await _http.DeleteFromJsonAsync<bool>($"api/HandlingMessage/Delete%20Announcement/{AnnouncementId}");
         }
     }

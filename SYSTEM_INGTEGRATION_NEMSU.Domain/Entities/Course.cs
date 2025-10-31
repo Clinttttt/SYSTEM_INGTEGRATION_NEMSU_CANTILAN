@@ -21,6 +21,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public int Unit { get; set; }
         public CourseDepartment Department { get; set; }
         public string? CourseDescriptiion { get; set; }
+        [JsonIgnore]
         public List<LearningObjectives> LearningObjectives { get; set; } = new();
         public CourseSemester Semester { get; set; }
         public string? SchoolYear { get; set; }
@@ -35,6 +36,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public ICollection<InstructorAnnouncement> Announcements { get; set; } = new List<InstructorAnnouncement>();
 
         public Guid? CategoryId { get; set; }
+        [JsonIgnore]
         public Category? Category { get; set; }
 
         public int MaxCapacity { get; set; }

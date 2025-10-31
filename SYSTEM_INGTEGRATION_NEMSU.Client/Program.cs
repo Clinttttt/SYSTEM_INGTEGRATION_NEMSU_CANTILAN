@@ -9,6 +9,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Client.Components;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Helper;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Services;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.BackGroundHelper;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services;
 
@@ -19,6 +20,7 @@ builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddScoped<AuthStateProvider>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<PageState>();
+builder.Services.AddHostedService<InvoiceMonitorService>();
 
 
 builder.Services.AddHttpClient<IAuthApiServices, AuthApiServices>(client =>
@@ -60,7 +62,7 @@ builder.Services.AddHttpClient<IStudentRecordApiCommand, StudentRecordApiCommand
 {
     client.BaseAddress = new Uri("https://localhost:7072");
 });
-
+builder.Services.AddScoped<IAuthHelper, AuthHelper>();
 
 
 

@@ -21,7 +21,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public Guid CourseId { get; set; }
         [JsonIgnore]
         public Course Course { get; set; } = null!;
-
        
         public string? CourseCode { get; set; } 
         public double Cost { get; set; }
@@ -31,6 +30,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
 
         public InvoiceStatus Status { get; set; }
         public string? Standing { get; set; }
+        public DateTime? PaymentDeadline { get; set; }
 
     }
     public enum InvoiceStatus

@@ -20,18 +20,31 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
     {
         private readonly HttpClient _http;
         private readonly ProtectedLocalStorage _localstorage;
-        public StudentRecordApiCommand(HttpClient http, ProtectedLocalStorage localStorage)
+        private readonly IAuthApiServices _authApi;
+        public StudentRecordApiCommand(HttpClient http, ProtectedLocalStorage localStorage, IAuthApiServices authApi)
         {
             _http = http;
             _localstorage = localStorage;
+            _authApi = authApi;
         }
         public async Task SetAuthHeaderAsync()
         {
             var token = await _localstorage.GetAsync<string>("AccessToken");
             var results = token.Success ? token.Value : null;
+                      
+            if (string.IsNullOrEmpty(results))
+            {
+                var refresh = await _authApi.TryRefreshTokenAsync();
+                if (refresh)
+                {
+                    var set = await _localstorage.GetAsync<string>("AccessToken");
+                    results = set.Success ? set.Value : null;                
+                }  
+            }
             if (!string.IsNullOrEmpty(results)) _http.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", results);
+       new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", results);
         }
+
         public async Task<PersonalInformation?> AddPersonalDetailsAsync(PersonalInformationDto personalInformation)
         {
             await SetAuthHeaderAsync();

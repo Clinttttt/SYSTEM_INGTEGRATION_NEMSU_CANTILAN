@@ -11,6 +11,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Text.Json.Serialization;
 using System.Runtime.InteropServices;
+using System.Reflection.Metadata.Ecma335;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
@@ -44,9 +45,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 EnrollmentStatus = status,
                 StudentCourseStatus = StudentCourseStatus.Active,
                 ProfileColor = RandomColor.Generate(),
-
+                enrolledCourseStatus = EnrolledCourseStatus.Inprogress,
             };
-            course.TotalEnrolled += 1;
+            await context.Database.ExecuteSqlInterpolatedAsync(
+        $"UPDATE Course SET TotalEnrolled = TotalEnrolled + 1 WHERE Id = {course.Id}");
             context.enrollcourse.Add(enrollment);
             await context.SaveChangesAsync();
 
@@ -84,45 +86,65 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var FindUser = await context.users.FindAsync(StudentId);
             if (FindUser is null) return null;
             var request = await context.enrollcourse
-                .Include(s=> s.Course)
+                .Include(s => s.Course)
                 .Where(s => s.StudentId == StudentId)
                 .ToListAsync();
             var E = new List<EnrollCourseDto>();
             foreach (var r in request)
             {
                 var course = await context.course
-                    .Include(s=> s.FacultyPersonals)
+                    .Include(s => s.FacultyPersonals)
+                    .Include(s => s.Category)
                     .AsNoTracking()
                     .Where(s => s.CourseCode!.Contains(r.Course.CourseCode!))
                     .Select(s => new EnrollCourseDto
                     {
-                         StudentId = r.StudentId,
-                         CourseId = s.Id,
-                         DateEnrolled = r.DateEnrolled,
-                         Category = r.Category,
-                         Title = s.Title,
-                         Unit = s.Unit,
-                         EnrollmentStatus = r.EnrollmentStatus,
-                         CourseCode = s.CourseCode,
-                         FacultyFullName = s.FacultyPersonals!.FirstName + " " + s.FacultyPersonals.LastName
+                        StudentId = r.StudentId,
+                        CourseId = s.Id,
+                        DateEnrolled = r.DateEnrolled,
+                        Category = s.Category,
+                        Title = s.Title,
+                        Unit = s.Unit,
+                        EnrollmentStatus = r.EnrollmentStatus,
+                        CourseCode = s.CourseCode,
+                        FacultyFullName = s.FacultyPersonals!.FirstName + " " + s.FacultyPersonals.LastName,
+                        Schedule = s.Schedule,
+                        Room = s.Room,
 
                     }).ToListAsync();
                 E.AddRange(course);
             }
             return E;
         }
-
-        public async Task<CourseDto?> GetCourse(Guid CourseId, Guid StudentId)
+        public async Task<EnrolledCourseViewDto?> GetCourse(Guid CourseId, Guid StudentId)
         {
             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.CourseId == CourseId && s.StudentId == StudentId);
             if (request is null) return null;
-            var retrieve = await context.course.AsNoTracking()
-                .Include(s => s.Category).
-                FirstOrDefaultAsync(s => s.Id == request.CourseId);
+            var retrieve = await context.course
+                .AsNoTracking()
+                .Include(s => s.Category)
+                .Include(s => s.FacultyPersonals)
+                .FirstOrDefaultAsync(s => s.Id == request.CourseId);
             if (retrieve is null)
                 return null;
-            return retrieve.Adapt<CourseDto>();
+            var filter = new EnrolledCourseViewDto
+            {
+                StudentId = request.StudentId,
+                CourseId = retrieve.Id,
+                CourseCode = retrieve.CourseCode,
+                enrolledCourseStatus = request.enrolledCourseStatus,
+                CourseName = retrieve.Title,
+                Schedule = retrieve.Schedule,
+                Room = retrieve.Room,
+                Unit = retrieve.Unit,
+                SchoolYear = retrieve.SchoolYear,
+                FacultyName = retrieve.FacultyPersonals?.FirstName + " " + retrieve.FacultyPersonals?.LastName,
+                CourseDescription = retrieve.CourseDescriptiion,
+                Category = retrieve.Category
+            };
+            return filter;
         }
+
         public async Task<CourseDto?> PreviewCourseAsync(Guid StudentId, Guid CourseId)
         {
             var request = await context.users.FindAsync(StudentId);
@@ -140,8 +162,18 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .FirstOrDefaultAsync(e => e.StudentId == studentId && e.Course.CourseCode == courseCode);
             if (enrollment is null) return false;
 
-            enrollment.Course.TotalEnrolled -= 1;
+            await context.Database.ExecuteSqlInterpolatedAsync(
+        $"UPDATE Course SET TotalEnrolled = TotalEnrolled - 1 WHERE Id = {enrollment.CourseId}");
 
+            var invoice = await context.invoice
+                .FirstOrDefaultAsync(i => i.StudentId == enrollment.StudentId && i.CourseId == enrollment.CourseId);
+
+            if (invoice != null){ context.invoice.Remove(invoice); }
+            var announcements = await context.announcements.Where(s => s.StudentId == studentId).ToListAsync();
+            foreach (var announcement in announcements)
+            {
+                context.announcements.Remove(announcement);
+            }
 
             context.enrollcourse.Remove(enrollment);
             await context.SaveChangesAsync();
@@ -218,10 +250,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             foreach (var r in response)
             {
                 var request = await context.announcements
-            .AsNoTracking()            
+            .AsNoTracking()
             .Where(s => s.Type == AnnouncementType.instructor && s.AdminId == r.Course.AdminId && s.course.CourseCode!.Contains(r.Course.CourseCode!))
             .ToListAsync();
-            t.AddRange(request.Adapt<List<AnnouncementDto>>());
+                t.AddRange(request.Adapt<List<AnnouncementDto>>());
             }
             return t;
         }
@@ -236,6 +268,33 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .Where(s => s.CourseId == CourseId && s.AdminId == CourseAdmin.AdminId && s.Type == AnnouncementType.instructor)
                 .ToListAsync();
             return request.Adapt<List<AnnouncementDto>>();
+        }
+        public async Task<List<AnnouncementDto>?> DisplayAllTypeAnnouncementAsync(Guid CourseId, Guid StudentId)
+        {
+            var FindUser = await context.users.FindAsync(StudentId);
+            if (FindUser is null) return null;
+            var CourseAdmin = await context.course.FindAsync(CourseId);
+
+            if (CourseAdmin is null) return null;
+            var request = await context.announcements
+                .Include(s=> s.course)
+                .AsNoTracking()
+                .Where(s => s.CourseId == CourseId && s.AdminId == CourseAdmin.AdminId)
+                .Select(s => new AnnouncementDto
+                {
+                    Title = s.Title,
+                    Message = s.Message,
+                    CourseName = s.CourseName,
+                    CourseId = s.course.Id,
+                    InformationType = s.InformationType,
+                    DateCreated = s.DateCreated,
+                    CourseCode = s.CourseCode,
+                    AnnouncementId = s.Id,
+                    FacultyName = s.course.FacultyPersonals!.FirstName + " " + s.course.FacultyPersonals.LastName,
+                    Type = (AnnouncementType)s.Type!,
+                })
+                .ToListAsync();
+            return request;
         }
         public async Task<List<AnnouncementDto>?> DisplayAnnouncementByType(Guid StudentId, InformationType type)
         {
@@ -257,6 +316,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             }
             return t;
         }
+
 
 
 

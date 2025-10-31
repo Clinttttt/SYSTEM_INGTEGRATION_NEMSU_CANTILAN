@@ -16,16 +16,22 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         [JsonIgnore]   
         public User Student { get; set; } = null!;
         public StudentCourseStatus StudentCourseStatus { get; set; }
-
         public Guid CourseId { get; set; }
         [JsonIgnore] 
         public Course Course { get; set; } = null!;
-
-       
         public string? ProfileColor { get; set; }
+        [JsonIgnore]
         public Category? Category { get; set; }
         public DateTime DateEnrolled { get; set; }
         public EnrollmentStatus EnrollmentStatus { get; set; }
+        public EnrolledCourseStatus enrolledCourseStatus { get; set; }
+    }
+    public enum EnrolledCourseStatus
+    {
+        [Display(Name = "In Progress")]
+        Inprogress,
+        [Display(Name = "Completed")]
+        Completed
     }
     public enum EnrollmentStatus
     {

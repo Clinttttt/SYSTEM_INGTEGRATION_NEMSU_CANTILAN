@@ -61,9 +61,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
 
 
             modelBuilder.Entity<Course>()
-    .Property(c => c.AvailableSlots)
-    .HasComputedColumnSql("[MaxCapacity] - [TotalEnrolled]", stored: true);
+             .Property(c => c.AvailableSlots)
+             .HasComputedColumnSql("[MaxCapacity] - [TotalEnrolled]", stored: true)
+             .ValueGeneratedOnAddOrUpdate();
 
+            modelBuilder.Entity<Course>()
+                .Property(c => c.TotalEnrolled)
+                .ValueGeneratedNever();
 
         }
 

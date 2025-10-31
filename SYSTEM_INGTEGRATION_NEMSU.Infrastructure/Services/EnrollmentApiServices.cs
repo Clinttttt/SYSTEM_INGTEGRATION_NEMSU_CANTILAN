@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.EntityFrameworkCore.SqlServer.ValueGeneration.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
+using System.Net.Security;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
@@ -74,7 +77,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         public async Task<PaymentDetailsDto?> AddPaymentAsync( PaymentDetailsDto payment)
         {
             await SetAuthHeaderAsync();
-            var request = await _http.PostAsJsonAsync("api/EnrollmentHandling/Add Payment", payment);
+            var request = await _http.PostAsJsonAsync("api/EnrollmentHandling/Add%20Payment", payment);
             if (!request.IsSuccessStatusCode)
             {
                 return null;
@@ -102,7 +105,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             return await _http.GetFromJsonAsync<List<AnnouncementDto>>($"api/EnrollmentHandling/Display%20AnnouncementByType?type={type}");
             
         }
-
+        public async Task<EnrolledCourseViewDto?> GetCourse(Guid CourseId)
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<EnrolledCourseViewDto>($"api/EnrollmentHandling/Get%20Course?CourseId={CourseId}");
+        }
+        public async Task<List<AnnouncementDto>?> DisplayAllTypeAnnouncementAsync(Guid CourseId)
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<List<AnnouncementDto>>($"api/EnrollmentHandling/Display%20DisplayAllTypeAnnouncementAsync?CourseId={CourseId}");
+        }
 
 
 

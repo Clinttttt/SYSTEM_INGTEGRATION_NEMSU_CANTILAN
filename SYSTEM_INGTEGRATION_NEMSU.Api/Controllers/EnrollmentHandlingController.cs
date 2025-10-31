@@ -66,7 +66,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
         [Authorize]
         [HttpGet("Get Course")]
-        public async Task<ActionResult<CourseDto>?> GetCourse(Guid CourseId)
+        public async Task<ActionResult<EnrolledCourseViewDto>?> GetCourse(Guid CourseId)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null)
@@ -118,7 +118,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(request);
 
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize]
         [HttpGet("Display PreviewCourse")]
         public async Task<ActionResult<CourseDto>> PreviewCourseAsync(Guid CourseId)
@@ -185,6 +185,18 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayAnnouncementByType(UserId, type);
             return Ok(request);
         }
+
+        [Authorize]
+        [HttpGet("Display DisplayAllTypeAnnouncementAsync")]
+        public async Task<ActionResult<AnnouncementDto>> DisplayAllTypeAnnouncementAsync(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("User not found");
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.DisplayAllTypeAnnouncementAsync( CourseId, UserId);
+            return Ok(request);
+        }
+
         [Authorize]
         [HttpGet("Display AllEnrolledCourse")]
         public async Task<ActionResult<EnrollCourseDto>> DisplayAllCourseEnrolledAsync()
@@ -195,5 +207,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayAllCourseEnrolledAsync(UserId);
             return Ok(request);
         }
+     
     }
 }

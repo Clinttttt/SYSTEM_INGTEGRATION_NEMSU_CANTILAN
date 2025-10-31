@@ -160,7 +160,7 @@
         if(!hasrender && firstRender)
         {
             hasrender = true;
-            await Task.Delay(500);
+            await Task.Delay(1500);
             announcements = await respondApiCommand.DisplayAnnouncementAsync();
             if(announcements is null)
             {

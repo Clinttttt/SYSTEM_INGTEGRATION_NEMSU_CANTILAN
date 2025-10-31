@@ -17,11 +17,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public DateTime DateEnrolled { get; set; }
         [JsonIgnore]
         public Course? Course { get; set; }
-        [JsonIgnore]
+       
         public Category? Category { get; set; }
         public string? CourseCode { get; set; } 
         public string? Title { get; set; }
         public int Unit { get; set; }
+        public string? Schedule { get; set; }
+        public string? Room { get; set; }
         public EnrollmentStatus EnrollmentStatus { get; set; }
     }
 
