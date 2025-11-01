@@ -178,11 +178,11 @@
 </dialog>
 @code {
     [Parameter]
-    public IEnumerable<PersonalInformationDto>? PersonalInformation { get; set; }
+    public PersonalInformationDto? P { get; set; }
     [Parameter]
-    public IEnumerable<AcademicInformationDto>? AcademicInformation { get; set; }
+    public AcademicInformationDto? A { get; set; }
     [Parameter]
-    public IEnumerable<ContactInformationDto>? ContactInformation { get; set; }
+    public ContactInformationDto? C { get; set; }
     public bool hasrender = false;
     public StudentUpdateInformationDto studentUpdateInformation = new StudentUpdateInformationDto
         {
@@ -198,14 +198,9 @@
     protected override void OnParametersSet()
     {
 
-        if (!hasloaded && PersonalInformation is not null && AcademicInformation is not null && ContactInformation is not null )
+        if (!hasloaded && P is not null && A is not null && C is not null )
         {
-            foreach (var P in PersonalInformation)
-            {
-                foreach (var C in ContactInformation)
-                {
-                    foreach (var A in AcademicInformation)
-                    {
+            hasloaded = true;
 
                         studentUpdateInformation.personalInformation!.FirstName = P.FirstName;
                         studentUpdateInformation.personalInformation!.MiddleName = P.MiddleName;
@@ -222,14 +217,13 @@
                         studentUpdateInformation.academicInformation.Semester = A.Semester;
                         studentUpdateInformation.academicInformation.Strand = A.Strand;
                         studentUpdateInformation.academicInformation.Program = A.Program;
-                    }
-                }
+                  
             }
-            hasloaded = true;
+          
             StateHasChanged();
         }
 
-    }
+    
 
     public async Task HandlingEdit()
     {

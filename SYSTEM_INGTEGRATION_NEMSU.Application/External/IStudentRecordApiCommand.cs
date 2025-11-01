@@ -15,14 +15,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
     {
         Task<PersonalInformation?> AddPersonalDetailsAsync(PersonalInformationDto personalInformation);
         Task<PersonalInformation?> UpdatePersonalInformationAsync(PersonalInformationDto personalInformation);
-        Task<IEnumerable<PersonalInformationDto>?> DisplayPersonalInformationAsync();
+        Task<PersonalInformationDto?> DisplayPersonalInformationAsync();
         Task<AcademicInformation?> AddAcademicDetailsAsync(AcademicInformationDto academicInformation);
         Task<AcademicInformation?> UpdateAcademicInformationAsync(AcademicInformationDto academicInformation);
-        Task<IEnumerable<AcademicInformationDto>?> DisplayAcademicInformation();
+        Task<AcademicInformationDto?> DisplayAcademicInformation();
         Task<ContactInformation?> AddContactInformationAsync(ContactInformationDto contactInformation);
         Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation);
-        Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync();
+        Task<ContactInformationDto?> DisplayContactInformationAsync();
         Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId);
         Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate);
+        Task<bool> StudentSaveInformationAsync();
     }
 }

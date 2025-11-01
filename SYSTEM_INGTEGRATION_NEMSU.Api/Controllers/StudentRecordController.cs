@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.SqlServer.Server;
 using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
@@ -141,6 +142,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             udpate.StudentId = StudentId.Id;
             var request = await studentRecordCommand.UpdateAllDetailsAsync(udpate);
             if (request is null) return BadRequest("Something Went Wrong");
+            return Ok(request);
+        }
+        [Authorize]
+        [HttpPatch("Student SaveInformationAsync")]
+        public async Task<ActionResult<bool>> StudentSaveInformationAsync()
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if(FindUser is null) { return BadRequest("Login First"); }
+            var StudentId = Guid.Parse(FindUser.Value);
+            var request = await studentRecordCommand.StudentSaveInformationAsync(StudentId);
             return Ok(request);
         }
     }

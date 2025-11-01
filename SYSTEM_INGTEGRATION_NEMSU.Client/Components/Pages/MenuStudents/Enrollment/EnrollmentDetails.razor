@@ -1,8 +1,11 @@
 ﻿
 @page "/enrollmentdetails/{CouresId:guid}"
+@using SYSTEM_INGTEGRATION_NEMSU.Client.Components.Pages.ModalRespond
 @inject IStudentRecordApiCommand studentRecordCommand
 @inject IEnrollmentApiServices enrollmentApiServices
 @rendermode InteractiveServer
+@inject IJSRuntime JS
+
 
 <div class="overflow-auto lg:overflow-hidden  relative h-screen content ">
     <div class="drawer lg:drawer-open h-screen">
@@ -45,109 +48,102 @@
                                 </div>
                             </div>
                         }
-                        @if (PersonalInformation is not null)
+                        @if (P is not null)
                         {
-                            foreach (var P in PersonalInformation)
-                            {
 
 
-                                <div class="border-b border-gray-200 pb-6">
-                                    <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                                        <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
-                                        Personal Information
-                                    </h2>
-                                    <div class="space-y-3">
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">Full Name:</span>
-                                            <span class="text-gray-800 flex-1 font-medium">@P.FirstName &nbsp @P.MiddleName, &nbsp @P.LastName</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">Date of Birth:</span>
-                                            <span class="text-gray-800 flex-1">@P.DateOfBirth.ToString("MM/dd/yyyy")</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">Gender:</span>
-                                            <span class="text-gray-800 flex-1">@P.Gender.GetDisplayName()</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">Civil Status:</span>
-                                            <span class="text-gray-800 flex-1">@P.CivilStatus.GetDisplayName()</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">Nationality:</span>
-                                            <span class="text-gray-800 flex-1">@P.Nationality</span>
-                                        </div>
+                            <div class="border-b border-gray-200 pb-6">
+                                <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                                    <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
+                                    Personal Information
+                                </h2>
+                                <div class="space-y-3">
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Full Name:</span>
+                                        <span class="text-gray-800 flex-1 font-medium">@P.FirstName &nbsp @P.MiddleName, &nbsp @P.LastName</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Date of Birth:</span>
+                                        <span class="text-gray-800 flex-1">@P.DateOfBirth.ToString("MM/dd/yyyy")</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Gender:</span>
+                                        <span class="text-gray-800 flex-1">@P.Gender.GetDisplayName()</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Civil Status:</span>
+                                        <span class="text-gray-800 flex-1">@P.CivilStatus.GetDisplayName()</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Nationality:</span>
+                                        <span class="text-gray-800 flex-1">@P.Nationality</span>
                                     </div>
                                 </div>
-                            }
-                        }
-                        @if (ContactInformation is not null && PersonalInformation is not null)
-                        {
-                            foreach (var P in PersonalInformation)
-                            {
-                                foreach (var C in ContactInformation)
-                                {
+                            </div>
 
-                                    <div class="border-b border-gray-200 pb-6">
-                                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                                            <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
-                                            Contact Information
-                                        </h2>
-                                        <div class="space-y-3">
-                                            <div class="flex">
-                                                <span class="text-gray-500 w-32 text-sm font-medium">Address:</span>
-                                                <span class="text-gray-800 flex-1">@P.PermanentAddress</span>
-                                            </div>
-                                            <div class="flex">
-                                                <span class="text-gray-500 w-32 text-sm font-medium">Mobile:</span>
-                                                <span class="text-gray-800 flex-1">@C.MobileNumber</span>
-                                            </div>
-                                            <div class="flex">
-                                                <span class="text-gray-500 w-32 text-sm font-medium">Email:</span>
-                                                <span class="text-gray-800 flex-1">@C.EmailAddress</span>
-                                            </div>
-                                        </div>
+                        }
+                        @if (C is not null && P is not null)
+                        {
+
+
+                            <div class="border-b border-gray-200 pb-6">
+                                <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                                    <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
+                                    Contact Information
+                                </h2>
+                                <div class="space-y-3">
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Address:</span>
+                                        <span class="text-gray-800 flex-1">@P.PermanentAddress</span>
                                     </div>
-                                }
-                            }
-                        }
-                        @if (AcademicInformation is not null)
-                        {
-                            foreach (var A in AcademicInformation)
-                            {
-
-
-
-                                <div>
-                                    <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                                        <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
-                                        Academic Information
-                                    </h2>
-                                    <div class="space-y-3">
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">Student Type:</span>
-                                            <span class="text-gray-800 flex-1">@A.StudentType.GetDisplayName()</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">Year Level:</span>
-                                            <span class="text-gray-800 flex-1">@A.YearLevel.GetDisplayName()</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">Semester:</span>
-                                            <span class="text-gray-800 flex-1">@A.Semester.GetDisplayName()</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">Program:</span>
-                                            <span class="text-gray-800 flex-1">@A.Program.GetDisplayName()</span>
-                                        </div>
-                                        <div class="flex">
-                                            <span class="text-gray-500 w-32 text-sm font-medium">SHS Strand:</span>
-                                            <span class="text-gray-800 flex-1">@A.Strand.GetDisplayName()</span>
-                                        </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Mobile:</span>
+                                        <span class="text-gray-800 flex-1">@C.MobileNumber</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Email:</span>
+                                        <span class="text-gray-800 flex-1">@C.EmailAddress</span>
                                     </div>
                                 </div>
-                            }
+                            </div>
+
                         }
+                        @if (A is not null)
+                        {
+
+
+
+
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                                    <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
+                                    Academic Information
+                                </h2>
+                                <div class="space-y-3">
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Student Type:</span>
+                                        <span class="text-gray-800 flex-1">@A.StudentType.GetDisplayName()</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Year Level:</span>
+                                        <span class="text-gray-800 flex-1">@A.YearLevel.GetDisplayName()</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Semester:</span>
+                                        <span class="text-gray-800 flex-1">@A.Semester.GetDisplayName()</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">Program:</span>
+                                        <span class="text-gray-800 flex-1">@A.Program.GetDisplayName()</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 w-32 text-sm font-medium">SHS Strand:</span>
+                                        <span class="text-gray-800 flex-1">@A.Strand.GetDisplayName()</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
                     </div>
                 </div>
 
@@ -221,9 +217,9 @@
                                 </p>
                             </div>
 
-                            <button onclick="my_modal_payment.showModal()" class=" w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition-colors font-bold shadow-md">
+                            <label @onclick="Confirmation" class="btn w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition-colors font-bold shadow-md">
                                 Proceed to Payment
-                            </button>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -238,29 +234,87 @@
 
 
             <PurchaseConfirmation PreviewCourse="PreviewCourse" />
-            <EnrollmentEditInformation PersonalInformation="PersonalInformation" AcademicInformation="AcademicInformation" ContactInformation="ContactInformation" UpdateInformation="ReloadInformation" />
+            <EnrollmentEditInformation P="P" A="A" C="C" UpdateInformation="ReloadInformation" />
+            <InformationRequired update="SaveInformationAsync" reload="ReloadInformation" />
 
         </div>
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
-            <ul class="menu min-h-full w-62 p-4 text-white" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+            <div class="min-h-full w-64 bg-white shadow-xl flex flex-col border-r border-r-gray-200">
 
-                <li class="mx-auto mb-4">
-                    <div class="w-[92px] h-[92px]  border-4 border-amber-500 rounded-full  flex items-center justify-center overflow-hidden bg-white">
-                        <img src="/img/student_logo.jpg" class="w-full h-full object-contain" />
+
+                <div class="p-6 bg-gradient-to-br from-cyan-500 to-teal-600">
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
+                            <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
+                        </div>
+                        <h3 class="text-white font-bold text-sm">Student Dashboard</h3>
                     </div>
-                </li>
-                <li><a class="text-white text-2xl font-light btn btn-outline btn-primary">Enrollment</a></li>
+                </div>
 
 
-                <li class="mt-10"><NavLink href="/paymenthistory" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Payment History</NavLink></li>
-                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Settings</a></li>
-                <li class="mt-2"><a class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Logout</a></li>
+                <nav class="flex-1 p-4 overflow-y-auto">
 
-                <li class="mt-10"><NavLink href="/profileinformation" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Profile</NavLink></li>
-                <li class="mt-2"><NavLink href="/announcement" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Announcements</NavLink></li>
-                <li class="mt-2"><NavLink href="/enrolledcourse" class="text-white text-md btn-[40%] font-semibold btn btn-outline btn-primary">Enrolled Course</NavLink></li>
-            </ul>
+
+
+
+                    <div class="space-y-1 mb-6">
+                        <NavLink href="/enrolledcourse" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span class="font-medium">My Courses</span>
+                        </NavLink>
+
+                        <NavLink href="/paymenthistory" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                            <span class="font-medium">Payments</span>
+                        </NavLink>
+
+                        <NavLink href="/profileinformation" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="font-medium">Profile</span>
+                        </NavLink>
+
+                        <NavLink href="/announcement" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                            </svg>
+                            <span class="font-medium">Announcements</span>
+                        </NavLink>
+                    </div>
+
+
+                    <div class="border-t border-gray-200 my-4"></div>
+
+
+                    <div class="space-y-1">
+                        <a class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group cursor-pointer">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span class="font-medium">Settings</span>
+                        </a>
+
+                        <a class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            <span class="font-medium">Logout</span>
+                        </a>
+                    </div>
+                </nav>
+
+
+                <div class="p-4 border-t border-gray-200 bg-gray-50">
+                    <p class="text-xs text-gray-500 text-center">© 2025 Student Portal</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -274,9 +328,9 @@
     public Guid CouresId { get; set; }
     public bool hasrender = false;
 
-    public IEnumerable<PersonalInformationDto>? PersonalInformation { get; set; }
-    public IEnumerable<AcademicInformationDto>? AcademicInformation { get; set; }
-    public IEnumerable<ContactInformationDto>? ContactInformation { get; set; }
+    public PersonalInformationDto? P { get; set; }
+    public AcademicInformationDto? A { get; set; }
+    public ContactInformationDto? C { get; set; }
 
     public CourseDto? PreviewCourse { get; set; }
 
@@ -286,19 +340,37 @@
         if(!hasrender && firstRender)
         {
             hasrender = true;
-            PersonalInformation = await studentRecordCommand.DisplayPersonalInformationAsync();
-            AcademicInformation = await studentRecordCommand.DisplayAcademicInformation();
-            ContactInformation = await studentRecordCommand.DisplayContactInformationAsync();
+            P = await studentRecordCommand.DisplayPersonalInformationAsync();
+            A = await studentRecordCommand.DisplayAcademicInformation();
+            C = await studentRecordCommand.DisplayContactInformationAsync();
             PreviewCourse = await enrollmentApiServices.PreviewCourseAsync(CouresId);
         }
         StateHasChanged();
     }
+
+    public async Task SaveInformationAsync()
+    {
+        await studentRecordCommand.StudentSaveInformationAsync();     
+    }
+
+    public async Task Confirmation()
+    {
+        if (P?.Savestatus != SaveStatus.Save || A?.Savestatus != SaveStatusAcademic.Save || C?.Savestatus != SaveStatusContact.Save)
+        {
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_requirements').checked = true");
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_payment').showModal()");
+        }
+    }
     public async Task ReloadInformation()
     {
-        PersonalInformation = await studentRecordCommand.DisplayPersonalInformationAsync();
-        AcademicInformation = await studentRecordCommand.DisplayAcademicInformation();
-        ContactInformation = await studentRecordCommand.DisplayContactInformationAsync();
+        P = await studentRecordCommand.DisplayPersonalInformationAsync();
+        A = await studentRecordCommand.DisplayAcademicInformation();
+        C = await studentRecordCommand.DisplayContactInformationAsync();
         PreviewCourse = await enrollmentApiServices.PreviewCourseAsync(CouresId);
+
         StateHasChanged();
     }
 }

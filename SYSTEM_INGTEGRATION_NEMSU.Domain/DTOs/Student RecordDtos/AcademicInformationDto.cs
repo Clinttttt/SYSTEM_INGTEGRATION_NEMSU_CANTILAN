@@ -19,5 +19,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
         public MajorChoice Major { get; set; }
         public StrandChoice Strand { get; set; }
         public SaveStatusAcademic Savestatus { get; set; }
+      
     }
 }

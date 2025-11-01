@@ -59,10 +59,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             if (!results.IsSuccessStatusCode) return null;
             return await results.Content.ReadFromJsonAsync<PersonalInformation>();
         }
-        public async Task<IEnumerable<PersonalInformationDto>?> DisplayPersonalInformationAsync()
+        public async Task<PersonalInformationDto?> DisplayPersonalInformationAsync()
         {
             await SetAuthHeaderAsync();
-            return await _http.GetFromJsonAsync<IEnumerable<PersonalInformationDto>>("api/StudentRecord/Display%20Personal%20Details");
+            return await _http.GetFromJsonAsync<PersonalInformationDto>("api/StudentRecord/Display%20Personal%20Details");
         }
         public async Task<AcademicInformation?> AddAcademicDetailsAsync(AcademicInformationDto academicInformation)
         {
@@ -78,10 +78,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             if (!results.IsSuccessStatusCode) return null;
             return await results.Content.ReadFromJsonAsync<AcademicInformation>();
         }
-        public async Task<IEnumerable<AcademicInformationDto>?> DisplayAcademicInformation()
+        public async Task<AcademicInformationDto?> DisplayAcademicInformation()
         {
             await SetAuthHeaderAsync();
-            return await _http.GetFromJsonAsync<IEnumerable<AcademicInformationDto>>("api/StudentRecord/Display%20Academic%20Details");
+            return await _http.GetFromJsonAsync<AcademicInformationDto>("api/StudentRecord/Display%20Academic%20Details");
         }
         public async Task<ContactInformation?> AddContactInformationAsync(ContactInformationDto contactInformation)
         {
@@ -97,10 +97,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             if (!results.IsSuccessStatusCode) return null;
             return await results.Content.ReadFromJsonAsync<ContactInformation>();
         }
-        public async Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync()
+        public async Task<ContactInformationDto?> DisplayContactInformationAsync()
         {
             await SetAuthHeaderAsync();
-            return await _http.GetFromJsonAsync<IEnumerable<ContactInformationDto>>("api/StudentRecord/Display%20Contact%20Details");
+            return await _http.GetFromJsonAsync<ContactInformationDto>("api/StudentRecord/Display%20Contact%20Details");
         }
         public async Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId)
         {
@@ -116,6 +116,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             var request = await _http.PatchAsJsonAsync("api/StudentRecord/UpdateAll%20Details", studentUpdate);
             if (!request.IsSuccessStatusCode) { return null; }
             return await request.Content.ReadFromJsonAsync<StudentUpdateInformationDto>();
+        }
+        public async Task<bool> StudentSaveInformationAsync()
+        {
+            await SetAuthHeaderAsync();
+            var request = await _http.PatchAsync("api/StudentRecord/Student%20SaveInformationAsync", null);
+            if (!request.IsSuccessStatusCode) { return false; }
+            return await request.Content.ReadFromJsonAsync<bool>();
         }
     }
 }

@@ -1,0 +1,41 @@
+﻿@rendermode InteractiveServer
+@inject IJSRuntime JS
+
+<input type="checkbox" id="my_modal_requirements" class="modal-toggle" />
+<div class="modal" role="dialog">
+    <div class="modal-box max-w-md rounded-sm">
+        <div class="flex flex-col items-center mb-6">
+            <div class="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-700">Information Not Saved</h3>
+        </div>
+        <p class="text-gray-600 text-center mb-5 leading-relaxed">
+            You have unsaved changes in your enrollment form. Please save your information before proceeding to enrollment confirmation.
+        </p>
+        <div class="modal-action flex-col sm:flex-row gap-2">
+            <label @onclick="UpdateAsync" class="btn bg-teal-500 text-white flex-1">Save Information</label>
+            <label for="my_modal_requirements" class="btn btn-ghost flex-1">Go Back</label>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback update { get; set; }
+
+    [Parameter]
+    public EventCallback reload { get; set; }
+    public async Task UpdateAsync()
+    {
+        await update.InvokeAsync();
+
+    
+        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_requirements').checked = false");
+        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_payment').showModal()");
+        await reload.InvokeAsync();
+        StateHasChanged();
+    }
+}

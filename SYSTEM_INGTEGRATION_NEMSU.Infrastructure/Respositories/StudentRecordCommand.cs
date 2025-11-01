@@ -50,11 +50,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             personal.PermanentAddress = studentUpdate.personalInformation.PermanentAddress;
             contact.MobileNumber = studentUpdate.contactInformation?.MobileNumber;
             contact.EmailAddress = studentUpdate.contactInformation?.EmailAddress;
+            contact.EmergencyContactNumber = studentUpdate.contactInformation?.EmergencyContactNumber;
             academic.StudentType = studentUpdate.academicInformation!.StudentType;
             academic.YearLevel = studentUpdate.academicInformation.YearLevel;
             academic.Semester = studentUpdate.academicInformation.Semester;
             academic.Strand = studentUpdate.academicInformation.Strand;
             academic.Program = studentUpdate.academicInformation.Program;
+            academic.Major = studentUpdate.academicInformation.Major;
 
             await context.SaveChangesAsync();
             return studentUpdate;
@@ -63,9 +65,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
         public async Task<PersonalInformation?> UpdatePersonalInformationAsync(PersonalInformationDto personalInformation)
         {
-            var request = context.users.FirstOrDefault(s => s.Id == personalInformation.StudentId);
-            if (request is null) return null;
-            var currentdetails = await context.personalInformation.FirstOrDefaultAsync(s => s.StudentId == request.Id);
+           
+            var currentdetails = await context.personalInformation.FirstOrDefaultAsync(s => s.StudentId == personalInformation.StudentId);
             if (currentdetails is null) return null;
             currentdetails.FirstName = personalInformation.FirstName;
             currentdetails.MiddleName = personalInformation.MiddleName;
@@ -82,12 +83,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var filter = currentdetails.Adapt<PersonalInformation>();
             return filter;
         }
-        public async Task<IEnumerable<PersonalInformationDto>?> DisplayPersonalInformationAsync(Guid StudentId)
-        {
-            var request = await context.users.FirstOrDefaultAsync(s => s.Id == StudentId);
-            if (request is null) return null;
-            var details = await context.personalInformation.Where(s => s.StudentId == request.Id).ToListAsync();
-            return details.Adapt<List<PersonalInformationDto>>();
+        public async Task<PersonalInformationDto?> DisplayPersonalInformationAsync(Guid StudentId)
+        {         
+            var details = await context.personalInformation.Where(s => s.StudentId == StudentId).FirstOrDefaultAsync();
+            return details.Adapt<PersonalInformationDto>();
         }
         public async Task<AcademicInformationDto?> AddAcademicInformationAsync(AcademicInformation academicInformation)
         {
@@ -100,10 +99,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return filter;
         }
         public async Task<AcademicInformation?> UpdateAcademicInformationAsync(AcademicInformationDto academicInformation)
-        {
-            var request = await context.users.FirstOrDefaultAsync(s => s.Id == academicInformation.StudentId);
-            if (request is null) return null;
-            var currentdetails = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == request.Id);
+        {           
+            var currentdetails = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == academicInformation.StudentId);
             if (currentdetails is null) return null;
             currentdetails.StudentType = academicInformation.StudentType;
             currentdetails.YearLevel = academicInformation.YearLevel;
@@ -111,19 +108,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             currentdetails.Program = academicInformation.Program;
             currentdetails.Major = academicInformation.Major;
             currentdetails.Strand = academicInformation.Strand;
+            currentdetails.Savestatus = academicInformation.Savestatus;
             context.academicInformation.Update(currentdetails);
             var filter = currentdetails.Adapt<AcademicInformation>();
             await context.SaveChangesAsync();
             return filter;
         }
 
-        public async Task<IEnumerable<AcademicInformationDto>?> DisplayAcademicInformation(Guid Student)
+        public async Task<AcademicInformationDto?> DisplayAcademicInformation(Guid Student)
         {
-            var request = await context.users.FirstOrDefaultAsync(s => s.Id == Student);
-            if (request is null) return null;
+           
             var details = await context.academicInformation
                 .AsNoTracking()
-                .Where(s => s.StudentId == request.Id)
+                .Where(s => s.StudentId == Student)
                 .Select(s=> new AcademicInformationDto
                 {
                     StudentId = s.StudentId,
@@ -133,9 +130,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     Semester  = s.Semester,
                     Program = s.Program,
                     Major = s.Major,
-                    Strand = s.Strand
+                    Strand = s.Strand,
+                    Savestatus = s.Savestatus,
+               
                 })
-                .ToListAsync();
+                .FirstOrDefaultAsync();
             return details;
            
         }
@@ -151,10 +150,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return filter;
         }
         public async Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation)
-        {
-            var request = await context.users.FirstOrDefaultAsync(s => s.Id == contactInformation.StudentId);
-            if (request is null) return null;
-            var currentdetails = await context.contactInformation.FirstOrDefaultAsync(s => s.StudentId == request.Id);
+        {          
+            var currentdetails = await context.contactInformation.FirstOrDefaultAsync(s => s.StudentId == contactInformation.StudentId);
             if (currentdetails is null) return null;
             currentdetails.MobileNumber = contactInformation.MobileNumber;
             currentdetails.EmailAddress = contactInformation.EmailAddress;
@@ -164,23 +161,34 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await context.SaveChangesAsync();
             return filter;
         }
-        public async Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync(Guid Student)
-        {
-            var request = await context.users.FirstOrDefaultAsync(s => s.Id == Student);
-            if (request is null) return null;
-            var details = await context.contactInformation.Where(s => s.StudentId == request.Id).ToListAsync();
-            return details.Adapt<List<ContactInformationDto>>();
+        public async Task<ContactInformationDto?> DisplayContactInformationAsync(Guid Student)
+        {          
+            var details = await context.contactInformation.Where(s => s.StudentId == Student).FirstOrDefaultAsync();
+            return details.Adapt<ContactInformationDto>();
         }
 
         public async Task<SchoolIdDto?> StudentSchoolIdAsync(Guid StudentId, string SchoolId)
-        {
-         
+        {        
             var request = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == StudentId);
             if (request is null) return null;
             request.StudentSchoolId = SchoolId;
           
             await context.SaveChangesAsync();
             return request.Adapt<SchoolIdDto>();
+        }
+        public async Task<bool> StudentSaveInformationAsync(Guid StudentId)
+        {
+            var personal = await context.personalInformation.FirstOrDefaultAsync(s => s.StudentId == StudentId);
+            if (personal is null) return false;
+            personal.Savestatus = SaveStatus.Save;
+            var academic = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == StudentId);
+            if (academic is null) return false;
+            academic.Savestatus = SaveStatusAcademic.Save;
+            var contact = await context.contactInformation.FirstOrDefaultAsync(s => s.StudentId == StudentId);
+            if (contact is null) return false;
+            contact.Savestatus = SaveStatusContact.Save;
+            await context.SaveChangesAsync();
+            return true;
         }
     }
 }

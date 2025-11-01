@@ -10,7 +10,8 @@ using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.BackGroundHelper
-{public class InvoiceMonitorService : BackgroundService
+{
+    public class InvoiceMonitorService : BackgroundService
     {
 
         private readonly IServiceScopeFactory _scopeFactory;

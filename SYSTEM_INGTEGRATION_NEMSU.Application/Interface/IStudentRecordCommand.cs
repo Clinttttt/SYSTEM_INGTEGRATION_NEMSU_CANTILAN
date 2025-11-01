@@ -17,21 +17,21 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<PersonalInformationDto?> AddPersonalDetailsAsync(PersonalInformation personalInformation);
 
         Task<PersonalInformation?> UpdatePersonalInformationAsync(PersonalInformationDto personalInformation);
-        Task<IEnumerable<PersonalInformationDto>?> DisplayPersonalInformationAsync(Guid StudentId);
-
+        Task<PersonalInformationDto?> DisplayPersonalInformationAsync(Guid StudentId);
+        
         Task<AcademicInformationDto?> AddAcademicInformationAsync(AcademicInformation academicInformation);
 
         Task<AcademicInformation?> UpdateAcademicInformationAsync(AcademicInformationDto academicInformation);
 
-        Task<IEnumerable<AcademicInformationDto>?> DisplayAcademicInformation(Guid Student);
+        Task<AcademicInformationDto?> DisplayAcademicInformation(Guid Student);
 
         Task<ContactInformationDto?> AddContactInformationAsync(ContactInformation contactInformation);
 
         Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation);
-
-        Task<IEnumerable<ContactInformationDto>?> DisplayContactInformationAsync(Guid Student);
+        Task<ContactInformationDto?> DisplayContactInformationAsync(Guid Student);
         Task<SchoolIdDto?> StudentSchoolIdAsync(Guid StudentId, string SchoolId);
 
         Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate);
+        Task<bool> StudentSaveInformationAsync(Guid StudentId);
     }
 }

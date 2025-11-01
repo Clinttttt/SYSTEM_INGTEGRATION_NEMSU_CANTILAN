@@ -279,7 +279,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.announcements
                 .Include(s=> s.course)
                 .AsNoTracking()
-                .Where(s => s.CourseId == CourseId && s.AdminId == CourseAdmin.AdminId)
+                .Where(s => s.CourseId == CourseId && s.AdminId == CourseAdmin.AdminId && (s.StudentId == null || s.StudentId == StudentId))
                 .Select(s => new AnnouncementDto
                 {
                     Title = s.Title,
@@ -293,6 +293,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     FacultyName = s.course.FacultyPersonals!.FirstName + " " + s.course.FacultyPersonals.LastName,
                     Type = (AnnouncementType)s.Type!,
                 })
+             
                 .ToListAsync();
             return request;
         }
@@ -316,11 +317,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             }
             return t;
         }
-
-
-
-
-
 
 
     }
