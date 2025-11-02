@@ -14,9 +14,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public Guid StudentId { get; set; }
         public string? AccountNumber { get; set; }
         public PaymentMethod paymentMethod { get; set; }
-        
+        public Guid PaymentId { get; set; }
         public DateTime PurchaseDate { get; set; }
         public string? CourseCode { get; set; }
         public double cost { get; set; }
+        
+        public Category? Category { get; set; }
     }
 }

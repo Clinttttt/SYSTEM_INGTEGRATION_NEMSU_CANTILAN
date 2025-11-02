@@ -169,7 +169,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .FirstOrDefaultAsync(i => i.StudentId == enrollment.StudentId && i.CourseId == enrollment.CourseId);
 
             if (invoice != null){ context.invoice.Remove(invoice); }
-            var announcements = await context.announcements.Where(s => s.StudentId == studentId).ToListAsync();
+            var announcements = await context.announcements.Where(s => s.StudentId == studentId && s.CourseCode == courseCode).ToListAsync();
             foreach (var announcement in announcements)
             {
                 context.announcements.Remove(announcement);
@@ -205,6 +205,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             {
                 return null;
             }
+            var course = await context.course
+               
+                .Where(s => s.CourseCode == payment.CourseCode)
+                .FirstOrDefaultAsync();
+
             var Add = new PaymentDetails
             {
                 StudentId = payment.StudentId,
@@ -213,6 +218,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 PurchaseDate = DateTime.UtcNow,
                 CourseCode = payment.CourseCode,
                 Cost = payment.cost,
+                CategoryId = course?.CategoryId,
             };
             context.paymentDetails.Add(Add);
             await context.SaveChangesAsync();
@@ -224,18 +230,40 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 PurchaseDate = Add.PurchaseDate,
                 CourseCode = payment.CourseCode,
                 cost = payment.cost,
+                Category = course?.Category,
             };
             return filter;
         }
-        public async Task<List<PaymentDetailsDto>?> DisplayPaymentAsync(Guid StudentVerification, Guid StudentId)
+        public async Task<List<PaymentDetailsDto>?> DisplayPaymentAsync( Guid StudentId)
         {
-            var User = await context.users.FindAsync(StudentVerification);
+            var User = await context.users.FindAsync(StudentId);
             if (User is null)
             {
                 return null;
             }
-            var request = await context.paymentDetails.Where(s => s.StudentId == StudentId).ToListAsync();
-            return request.Adapt<List<PaymentDetailsDto>>();
+            var request = await context.paymentDetails
+             
+                .Where(s => s.StudentId == StudentId)
+                .Select(s=> new PaymentDetailsDto {
+                    PaymentId = s.Id,
+                    AccountNumber = s.AccountNumber,
+                    paymentMethod = s.paymentMethod,
+                    PurchaseDate = s.PurchaseDate,
+                    CourseCode = s.CourseCode,
+                    cost = s.Cost,
+                    Category = s.Category  
+                })
+                .ToListAsync();
+            return request;
+        }
+        public async Task<bool> DeletePaymentAsync(Guid StudentId, Guid PaymentId)
+        {
+            var request = await context.paymentDetails
+                .FirstOrDefaultAsync( s=> s.StudentId == StudentId && s.Id == PaymentId);
+            if (request is null) return false;
+             context.paymentDetails.Remove(request);
+            await context.SaveChangesAsync();
+            return true;
         }
         public async Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync(Guid StudentId)
         {
@@ -317,6 +345,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             }
             return t;
         }
+       
 
 
     }

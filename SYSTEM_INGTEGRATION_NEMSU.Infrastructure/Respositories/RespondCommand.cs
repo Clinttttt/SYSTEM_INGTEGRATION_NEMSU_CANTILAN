@@ -195,7 +195,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             {
                 return false;
             }
-            var announcements = await context.announcements.Where(s => s.StudentId == StudentId).ToListAsync();
+            var announcements = await context.announcements.Where(s => s.StudentId == StudentId && s.CourseCode == request.CourseCode).ToListAsync();
             foreach (var announcement in announcements)
             {
                 context.announcements.Remove(announcement);

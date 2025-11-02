@@ -24,11 +24,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FindUser is null) return Unauthorized("Login First");
 
             var GetUserId = Guid.Parse(FindUser.Value);
-
-
             paymentdetails.StudentId = GetUserId;
+
+            if (string.IsNullOrWhiteSpace(paymentdetails.AccountNumber) || paymentdetails.cost <= 0)
+                return BadRequest("Invalid account number or cost.");
+
             var response = await enrollmenthandling.InvoiceAsync(paymentdetails);
-            if (response is null) { return BadRequest("Something went wrong"); }
+
+            if (response == null)
+                return Conflict("Already enrolled.");
             return Ok(response);
         }
         [Authorize]
@@ -44,7 +48,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
             var StudentId = user.Id;
             var response = await enrollmenthandling.ProvisionAsync(StudentId, courseCode);
-            if (response is null) { return BadRequest("Something went wrong"); }
+            if (response == null)
+                return Conflict("Already enrolled.");
             return Ok(response);
         }
 
@@ -146,14 +151,26 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
         [Authorize]
         [HttpGet("Display Payment")]
-        public async Task<ActionResult<PaymentDetailsDto>> DisplayPaymentAsync(Guid StudentId)
+        public async Task<ActionResult<PaymentDetailsDto>> DisplayPaymentAsync()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) { return BadRequest("User not found"); }
             var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DisplayPaymentAsync(UserId, StudentId);
+            var request = await enrollmentservices.DisplayPaymentAsync(UserId);
             return Ok(request);
         }
+        [Authorize]
+        [HttpDelete("Delete PaymentDetails")]
+        public async Task<ActionResult<bool>> DeletePaymentAsync(Guid PaymentId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) { return BadRequest("User not found"); }
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.DeletePaymentAsync(UserId,PaymentId);
+            return Ok(request);
+        }
+
+
 
         [Authorize]
         [HttpGet("Display AllAnnouncement")]

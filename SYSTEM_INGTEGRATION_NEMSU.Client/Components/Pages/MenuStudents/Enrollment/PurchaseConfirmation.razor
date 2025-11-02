@@ -26,7 +26,7 @@
             <div class="p-5 bg-gradient-to-br from-gray-50 to-cyan-50 gap-2">
 
 
-               
+
                 <div class="px-5 py-4 bg-white">
                     <h4 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
                         <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@
                                 </div>
                             </label>
                             <label class="cursor-pointer">
-                                <input type="radio" name="payment_method" value="@PaymentMethod.Card" checked="@(paymentDetails.paymentMethod == PaymentMethod.Card)" @onchange="@(()=> paymentDetails.paymentMethod = PaymentMethod.Card)"  class="peer hidden">
+                                <input type="radio" name="payment_method" value="@PaymentMethod.Card" checked="@(paymentDetails.paymentMethod == PaymentMethod.Card)" @onchange="@(()=> paymentDetails.paymentMethod = PaymentMethod.Card)" class="peer hidden">
                                 <div class="border-2 border-gray-200 peer-checked:border-cyan-500 peer-checked:bg-cyan-50 rounded-lg p-2 text-center hover:border-cyan-300 transition-all">
                                     <div class="text-sm font-bold text-cyan-600">Card</div>
                                 </div>
@@ -59,13 +59,23 @@
 
                         <div class="grid grid-cols-2 gap-2">
                             <span>
-                                <label class="text-xs font-light text-gray-700 mb-1.5 block">Account Number/Bank/Card</label>
-                                <input type="text" @bind="paymentDetails.AccountNumber" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                <label class="text-xs font-light text-gray-700 mb-1.5 block">Account Number/Gcash/Bank/Card</label>
+                                <input type="text"
+                                minlength="11"
+                                maxlength="11"
+                                title="Must be 11 digits"
+                                @bind="paymentDetails.AccountNumber"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
                             </span>
-                            <span>
+                            <span class="relative">
                                 <label class="text-xs font-light text-gray-700 mb-1.5 block">Enter amount</label>
-                                <input type="number" @bind="paymentDetails.cost" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                <input type="number" @bind="paymentDetails.cost"
+                                class="input validator w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                <p class="validator-hint absolute left-0 top-full mt-1 text-xs text-red-500 z-10">
+                                    Must be 10 digits
+                                </p>
                             </span>
+
                         </div>
 
 
@@ -141,7 +151,7 @@
                             </div>
                         </div>
 
-                       
+
                         <div class="rounded-lg p-3 bg-amber-50 border-l-4  border-amber-500">
                             <div class="flex items-start gap-2">
                                 <svg class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,7 +217,9 @@
     <EnrollmentSuccessfull previewCourse="PreviewCourse" paymentDetails="paymentDetails" />
     <EnrollmentFailed previewCourse="PreviewCourse" paymentDetails="paymentDetails" />
     <EnrollmentProvision ConfirmProvision="ProvisionHandling" />
-    <EnrollmentSuccessfullProvision/>
+    <EnrollmentSuccessfullProvision />
+    <AlreadyEnrolledRespond />
+
 </dialog>
 @code {
     [Parameter]
@@ -219,24 +231,36 @@
     public async Task EnrollmentHandling()
     {
         paymentDetails.CourseCode = PreviewCourse?.CourseCode;
-        var context =  await enrollmentApi.EnrollCourseAsync(paymentDetails);
-
-        if (context is null)
+        if (string.IsNullOrWhiteSpace(paymentDetails.AccountNumber) || paymentDetails.cost <= 0)
         {
 
             await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_failed_enrolled').checked = true");
+            return;
+        }
+        var context = await enrollmentApi.EnrollCourseAsync(paymentDetails);
+        if (context is null)
+        {
+
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_alreadyenrolled').checked = true");
         }
         else
         {
-
             await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_successfull').checked = true");
         }
     }
     public async Task ProvisionHandling()
-    {  
+    {
         paymentDetails.CourseCode = PreviewCourse?.CourseCode;
-        await enrollmentApi.ProvisionAsync(paymentDetails.CourseCode!);
-        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_provision_success').checked = true");
+        var context =  await enrollmentApi.ProvisionAsync(paymentDetails.CourseCode!);
+        if (context is null)
+        {
+
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_alreadyenrolled').checked = true");
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_provision_success').checked = true");
+        }
     }
 
 

@@ -4,7 +4,7 @@
 @page "/enrollment"
 
 
-<div class="relative h-screen content overflow-hidden ">
+<div class="relative overflow-hidden  h-screen content ">
     <div class="drawer lg:drawer-open h-screen">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col items-center justify-center">
@@ -206,7 +206,10 @@
             <div class="min-h-full w-64 bg-white shadow-xl flex flex-col border-r border-r-gray-200">
 
             
-                <div class="p-6 bg-gradient-to-br from-cyan-500 to-teal-600">
+                <div class="relative p-6 bg-gradient-to-br from-cyan-500 to-teal-600">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                    <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
+
                     <div class="flex flex-col items-center">
                         <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
                             <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />

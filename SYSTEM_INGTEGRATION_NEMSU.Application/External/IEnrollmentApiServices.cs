@@ -24,7 +24,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<List<AnnouncementDto>?> DisplayAnnouncementByType(InformationType type);
         Task<EnrolledCourseViewDto?> GetCourse(Guid CourseId);
         Task<List<AnnouncementDto>?> DisplayAllTypeAnnouncementAsync(Guid CourseId);
-
+        Task<PaymentDetailsDto?> AddPaymentAsync(PaymentDetailsDto payment);
+        Task<List<PaymentDetailsDto>?> DisplayPaymentAsync();
+        Task<bool> DeletePaymentAsync(Guid PaymentId);
 
     }
 }

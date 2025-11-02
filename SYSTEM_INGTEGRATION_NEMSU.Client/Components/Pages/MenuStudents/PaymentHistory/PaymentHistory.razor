@@ -1,0 +1,233 @@
+﻿@page "/paymenthistory"
+@inject IEnrollmentApiServices enrollmentApi
+@rendermode InteractiveServer
+
+<div class="relative h-screen content overflow-hidden">
+    <div class="drawer lg:drawer-open h-screen">
+        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col bg-gray-50">
+
+            <div class="lg:hidden bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">Payment History</h1>
+                <label for="my-drawer-2" class="btn btn-square btn-ghost">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </label>
+            </div>
+
+            <div class="h-screen overflow-y-auto pb-14">
+                <div class="flex-1 p-6 lg:p-8">
+
+                    <div class="mb-8">
+                        <div class="flex gap-2">
+                            <NavLink href="/studentmenu" class="btn btn-circle btn-ghost hover:bg-cyan-100 transition-colors">
+                                <svg class="w-5 h-5 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </NavLink>
+                            <h1 class="text-3xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent  mb-2">Payment History</h1>
+                        </div>
+
+                        <p class="text-gray-600">View and manage all your enrollment payment transactions</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        @if (paymentDetails == null)
+                        {
+                            <p class="text-gray-500 text-center">Loading payment history...</p>
+                        }
+                        else if (paymentDetails?.Any() == true)
+                        {
+                            foreach (var paymentDetail in paymentDetails)
+                            {
+                                <div class="bg-gradient-to-r from-white to-gray-200 rounded-lg shadow border border-gray-300 p-5 hover:shadow-md transition-all duration-200">
+                                    <div class="flex items-center justify-between gap-6">
+                                        <div class="flex items-center gap-4 flex-1 min-w-0">
+                                            <div class="@($"{GetColor(paymentDetail.Category!.Color)} w-1.5 h-16 rounded-full flex-shrink-0")"></div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center gap-3 mb-2">
+                                                    <h3 class="text-lg font-semibold text-gray-700">@paymentDetail.CourseCode</h3>
+                                                    <span class="@($"{GetMethod(paymentDetail.paymentMethod)} inline-flex items-center px-2.5 py-0.5 bg-gray-100  text-xs font-medium rounded-md")">
+                                                        @paymentDetail.paymentMethod
+                                                    </span>
+                                                </div>
+                                                <div class="space-y-1.5">
+                                                    <div class="flex items-center gap-2 text-gray-600">
+                                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                        </svg>
+                                                        <span class="text-sm">Account: @paymentDetail.AccountNumber</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-2 text-gray-600">
+                                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                        </svg>
+                                                        <span class="text-sm">@paymentDetail.PurchaseDate.ToString("MMM d, yyyy • h:mm tt")</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-3 flex-shrink-0">
+                                            <div class="@($"text-right {GetColor(paymentDetail.Category.Color)} px-4 py-3 rounded-lg border border-gray-200")">
+                                                <p class="text-xs text-white mb-0.5 font-medium">Amount</p>
+                                                <p class="text-xl font-bold text-center text-white">@paymentDetail.cost</p>
+                                            </div>
+                                            <button @onclick="()=> HandlingDelete(paymentDetail.PaymentId)" class="btn btn-error btn-sm gap-1.5 text-white hover:bg-red-50 hover:text-red-700">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="bg-gray-50 rounded-lg shadow border border-gray-200 p-12 text-center">
+                                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <h3 class="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent mb-2">No Payment History</h3>
+                                <p class="text-gray-600">You haven't made any payments yet.</p>
+                            </div>
+                        }
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="drawer-side">
+            <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
+            <div class="min-h-full w-64 bg-white shadow-xl flex flex-col border-r border-r-gray-200">
+
+                <div class="relative  p-6 bg-gradient-to-br from-cyan-500 to-teal-600">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                    <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
+
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
+                            <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
+                        </div>
+                        <h3 class="text-white font-bold text-sm">Student Dashboard</h3>
+                    </div>
+                </div>
+
+                <nav class="flex-1 p-4 overflow-y-auto">
+                    <div class="space-y-1 mb-6">
+                        <NavLink href="/enrolledcourse" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span class="font-medium">My Courses</span>
+                        </NavLink>
+
+                        <NavLink href="/paymenthistory" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                            <span class="font-medium">Payments</span>
+                        </NavLink>
+
+                        <NavLink href="/profileinformation" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="font-medium">Profile</span>
+                        </NavLink>
+
+                        <NavLink href="/announcement" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                            </svg>
+                            <span class="font-medium">Announcements</span>
+                        </NavLink>
+                    </div>
+
+                    <div class="border-t border-gray-200 my-4"></div>
+
+                    <div class="space-y-1">
+                        <a class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group cursor-pointer">
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span class="font-medium">Settings</span>
+                        </a>
+
+                        <a class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            <span class="font-medium">Logout</span>
+                        </a>
+                    </div>
+                </nav>
+
+                <div class="p-4 border-t border-gray-200 bg-gray-50">
+                    <p class="text-xs text-gray-500 text-center">© 2025 Student Portal</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public bool hasrender = false;
+    public List<PaymentDetailsDto>? paymentDetails { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstrender)
+    {
+        if (!hasrender && firstrender)
+        {
+            hasrender = true;
+            paymentDetails = await enrollmentApi.DisplayPaymentAsync();
+        }
+        StateHasChanged();
+    }
+
+
+    public async Task HandlingDelete(Guid PaymentId)
+    {
+        await enrollmentApi.DeletePaymentAsync(PaymentId);
+        paymentDetails = await enrollmentApi.DisplayPaymentAsync();
+        StateHasChanged();
+    }
+
+    public Dictionary<string, string> GetColorGradient = new()
+        {
+            ["teal"] = "bg-gradient-to-b from-teal-500 to-teal-600",
+            ["blue"] = "bg-gradient-to-b from-blue-500 to-blue-600",
+            ["green"] = "bg-gradient-to-b from-green-500 to-green-600",
+            ["orange"] = "bg-gradient-to-b from-orange-500 to-orange-600",
+            ["purple"] = "bg-gradient-to-b from-purple-500 to-purple-600",
+            ["indigo"] = "bg-gradient-to-b from-indigo-500 to-indigo-600",
+            ["pink"] = "bg-gradient-to-b from-pink-500 to-pink-600"
+        };
+
+    public string GetColor(string color)
+    {
+        return color != null && GetColorGradient.ContainsKey(color)
+        ? GetColorGradient[color]
+        : "bg-gradient-to-b from-gray-500 to-gray-600";
+    }
+    public string? MethodColor { get; set; }
+    public string GetMethod(PaymentMethod method)
+    {
+        if (PaymentMethod.Gcash == method)
+            return "text-cyan-600";
+        else if (PaymentMethod.Bank == method)
+            return "text-blue-600";
+        else if (PaymentMethod.Card == method)
+            return "text-yellow-600";
+        else
+            return "text-gray-600";
+
+    }
+}

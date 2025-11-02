@@ -19,13 +19,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<EnrolledCourseViewDto?> GetCourse(Guid CourseId, Guid StudentId);
         Task<bool> InactiveCourseAsync(Guid StudentId, Guid CourseId);
         Task<bool> IctiveCourseAsync(Guid StudentId, Guid CourseId);
-        Task<CourseDto?> PreviewCourseAsync(Guid StudentId, Guid CourseId);
-        Task<PaymentDetailsDto?> AddPaymentAsync( PaymentDetailsDto payment);
-        Task<List<PaymentDetailsDto>?> DisplayPaymentAsync(Guid StudentVerification, Guid StudentId);
+        Task<CourseDto?> PreviewCourseAsync(Guid StudentId, Guid CourseId);     
         Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync(Guid StudentId);
         Task<List<AnnouncementDto>?> DisplayAnnouncementAsync(Guid CourseId, Guid StudentId);
         Task<List<AnnouncementDto>?> DisplayAnnouncementByType(Guid StudentId, InformationType type);
         Task<List<AnnouncementDto>?> DisplayAllTypeAnnouncementAsync(Guid CourseId, Guid StudentId);
+        Task<PaymentDetailsDto?> AddPaymentAsync(PaymentDetailsDto payment);
+        Task<List<PaymentDetailsDto>?> DisplayPaymentAsync(Guid StudentId);
+        Task<bool> DeletePaymentAsync(Guid StudentId, Guid PaymentId);
 
 
     }

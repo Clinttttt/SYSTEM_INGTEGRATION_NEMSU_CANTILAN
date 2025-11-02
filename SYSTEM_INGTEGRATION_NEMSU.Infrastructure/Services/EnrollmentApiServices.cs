@@ -84,10 +84,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             }
             return await request.Content.ReadFromJsonAsync<PaymentDetailsDto>();
         }
-        public async Task<List<PaymentDetailsDto>?> DisplayPaymentAsync(Guid StudentId)
+        public async Task<List<PaymentDetailsDto>?> DisplayPaymentAsync()
         {
             await SetAuthHeaderAsync();
-            return await _http.GetFromJsonAsync<List<PaymentDetailsDto>>($"api/EnrollmentHandling/Display%20Payment?StudentId={StudentId}");
+            return await _http.GetFromJsonAsync<List<PaymentDetailsDto>>("api/EnrollmentHandling/Display%20Payment");
+        }
+        public async Task<bool> DeletePaymentAsync(Guid PaymentId)
+        {
+            await SetAuthHeaderAsync();
+            return await _http.DeleteFromJsonAsync<bool>($"api/EnrollmentHandling/Delete%20PaymentDetails?PaymentId={PaymentId}");
         }
         public async Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync()
         {
@@ -115,6 +120,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await SetAuthHeaderAsync();
             return await _http.GetFromJsonAsync<List<AnnouncementDto>>($"api/EnrollmentHandling/Display%20DisplayAllTypeAnnouncementAsync?CourseId={CourseId}");
         }
+     
+
 
 
 
