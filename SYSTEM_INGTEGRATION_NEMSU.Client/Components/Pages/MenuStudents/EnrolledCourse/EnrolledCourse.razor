@@ -14,14 +14,14 @@
             <div class="flex-1 p-6 bg-base-100">
 
 
-                <div class="mb-6">
+                <div class="mb-6 animate-fade-in">
                     <div class="flex  gap-2 flex-row">
-                  
-                            <NavLink href="/studentmenu" class="btn btn-circle btn-ghost hover:bg-cyan-100 transition-colors">
-                                <svg class="w-5 h-5 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                </svg>
-                            </NavLink>                
+
+                        <NavLink href="/studentmenu" class="btn btn-circle btn-ghost hover:bg-cyan-100 transition-colors">
+                            <svg class="w-5 h-5 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </NavLink>                
                         <div>                          
                             <h1 class="text-3xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">Enrolled Courses</h1>
                             <p class="text-gray-500 text-xs">General Enrollment Period</p>
@@ -51,88 +51,113 @@
                         </div>
                     </div>
 
-                <!--    <div class="bg-white rounded-lg shadow-sm p-3 border border-cyan-100">
-                        <label class="block text-[10px] font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Filter by Status</label>
-                        <select class="w-full px-2.5 py-1.5 text-xs  text-gray-500  border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all">
-                            <option>All Courses</option>
-                            <option>In Progress</option>
-                            <option>Completed</option>
-                            <option>Unpaid</option>
-                        </select>
+                    <!--    <div class="bg-white rounded-lg shadow-sm p-3 border border-cyan-100">
+                    <label class="block text-[10px] font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Filter by Status</label>
+                    <select class="w-full px-2.5 py-1.5 text-xs  text-gray-500  border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all">
+                    <option>All Courses</option>
+                    <option>In Progress</option>
+                    <option>Completed</option>
+                    <option>Unpaid</option>
+                    </select>
                     </div>-->
                 </div>
 
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pb-13">
-
-
-                    @if (Filtered is not null)
-                    {
-                        foreach (var course in Filtered)
-                        {
-                            <div class="bg-white rounded-xl shadow-md border border-cyan-100 hover:shadow-xl transition-all overflow-hidden">
-                                <div class="relative">
-                                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
-                                    <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
-
-                                    <div class="@($"{GetColorGradient(course.Category?.Color ?? "bg-gray-600")} p-4 text-white")">
-
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-xs font-bold uppercase tracking-wide">@course.CourseCode</span>
-                                            <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold text-white @(course.EnrollmentStatus == EnrollmentStatus.Provisioned ? "bg-gray-400" : "bg-orange-400")">@course.EnrollmentStatus.GetDisplayName()</span>
-                                        </div>
-                                        <h3 class="text-sm text-white font-bold mb-1">@course.Title</h3>
-                                        <p class="text-cyan-100 text-[10px]">Prof. @course.FacultyFullName</p>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="p-4 space-y-3">
-
-
-                                    <div class="flex items-center gap-2 text-xs text-gray-600">
-                                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        @course.Schedule
-                                    </div>
-
-                                    <div class="flex items-center gap-2 text-xs text-gray-600">
-                                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        @course.Room
-                                    </div>
-
-                                    <div class="pt-2 border-t border-gray-100">
-
-                                        <div class="flex items-center justify-between text-xs">
-                                            <span class="text-gray-500">Units</span>
-                                            <span class="font-semibold text-gray-600">@course.Unit</span>
-                                        </div>
-                                    </div>
-
-                                    <NavLink href="@($"/coursedetails/{course.CourseId}")" class="@($"w-full px-3 py-2 btn bg-gradient-to-r {GetButtonGradient(course.Category?.Color ?? "from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700")}  text-white rounded-lg text-xs font-semibold  transition-all shadow-sm flex items-center justify-center gap-2")">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                        </svg>
-                                        View Course Details
-                                    </NavLink>
-                                </div>
+                @if(Filtered is null){
+                    <div class="flex justify-center items-center py-32">
+                        <div class="text-center">
+                            <div class="relative">
+                                <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
                             </div>
+                            <p class="text-gray-600 mt-6 text-lg font-semibold">Loading Course...</p>
+                        </div>
+                    </div>
+                }
+                else if (Filtered.Any() == true)
+                {
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pb-13">
 
 
+                       
+                            @foreach (var course in Filtered)
+                            {
+                                <div class="bg-white rounded-xl shadow-md border border-cyan-100 hover:shadow-xl transition-all overflow-hidden">
+                                    <div class="relative">
+                                        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                                        <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
+
+                                        <div class="@($"{GetColorGradient(course.Category?.Color ?? "bg-gray-600")} p-4 text-white")">
+
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-xs font-bold uppercase tracking-wide">@course.CourseCode</span>
+                                                <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold text-white @(course.EnrollmentStatus == EnrollmentStatus.Provisioned ? "bg-gray-400" : "bg-orange-400")">@course.EnrollmentStatus.GetDisplayName()</span>
+                                            </div>
+                                            <h3 class="text-sm text-white font-bold mb-1">@course.Title</h3>
+                                            <p class="text-cyan-100 text-[10px]">Prof. @course.FacultyFullName</p>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="p-4 space-y-3">
+
+
+                                        <div class="flex items-center gap-2 text-xs text-gray-600">
+                                            <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            @course.Schedule
+                                        </div>
+
+                                        <div class="flex items-center gap-2 text-xs text-gray-600">
+                                            <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            </svg>
+                                            @course.Room
+                                        </div>
+
+                                        <div class="pt-2 border-t border-gray-100">
+
+                                            <div class="flex items-center justify-between text-xs">
+                                                <span class="text-gray-500">Units</span>
+                                                <span class="font-semibold text-gray-600">@course.Unit</span>
+                                            </div>
+                                        </div>
+
+                                        <NavLink href="@($"/coursedetails/{course.CourseId}")" class="@($"w-full px-3 py-2 btn bg-gradient-to-r {GetButtonGradient(course.Category?.Color ?? "from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700")}  text-white rounded-lg text-xs font-semibold  transition-all shadow-sm flex items-center justify-center gap-2")">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                            View Course Details
+                                        </NavLink>
+                                    </div>
+                                </div>
+
+
+                            
                         }
-                    }
+                      
 
 
 
 
 
-                </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="bg-gray-50 rounded-lg shadow border border-gray-200 p-12 text-center">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        <h3 class="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent mb-2">No Enrolled Course</h3>
+                        <p class="text-gray-600">You haven't any Enrolled Course yet.</p>
+                    </div>
+                }
+
+           
             </div>
         </div>
 

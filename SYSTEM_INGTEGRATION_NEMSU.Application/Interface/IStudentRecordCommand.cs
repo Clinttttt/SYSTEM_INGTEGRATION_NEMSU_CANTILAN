@@ -33,5 +33,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 
         Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate);
         Task<bool> StudentSaveInformationAsync(Guid StudentId);
+        Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync(Guid StudentId);
     }
 }

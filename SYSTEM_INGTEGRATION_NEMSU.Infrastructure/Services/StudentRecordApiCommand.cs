@@ -105,7 +105,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         public async Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId)
         {
             await SetAuthHeaderAsync();
-           var request = await _http.PostAsJsonAsync("api/StudentRecord/Assign%20StudentID", SchoolId);
+           var request = await _http.PostAsync($"api/StudentRecord/Assign%20StudentID?SchoolId={SchoolId}",null);
             if (!request.IsSuccessStatusCode){ return null; }
             return await request.Content.ReadFromJsonAsync<SchoolIdDto>();
 
@@ -113,7 +113,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         public async Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate)
         {
             await SetAuthHeaderAsync();
-            var request = await _http.PatchAsJsonAsync("api/StudentRecord/UpdateAll%20Details", studentUpdate);
+            var request = await _http.PatchAsJsonAsync("api/StudentRe   var request = await _http.PostAsync($\"api/StudentRecord/Assign%20StudentID?SchoolId={SchoolId}\",null);cord/UpdateAll%20Details", studentUpdate);
             if (!request.IsSuccessStatusCode) { return null; }
             return await request.Content.ReadFromJsonAsync<StudentUpdateInformationDto>();
         }
@@ -123,6 +123,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             var request = await _http.PatchAsync("api/StudentRecord/Student%20SaveInformationAsync", null);
             if (!request.IsSuccessStatusCode) { return false; }
             return await request.Content.ReadFromJsonAsync<bool>();
+        }
+        public async Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync()
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<MiniDisplayMenuDto>("api/StudentRecord/Display%20MiniDetailsMenu");
         }
     }
 }

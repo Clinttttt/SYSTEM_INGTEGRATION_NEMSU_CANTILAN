@@ -25,5 +25,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId);
         Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate);
         Task<bool> StudentSaveInformationAsync();
+        Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync();
     }
 }

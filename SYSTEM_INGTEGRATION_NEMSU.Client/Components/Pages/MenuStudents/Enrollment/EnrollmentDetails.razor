@@ -370,7 +370,6 @@
         A = await studentRecordCommand.DisplayAcademicInformation();
         C = await studentRecordCommand.DisplayContactInformationAsync();
         PreviewCourse = await enrollmentApiServices.PreviewCourseAsync(CouresId);
-
         StateHasChanged();
     }
 }

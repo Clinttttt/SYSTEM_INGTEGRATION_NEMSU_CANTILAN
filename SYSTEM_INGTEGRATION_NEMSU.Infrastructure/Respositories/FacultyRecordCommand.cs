@@ -19,6 +19,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
     {
         public async Task<FacultyRecordDto?> AddFacultyInformationAsync(FacultyRecordDto details)
         {
+            var IfExists = await context.facultyPersonalInformation
+             .AnyAsync(s => s.FacultyId == details.FacultyId);
+            if (IfExists) { return null; }
+
+            var IfExists2 = await context.facultyAcademics
+            .AnyAsync(s => s.FacultyId == details.FacultyId);
+            if (IfExists2) { return null; }
+
             var finduser = await context.users.FindAsync(details.FacultyId);
             if (finduser is null) return null;
 

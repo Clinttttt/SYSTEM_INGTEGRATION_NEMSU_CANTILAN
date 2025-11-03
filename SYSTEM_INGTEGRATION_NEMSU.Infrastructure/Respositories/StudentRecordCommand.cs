@@ -23,10 +23,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
         public async Task<PersonalInformationDto?> AddPersonalDetailsAsync(PersonalInformation personalInformation)
         {
+            var IfExists = await context.personalInformation
+                 .AnyAsync(s => s.StudentId == personalInformation.StudentId);
+            if (IfExists) { return null; }
+
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == personalInformation.StudentId);
             if (request is null) return null;
-            context.personalInformation.Add(personalInformation);
 
+            context.personalInformation.Add(personalInformation);
 
             request.StudentsDetails = personalInformation;
             await context.SaveChangesAsync();
@@ -90,9 +94,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         }
         public async Task<AcademicInformationDto?> AddAcademicInformationAsync(AcademicInformation academicInformation)
         {
+            var IfExists = await context.academicInformation
+                 .AnyAsync(s => s.StudentId == academicInformation.StudentId);
+            if (IfExists) { return null; }
+
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == academicInformation.StudentId);
             if (request is null) return null;
-            var details = context.Add(academicInformation);
+
+            var details = context.academicInformation.Add(academicInformation);
             var filter = details.Adapt<AcademicInformationDto>();
             request.StudentAcademicDetails = academicInformation;
             await context.SaveChangesAsync();
@@ -141,6 +150,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
        
         public async Task<ContactInformationDto?> AddContactInformationAsync(ContactInformation contactInformation)
         {
+            var IfExists = await context.contactInformation
+               .AnyAsync(s => s.StudentId == contactInformation.StudentId);
+            if (IfExists) { return null; }
+
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == contactInformation.StudentId);
             if (request is null) return null;
             var details = context.contactInformation.Add(contactInformation);
@@ -168,9 +181,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         }
 
         public async Task<SchoolIdDto?> StudentSchoolIdAsync(Guid StudentId, string SchoolId)
-        {        
+        {
+            var studentIdExists = await context.academicInformation
+                .AnyAsync(s => s.StudentSchoolId == SchoolId);
+            if (studentIdExists) { return null; }
+
             var request = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == StudentId);
             if (request is null) return null;
+
+          
             request.StudentSchoolId = SchoolId;
           
             await context.SaveChangesAsync();
@@ -189,6 +208,22 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             contact.Savestatus = SaveStatusContact.Save;
             await context.SaveChangesAsync();
             return true;
+        }
+        public async Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync(Guid StudentId)
+        {
+            var personal = await context.personalInformation
+                .FirstOrDefaultAsync(s => s.StudentId == StudentId);
+            if (personal is null) return null;
+            var academic = await context.academicInformation
+                .FirstOrDefaultAsync(s => s.StudentId == StudentId);
+            if (academic is null) return null;
+            var filter = new MiniDisplayMenuDto
+            {
+                FullName = personal.FirstName + " " + personal.LastName,
+                StudentId = academic.StudentSchoolId,
+                FirstName = personal.FirstName,
+            };
+            return filter;
         }
     }
 }

@@ -35,7 +35,14 @@
                     <div class="space-y-4">
                         @if (paymentDetails == null)
                         {
-                            <p class="text-gray-500 text-center">Loading payment history...</p>
+                            <div class="flex justify-center items-center py-32">
+                                <div class="text-center">
+                                    <div class="relative">
+                                        <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                                    </div>
+                                    <p class="text-gray-600 mt-6 text-lg font-semibold">Loading Payments...</p>
+                                </div>
+                            </div>
                         }
                         else if (paymentDetails?.Any() == true)
                         {

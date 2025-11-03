@@ -1,4 +1,5 @@
 ﻿@page "/profileinformation"
+@using SYSTEM_INGTEGRATION_NEMSU.Client.Components.Pages.ModalRespond
 @rendermode InteractiveServer
 @inject IStudentRecordApiCommand studentRecordApi
 
@@ -7,35 +8,68 @@
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col overflow-y-auto">
 
-            <div class="flex-1  bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 p-6 pb-21">
+            <div class="flex-1  p-6 pb-21">
 
                 <div class="mb-8 animate-fade-in">
 
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <div class="flex gap-1">
+
+
+                    <div class="flex flex-row justify-between items-start">
+                    
+                        <div class="flex items-center space-x-2 flex-col">
+                         <div class="flex gap-2 ">
                                 <NavLink href="/studentmenu" class="btn btn-circle btn-ghost hover:bg-cyan-100 transition-colors">
                                     <svg class="w-5 h-5 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                                     </svg>
                                 </NavLink>
-                                <h1 class=" text-3xl md:text-4xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+                                <h1 class="text-3xl md:text-4xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
                                     Profile Information
                                 </h1>
-                            </div>
-                            <p class="text-gray-600 mt-2 flex items-center">
-                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                                </svg>
-                                View and manage your personal details
-                            </p>
+                         </div>
+                            <p class="text-gray-600 mt-2 flex items-center"> 
+                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd"
+                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"> </path> 
+                            </svg> View and manage your personal details </p>
                         </div>
 
+                 
+                        <div class="flex flex-col items-end">
+                            @if (P?.Savestatus == SaveStatus.Save_As_Draft
+                            || A?.Savestatus == SaveStatusAcademic.Save_As_Draft
+                            || C?.Savestatus == SaveStatusContact.Save_As_Draft)
+                            {
+                                <label for="my_modal_save_information"
+                                       class="btn border-cyan-600 bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent hover:bg-cyan-600">
+                                    Save Information
+                                </label>
+                                <p class="text-gray-600 text-sm mt-1">Some info is saved as a draft. Save now to enroll.</p>
+                            }
+                            else
+                            {
+                                <h1 class="text-lg md:text-2xl bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+                                    Profile Complete
+                                </h1>
+                                <p class="text-gray-600 text-sm mt-1">Indicates everything is filled out.</p>
+                            }
+                        </div>
                     </div>
+
                 </div>
 
-                @if(A is not null && P is not null && C is not null ){
-
+                @if(A is null && P is null && C is null )
+                {
+                    <div class="flex justify-center items-center py-32">
+                        <div class="text-center">
+                            <div class="relative">
+                                <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                            </div>
+                            <p class="text-gray-600 mt-6 text-lg font-semibold">Loading Announcements...</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
                     <div class="max-w-7xl mx-auto">
 
                         <div class="relative bg-gradient-to-r from-cyan-500 to-teal-600 rounded-2xl shadow-2xl p-8 mb-8 overflow-hidden  transition-all duration-300">
@@ -163,14 +197,16 @@
                     </div>
                 }
 
+
+
             </div>
         </div>
 
 
 
         <EditProfileInformation P="P" A="A" C="C"  UpdateInfo="ReloadInfo"/>
-
-
+        <SaveInformationRespond SaveInfo="SaveInformation" />
+         
 
 
 
@@ -280,6 +316,12 @@
         P = await studentRecordApi.DisplayPersonalInformationAsync();
         A = await studentRecordApi.DisplayAcademicInformation();
         C = await studentRecordApi.DisplayContactInformationAsync();
+        StateHasChanged();
+    }
+    public async Task SaveInformation()
+    {
+        await studentRecordApi.StudentSaveInformationAsync();
+        await ReloadInfo();
         StateHasChanged();
     }
 
