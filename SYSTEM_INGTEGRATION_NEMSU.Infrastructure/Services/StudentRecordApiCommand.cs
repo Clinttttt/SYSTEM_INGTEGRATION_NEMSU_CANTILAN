@@ -129,5 +129,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await SetAuthHeaderAsync();
             return await _http.GetFromJsonAsync<MiniDisplayMenuDto>("api/StudentRecord/Display%20MiniDetailsMenu");
         }
+        public async Task<bool> CheckInformationAsync()
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<bool>("api/StudentRecord/Check%20Information");
+        }
     }
 }

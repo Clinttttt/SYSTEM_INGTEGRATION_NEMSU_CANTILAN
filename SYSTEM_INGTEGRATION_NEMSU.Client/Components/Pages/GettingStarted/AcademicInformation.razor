@@ -1,135 +1,181 @@
-﻿
-
-@inject PageState pageState
+﻿@inject PageState pageState
 @inject IStudentRecordApiCommand studentRecordApi
 @rendermode InteractiveServer
-<h1 class="mt-2 text-center text-lg font-bold text-teal-600">Academic Information</h1>
 
-<EditForm Model="@Academicinformation" OnValidSubmit="@HandleAcademicInformation" FormName="Academic">
-    <div class=" mx-auto mt-4 p-2 gap-2">
-        <div class=" grid grid-cols-1 md:grid-cols-2 gap-1 justify-center">
 
+<div class="space-y-4">
+    <div class="text-center mb-6">
+        <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path>
+            </svg>
+        </div>
+        <h2 class="text-xl font-bold text-slate-600 mb-1">Academic Information</h2>
+        <p class="text-sm text-slate-500">Provide your academic background and program details</p>
+    </div>
+
+    <EditForm Model="@Academicinformation" OnValidSubmit="@HandleAcademicInformation" FormName="Academic">
+        <div class="space-y-4 ">
+
+        
             <div>
-                <label class="block text-sm font-light mb-1 text-teal-700">Student Type</label>
-                <select @bind="Academicinformation.StudentType" class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
-                    <option  selected value="" class=" text-cyan-600  font-light">Select Type</option>
+                <label class="block text-sm font-semibold text-slate-600 mb-2">Student Type</label>
+                <select @bind="Academicinformation.StudentType"
+                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                               focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                               hover:border-slate-400">
+                    <option selected value="" class="text-slate-500">Select Type</option>
                     <option value="@StudentTypeChoice.New">New Student</option>
                     <option value="@StudentTypeChoice.Transferee">Transferee</option>
                     <option value="@StudentTypeChoice.Returning">Returning Student</option>
                     <option value="@StudentTypeChoice.Old">Old Student</option>
                 </select>
             </div>
+
+        
             <div>
-                <label class="block text-sm font-light mb-1 text-teal-700">Year Level</label>
-                <select @bind="Academicinformation.YearLevel" class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
-                    <option  selected value="" class=" text-cyan-600  font-light">Select Year</option>
+                <label class="block text-sm font-semibold text-slate-600 mb-2">Year Level</label>
+                <select @bind="Academicinformation.YearLevel"
+                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                               focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                               hover:border-slate-400">
+                    <option selected value="" class="text-slate-500">Select Year</option>
                     <option value="@YearLevelChoice.First_Year">1st Year</option>
                     <option value="@YearLevelChoice.Second_Year">2nd Year</option>
-                    <option value="@YearLevelChoice.Third_Year">3rd Year </option>
-                    <option value="@YearLevelChoice.Fourth_Year">4th Year </option>
+                    <option value="@YearLevelChoice.Third_Year">3rd Year</option>
+                    <option value="@YearLevelChoice.Fourth_Year">4th Year</option>
                 </select>
             </div>
 
-        </div>
-
-        <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-1 justify-center">
-
+      
             <div>
-                <label class="block text-sm font-light mb-1 text-teal-700">Semester</label>
-                <select @bind="Academicinformation.Semester" class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
-                    <option selected value="" class=" text-cyan-600  font-light">Select Semester</option>
+                <label class="block text-sm font-semibold text-slate-600 mb-2">Semester</label>
+                <select @bind="Academicinformation.Semester"
+                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                               focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                               hover:border-slate-400">
+                    <option selected value="" class="text-slate-500">Select Semester</option>
                     <option value="@SemesterChoice.First_Semester">First Semester</option>
                     <option value="@SemesterChoice.Second_Semester">Second Semester</option>
-
                 </select>
             </div>
 
+       
             <div>
-                <label class="block text-sm font-light mb-1 text-teal-700">Program</label>
-                <select @bind="Academicinformation.Program" class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
-                    <option selected value="" class=" text-cyan-600  font-light">Select Program</option>
-                    <option value="@ProgramChoice.Criminology">BACHELOR OF SCIENCE IN CRIMINOLOGY </option>
-                    <option value="@ProgramChoice.Hospitality_Management">BACHELOR OF SCIENCE IN HOSPITALITY MANAGEMENT </option>
-                    <option value="@ProgramChoice.Business_Administration">BACHELOR OF SCIENCE IN BUSINESS  ADMINISTRATION </option>
-                    <option value="@ProgramChoice.Tourism_Management">BACHELOR OF SCIENCE IN TOURISM  MANAGEMENT </option>
-                    <option value="@ProgramChoice.Industrial_Technology">BACHELOR OF SCIENCE IN INDUSTRIAL TECHNOLOGY </option>
-                    <option value="@ProgramChoice.Computer_Engineering">BACHELOR OF SCIENCE IN COMPUTER  ENGINEERING </option>
-                    <option value="@ProgramChoice.Computer_Science">BACHELOR OF SCIENCE IN COMPUTER  SCIENCE </option>
-                    <option value="@ProgramChoice.Industrial_Technology">BACHELOR OF SCIENCE IN COMPUTER  TECHNOLOGY </option>
-                    <option value="@ProgramChoice.Secondary_Education">BACHELOR OF SECONDARY  EDUCATION </option>
-                    <option value="@ProgramChoice.Technology_AndLivelihood_Education">BACHELOR OF TECHNOLOGY AND LIVELIHOOD EDUCATION </option>
-                    <option value="@ProgramChoice.Technical_Vocational_TeacherEducation">BACHELOR OF TECHNICAL-VOCATIONAL TEACHER EDUCATION </option>
+                <label class="block text-sm font-semibold text-slate-600 mb-2">Program</label>
+                <select @bind="Academicinformation.Program"
+                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                               focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                               hover:border-slate-400">
+                    <option selected value="" class="text-slate-500">Select Program</option>
+                    <option value="@ProgramChoice.Criminology">BS Criminology</option>
+                    <option value="@ProgramChoice.Hospitality_Management">BS Hospitality Management</option>
+                    <option value="@ProgramChoice.Business_Administration">BS Business Administration</option>
+                    <option value="@ProgramChoice.Tourism_Management">BS Tourism Management</option>
+                    <option value="@ProgramChoice.Industrial_Technology">BS Industrial Technology</option>
+                    <option value="@ProgramChoice.Computer_Engineering">BS Computer Engineering</option>
+                    <option value="@ProgramChoice.Computer_Science">BS Computer Science</option>
+                    <option value="@ProgramChoice.Computer_Technology">BS Computer Technology</option>
+                    <option value="@ProgramChoice.Secondary_Education">Bachelor of Secondary Education</option>
+                    <option value="@ProgramChoice.Technology_AndLivelihood_Education">Bachelor of Technology and Livelihood Education</option>
+                    <option value="@ProgramChoice.Technical_Vocational_TeacherEducation">Bachelor of Technical-Vocational Teacher Education</option>
                 </select>
             </div>
 
-            <div class="mt-2">
-                <label class="block text-sm font-light mb-1 text-teal-700">Major</label>
-                <select @bind="Academicinformation.Major" class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
-                    <option  selected value="" class=" text-cyan-600  font-light">Select Major</option>
+        
+            <div>
+                <label class="block text-sm font-semibold text-slate-600 mb-2">Major</label>
+                <select @bind="Academicinformation.Major"
+                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                               focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                               hover:border-slate-400">
+                    <option selected value="" class="text-slate-500">Select Major</option>
                     <option value="@MajorChoice.None">None</option>
-                    <option value="@MajorChoice.Financial_Management">MAJOR IN FINANCIAL MANAGEMENT</option>
-                    <option value="@MajorChoice.HumanResources_Management">MAJOR IN HUMAN RESOURCE MANAGEMENT</option>
-                    <option value="@MajorChoice.Architectural_Drafting_Technology">MAJOR IN ARCHITECTURAL DRAFTING TECHNOLOGY</option>
-                    <option value="@MajorChoice.Automotive_Technology">MAJOR IN AUTOMOTIVE TECHNOLOGY</option>
-                    <option value="@MajorChoice.Electrical_Technology">MAJOR IN ELECTRICAL TECHNOLOGY</option>
-                    <option value="@MajorChoice.Electronics_Technology">MAJOR IN ELECTRONICS TECHNOLOGY</option>
-                    <option value="@MajorChoice.Food_Technology">MAJOR IN FOOD TECHNOLOGY</option>
-                    <option value="@MajorChoice.Garments_Technology">MAJOR IN  GARMENTS TECHNOLOGY</option>
-                    <option value="@MajorChoice.Mechanical_Technology">MAJOR IN MECHANICAL TECHNOLOGY</option>
-                    <option value="@MajorChoice.Computer_Technology">MAJOR IN COMPUTER TECHNOLOGY</option>
-                    <option value="@MajorChoice.English">MAJOR IN  ENGLISH</option>
-                    <option value="@MajorChoice.Mathematics">MAJOR IN  MATHEMATICS</option>
-                    <option value="@MajorChoice.Filipino">MAJOR IN  FILIPINO</option>
-                    <option value="@MajorChoice.Science">MAJOR IN  SCIENCE</option>
-                    <option value="@MajorChoice.Home_Economics">MAJOR IN  HOME ECONOMICS</option>
-                    <option value="@MajorChoice.Foods_And_Services_Management">MAJOR IN  FOODS AND SERVICES MANAGEMENT</option>
-                    <option value="@MajorChoice.Fashion_And_Design">MAJOR IN  FASHION AND DESIGN</option>
-                    <option value="@MajorChoice.Garments">MAJOR IN  GARMENTS</option>
+                    <option value="@MajorChoice.Financial_Management">Financial Management</option>
+                    <option value="@MajorChoice.HumanResources_Management">Human Resource Management</option>
+                    <option value="@MajorChoice.Architectural_Drafting_Technology">Architectural Drafting Technology</option>
+                    <option value="@MajorChoice.Automotive_Technology">Automotive Technology</option>
+                    <option value="@MajorChoice.Electrical_Technology">Electrical Technology</option>
+                    <option value="@MajorChoice.Electronics_Technology">Electronics Technology</option>
+                    <option value="@MajorChoice.Food_Technology">Food Technology</option>
+                    <option value="@MajorChoice.Garments_Technology">Garments Technology</option>
+                    <option value="@MajorChoice.Mechanical_Technology">Mechanical Technology</option>
+                    <option value="@MajorChoice.Computer_Technology">Computer Technology</option>
+                    <option value="@MajorChoice.English">English</option>
+                    <option value="@MajorChoice.Mathematics">Mathematics</option>
+                    <option value="@MajorChoice.Filipino">Filipino</option>
+                    <option value="@MajorChoice.Science">Science</option>
+                    <option value="@MajorChoice.Home_Economics">Home Economics</option>
+                    <option value="@MajorChoice.Foods_And_Services_Management">Foods and Services Management</option>
+                    <option value="@MajorChoice.Fashion_And_Design">Fashion and Design</option>
+                    <option value="@MajorChoice.Garments">Garments</option>
                 </select>
             </div>
 
-            <div class="mt-2">
-                <label class="block text-sm font-light mb-1 text-teal-700">Strand (Senior highschool)</label>
-                <select @bind="Academicinformation.Strand" class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
-                    <option  selected value="" class=" text-cyan-600  font-light">Select Strand</option>
-                    <option value="@StrandChoice.Stem">STEM</option>
-                    <option value="@StrandChoice.Abm">ABM</option>
-                    <option value="@StrandChoice.Humss">HUMSS</option>
-                    <option value="@StrandChoice.Gas">GAS</option>
-                    <option value="@StrandChoice.Tvl">TVL</option>
-
+            
+            <div>
+                <label class="block text-sm font-semibold text-slate-600 mb-2">Strand (Senior High School)</label>
+                <select @bind="Academicinformation.Strand"
+                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                               focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                               hover:border-slate-400">
+                    <option selected value="" class="text-slate-500">Select Strand</option>
+                    <option value="@StrandChoice.Stem">STEM - Science, Technology, Engineering and Mathematics</option>
+                    <option value="@StrandChoice.Abm">ABM - Accountancy, Business and Management</option>
+                    <option value="@StrandChoice.Humss">HUMSS - Humanities and Social Sciences</option>
+                    <option value="@StrandChoice.Gas">GAS - General Academic Strand</option>
+                    <option value="@StrandChoice.Tvl">TVL - Technical-Vocational-Livelihood</option>
                 </select>
             </div>
 
+       
+            @if (!string.IsNullOrEmpty(Error))
+            {
+                <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
+                    @Error
+                </div>
+            }
 
+        
+            <div class="flex justify-between gap-3 pt-4 border-t border-slate-200">
+                <button type="button" @onclick="()=> HandleSaveAsDraft()"
+                        class="flex-1 px-4 text-sm flex gap-2 py-2.5 border border-slate-300 text-slate-700 rounded-lg font-medium
+                               hover:bg-slate-50 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                    </svg>
+                    Save as Draft
+                </button>
+                <button type="submit"
+                        class="flex-1 px-4 py-2.5 text-sm  bg-gradient-to-br from-cyan-600 to-teal-600 text-white rounded-lg font-medium
+                               hover:from-cyan-700 flex gap-2 hover:to-teal-800 transition-all shadow-md items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Save
+                </button>
+            </div>
         </div>
-        <div class="mt-4 justify-between flex p-1">
-            <button @onclick="()=> HandleSaveAsDraft()" class="btn text-neutral-700 font-light border-teal-600 bg-cyan-50">Save as Draft</button>
-            <button type="submit" class="btn text-white bg-gradient-to-b from-cyan-500 to-teal-600">Save</button>
-        </div>
+    </EditForm>
+</div>
 
-    </div>
-</EditForm>
-@code{
+@code {
     public AcademicInformationDto Academicinformation { get; set; } = new();
     public string? Error { get; set; }
 
     public async Task HandleAcademicInformation()
     {
         Academicinformation.Savestatus = SaveStatusAcademic.Save;
-        var results =   await studentRecordApi.AddAcademicDetailsAsync(Academicinformation);
-        if(results is null)
+        var results = await studentRecordApi.AddAcademicDetailsAsync(Academicinformation);
+        if (results is null)
         {
             Error = "Fill up All Requirements";
         }
         pageState.SetViewAcads(PageState.SaveAsDraftAcads.Save);
     }
+
     public async Task HandleSaveAsDraft()
     {
         Academicinformation.Savestatus = SaveStatusAcademic.Save_As_Draft;

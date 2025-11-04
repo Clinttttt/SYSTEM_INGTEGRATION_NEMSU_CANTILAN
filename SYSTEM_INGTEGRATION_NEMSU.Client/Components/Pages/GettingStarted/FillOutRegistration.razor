@@ -1,177 +1,143 @@
 ﻿@page "/FillOutRegistration"
-
+@using SYSTEM_INGTEGRATION_NEMSU.Client.Components.Pages.ModalRespond
+@inject  IStudentRecordApiCommand studentRecordApi 
 @inject PageState pageState
 @rendermode InteractiveServer
-<div class=" content w-full h-full flex items-center justify-center relative gap-2 flex-col bg-cyan-50 ">
-
-    <div class="absolute inset-0 bg-gradient-to-br from-teal-200/30 to-cyan-200/30 rounded-full blur-3xl"></div>
-
-    <div class="particle-container">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
+@inject IJSRuntime JS
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex flex-col items-center p-6">
 
 
+    <div class="w-full max-w-7xl mb-6">
+        <div class="flex items-center justify-between">
 
-    <!--breadcrumbs ngani-->
-    <div class="scale-115 mb-1">
-        <div class="breadcrumbs text-sm">
-            <ul>
-                <li><a class="text-cyan-600 font-normal">Home</a></li>
-                <li><a class="text-cyan-600 font-normal">Registration</a></li>
-                <li class="text-amber-600 font-normal">Enrollment Application</li>
-            </ul>
+            <div class="breadcrumbs text-sm">
+                <ul>
+                    <li><a class="text-cyan-600 hover:text-blue-700 font-medium">Home</a></li>
+                    <li><a class="text-cyan-600 hover:text-blue-700 font-medium">Registration</a></li>
+                    <li class="text-slate-600 font-semibold">Enrollment Application</li>
+                </ul>
+            </div>
+
+            <!--@onclick="()=> pageState.SetView(PageState.Timeline.LoginReady)"--> <!--for="my_modal_7"-->
+            <label @onclick="()=> CompleteRegistration()" class="text-xs btn bg-gradient-to-r from-cyan-600 to-teal-700 hover:from-cyan-700 hover:to-teal-800 text-white border-0 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Complete Registration
+            </label>
         </div>
     </div>
 
-    <!--Info ngani-->
-    <div class=" border-teal-500 border-stone-300 p-4 rounded-lg shadow-lg w-[90%] h-[66%] border relative ">
 
-        <div class="absolute top-0 left-0 h-9 w-full rounded-t-lg  bg-gradient-to-r from-teal-400 to-cyan-400"></div>
-        <div class="absolute top-1 left-2 text-white font-bold">Student Registration Form &nbsp;<span class="mt-1 text-sm font-light ">Please fill out all required information accurately</span> </div>
-        <div class="absolute top-1 right-2 text-white font-light text-sm mt-[2px]">You can save and continue later</div>
+    <div class="w-full max-w-7xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
 
 
-
-
-        <div class=" flex flex-row justify-center gap-2 mt-8 h-[90%]" >
-            <div class="relative flex-1 h-full border border-teal-600 bg-gradient-to-t from-cyan-50 to-teal-50 rounded-sm overflow-y-auto">
-
-                @if (pageState.CurrentViewPerInfo == PageState.SaveAsDraftPerInfo.ViewInfo)
-                {
-                    <PersonalInformation />
-                }
-                else if (pageState.CurrentViewPerInfo == PageState.SaveAsDraftPerInfo.SaveASDraft)
-                {
-                    <SaveAsDraft/>
-                }
-                else if (pageState.CurrentViewPerInfo == PageState.SaveAsDraftPerInfo.Save)
-                {
-                    <SaveInformation />
-                }
-
-            </div>
-
-
-
-            <!--acads-->
-            <div class="flex-1  h-full border border-teal-600 bg-gradient-to-t from-cyan-50 to-teal-50 rounded-sm overflow-y-auto">
-
-                @if (pageState.CurrentViewAcads == PageState.SaveAsDraftAcads.ViewInfo)
-                {
-                    <AcademicInformation />
-                }
-                else if (pageState.CurrentViewAcads == PageState.SaveAsDraftAcads.SaveASDraft)
-                {
-                    <SaveAsDraft />
-                }
-                else if (pageState.CurrentViewAcads == PageState.SaveAsDraftAcads.Save)
-                {
-                    <SaveInformation />
-                }
-
-            </div>
-            <!--contact bai-->
-            <div class="flex-1 h-full border border-teal-600 bg-gradient-to-t from-cyan-50 to-teal-50 rounded-sm overflow-y-auto">
-
-                @if (pageState.CurrentViewContact == PageState.SaveAsDraftContact.ViewInfo)
-                {
-                    <ContactInformation />
-                }
-                else if (pageState.CurrentViewContact == PageState.SaveAsDraftContact.SaveASDraft)
-                {
-                    <SaveAsDraft />
-                }
-                else if (pageState.CurrentViewContact == PageState.SaveAsDraftContact.Save)
-                {
-                    <SaveInformation />
-                }
-
-            </div>
-        </div>
-    </div>
-
-    @if (pageState.CurrentViewTimeline == PageState.Timeline.Fillout)
-    {
-        <Timeline />
-    }
-    else if (pageState.CurrentViewTimeline == PageState.Timeline.LoginReady)
-    {
-        <TimelineLoginReady/>
-    }
-
-    <div class="absolute right-17 top-2">
-        <label @onclick="()=> pageState.SetView(PageState.Timeline.LoginReady)" for="my_modal_7" class="btn text-white bg-gradient-to-b from-cyan-500 to-teal-500">Complete Registration</label>
-    </div>
-
- 
-
-
-    <input type="checkbox" id="my_modal_7" class="modal-toggle" />
-    <div class="modal" role="dialog">
-        <div class="modal-box  justify-center flex flex-col items-center rounded-md overflow-hidden bg-cyan-50">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-teal-200/30 to-cyan-200/30 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-200/30 to-teal-200/30 rounded-full blur-3xl"></div>
-
-        
-            <div class="absolute top-10 left-10 w-2 h-2 bg-teal-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
-            <div class="absolute top-20 right-16 w-3 h-3 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0.5s;"></div>
-            <div class="absolute bottom-16 left-20 w-2 h-2 bg-teal-300 rounded-full animate-bounce" style="animation-delay: 0.8s;"></div>
-
-            <div class="relative mb-1 flex items-center justify-center">
-             
-                <div class="absolute w-19 h-19 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-teal-300 animate-spin" style="animation-duration: 8s;"></div>
-           
-                <div class="absolute w-15 h-15 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 opacity-20 animate-pulse"></div>
-            
-                <div class="absolute w-15 h-15  left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-cyan-400 to-teal-500 opacity-10 animate-ping"></div>
-             
-                <div class="relative w-15 h-15  rounded-full bg-gradient-to-br from-teal-400 via-cyan-400 to-cyan-500 flex items-center justify-center shadow-2xl transform transition-all hover:scale-110 hover:rotate-12 duration-300">
-                 
-                    <div class="absolute inset-2 rounded-full bg-gradient-to-br from-white/20 to-transparent"></div>
-                    <svg class="w-20 h-20 text-white drop-shadow-lg relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"></path>
-                    </svg>
+        <div class="bg-gradient-to-br from-cyan-600 to-teal-700 px-6 py-4">
+            <div class="flex items-center justify-between text-white">
+                <div>
+                    <h2 class="text-xl font-bold">Student Registration Form</h2>
+                    <p class="text-sm text-blue-100 mt-1">Please fill out all required information accurately</p>
+                </div>
+                <div class="text-md text-blue-100">
+                    You can save and continue later
                 </div>
             </div>
-            <h3 class="text-lg font-bold text-teal-600 mt-5">Account Created Successfully!</h3>
-
-            <p class="py-4 text-center text-stone-700">Your account has been created successfully.<br /> Please proceed to login</p>
-            <NavLink href="/studentmenu" class="btn text-white bg-gradient-to-b from-cyan-500 to-teal-500 text-2lg cursor-pointer z-10">Proceed to Login</NavLink>
         </div>
-        <label class="modal-backdrop" for="my_modal_7">Close</label>
+
+        <div class="p-6">
+            <div class="grid lg:grid-cols-3 gap-6">
+
+
+                <div class="bg-gradient-to-b from-slate-50 to-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                    <div class="h-full overflow-y-auto max-h-[600px] p-6 scrollbar-hide">
+                        @if (pageState.CurrentViewPerInfo == PageState.SaveAsDraftPerInfo.ViewInfo)
+                        {
+                            <PersonalInformation />
+                        }
+                        else if (pageState.CurrentViewPerInfo == PageState.SaveAsDraftPerInfo.SaveASDraft)
+                        {
+                            <SaveAsDraft />
+                        }
+                        else if (pageState.CurrentViewPerInfo == PageState.SaveAsDraftPerInfo.Save)
+                        {
+                            <SaveInformation />
+                        }
+                    </div>
+                </div>
+
+
+                <div class="bg-gradient-to-b from-slate-50 to-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                    <div class="h-full overflow-y-auto max-h-[600px] p-6 scrollbar-hide">
+                        @if (pageState.CurrentViewAcads == PageState.SaveAsDraftAcads.ViewInfo)
+                        {
+                            <AcademicInformation />
+                        }
+                        else if (pageState.CurrentViewAcads == PageState.SaveAsDraftAcads.SaveASDraft)
+                        {
+                            <SaveAsDraft />
+                        }
+                        else if (pageState.CurrentViewAcads == PageState.SaveAsDraftAcads.Save)
+                        {
+                            <SaveInformation />
+                        }
+                    </div>
+                </div>
+
+
+                <div class="bg-gradient-to-b from-slate-50 to-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                    <div class="h-full overflow-y-auto max-h-[600px] p-6 scrollbar-hide">
+                        @if (pageState.CurrentViewContact == PageState.SaveAsDraftContact.ViewInfo)
+                        {
+                            <ContactInformation />
+                        }
+                        else if (pageState.CurrentViewContact == PageState.SaveAsDraftContact.SaveASDraft)
+                        {
+                            <SaveAsDraft />
+                        }
+                        else if (pageState.CurrentViewContact == PageState.SaveAsDraftContact.Save)
+                        {
+                            <SaveInformation />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    @*  <!-- Timeline Section -->
+    <div class="w-full max-w-7xl mt-8">
+        @if (pageState.CurrentViewTimeline == PageState.Timeline.Fillout)
+        {
+            <Timeline />
+        }
+        else if (pageState.CurrentViewTimeline == PageState.Timeline.LoginReady)
+        {
+            <TimelineLoginReady />
+        }
+    </div>*@
+    <FillOutFailed/>
+    <FillOutSuccess/>
+
+
+
 </div>
+
+
 @code {
 
+    public async Task CompleteRegistration()
+    {
+        var request = await studentRecordApi.CheckInformationAsync();
+        if(request is false)
+        {
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_fillout_failed').checked = true");
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_fillout_success').checked = true");
+        }
+        StateHasChanged();
+    }
 
     protected override void OnInitialized()
     {
@@ -183,4 +149,3 @@
         pageState.Onchange -= StateHasChanged;
     }
 }
-

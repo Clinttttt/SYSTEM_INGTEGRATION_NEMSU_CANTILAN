@@ -235,6 +235,44 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             await context.SaveChangesAsync();
         }
+        public async Task<List<AnnouncementDto>> ProvisionAnnouncementAsync(Guid StudentId)
+        {
+            var request = await context.enrollcourse
+                .Include(s => s.Course)
+                .Where(s => s.StudentId == StudentId && s.EnrollmentStatus == EnrollmentStatus.Provisioned)
+                .ToListAsync();
+
+            var filter = new List<AnnouncementDto>();
+            foreach (var r in request)
+            {
+                var invoice = await context.invoice
+              .Where(s => s.StudentId == StudentId && s.Status == InvoiceStatus.Unpaid && s.CourseId == r.CourseId)
+              .ToListAsync();
+
+                foreach (var i in invoice)
+                {
+
+                    var announcement = new InstructorAnnouncement
+                    {
+                        AdminId = r.Course.AdminId,
+                        CourseId = r.CourseId,
+                        Type = AnnouncementType.provision,
+                        StudentId = r.StudentId,
+                        CourseName = r.Course.Title,
+                        CourseCode = r.Course.CourseCode,
+                        Title = "Provision Due Notice",
+                        Message = $"Please ensure payment for the provision invoice is" +
+                        $" completed by {i.PaymentDeadline}, to avoid course unenrollment",
+                        InformationType = InformationType.Warning,
+                        DateCreated = DateTime.UtcNow,
+                    };
+                    context.announcements.Add(announcement);
+                    await context.SaveChangesAsync();
+                    filter.AddRange(announcement.Adapt<List<AnnouncementDto>>());
+                }
+            }
+            return filter;
+        }
 
 
 

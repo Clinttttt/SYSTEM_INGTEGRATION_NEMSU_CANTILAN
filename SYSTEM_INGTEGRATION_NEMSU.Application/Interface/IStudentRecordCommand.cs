@@ -8,6 +8,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 {
@@ -34,5 +35,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate);
         Task<bool> StudentSaveInformationAsync(Guid StudentId);
         Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync(Guid StudentId);
+        Task<bool> CheckInformationAsync(Guid StudentId);
+       
     }
 }

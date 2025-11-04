@@ -3,215 +3,217 @@
 @rendermode InteractiveServer
 @inject IAuthApiServices Authservice
 @inject NavigationManager navigationManager
-<div class=" relative flex justify-center h-screen content bg-cyan-50">
 
-    <div class="absolute inset-0 bg-gradient-to-br from-teal-200/30 to-cyan-200/30 rounded-full blur-3xl"></div>
-    <!-- Particle Background -->
-    <div class="particle-container">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
+<div class="h-screen content bg-gradient-to-br overflow-y-hidden from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-6">
+    <div class="w-full max-w-7xl flex items-center h-screen overflow-y-hidden">
+        <div class="grid lg:grid-cols-3 gap-8 w-full h-screen mt-10 items-start p-5">
 
-    <div class="flex flex-col sm:flex-row items-center h-full py-16 flex gap-16 p-4 " style="position: relative; z-index: 1;">
+          
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-2xl p-3 border border-slate-300">
+                 
+                    <div class="text-center ">
+                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-600 mb-2">Student Registration</h2>
+                        <p class="text-sm text-slate-600">Create your account to get started</p>
+                    </div>
 
-        <EditForm Model="@User" OnValidSubmit="@Registers" FormName="register">
-            <div class="bg-cyan-50 flex flex-col w-[25%] min-w-[300px] p-6 gap-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow border-2 border-cyan-400 hover:border-cyan-500">
+                    <EditForm Model="@User" OnValidSubmit="@Registers" FormName="register">
+                        <div class="space-y-4">
+                          
+                            <div>
+                                <label class="block text-sm font-normal text-slate-700 mb-2">Username</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                    </span>
+                                    <input @bind="User.UserName" type="text"
+                                           placeholder="Enter your username"
+                                           class="w-full pl-10 pr-4 py-2 placeholder:text-[13px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all" />
+                                </div>
+                            </div>
 
-                <div class="w-16 h-16 bg-gradient-to-t from-sky-400 to-cyan-500 rounded-full flex items-center justify-center  mx-auto">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                        
+                            <div>
+                                <label class="block text-sm font-normal text-slate-700 mb-2">Password</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                        </svg>
+                                    </span>
+                                    <input @bind="User.Password" type="password"
+                                           placeholder="Create a secure password"
+                                           class="w-full pl-10 pr-4 py-2  placeholder:text-[13px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all" />
+                                </div>
+                            </div>
+
+                        
+                            <div>
+                                <label class="block text-sm font-normal text-slate-700 mb-2">Confirm Password</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </span>
+                                    <input @bind="User.ConfirmPassword" type="password"
+                                           placeholder="Re-enter your password"
+                                           class="w-full pl-10 pr-4 py-2  placeholder:text-[13px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all" />
+                                </div>
+                            </div>
+
+                          
+
+                        
+                            <button type="submit" class="w-full bg-gradient-to-r from-cyan-600 to-teal-700 hover:from-teal-700 hover:to-cyan-800 text-white font-semibold py-2 rounded-lg transition-all shadow-lg hover:shadow-xl mt-2">
+                                Create Account
+                            </button>
+
+                        
+                            <div class="text-center pt-4 border-t border-slate-200">
+                                <p class="text-sm text-slate-600">
+                                    Already have an account?
+                                    <NavLink href="/loginuser" class="text-cyan-600 hover:text-teal-700 font-semibold hover:underline">Sign in here</NavLink>
+                                </p>
+                            </div>
+                        </div>
+                    </EditForm>
                 </div>
-
-                <h3 class="text-2xl font-semibold text-cyan-600 mb-2 text-center">Register</h3>
-
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                    </span>
-
-                    <input @bind="User.UserName" type="text"
-                    placeholder="Username"
-                    class="border p-2 pl-9 placeholder:text-sm rounded border-cyan-600
-           focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600 outline-none w-full" />
-                </div>
-
-
-
-
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
-                    </span>
-
-                    <input @bind="User.Password" type="password"
-                    placeholder="Password"
-                    class="border p-2 pl-9 placeholder:text-sm rounded border-cyan-600
-           focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600 outline-none w-full" />
-                </div>
-
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
-                    </span>
-
-                    <input @bind="User.ConfirmPassword" type="password"
-                    placeholder="Confirm Password"
-                    class="border p-2 pl-9 placeholder:text-sm rounded border-cyan-600
-           focus:border-cyan-600 focus:ring-2 focus:ring-cyan-600 outline-none w-full" />
-                </div>
-
-                <button type="submit" class="btn w-full bg-gradient-to-t from-sky-400 to-cyan-500 text-white py-3 rounded-lg font-medium hover:from-cyan-500 hover:to-cyan-600 transition-all text-center mt-2">
-                    Get Started
-                </button>
-                <h5 class="text-sm font-light text-stone-600 ">Already have an account? <span><NavLink class="text-cyan-600">Sign in here</NavLink></span></h5>
             </div>
-        </EditForm>
 
-        <div class="scale-140">
-            <ul class="timeline timeline-vertical">
-                <li>
-                    <div class="timeline-start timeline-box   border-cyan-400 border-1 text-teal-600 rounded-sm bg-cyan-50">Start Registration</div>
-                    <div class="timeline-middle">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        class="text-amber-600 h-5 w-5">
-                            <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                            clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <hr class=" bg-gradient-to-r from-cyan-500 to-teal-600" />
-                </li>
-                <li>
-                    <hr class=" bg-gradient-to-r from-cyan-500 to-teal-600" />
-                    <div class="timeline-middle">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        class="text-cyan-600 h-5 w-5">
-                            <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                            clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="timeline-end timeline-box  border-cyan-400 border-1 text-teal-600 rounded-sm bg-cyan-50">Fill Out Registration Form</div>
-                    <hr class="bg-gradient-to-r from-cyan-500 to-teal-600" />
-                </li>
-                <li>
-                    <hr class=" bg-gradient-to-r from-cyan-500 to-teal-600" />
-                    <div class="timeline-start timeline-box  border-cyan-400 border-1 text-teal-600 rounded-sm bg-cyan-50">Account Created</div>
-                    <div class="timeline-middle">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        class="text-cyan-600 h-5 w-5">
-                            <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                            clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <hr class=" bg-gradient-to-r from-cyan-500 to-teal-600" />
-                </li>
-                <li>
-                    <hr class=" bg-gradient-to-r from-cyan-500 to-teal-600" />
-                    <div class="timeline-middle">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        class="text-cyan-600 h-5 w-5">
-                            <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                            clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="timeline-end timeline-box  border-cyan-400 border-1 text-teal-600 rounded-sm bg-cyan-50">Student ID Assigned</div>
-                    <hr class="bg-gradient-to-r from-cyan-500 to-teal-600" />
-                </li>
-                <li>
-                    <hr class=" bg-gradient-to-r from-cyan-500 to-teal-600" />
-                    <div class="timeline-start timeline-box  border-cyan-400 border-1 text-teal-600 rounded-sm bg-cyan-50">Login Ready</div>
-                    <div class="timeline-middle">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        class="text-cyan-600 h-5 w-5">
-                            <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                            clip-rule="evenodd" />
-                        </svg>
-                    </div>
+        
+            <div class="lg:col-span-1 flex items-center justify-center scale-100  -mt-1">
+                <ul class="space-y-8">
+                 
+                    <li class="flex items-center gap-4">
+                        <div class="flex-1 text-right">
+                            <div class="inline-block bg-white border-1 border-cyan-500 rounded-lg px-4 py-3 shadow-md">
+                                <p class="text-sm font-semibold text-slate-500">Start Registration</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-400 rounded-full flex items-center justify-center shadow-lg">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="w-0.5 h-16 bg-gradient-to-b from-cyan-100 to-blue-200"></div>
+                        </div>
+                        <div class="flex-1"></div>
+                    </li>
 
-                </li>
+                 
+                    <li class="flex items-center gap-4">
+                        <div class="flex-1"></div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full flex items-center justify-center shadow-lg">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="w-0.5 h-16 bg-gradient-to-b from-cyan-200 to-teal-300"></div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="inline-block bg-white border-1 border-cyan-500 rounded-lg px-4 py-3 shadow-md">
+                                <p class="text-sm font-semibold text-slate-500">Account Created</p>
+                            </div>
+                        </div>
+                    </li>
 
-            </ul>
+                  
+                    <li class="flex items-center gap-4">
+                        <div class="flex-1 text-right">
+                            <div class="inline-block bg-white border-1 border-cyan-500 rounded-lg px-4 py-3 shadow-md">
+                                <p class="text-sm font-semibold text-slate-500">Login Ready</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full flex items-center justify-center shadow-lg">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="w-0.5 h-16 bg-gradient-to-b from-cyan-300 to-teal-400"></div>
+                        </div>
+                        <div class="flex-1"></div>
+                    </li>
 
-        </div>
+                 
+                    <li class="flex items-center gap-4">
+                        <div class="flex-1"></div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-full flex items-center justify-center shadow-lg">
+                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div class="w-0.5 h-16 bg-gradient-to-b from-cyan-400 to-teal-500"></div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="inline-block bg-white border-1 border-cyan-500 rounded-lg px-4 py-3 shadow-md">
+                                <p class="text-sm font-semibold text-slate-500">Fill Out Registration Form</p>
+                            </div>
+                        </div>
+                    </li>
 
-        <div class="flex flex-col gap-4">
-
-            <div class="hidden sm:block ml-15">
-                <img src="/img/nemu_header.png" class=" w-[80%]  h-45 rounded-2xl border-blue-400 border" />
+                  
+                </ul>
             </div>
-            <div class="chat chat-end self-start">
-                <div class="chat-image avatar">
-                    <div class="w-12 rounded-full border-2 border-amber-500 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-amber-400 to-orange-500 p-0.5">
-                        <img alt="NEMSU Cantilan Student Services"
-                        src="/img/student_logo.jpg"
-                        class="w-full h-full rounded-full object-cover bg-white" />
+
+        
+            <div class="lg:col-span-1 space-y-5 ">
+                
+                <div class="relative  bg-gradient-to-br from-cyan-500 to-teal-600 rounded-2xl shadow-xl p-6 border border-slate-300 text-center">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                    <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
+
+                    <div class="flex items-center justify-center mb-4">
+                        <img src="/img/student_logo.jpg" alt="NEMSU Logo" class="h-20 w-20 rounded-full border-4 border-amber-500 shadow-lg" />
+                    </div>
+                    <h1 class="text-xl font-bold text-white mb-2">North Eastern Mindanao State University</h1>
+                    <p class="text-sm text-white mb-4">Cantilan Campus</p>
+                    <div class="h-1 w-16 bg-amber-500 mx-auto rounded-full"></div>
+                </div>
+
+              
+
+
+                <div class="bg-gradient-to-br from-cyan-50 to-slate-50 border-2 border-cyan-200 rounded-2xl p-6 shadow-lg">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-xl">👋</span>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-600">Welcome to NEMSU Cantilan</h3>
+                            <p class="text-sm text-slate-600">Student Services Portal</p>
+                        </div>
+                    </div>
+                    <div class="bg-white border-l-4 border-cyan-600 rounded-lg p-4">
+                        <p class="text-sm text-slate-700 text-center font-medium">
+                            Please register to start your enrollment journey.
+                        </p>
                     </div>
                 </div>
-                <div class="chat-bubble text-lg font-semibold text-amber-800 shadow-lg hover:shadow-xl transition-all duration-300 border border-amber-200 relative"
-                style="background: linear-gradient(135deg, rgb(254, 252, 232) 0%, rgb(246, 239, 230) 100%);">
 
-
-
-                    <div class="flex items-center mb-2">
-                        <span class="text-2xl mr-2">👋</span>
-                        <span class="font-bold text-xl">Welcome to NEMSU Cantilan</span>
-                    </div>
-                    <div class="text-amber-700 font-semibold mb-3 text-center">Student Services Portal!</div>
-
-                    <div class="flex items-center bg-amber-50 rounded-lg p-3 border-l-4 border-amber-400 border-r-4">
-
-                        <span class="text-amber-700 text-center">Please register to start your enrollment journey.</span>
+               
+                <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-3 -mt-3 scale-80">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <h4 class="text-sm font-semibold text-amber-900">Need Assistance?</h4>
+                            <p class="text-xs text-amber-800 mt-1">Contact the registrar's office for registration inquiries.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -222,6 +224,7 @@
 @code {
     public UserDtos User { get; set; } = new();
     public string? Error { get; set; }
+
     public async Task Registers()
     {
         if (User.Password != User.ConfirmPassword)
@@ -231,8 +234,8 @@
         }
         User.Role = UserRole.Student;
         var Results = await Authservice.RegisterAsync(User!);
-       
-        if(Results is null)
+
+        if (Results is null)
         {
             Error = "User Already Exists";
         }

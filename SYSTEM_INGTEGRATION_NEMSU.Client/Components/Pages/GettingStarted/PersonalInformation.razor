@@ -1,121 +1,163 @@
-﻿
-@inject PageState pageState
+﻿@inject PageState pageState
+@inject IStudentRecordApiCommand studentRecordApi
 @rendermode InteractiveServer
 
-@inject IStudentRecordApiCommand studentRecordApi
-<h1 class="mt-2 text-center text-lg font-bold text-teal-600">Personal Information</h1>
-<div class="flex justify-center mt-4">
-</div>
-<EditForm Model="@PersonalDetails" OnValidSubmit="@HandlePersonalInformation" FormName="PersonalInformation">
-    <div class="max-w-4xl mx-auto  p-2 gap-2">
-        <!--una grid-->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div>
-                <label class="block text-sm font-light text-gray-700 mb-1 text-teal-700 ">First Name</label>
-                <input @bind="PersonalDetails.FirstName" type="text" placeholder="Enter First name"
-                       class=" placeholder:text-xs  w-full px-2 py-2 border border-teal-600  rounded-md  border-cyan-600  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none" />
-            </div>
-            <div>
-                <label class="block text-sm font-light  mb-1 text-teal-700">Middle Name</label>
-                <input @bind="PersonalDetails.MiddleName" type="text" placeholder="Enter middle name"
-                       class="w-full  placeholder:text-xs px-2 py-2 border border-teal-600  rounded-md border-cyan-600  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none" />
-            </div>
-            <div>
-                <label class="block text-sm font-light text-gray-700 mb-1 text-teal-700">Last Name</label>
-                <input @bind="PersonalDetails.LastName" type="text" placeholder="Enter Last name"
-                       class="w-full  placeholder:text-xs  px-2 py-2 border border-teal-600 rounded-md border-cyan-600     hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none" />
-            </div>
+<div class="space-y-4 ">
+    <div class="text-center mb-6">
+        <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
         </div>
-        <!--kaduha ni grid-->
-        <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-1 justify-center">
-            <div>
-                <label class="block text-sm font-light text-gray-700 mb-1 text-teal-700">Date of birth</label>
-                <input @bind="PersonalDetails.DateOfBirth" type="datetime-local"
-                       class="input w-[90%] bg-cyan-50 border border-teal-600 text-gray-500 text-xs font-medium rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none" />
-
-            </div>
-
-            <div>
-                <label class="block text-sm font-light mb-1 text-teal-700">Gender</label>
-                <select @bind="PersonalDetails.Gender" class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 rounded-md text-xs
-         hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
-                    <option selected value="" class="text-cyan-600 font-light">Select Gender</option>
-                    <option value="@GenderChoice.Male">Male</option>
-                    <option value="@GenderChoice.Female">Female</option>
-                    <option value="@GenderChoice.Prefer_not_to_say">Prefer not to say</option>
-                </select>
-            </div>
-        </div>
-        <!--ka toyo grid-->
-        <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-1 justify-center">
-            <div>
-                <label class="block text-sm font-light mb-1 text-teal-700">Civil Status</label>
-                <select @bind="PersonalDetails.CivilStatus" class="select border-teal-600 border w-[95%] text-cyan-600 font-normal bg-cyan-50 text-xs rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none">
-                    <option selected value="" class=" text-cyan-600  font-light">Select Status</option>
-                    <option value="@CivilStatusChoice.Single">Single</option>
-                    <option value="@CivilStatusChoice.Taken">Taken</option>
-                    <option value="@CivilStatusChoice.Married">Married</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-sm font-light text-gray-700 mb-1 text-teal-700">Nationality</label>
-                <input @bind="PersonalDetails.Nationality" type="text" placeholder="e.g., Filipino"
-                       class=" placeholder:text-xs   px-2 py-2 w-[95%] border border-teal-600  rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none" />
-            </div>
-        </div>
-        <div class="mt-2">
-            <label class="block text-sm font-light text-gray-700 mb-1 text-teal-700">Permanent Address</label>
-            <input @bind="PersonalDetails.PermanentAddress" type="text" placeholder="Enter permanent address"
-                   class=" placeholder:text-xs   px-2 py-2 w-[98%] border border-teal-600  rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none" />
-        </div>
-
-        <div class="mt-2">
-            <label class="block text-sm font-light text-gray-700 mb-1 text-teal-700">Guardian/Parent Name</label>
-            <input @bind="PersonalDetails.GuardianName" type="text" placeholder="Enter guardian/parent name"
-                   class=" placeholder:text-xs   px-2 py-2 w-[98%] border border-teal-600  rounded-md  hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-         focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 focus:outline-none" />
-        </div>
-
-        <!--cp number-->
-        <div class="mt-2">
-            <label class="block text-sm font-light text-gray-700 mb-1 text-teal-700">Guardian/Parent Contact</label>
-            <label class="input validator border border-teal-600 w-[98%] bg-cyan-50 px-2 hover:border-cyan-500 hover:ring-1 hover:ring-cyan-500
-focus-within:border-cyan-600 focus-within:ring-1 focus-within:ring-cyan-600 focus-within:outline-none">
-                <svg class="h-[1em] opacity-50 text-cyan-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                    <g fill="none">
-                        <path d="M7.25 11.5C6.83579 11.5 6.5 11.8358 6.5 12.25C6.5 12.6642 6.83579 13 7.25 13H8.75C9.16421 13 9.5 12.6642 9.5 12.25C9.5 11.8358 9.16421 11.5 8.75 11.5H7.25Z"
-                              fill="currentColor"></path>
-                        <path fill-rule="evenodd"
-                              clip-rule="evenodd"
-                              d="M6 1C4.61929 1 3.5 2.11929 3.5 3.5V12.5C3.5 13.8807 4.61929 15 6 15H10C11.3807 15 12.5 13.8807 12.5 12.5V3.5C12.5 2.11929 11.3807 1 10 1H6ZM10 2.5H9.5V3C9.5 3.27614 9.27614 3.5 9 3.5H7C6.72386 3.5 6.5 3.27614 6.5 3V2.5H6C5.44771 2.5 5 2.94772 5 3.5V12.5C5 13.0523 5.44772 13.5 6 13.5H10C10.5523 13.5 11 13.0523 11 12.5V3.5C11 2.94772 10.5523 2.5 10 2.5Z"
-                              fill="currentColor"></path>
-                    </g>
-                </svg>
-                <input @bind="PersonalDetails.GuardianContact" type="tel"
-                       class="tabular-nums placeholder:text-xs !outline-none !border-0"
-                       required
-                       placeholder="Enter Contact Number"
-                       pattern="[0-9]*"
-                       minlength="11"
-                       maxlength="11" />
-            </label>
-
-        </div>
-
-        <div class="mt-4 justify-between flex p-1">
-            <button type="button" @onclick="()=> SaveAsDraft()" class="btn text-neutral-700 font-light border-teal-600 bg-cyan-50">Save as Draft</button>
-            <button type="submit" class="btn text-white bg-gradient-to-b from-cyan-500 to-teal-600">Save</button>
-        </div>
+        <h2 class="text-xl font-bold text-slate-600 mb-1">Personal Information</h2>
+        <p class="text-sm text-slate-500">Provide your personal details for student records</p>
     </div>
-</EditForm>
+  
+    <EditForm Model="@PersonalDetails" OnValidSubmit="@HandlePersonalInformation" FormName="PersonalInformation">
+        <div class="space-y-4">
+
+          
+            <div class="grid grid-cols-1 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-600 mb-2">First Name</label>
+                    <input @bind="PersonalDetails.FirstName" type="text" placeholder="Enter first name"
+                           class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm
+                                  focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                                  hover:border-slate-400" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-600 mb-2">Middle Name</label>
+                    <input @bind="PersonalDetails.MiddleName" type="text" placeholder="Enter middle name"
+                           class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm
+                                  focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                                  hover:border-slate-400" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-600 mb-2">Last Name</label>
+                    <input @bind="PersonalDetails.LastName" type="text" placeholder="Enter last name"
+                           class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm
+                                  focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                                  hover:border-slate-400" />
+                </div>
+            </div>
+
+            
+            <div class="grid grid-cols-1 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-600 mb-2">Date of Birth</label>
+                    <input @bind="PersonalDetails.DateOfBirth" type="datetime-local"
+                           class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600
+                                  focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                                  hover:border-slate-400" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-600 mb-2">Gender</label>
+                    <select @bind="PersonalDetails.Gender"
+                            class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600
+                                   focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                                   hover:border-slate-400">
+                        <option selected value="" class="text-slate-500">Select Gender</option>
+                        <option value="@GenderChoice.Male">Male</option>
+                        <option value="@GenderChoice.Female">Female</option>
+                        <option value="@GenderChoice.Prefer_not_to_say">Prefer not to say</option>
+                    </select>
+                </div>
+            </div>
+
+           
+            <div class="grid grid-cols-1 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-600 mb-2">Civil Status</label>
+                    <select @bind="PersonalDetails.CivilStatus"
+                            class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600
+                                   focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                                   hover:border-slate-400">
+                        <option selected value="" class="text-slate-500">Select Status</option>
+                        <option value="@CivilStatusChoice.Single">Single</option>
+                        <option value="@CivilStatusChoice.Taken">Taken</option>
+                        <option value="@CivilStatusChoice.Married">Married</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-600 mb-2">Nationality</label>
+                    <input @bind="PersonalDetails.Nationality" type="text" placeholder="e.g., Filipino"
+                           class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm
+                                  focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                                  hover:border-slate-400" />
+                </div>
+            </div>
+
+        
+            <div>
+                <label class="block text-sm font-semibold text-slate-600 mb-2">Permanent Address</label>
+                <input @bind="PersonalDetails.PermanentAddress" type="text" placeholder="Enter permanent address"
+                       class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm
+                              focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                              hover:border-slate-400" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-600 mb-2">Guardian/Parent Name</label>
+                <input @bind="PersonalDetails.GuardianName" type="text" placeholder="Enter guardian/parent name"
+                       class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm
+                              focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                              hover:border-slate-400" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-600 mb-2">Guardian/Parent Contact</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <svg class="w-5 h-5 text-cyan-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M7.25 11.5C6.83579 11.5 6.5 11.8358 6.5 12.25C6.5 12.6642 6.83579 13 7.25 13H8.75C9.16421 13 9.5 12.6642 9.5 12.25C9.5 11.8358 9.16421 11.5 8.75 11.5H7.25Z" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M6 1C4.61929 1 3.5 2.11929 3.5 3.5V12.5C3.5 13.8807 4.61929 15 6 15H10C11.3807 15 12.5 13.8807 12.5 12.5V3.5C12.5 2.11929 11.3807 1 10 1H6ZM10 2.5H9.5V3C9.5 3.27614 9.27614 3.5 9 3.5H7C6.72386 3.5 6.5 3.27614 6.5 3V2.5H6C5.44771 2.5 5 2.94772 5 3.5V12.5C5 13.0523 5.44772 13.5 6 13.5H10C10.5523 13.5 11 13.0523 11 12.5V3.5C11 2.94772 10.5523 2.5 10 2.5Z" />
+                        </svg>
+                    </span>
+                    <input @bind="PersonalDetails.GuardianContact" type="tel"
+                           class="w-full pl-10 pr-3 py-2.5 border border-slate-300 rounded-lg text-sm
+                                  focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+                                  hover:border-slate-400"
+                           required                        
+                           placeholder="09XX XXX XXXX"
+                           pattern="[0-9]*"
+                           minlength="11"
+                           maxlength="11" />
+                </div>
+            </div>
+
+          
+            @if (!string.IsNullOrEmpty(Error))
+            {
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                    @Error
+                </div>
+            }
+
+            <div class="flex justify-between gap-3 pt-4 border-t border-slate-200">
+                <button type="button" @onclick="()=> SaveAsDraft()"
+                        class="flex-1 px-4 flex py-2.5 text-sm gap-2 border border-slate-300 text-slate-700 rounded-lg font-medium
+                               hover:bg-slate-50 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                    </svg>
+                    Save as Draft
+                </button>
+                <button type="submit"
+                        class="flex-1 px-4 py-2.5 text-sm  bg-gradient-to-br from-cyan-600 to-teal-600 text-white rounded-lg font-medium
+                               hover:from-cyan-700 flex gap-2 hover:to-teal-800 transition-all shadow-md items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Save
+                </button>
+            </div>
+        </div>
+    </EditForm>
+</div>
 
 @code {
     public PersonalInformationDto PersonalDetails { get; set; } = new();
@@ -133,6 +175,7 @@ focus-within:border-cyan-600 focus-within:ring-1 focus-within:ring-cyan-600 focu
 
         pageState.SetViewPerInfo(PageState.SaveAsDraftPerInfo.Save);
     }
+
     public async Task SaveAsDraft()
     {
         PersonalDetails.Savestatus = SaveStatus.Save_As_Draft;
@@ -145,6 +188,4 @@ focus-within:border-cyan-600 focus-within:ring-1 focus-within:ring-cyan-600 focu
 
         pageState.SetViewPerInfo(PageState.SaveAsDraftPerInfo.SaveASDraft);
     }
-
-
 }

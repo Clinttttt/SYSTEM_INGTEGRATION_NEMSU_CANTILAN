@@ -86,5 +86,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await respondCommand.EditAnnouncementAsync(editAnnouncement);
             return Ok(response);
         }
+        [Authorize]
+        [HttpGet("Provision Announcement")]
+        public async Task<ActionResult<AnnouncementDto>> ProvisionAnnouncementAsync()
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return Unauthorized("Login First");
+
+            var GetUserId = Guid.Parse(FindUser.Value);
+            var response = await respondCommand.ProvisionAnnouncementAsync(GetUserId);
+            return Ok(response);
+
+        }
     }
 }

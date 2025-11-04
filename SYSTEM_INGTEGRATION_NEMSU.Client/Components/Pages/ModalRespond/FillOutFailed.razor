@@ -1,0 +1,89 @@
+﻿<input type="checkbox" id="my_modal_fillout_failed" class="modal-toggle" />
+<div class="modal backdrop-blur-sm" role="dialog">
+    <div class="modal-box max-w-md bg-white border-0 shadow-2xl p-0 overflow-hidden relative rounded-md">
+
+        <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-red-200/40 to-orange-200/40 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-orange-200/40 to-red-200/40 rounded-full blur-2xl"></div>
+
+
+        <div class="absolute top-8 right-8 w-2 h-2 bg-red-400/60 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+        <div class="absolute top-16 right-16 w-1.5 h-1.5 bg-orange-400/60 rounded-full animate-bounce" style="animation-delay: 0.5s;"></div>
+        <div class="absolute bottom-12 left-8 w-2 h-2 bg-red-300/60 rounded-full animate-bounce" style="animation-delay: 0.8s;"></div>
+
+        <div class="relative z-10 p-8 pt-10">
+
+            <div class="flex justify-center mb-6">
+                <div class="relative">
+
+                    <div class="absolute inset-0 w-28 h-28 rounded-full border-2 border-dashed border-red-300/50 animate-spin" style="animation-duration: 8s;"></div>
+
+
+                    <div class="absolute inset-0 w-28 h-28 rounded-full bg-gradient-to-br from-red-400 to-orange-500 opacity-10 animate-ping"></div>
+
+
+                    <div class="absolute inset-2 w-24 h-24 rounded-full bg-gradient-to-br from-red-400 to-orange-500 opacity-20 animate-pulse"></div>
+
+
+                    <div class="relative w-28 h-28 rounded-full bg-gradient-to-br from-red-500 via-orange-500 to-red-600 flex items-center justify-center shadow-2xl shadow-red-500/30 transform hover:scale-110 hover:rotate-12 transition-all duration-300">
+
+                        <div class="absolute inset-3 rounded-full bg-gradient-to-br from-white/30 to-transparent"></div>
+
+
+                        <svg class="w-16 h-16 text-white drop-shadow-lg relative z-10 animate-[checkmark_0.5s_ease-in-out]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="text-center space-y-4">
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-red-600 via-orange-600 to-red-600 bg-clip-text text-transparent animate-[fadeInUp_0.6s_ease-out]">
+                    Fill out Failed!
+                </h2>
+
+                <div class="flex items-center justify-center gap-2 py-2">
+                    <div class="h-px w-12 bg-gradient-to-r from-transparent via-red-300 to-transparent"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-red-400"></div>
+                    <div class="h-px w-12 bg-gradient-to-r from-transparent via-red-300 to-transparent"></div>
+                </div>
+
+                <div class="space-y-3 animate-[fadeInUp_0.8s_ease-out]">
+                    <p class="text-gray-700 font-medium text-lg">
+                        Unable to save your information at this time.
+                    </p>
+                    <p class="text-gray-600 text-sm leading-relaxed px-4">
+                        Please ensure all form fields are filled correctly and saved.
+                    </p>
+                </div>
+
+
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-full text-sm font-medium text-red-700 shadow-sm animate-[fadeInUp_1s_ease-out]">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                    </svg>
+                    Registration Failed
+                </div>
+            </div>
+
+
+            <div class="flex flex-col sm:flex-row gap-3 mt-8 animate-[fadeInUp_1.2s_ease-out]">
+                <label for="my_modal_fillout_failed"
+                       class="flex-1 btn bg-gradient-to-r from-orange-600 to-red-700 hover:from-orange-700 hover:to-red-800 text-white border-0 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Try Again
+                </label>
+
+        
+            </div>
+        </div>
+
+
+        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-red-400/20 to-transparent rounded-bl-full"></div>
+        <div class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-orange-400/20 to-transparent rounded-tr-full"></div>
+    </div>
+
+    <label class="modal-backdrop" for="my_modal_fillout_failed">Close</label>
+</div>

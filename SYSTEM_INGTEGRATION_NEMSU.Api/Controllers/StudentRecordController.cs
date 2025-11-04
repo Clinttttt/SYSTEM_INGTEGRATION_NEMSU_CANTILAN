@@ -164,5 +164,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecordCommand.MiniDisplayMenuAsync(StudentId);
             return Ok(request);
         }
+        [Authorize]
+        [HttpGet("Check Information")]
+        public async Task<ActionResult<bool>> CheckInformationAsync()
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) { return BadRequest("Login First"); }
+            var StudentId = Guid.Parse(FindUser.Value);
+            var request = await studentRecordCommand.CheckInformationAsync(StudentId);
+            return Ok(request);
+        }
     }
 }

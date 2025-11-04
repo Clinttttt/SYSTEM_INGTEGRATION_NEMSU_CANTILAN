@@ -29,7 +29,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
            
           
             var request  = await enrollmentServices.EnrollCourseAsync(paymentdetails.StudentId, paymentdetails.CourseCode!, EnrollmentStatus.Enrolled);
-            var purchase = await enrollmentServices.AddPaymentAsync(paymentdetails); 
+            var purchase = await enrollmentServices.AddPaymentAsync(paymentdetails);
+        
+          
             if (request is null) return null;
             if (purchase is null) return null;
 
@@ -65,7 +67,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (alreadyEnrolled) return null;
 
             await enrollmentServices.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Provisioned);
-         
+       
             var invoice = new Invoice
             {
                 Id = Guid.NewGuid(),
@@ -89,6 +91,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             context.invoice.Add(invoice);
             await context.SaveChangesAsync();
             await respondCommand.AutoResponseAsync(studentId, courseCode);
+            await respondCommand.ProvisionAnnouncementAsync(studentId);
             return filter;
         }
 

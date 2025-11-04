@@ -28,6 +28,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
     {
         instructor,
         System,
+        provision
     }
     public enum InformationType
     {
@@ -40,7 +41,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         [Display(Name = "General")]
         General,
         [Display(Name = "System")]
-        System
+        System,
+        [Display(Name = "Provision Warning")]
+        Warning
+
+
     };
 
 

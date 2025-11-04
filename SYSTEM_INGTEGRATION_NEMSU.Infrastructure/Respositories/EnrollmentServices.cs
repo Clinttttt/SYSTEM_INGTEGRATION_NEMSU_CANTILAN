@@ -279,7 +279,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             {
                 var request = await context.announcements
             .AsNoTracking()
-            .Where(s => s.Type == AnnouncementType.instructor && s.AdminId == r.Course.AdminId && s.course.CourseCode!.Contains(r.Course.CourseCode!))
+            .Where(s => (s.Type == AnnouncementType.instructor || s.Type == AnnouncementType.provision) && s.AdminId == r.Course.AdminId && s.course.CourseCode == r.Course.CourseCode)
             .ToListAsync();
                 t.AddRange(request.Adapt<List<AnnouncementDto>>());
             }
@@ -307,7 +307,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.announcements
                 .Include(s=> s.course)
                 .AsNoTracking()
-                .Where(s => s.CourseId == CourseId && s.AdminId == CourseAdmin.AdminId && (s.StudentId == null || s.StudentId == StudentId))
+                .Where(s => s.CourseId == CourseId && s.InformationType != InformationType.Warning && s.AdminId == CourseAdmin.AdminId && (s.StudentId == null || s.StudentId == StudentId))
                 .Select(s => new AnnouncementDto
                 {
                     Title = s.Title,
@@ -339,7 +339,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 var request = await context.announcements
             .AsNoTracking()
 
-            .Where(s => s.Type == AnnouncementType.instructor && s.AdminId == r.Course.AdminId && s.course.CourseCode!.Contains(r.Course.CourseCode!) && s.InformationType == type)
+            .Where(s => (s.Type == AnnouncementType.instructor || s.Type == AnnouncementType.provision) && s.AdminId == r.Course.AdminId && s.course.CourseCode!.Contains(r.Course.CourseCode!) && s.InformationType == type)
             .ToListAsync();
                 t.AddRange(request.Adapt<List<AnnouncementDto>>());
             }

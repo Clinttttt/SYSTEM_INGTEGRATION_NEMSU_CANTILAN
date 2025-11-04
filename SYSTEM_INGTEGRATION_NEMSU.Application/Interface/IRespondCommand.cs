@@ -15,5 +15,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<bool> DeleteAnnouncementAsync(Guid AdminId, Guid AnnouncementId);
         Task<AnnouncementDto?> EditAnnouncementAsync(EditAnnouncementDto announcement);
         Task CheckUnpaidInvoicesAsync();
+        Task<List<AnnouncementDto>> ProvisionAnnouncementAsync(Guid StudentId);
     }
 }
