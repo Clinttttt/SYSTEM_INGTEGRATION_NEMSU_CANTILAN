@@ -13,40 +13,36 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
    public class FacultyRecordApi : IFacultyRecordApi
     {
         private readonly HttpClient _http;
-        private ProtectedLocalStorage _storage;
-        public FacultyRecordApi(HttpClient http, ProtectedLocalStorage storage)
+        private readonly IAuthHelper _IAuthHelper;
+        public FacultyRecordApi(HttpClient http, IAuthHelper IAuthHelper)
         {
             _http = http;
-            _storage = storage;
+            _IAuthHelper = IAuthHelper;
         }
-        public async Task SetAuthentication()
-        {
-            var token = await _storage.GetAsync<string>("AccessToken");
-            var results = token.Success ? token.Value : null;
-            if (!string.IsNullOrEmpty(results))
-                _http.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", results);
-  
-        }
+      
         public async Task<FacultyRecordDto?> AddFacultyInformationAsync(FacultyRecordDto details)
         {
-            await SetAuthentication();
+            await _IAuthHelper.SetAuthHeaderAsync(_http);
             var request = await _http.PostAsJsonAsync("api/FacultyRecord/Add%20Faculty%20Information", details);
             if (!request.IsSuccessStatusCode) return null;
             return await request.Content.ReadFromJsonAsync<FacultyRecordDto>();
         }
         public async Task<FacultyRecordDto?> UpdateFacultyInformationAsync(FacultyRecordDto details)
         {
-            await SetAuthentication();
+            await _IAuthHelper.SetAuthHeaderAsync(_http);
             var request = await _http.PatchAsJsonAsync("api/FacultyRecord/Update%20Faculty%20Information", details);
             if (!request.IsSuccessStatusCode) return null;
             return await request.Content.ReadFromJsonAsync<FacultyRecordDto>();
         }
         public async Task<FacultyRecordDto?> DisplayFacultyDetailsAsync()
         {
-            await SetAuthentication();
+            await _IAuthHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<FacultyRecordDto>("api/FacultyRecord/Display%20Faculty%20Information");
         }
-
+        public async Task<FacultyPhotoId?> FacultyPhotoIDAsync()
+        {
+            await _IAuthHelper.SetAuthHeaderAsync(_http);
+            return await _http.GetFromJsonAsync<FacultyPhotoId>("api/FacultyRecord/Faculty%20PhotoID");
+        }
     }
 }

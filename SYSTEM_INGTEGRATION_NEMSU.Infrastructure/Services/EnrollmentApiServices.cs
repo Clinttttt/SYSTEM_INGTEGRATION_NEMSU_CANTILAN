@@ -21,7 +21,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         private readonly HttpClient _http;
         private readonly ProtectedLocalStorage _localstorage;
 
-        public EnrollmentApiServices(HttpClient HttpClient, ProtectedLocalStorage localstorage)
+        public EnrollmentApiServices(HttpClient HttpClient, ProtectedLocalStorage localstorage )
         {
             _http = HttpClient;
             _localstorage = localstorage;

@@ -17,13 +17,14 @@
     </div>
 
     <EditForm Model="@Academicinformation" OnValidSubmit="@HandleAcademicInformation" FormName="Academic">
+        <DataAnnotationsValidator />
         <div class="space-y-4 ">
 
-        
+
             <div>
                 <label class="block text-sm font-semibold text-slate-600 mb-2">Student Type</label>
-                <select @bind="Academicinformation.StudentType"
-                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                <InputSelect @bind-Value="Academicinformation.StudentType"
+                             class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
                                focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
                                hover:border-slate-400">
                     <option selected value="" class="text-slate-500">Select Type</option>
@@ -31,14 +32,15 @@
                     <option value="@StudentTypeChoice.Transferee">Transferee</option>
                     <option value="@StudentTypeChoice.Returning">Returning Student</option>
                     <option value="@StudentTypeChoice.Old">Old Student</option>
-                </select>
+                </InputSelect>
+                <ValidationMessage For="@(()=> Academicinformation.StudentType)" class="text-red-600 text-xs mt-1" />
             </div>
 
-        
+
             <div>
                 <label class="block text-sm font-semibold text-slate-600 mb-2">Year Level</label>
-                <select @bind="Academicinformation.YearLevel"
-                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                <InputSelect @bind-Value="Academicinformation.YearLevel"
+                             class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
                                focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
                                hover:border-slate-400">
                     <option selected value="" class="text-slate-500">Select Year</option>
@@ -46,79 +48,89 @@
                     <option value="@YearLevelChoice.Second_Year">2nd Year</option>
                     <option value="@YearLevelChoice.Third_Year">3rd Year</option>
                     <option value="@YearLevelChoice.Fourth_Year">4th Year</option>
-                </select>
+                </InputSelect>
+                <ValidationMessage For="@(()=> Academicinformation.YearLevel)" class="text-red-600 text-xs mt-1" />
             </div>
 
-      
+
             <div>
                 <label class="block text-sm font-semibold text-slate-600 mb-2">Semester</label>
-                <select @bind="Academicinformation.Semester"
-                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                <InputSelect @bind-Value="Academicinformation.Semester"
+                             class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
                                focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
                                hover:border-slate-400">
                     <option selected value="" class="text-slate-500">Select Semester</option>
                     <option value="@SemesterChoice.First_Semester">First Semester</option>
                     <option value="@SemesterChoice.Second_Semester">Second Semester</option>
-                </select>
+                </InputSelect>
+                <ValidationMessage for="@(()=> Academicinformation.Semester)" class="text-red-600 text-xs mt-1" />
             </div>
 
-       
+
             <div>
                 <label class="block text-sm font-semibold text-slate-600 mb-2">Program</label>
-                <select @bind="Academicinformation.Program"
-                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
-                               focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
-                               hover:border-slate-400">
+                <InputSelect @bind-Value="Academicinformation.Program"
+                             class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+           focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
+           hover:border-slate-400">
+
                     <option selected value="" class="text-slate-500">Select Program</option>
-                    <option value="@ProgramChoice.Criminology">BS Criminology</option>
-                    <option value="@ProgramChoice.Hospitality_Management">BS Hospitality Management</option>
-                    <option value="@ProgramChoice.Business_Administration">BS Business Administration</option>
-                    <option value="@ProgramChoice.Tourism_Management">BS Tourism Management</option>
-                    <option value="@ProgramChoice.Industrial_Technology">BS Industrial Technology</option>
-                    <option value="@ProgramChoice.Computer_Engineering">BS Computer Engineering</option>
-                    <option value="@ProgramChoice.Computer_Science">BS Computer Science</option>
-                    <option value="@ProgramChoice.Computer_Technology">BS Computer Technology</option>
-                    <option value="@ProgramChoice.Secondary_Education">Bachelor of Secondary Education</option>
-                    <option value="@ProgramChoice.Technology_AndLivelihood_Education">Bachelor of Technology and Livelihood Education</option>
-                    <option value="@ProgramChoice.Technical_Vocational_TeacherEducation">Bachelor of Technical-Vocational Teacher Education</option>
-                </select>
+
+                    <!-- DCS -->
+                    <option value="@CourseProgram.Computer_Engineering">BS Computer Engineering</option>
+                    <option value="@CourseProgram.Computer_Science">BS Computer Science</option>
+                    <option value="@CourseProgram.Information_Technology">BS Information Technology</option>
+
+                    <!-- DIT -->
+                    <option value="@CourseProgram.BSIT_ArchitecturalDraftingTechnology">BSIT Major in Architectural Drafting Technology</option>
+                    <option value="@CourseProgram.BSIT_AutomotiveTechnology">BSIT Major in Automotive Technology</option>
+                    <option value="@CourseProgram.BSIT_ComputerTechnology">BSIT Major in Computer Technology</option>
+                    <option value="@CourseProgram.BSIT_ElectricalTechnology">BSIT Major in Electrical Technology</option>
+                    <option value="@CourseProgram.BSIT_ElectronicsTechnology">BSIT Major in Electronics Technology</option>
+                    <option value="@CourseProgram.BSIT_FoodTechnology">BSIT Major in Food Technology</option>
+                    <option value="@CourseProgram.BSIT_GarmentsTechnology">BSIT Major in Garments Technology</option>
+                    <option value="@CourseProgram.BSIT_MechanicalTechnology">BSIT Major in Mechanical Technology</option>
+
+                    <!-- DGTT - BSEd -->
+                    <option value="@CourseProgram.BSEd_Filipino">BSEd Major in Filipino</option>
+                    <option value="@CourseProgram.BSEd_English">BSEd Major in English</option>
+                    <option value="@CourseProgram.BSEd_Mathematics">BSEd Major in Mathematics</option>
+                    <option value="@CourseProgram.BSEd_Science">BSEd Major in Science</option>
+
+                    <!-- DGTT - BTVTEd -->
+                    <option value="@CourseProgram.BTVTEd_AutomotiveTechnology">BTVTEd Major in Automotive Technology</option>
+                    <option value="@CourseProgram.BTVTEd_GarmentsAndFashionDesign">BTVTEd Major in Garments and Fashion Design</option>
+                    <option value="@CourseProgram.BTVTEd_ElectricalTechnology">BTVTEd Major in Electrical Technology</option>
+                    <option value="@CourseProgram.BTVTEd_ElectronicsTechnology">BTVTEd Major in Electronics Technology</option>
+                    <option value="@CourseProgram.BTVTEd_FoodAndServicesManagement">BTVTEd Major in Food and Services Management</option>
+                    <option value="@CourseProgram.BTVTEd_MechanicalTechnology">BTVTEd Major in Mechanical Technology</option>
+
+                    <!-- DGTT - BTLEd -->
+                    <option value="@CourseProgram.BTLEd_HomeEconomics">BTLEd Major in Home Economics</option>
+                    <option value="@CourseProgram.BTLEd_IndustrialArts">BTLEd Major in Industrial Arts</option>
+
+                    <!-- CCJE -->
+                    <option value="@CourseProgram.BS_Criminology">BS Criminology</option>
+
+                    <!-- DBM -->
+                    <option value="@CourseProgram.BSHM_HospitalityManagement">BS Hospitality Management</option>
+                    <option value="@CourseProgram.BSTM_TourismManagement">BS Tourism Management</option>
+                    <option value="@CourseProgram.BSBA_FinancialManagement">BSBA Major in Financial Management</option>
+                    <option value="@CourseProgram.BSBA_HumanResourceManagement">BSBA Major in Human Resource Management</option>
+
+                </InputSelect>
+
+                <ValidationMessage For="@(()=> Academicinformation.Program)" class="text-red-600 text-xs mt-1" />
             </div>
 
-        
-            <div>
-                <label class="block text-sm font-semibold text-slate-600 mb-2">Major</label>
-                <select @bind="Academicinformation.Major"
-                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
-                               focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
-                               hover:border-slate-400">
-                    <option selected value="" class="text-slate-500">Select Major</option>
-                    <option value="@MajorChoice.None">None</option>
-                    <option value="@MajorChoice.Financial_Management">Financial Management</option>
-                    <option value="@MajorChoice.HumanResources_Management">Human Resource Management</option>
-                    <option value="@MajorChoice.Architectural_Drafting_Technology">Architectural Drafting Technology</option>
-                    <option value="@MajorChoice.Automotive_Technology">Automotive Technology</option>
-                    <option value="@MajorChoice.Electrical_Technology">Electrical Technology</option>
-                    <option value="@MajorChoice.Electronics_Technology">Electronics Technology</option>
-                    <option value="@MajorChoice.Food_Technology">Food Technology</option>
-                    <option value="@MajorChoice.Garments_Technology">Garments Technology</option>
-                    <option value="@MajorChoice.Mechanical_Technology">Mechanical Technology</option>
-                    <option value="@MajorChoice.Computer_Technology">Computer Technology</option>
-                    <option value="@MajorChoice.English">English</option>
-                    <option value="@MajorChoice.Mathematics">Mathematics</option>
-                    <option value="@MajorChoice.Filipino">Filipino</option>
-                    <option value="@MajorChoice.Science">Science</option>
-                    <option value="@MajorChoice.Home_Economics">Home Economics</option>
-                    <option value="@MajorChoice.Foods_And_Services_Management">Foods and Services Management</option>
-                    <option value="@MajorChoice.Fashion_And_Design">Fashion and Design</option>
-                    <option value="@MajorChoice.Garments">Garments</option>
-                </select>
-            </div>
 
-            
+
+
+
             <div>
                 <label class="block text-sm font-semibold text-slate-600 mb-2">Strand (Senior High School)</label>
-                <select @bind="Academicinformation.Strand"
-                        class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
+                <InputSelect @bind-Value="Academicinformation.Strand"
+                             class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-600 bg-white
                                focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
                                hover:border-slate-400">
                     <option selected value="" class="text-slate-500">Select Strand</option>
@@ -127,10 +139,11 @@
                     <option value="@StrandChoice.Humss">HUMSS - Humanities and Social Sciences</option>
                     <option value="@StrandChoice.Gas">GAS - General Academic Strand</option>
                     <option value="@StrandChoice.Tvl">TVL - Technical-Vocational-Livelihood</option>
-                </select>
+                </InputSelect>
+                <ValidationMessage For="@(()=> Academicinformation.Strand)" class="text-red-600 text-xs mt-1" />
             </div>
 
-       
+
             @if (!string.IsNullOrEmpty(Error))
             {
                 <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
@@ -138,7 +151,7 @@
                 </div>
             }
 
-        
+
             <div class="flex justify-between gap-3 pt-4 border-t border-slate-200">
                 <button type="button" @onclick="()=> HandleSaveAsDraft()"
                         class="flex-1 px-4 text-sm flex gap-2 py-2.5 border border-slate-300 text-slate-700 rounded-lg font-medium
@@ -167,22 +180,26 @@
 
     public async Task HandleAcademicInformation()
     {
+        Error = null;
         Academicinformation.Savestatus = SaveStatusAcademic.Save;
         var results = await studentRecordApi.AddAcademicDetailsAsync(Academicinformation);
         if (results is null)
         {
             Error = "Fill up All Requirements";
+            return;
         }
         pageState.SetViewAcads(PageState.SaveAsDraftAcads.Save);
     }
 
     public async Task HandleSaveAsDraft()
     {
+        Error = null;
         Academicinformation.Savestatus = SaveStatusAcademic.Save_As_Draft;
         var results = await studentRecordApi.AddAcademicDetailsAsync(Academicinformation);
         if (results is null)
         {
             Error = "Fill up All Requirements";
+            return;
         }
         pageState.SetViewAcads(PageState.SaveAsDraftAcads.SaveASDraft);
     }

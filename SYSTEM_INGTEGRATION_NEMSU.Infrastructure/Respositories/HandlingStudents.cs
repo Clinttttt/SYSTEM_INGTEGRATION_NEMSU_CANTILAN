@@ -11,6 +11,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Client.Helper;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
@@ -109,7 +110,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 YearLevel = request.Student.StudentAcademicDetails?.YearLevel,
                 Semester = request.Student.StudentAcademicDetails?.Semester,
                 Program = request.Student.StudentAcademicDetails?.Program,
-                Major = request.Student.StudentAcademicDetails?.Major,
+           
                 Strand = request.Student.StudentAcademicDetails?.Strand,
                 MobileNumber = request.Student.StudentContactDetails?.MobileNumber,
                 EmailAddress = request.Student.StudentContactDetails?.EmailAddress,
@@ -239,6 +240,33 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             return GetData;
         }
+        public async Task<List<HandlingStudentsDto>> StudentByYearLevelAsync(Guid AdminId, CourseProgram choice, YearLevelChoice yearLevel)
+        {
+            var student = await context.enrollcourse
+                .Include(s => s.Student)
+                .ThenInclude(s => s.StudentAcademicDetails)
+                .Include(s => s.Course)
+                .Include(s=> s.Student)
+                .ThenInclude(s=> s.StudentAcademicDetails)
+                .Include(s=> s.Student)
+                .ThenInclude(s=> s.StudentContactDetails)
+                .AsNoTracking()
+                .Where(s => s.Student.StudentAcademicDetails!.Program == choice && s.Course.AdminId == AdminId && s.Student.StudentAcademicDetails.YearLevel == yearLevel)
+                .Select(s => new HandlingStudentsDto
+                {
+                    StudentName = s.Student.StudentsDetails!.FirstName + " " + s.Student.StudentsDetails.MiddleName + " " + s.Student.StudentsDetails.LastName,
+                    StudentSchoolId  = s.Student.StudentAcademicDetails!.StudentSchoolId,
+                    CourseTitle = s.Course.Title!,
+                    DateEnrolled = s.DateEnrolled,
+                    Email = s.Student.StudentContactDetails!.EmailAddress,
+                    studentCourseStatus = s.StudentCourseStatus,
+                    Coursedepartment = s.Course.Department.GetDisplayName(),
+                    ProfileColor = s.ProfileColor,
+                }).ToListAsync();
+            return student;
+        }
+      
+
 
 
     }

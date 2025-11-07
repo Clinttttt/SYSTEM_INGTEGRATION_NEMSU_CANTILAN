@@ -15,12 +15,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         public Guid Id { get; set; }
         public string? StudentSchoolId { get; set; }
         public Guid StudentId { get; set; }
-        public StudentTypeChoice StudentType { get; set; }
-        public YearLevelChoice YearLevel { get; set; }
-        public SemesterChoice Semester { get; set; }
-        public ProgramChoice Program { get; set; }
-        public MajorChoice Major { get; set; }
-        public StrandChoice Strand { get; set; }
+        public StudentTypeChoice? StudentType { get; set; }
+        public YearLevelChoice? YearLevel { get; set; }
+        public SemesterChoice? Semester { get; set; }
+        public CourseProgram? Program { get; set; }
+        public StrandChoice? Strand { get; set; }
         public SaveStatusAcademic Savestatus { get; set; }
         [JsonIgnore]
         public User? User { get; set; }
@@ -55,90 +54,102 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         [Display(Name = "Second Semester")]
         Second_Semester
     }
-    public enum ProgramChoice
+
+    public enum CourseProgram
     {
-        [Display(Name = "College of Criminal Justice Education")]
-        Criminology,
-        [Display(Name = "Bachelor of Science in Hospitality Management")]
-        Hospitality_Management,
-        [Display(Name = "Bachelor of Science in Business Administration")]
-        Business_Administration,
-        [Display(Name = "Bachelor of Science in Tourism Management")]
-        Tourism_Management,
-        [Display(Name = "Bachelor of Science in Industrial Technology")]
-        Industrial_Technology,
+        // ===== DCS (Computer Studies) =====
         [Display(Name = "Bachelor of Science in Computer Engineering")]
         Computer_Engineering,
+
         [Display(Name = "Bachelor of Science in Computer Science")]
         Computer_Science,
-        [Display(Name = "Bachelor of Science in Computer Technology")]
-        Computer_Technology,
-        [Display(Name = "Bachelor of Science in Secondary Education")]
-        Secondary_Education,
-        [Display(Name = "Bachelor of Science in Technology And Livelihood Education")]
-        Technology_AndLivelihood_Education,
-        [Display(Name = "Bachelor of Science in Technical Vocational Teacher Education")]
-        Technical_Vocational_TeacherEducation
+
+        [Display(Name = "Bachelor of Science in Information Technology")]
+        Information_Technology,
+
+        // ===== DIT (Industrial Technology) =====
+        [Display(Name = "BSIT Major in Architectural Drafting Technology")]
+        BSIT_ArchitecturalDraftingTechnology,
+
+        [Display(Name = "BS in Industrial Technology Major in Automotive Technology")]
+        BSIT_AutomotiveTechnology,
+
+        [Display(Name = "BS in Industrial Technology Major in Computer Technology")]
+        BSIT_ComputerTechnology,
+
+        [Display(Name = "BS in Industrial Technology Major in Electrical Technology")]
+        BSIT_ElectricalTechnology,
+
+        [Display(Name = "BS in Industrial Technology Major in Electronics Technology")]
+        BSIT_ElectronicsTechnology,
+
+        [Display(Name = "BS in Industrial Technology Major in Food Technology")]
+        BSIT_FoodTechnology,
+
+        [Display(Name = "BS in Industrial Technology Major in Garments Technology")]
+        BSIT_GarmentsTechnology,
+
+        [Display(Name = "BS in Industrial Technology Major in Mechanical Technology")]
+        BSIT_MechanicalTechnology,
+
+        // ===== DGTT - Bachelor of Secondary Education =====
+        [Display(Name = "BSEd Major in Filipino")]
+        BSEd_Filipino,
+
+        [Display(Name = "BSEd Major in English")]
+        BSEd_English,
+
+        [Display(Name = "BSEd Major in Mathematics")]
+        BSEd_Mathematics,
+
+        [Display(Name = "BSEd Major in Science")]
+        BSEd_Science,
+
+        // ===== DGTT - Bachelor of Technical-Vocational Teacher Education =====
+        [Display(Name = "BTVTEd Major in Automotive Technology")]
+        BTVTEd_AutomotiveTechnology,
+
+        [Display(Name = "BTVTEd Major in Garments and Fashion Design")]
+        BTVTEd_GarmentsAndFashionDesign,
+
+        [Display(Name = "BTVTEd Major in Electrical Technology")]
+        BTVTEd_ElectricalTechnology,
+
+        [Display(Name = "BTVTEd Major in Electronics Technology")]
+        BTVTEd_ElectronicsTechnology,
+
+        [Display(Name = "BTVTEd Major in Food and Services Management")]
+        BTVTEd_FoodAndServicesManagement,
+
+        [Display(Name = "BTVTEd Major in Mechanical Technology")]
+        BTVTEd_MechanicalTechnology,
+
+        // ===== DGTT - Bachelor of Technology and Livelihood Education =====
+        [Display(Name = "BTLEd Major in Home Economics")]
+        BTLEd_HomeEconomics,
+
+        [Display(Name = "BTLEd Major in Industrial Arts")]
+        BTLEd_IndustrialArts,
+
+        // ===== CCJE =====
+        [Display(Name = "Bachelor of Science in Criminology")]
+        BS_Criminology,
+
+        // ===== DBM =====
+        [Display(Name = "Bachelor of Science in Hospitality Management")]
+        BSHM_HospitalityManagement,
+
+        [Display(Name = "Bachelor of Science in Tourism Management")]
+        BSTM_TourismManagement,
+
+        [Display(Name = "BSBA Major in Financial Management")]
+        BSBA_FinancialManagement,
+
+        [Display(Name = "BSBA Major in Human Resource Management")]
+        BSBA_HumanResourceManagement
     }
-    public enum MajorChoice
-    {
-        [Display(Name = "None")]
-        None,
 
-        [Display(Name = "Financial Management")]
-        Financial_Management,
 
-        [Display(Name = "Human Resources Management")]
-        HumanResources_Management,
-
-        [Display(Name = "Architectural Drafting Technology")]
-        Architectural_Drafting_Technology,
-
-        [Display(Name = "Automotive Technology")]
-        Automotive_Technology,
-
-        [Display(Name = "Electrical Technology")]
-        Electrical_Technology,
-
-        [Display(Name = "Electronics Technology")]
-        Electronics_Technology,
-
-        [Display(Name = "Food Technology")]
-        Food_Technology,
-
-        [Display(Name = "Garments Technology")]
-        Garments_Technology,
-
-        [Display(Name = "Mechanical Technology")]
-        Mechanical_Technology,
-
-        [Display(Name = "Computer Technology")]
-        Computer_Technology,
-
-        [Display(Name = "English")]
-        English,
-
-        [Display(Name = "Mathematics")]
-        Mathematics,
-
-        [Display(Name = "Filipino")]
-        Filipino,
-
-        [Display(Name = "Science")]
-        Science,
-
-        [Display(Name = "Home Economics")]
-        Home_Economics,
-
-        [Display(Name = "Foods and Services Management")]
-        Foods_And_Services_Management,
-
-        [Display(Name = "Fashion and Design")]
-        Fashion_And_Design,
-
-        [Display(Name = "Garments")]
-        Garments
-    }
     public enum StrandChoice
     {
         [Display(Name = "STEM")]

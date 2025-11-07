@@ -9,6 +9,8 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 {
@@ -32,10 +34,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<ContactInformationDto?> DisplayContactInformationAsync(Guid Student);
         Task<SchoolIdDto?> StudentSchoolIdAsync(Guid StudentId, string SchoolId);
 
-        Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate);
+        Task<ProfileUpdateDto?> UpdateAllDetailsAsync(ProfileUpdateDto studentUpdate);
         Task<bool> StudentSaveInformationAsync(Guid StudentId);
         Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync(Guid StudentId);
         Task<bool> CheckInformationAsync(Guid StudentId);
-       
+        Task<EnrollmentFormDto?> UpdateEnrollmentFormAsync(EnrollmentFormDto studentUpdate);
+
+
     }
 }

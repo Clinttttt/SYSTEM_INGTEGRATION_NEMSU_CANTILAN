@@ -211,7 +211,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("FacultyDepartment")
+                    b.Property<int?>("FacultyDepartment")
                         .HasColumnType("int");
 
                     b.Property<Guid>("FacultyId")
@@ -220,7 +220,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Property<string>("FacultySchoolId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Position")
+                    b.Property<int?>("Position")
                         .HasColumnType("int");
 
                     b.Property<string>("YearsOfTeaching")
@@ -249,7 +249,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FacultyGender")
+                    b.Property<int?>("FacultyGender")
                         .HasColumnType("int");
 
                     b.Property<Guid>("FacultyId")
@@ -263,6 +263,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
 
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Photo")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("PhotoContentType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("employmentStatus")
+                        .HasColumnType("int");
 
                     b.Property<int>("facultySaveStatus")
                         .HasColumnType("int");
@@ -357,25 +366,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.ToTable("invoice");
                 });
 
-            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.LearningObjectives", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("LearningObjectives");
-                });
-
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.PaymentDetails", b =>
                 {
                     b.Property<Guid>("Id")
@@ -463,19 +453,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Major")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Program")
+                    b.Property<int?>("Program")
                         .HasColumnType("int");
 
                     b.Property<int>("Savestatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("Semester")
+                    b.Property<int?>("Semester")
                         .HasColumnType("int");
 
-                    b.Property<int>("Strand")
+                    b.Property<int?>("Strand")
                         .HasColumnType("int");
 
                     b.Property<Guid>("StudentId")
@@ -484,10 +471,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Property<string>("StudentSchoolId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StudentType")
+                    b.Property<int?>("StudentType")
                         .HasColumnType("int");
 
-                    b.Property<int>("YearLevel")
+                    b.Property<int?>("YearLevel")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -597,7 +584,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", "Course")
-                        .WithMany("Enrollments")
+                        .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -618,7 +605,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.InstructorAnnouncement", b =>
                 {
                     b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", "course")
-                        .WithMany("Announcements")
+                        .WithMany()
                         .HasForeignKey("CourseId");
 
                     b.Navigation("course");
@@ -641,15 +628,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.LearningObjectives", b =>
-                {
-                    b.HasOne("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", null)
-                        .WithMany("LearningObjectives")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.PaymentDetails", b =>
@@ -683,15 +661,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations
                     b.Navigation("StudentContactDetails");
 
                     b.Navigation("StudentsDetails");
-                });
-
-            modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Course", b =>
-                {
-                    b.Navigation("Announcements");
-
-                    b.Navigation("Enrollments");
-
-                    b.Navigation("LearningObjectives");
                 });
 
             modelBuilder.Entity("SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.PersonalInformation", b =>

@@ -1,4 +1,5 @@
-﻿@inject IStudentRecordApiCommand studentRecordCommand
+﻿@using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder
+@inject IStudentRecordApiCommand studentRecordCommand
 @rendermode InteractiveServer
 @inject IJSRuntime JS
 
@@ -20,11 +21,12 @@
         </div>
 
         <EditForm Model="@studentUpdateInformation" OnValidSubmit="@HandlingUpdate" FormName="UpdatingAllInfo">
+            <DataAnnotationsValidator/>
             <div class="pb-4 max-h-[70vh] overflow-y-auto scrollbar-hide -mb-6">
 
                 <div class="grid lg:grid-cols-3 gap-8">
 
-               
+
                     <div class="space-y-4">
                         <h4 class="font-bold text-cyan-600 text-lg mb-4 pb-2 border-b-2 border-cyan-200 flex items-center gap-2">
                             Personal Information
@@ -34,60 +36,60 @@
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Full Name</span>
                             </label>
-                            <input type="text" @bind="studentUpdateInformation.personalInformation!.FirstName" class="input input-bordered input-sm" />
+                            <InputText type="text" @bind-Value="studentUpdateInformation!.FirstName" class="input input-bordered input-sm" />
                         </div>
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Middle Name</span>
                             </label>
-                            <input type="text" @bind="studentUpdateInformation.personalInformation!.MiddleName" class="input input-bordered input-sm" />
+                            <InputText type="text" @bind-Value="studentUpdateInformation!.MiddleName" class="input input-bordered input-sm" />
                         </div>
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Last Name</span>
                             </label>
-                            <input type="text" @bind="studentUpdateInformation.personalInformation!.LastName" class="input input-bordered input-sm" />
+                            <InputText type="text" @bind-Value="studentUpdateInformation!.LastName" class="input input-bordered input-sm" />
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Date of Birth</span>
                             </label>
-                            <input type="date" @bind="studentUpdateInformation.personalInformation.DateOfBirth" class="input input-bordered input-sm" />
+                            <InputDate  @bind-Value="studentUpdateInformation.DateOfBirth" class="input input-bordered input-sm" />
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Gender</span>
                             </label>
-                            <select class="select select-bordered select-sm" @bind="studentUpdateInformation.personalInformation!.Gender">
+                            <InputSelect class="select select-bordered select-sm" @bind-Value="studentUpdateInformation!.Gender">
                                 <option value="@GenderChoice.Male">Male</option>
                                 <option value="@GenderChoice.Female">Female</option>
                                 <option value="@GenderChoice.Prefer_not_to_say">Prefer not to say</option>
-                            </select>
+                            </InputSelect>
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Civil Status</span>
                             </label>
-                            <select class="select select-bordered select-sm" @bind="studentUpdateInformation.personalInformation!.CivilStatus">
+                            <InputSelect class="select select-bordered select-sm" @bind-Value="studentUpdateInformation!.CivilStatus">
                                 <option value="@CivilStatusChoice.Single">Single</option>
                                 <option value="@CivilStatusChoice.Married">Married</option>
                                 <option value="@CivilStatusChoice.Taken">Taken</option>
 
-                            </select>
+                            </InputSelect>
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Nationality</span>
                             </label>
-                            <input type="text" @bind="studentUpdateInformation.personalInformation!.Nationality" class="input input-bordered input-sm" />
+                            <InputText type="text" @bind-Value="studentUpdateInformation!.Nationality" class="input input-bordered input-sm" />
                         </div>
                     </div>
 
-              
+
                     <div class="space-y-4">
                         <h4 class="font-bold text-teal-600 text-lg mb-4 pb-2 border-b-2 border-teal-200 flex items-center gap-2">
                             Academic Information
@@ -97,96 +99,104 @@
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Student Type</span>
                             </label>
-                            <select class="select select-bordered select-sm" @bind="studentUpdateInformation.academicInformation!.StudentType">
+                            <InputSelect class="select select-bordered select-sm" @bind-Value="studentUpdateInformation!.StudentType">
                                 <option value="@StudentTypeChoice.New">New Student</option>
                                 <option value="@StudentTypeChoice.Old">Old Student</option>
                                 <option value="@StudentTypeChoice.Transferee">Transferee</option>
-                            </select>
+                            </InputSelect>
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Year Level</span>
                             </label>
-                            <select class="select select-bordered select-sm" @bind="studentUpdateInformation.academicInformation!.YearLevel">
+                            <InputSelect class="select select-bordered select-sm" @bind-Value="studentUpdateInformation!.YearLevel">
                                 <option value="@YearLevelChoice.First_Year">1st Year</option>
                                 <option value="@YearLevelChoice.Second_Year">2nd Year</option>
                                 <option value="@YearLevelChoice.Third_Year">3rd Year</option>
                                 <option value="@YearLevelChoice.Fourth_Year">4th Year</option>
-                            </select>
+                            </InputSelect>
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Semester</span>
                             </label>
-                            <select class="select select-bordered select-sm" @bind="studentUpdateInformation.academicInformation!.Semester">
+                            <InputSelect class="select select-bordered select-sm" @bind-Value="studentUpdateInformation!.Semester">
                                 <option value="@SemesterChoice.First_Semester">First Semester</option>
                                 <option value="@SemesterChoice.Second_Semester">Second Semester</option>
-                            </select>
+                            </InputSelect>
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Program</span>
                             </label>
-                            <select class="select select-bordered select-sm" @bind="studentUpdateInformation.academicInformation!.Program">
-                                <option value="@ProgramChoice.Criminology">College of Criminal Justice Education</option>
-                                <option value="@ProgramChoice.Hospitality_Management">Bachelor of Science in Hospitality Management</option>
-                                <option value="@ProgramChoice.Business_Administration">Bachelor of Science in Business Administration</option>
-                                <option value="@ProgramChoice.Tourism_Management">Bachelor of Science in Tourism Management</option>
-                                <option value="@ProgramChoice.Industrial_Technology">Bachelor of Science in Industrial Technology</option>
-                                <option value="@ProgramChoice.Computer_Engineering">Bachelor of Science in Computer Engineering</option>
-                                <option value="@ProgramChoice.Computer_Science">Bachelor of Science in Computer Science</option>
-                                <option value="@ProgramChoice.Computer_Technology" selected>Bachelor of Science in Computer Technology</option>
-                                <option value="@ProgramChoice.Secondary_Education">Bachelor of Science in Secondary Education</option>
-                                <option value="@ProgramChoice.Technology_AndLivelihood_Education">Bachelor of Science in Technology And Livelihood Education</option>
-                                <option value="@ProgramChoice.Technical_Vocational_TeacherEducation">Bachelor of Science in Technical Vocational Teacher Education</option>
-                            </select>
+                            <InputSelect class="select select-bordered select-sm" @bind-Value="studentUpdateInformation!.Program">
+                                <option value="">-- Select Program --</option>
+
+                            
+                                <option disabled class="font-semibold text-slate-600">College of Computer Studies</option>
+                                <option value="@CourseProgram.Computer_Engineering">Bachelor of Science in Computer Engineering</option>
+                                <option value="@CourseProgram.Computer_Science">Bachelor of Science in Computer Science</option>
+                                <option value="@CourseProgram.Information_Technology">Bachelor of Science in Information Technology</option>
+
+                              
+                                <option disabled class="font-semibold text-slate-600">Department of Industrial Technology</option>
+                                <option value="@CourseProgram.BSIT_ArchitecturalDraftingTechnology">BS in Industrial Technology Major in Architectural Drafting Technology</option>
+                                <option value="@CourseProgram.BSIT_AutomotiveTechnology">BS in Industrial Technology Major in Automotive Technology</option>
+                                <option value="@CourseProgram.BSIT_ComputerTechnology">BS in Industrial Technology Major in Computer Technology</option>
+                                <option value="@CourseProgram.BSIT_ElectricalTechnology">BS in Industrial Technology Major in Electrical Technology</option>
+                                <option value="@CourseProgram.BSIT_ElectronicsTechnology">BS in Industrial Technology Major in Electronics Technology</option>
+                                <option value="@CourseProgram.BSIT_FoodTechnology">BS in Industrial Technology Major in Food Technology</option>
+                                <option value="@CourseProgram.BSIT_GarmentsTechnology">BS in Industrial Technology Major in Garments Technology</option>
+                                <option value="@CourseProgram.BSIT_MechanicalTechnology">BS in Industrial Technology Major in Mechanical Technology</option>
+
+                                <option disabled class="font-semibold text-slate-600">Department of General and Teacher Education</option>
+                                <option value="@CourseProgram.BSEd_Filipino">BSEd Major in Filipino</option>
+                                <option value="@CourseProgram.BSEd_English">BSEd Major in English</option>
+                                <option value="@CourseProgram.BSEd_Mathematics">BSEd Major in Mathematics</option>
+                                <option value="@CourseProgram.BSEd_Science">BSEd Major in Science</option>
+                                <option value="@CourseProgram.BTVTEd_AutomotiveTechnology">BTVTEd Major in Automotive Technology</option>
+                                <option value="@CourseProgram.BTVTEd_GarmentsAndFashionDesign">BTVTEd Major in Garments and Fashion Design</option>
+                                <option value="@CourseProgram.BTVTEd_ElectricalTechnology">BTVTEd Major in Electrical Technology</option>
+                                <option value="@CourseProgram.BTVTEd_ElectronicsTechnology">BTVTEd Major in Electronics Technology</option>
+                                <option value="@CourseProgram.BTVTEd_FoodAndServicesManagement">BTVTEd Major in Food and Services Management</option>
+                                <option value="@CourseProgram.BTVTEd_MechanicalTechnology">BTVTEd Major in Mechanical Technology</option>
+                                <option value="@CourseProgram.BTLEd_HomeEconomics">BTLEd Major in Home Economics</option>
+                                <option value="@CourseProgram.BTLEd_IndustrialArts">BTLEd Major in Industrial Arts</option>
+
+                              
+                                <option disabled class="font-semibold text-slate-600">College of Criminal Justice Education</option>
+                                <option value="@CourseProgram.BS_Criminology">Bachelor of Science in Criminology</option>
+
+                       
+                                <option disabled class="font-semibold text-slate-600">Department of Business and Management</option>
+                                <option value="@CourseProgram.BSHM_HospitalityManagement">Bachelor of Science in Hospitality Management</option>
+                                <option value="@CourseProgram.BSTM_TourismManagement">Bachelor of Science in Tourism Management</option>
+                                <option value="@CourseProgram.BSBA_FinancialManagement">BSBA Major in Financial Management</option>
+                                <option value="@CourseProgram.BSBA_HumanResourceManagement">BSBA Major in Human Resource Management</option>
+                            </InputSelect>
+
                         </div>
 
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold text-xs uppercase">Major</span>
-                            </label>
-                            <select class="select select-bordered select-sm" @bind="studentUpdateInformation.academicInformation!.Major">
-                                <option value="@MajorChoice.None">None</option>
-                                <option value="@MajorChoice.Financial_Management">Financial Management</option>
-                                <option value="@MajorChoice.HumanResources_Management">Human Resources Management</option>
-                                <option value="@MajorChoice.Architectural_Drafting_Technology">Architectural Drafting Technology</option>
-                                <option value="@MajorChoice.Automotive_Technology">Automotive Technology</option>
-                                <option value="@MajorChoice.Electrical_Technology">Electrical Technology</option>
-                                <option value="@MajorChoice.Electronics_Technology">Electronics Technology</option>
-                                <option value="@MajorChoice.Food_Technology">Food Technology</option>
-                                <option value="@MajorChoice.Garments_Technology">Garments Technology</option>
-                                <option value="@MajorChoice.Mechanical_Technology">Mechanical Technology</option>
-                                <option value="@MajorChoice.Computer_Technology">Computer Technology</option>
-                                <option value="@MajorChoice.English">English</option>
-                                <option value="@MajorChoice.Mathematics">Mathematics</option>
-                                <option value="@MajorChoice.Filipino">Filipino</option>
-                                <option value="@MajorChoice.Science">Science</option>
-                                <option value="@MajorChoice.Home_Economics">Home Economics</option>
-                                <option value="@MajorChoice.Foods_And_Services_Management">Foods and Services Management</option>
-                                <option value="@MajorChoice.Fashion_And_Design">Fashion and Design</option>
-                                <option value="@MajorChoice.Garments">Garments</option>
-                            </select>
-                        </div>
+
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Strand</span>
                             </label>
-                            <select class="select select-bordered select-sm" @bind="studentUpdateInformation.academicInformation!.Strand">
+                            <InputSelect class="select select-bordered select-sm" @bind-Value="studentUpdateInformation!.Strand">
                                 <option value="@StrandChoice.Stem">STEM</option>
                                 <option value="@StrandChoice.Abm">ABM</option>
                                 <option value="@StrandChoice.Humss">HUMSS</option>
                                 <option value="@StrandChoice.Gas">GAS</option>
                                 <option value="@StrandChoice.Tvl" selected>TVL</option>
-                            </select>
+                            </InputSelect>
                         </div>
                     </div>
 
-         
+
                     <div class="space-y-4">
                         <h4 class="font-bold text-stone-600 text-lg mb-4 pb-2 border-b-2 border-stone-300 flex items-center gap-2">
                             Contact Information
@@ -196,28 +206,28 @@
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Mobile Number</span>
                             </label>
-                            <input type="tel" @bind="studentUpdateInformation.contactInformation!.MobileNumber" class="input input-bordered input-sm" />
+                            <InputText type="tel" @bind-Value="studentUpdateInformation!.MobileNumber" class="input input-bordered input-sm" />
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Email Address</span>
                             </label>
-                            <input type="email" @bind="studentUpdateInformation.contactInformation!.EmailAddress" class="input input-bordered input-sm" />
+                            <InputText type="email" @bind-Value="studentUpdateInformation!.EmailAddress" class="input input-bordered input-sm" />
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Emergency Contact</span>
                             </label>
-                            <input type="tel" @bind="studentUpdateInformation.contactInformation!.EmergencyContactNumber" class="input input-bordered input-sm" />
+                            <InputText type="tel" @bind-Value="studentUpdateInformation!.EmergencyContactNumber" class="input input-bordered input-sm" />
                         </div>
 
                         <div class="form-control">
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Permanent Address</span>
                             </label>
-                            <textarea class="textarea textarea-bordered textarea-sm h-24" @bind="studentUpdateInformation.personalInformation!.PermanentAddress" placeholder="Enter address"></textarea>
+                            <InputTextArea class="textarea textarea-bordered textarea-sm h-24" @bind-Value="studentUpdateInformation!.PermanentAddress" placeholder="Enter address"></InputTextArea>
                         </div>
                     </div>
 
@@ -253,13 +263,8 @@
     public ContactInformationDto? C { get; set; }
 
     public bool hasloaded = false;
-    public StudentUpdateInformationDto studentUpdateInformation = new StudentUpdateInformationDto
-        {
-            personalInformation = new PersonalInformationDto(),
-            contactInformation = new ContactInformationDto(),
-            academicInformation = new AcademicInformationDto()
+    public ProfileUpdateDto studentUpdateInformation = new();
 
-        };
     [Parameter]
     public EventCallback UpdateInfo { get; set; }
     protected override void OnParametersSet()
@@ -268,33 +273,44 @@
         if (!hasloaded && P is not null && A is not null && C is not null)
         {
             hasloaded = true;
-
-            studentUpdateInformation.personalInformation!.FirstName = P.FirstName;
-            studentUpdateInformation.personalInformation!.MiddleName = P.MiddleName;
-            studentUpdateInformation.personalInformation.LastName = P.LastName;
-            studentUpdateInformation.personalInformation.DateOfBirth = P.DateOfBirth;
-            studentUpdateInformation.personalInformation.Gender = P.Gender;
-            studentUpdateInformation.personalInformation.CivilStatus = P.CivilStatus;
-            studentUpdateInformation.personalInformation.Nationality = P.Nationality;
-            studentUpdateInformation.personalInformation.PermanentAddress = P.PermanentAddress;
-            studentUpdateInformation.contactInformation!.MobileNumber = C.MobileNumber;
-            studentUpdateInformation.contactInformation.EmailAddress = C.EmailAddress;
-            studentUpdateInformation.contactInformation.EmergencyContactNumber = C.EmergencyContactNumber;
-            studentUpdateInformation.academicInformation!.StudentType = A.StudentType;
-            studentUpdateInformation.academicInformation.YearLevel = A.YearLevel;
-            studentUpdateInformation.academicInformation.Semester = A.Semester;
-            studentUpdateInformation.academicInformation.Strand = A.Strand;
-            studentUpdateInformation.academicInformation.Program = A.Program;
-            studentUpdateInformation.academicInformation.Major = A.Major;
+            studentUpdateInformation.StudentId = P.StudentId;
+            studentUpdateInformation.FirstName = P.FirstName;
+            studentUpdateInformation.MiddleName = P.MiddleName;
+            studentUpdateInformation.LastName = P.LastName;
+            studentUpdateInformation.DateOfBirth = P.DateOfBirth;
+            studentUpdateInformation.Gender = P.Gender;
+            studentUpdateInformation.CivilStatus = P.CivilStatus;
+            studentUpdateInformation.Nationality = P.Nationality;
+            studentUpdateInformation.PermanentAddress = P.PermanentAddress;
+            studentUpdateInformation.MobileNumber = C.MobileNumber;
+            studentUpdateInformation.EmailAddress = C.EmailAddress;
+            studentUpdateInformation.EmergencyContactNumber = C.EmergencyContactNumber;
+            studentUpdateInformation.StudentType = A.StudentType;
+            studentUpdateInformation.YearLevel = A.YearLevel;
+            studentUpdateInformation.Semester = A.Semester;
+            studentUpdateInformation.Strand = A.Strand;
+            studentUpdateInformation.Program = A.Program;
+    
         }
 
         StateHasChanged();
     }
     public async Task HandlingUpdate()
     {
-        await studentRecordCommand.UpdateAllDetailsAsync(studentUpdateInformation);
-        await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_4");
-        await UpdateInfo.InvokeAsync();
+        Console.WriteLine("HandlingUpdate CALLED!");
+        try
+        {
+            await studentRecordCommand.UpdateAllDetailsAsync(studentUpdateInformation);
+            await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_4");
+            await UpdateInfo.InvokeAsync();
+    }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error Caused:" + ex.Message);
+        }
+            
+        
+      
     }
 
 }

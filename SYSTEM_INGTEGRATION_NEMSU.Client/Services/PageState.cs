@@ -10,6 +10,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Client.Services
         public SaveAsDraftPerInfo CurrentViewPerInfo { get; set; } = SaveAsDraftPerInfo.ViewInfo;
         public SaveAsDraftAcads CurrentViewAcads { get; set; } = SaveAsDraftAcads.ViewInfo;
         public SaveAsDraftContact CurrentViewContact { get; set; } = SaveAsDraftContact.ViewInfo;
+        public ProgramView programView { get; set; } = ProgramView.program;
+        public enum ProgramView
+        {
+            program,
+            yearlevel
+        }
+        public void SetProgramView(ProgramView ProgramView)
+        {
+            programView = ProgramView;
+            Onchange?.Invoke();
+        }
         public enum StudentsView {
             CurrentStudents,
             AllStudents,

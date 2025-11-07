@@ -18,7 +18,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public Guid? CategoryId { get; set; }
         public CourseDepartment? Department { get; set; }
         public string? CourseDescriptiion { get; set; }
-        public List<LearningObjectives>? LearningObjectives { get; set; }
+       
         public string? SchoolYear { get; set; }
         public CourseSemester? Semester { get; set; }
         public string? Schedule { get; set; }

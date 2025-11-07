@@ -40,17 +40,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 ?? throw new Exception("Category not found"),
                 MaxCapacity = request.MaxCapacity,
             };
-            if (request.LearningObjectives is not null && request.LearningObjectives.Any())
-            {
-                foreach (var obj in request.LearningObjectives)
-                {
-
-                    course.LearningObjectives.Add(new LearningObjectives
-                    {
-                        description = obj.description,
-                    });
-                }
-            }
+         
             context.course.Add(course);
             await context.SaveChangesAsync();
             var filter = course.Adapt<CourseDto>();
@@ -107,7 +97,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (request is null) return null;
             var GetCourse = await context.course
                 .Include(s => s.Category)
-                .Include(s => s.LearningObjectives)
+            
                 .FirstOrDefaultAsync(s => s.AdminId == request.Id && s.Id == CourseId);
             if (GetCourse is null) return null;
             var liststudent = await context.enrollcourse.Where(s => s.CourseId == CourseId).ToListAsync();

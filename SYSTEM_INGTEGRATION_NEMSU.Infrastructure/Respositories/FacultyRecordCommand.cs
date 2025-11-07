@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
@@ -106,6 +107,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 FacultyAcademicInformationDto = filteracademicdto
             };
         }
-
+      
+        public async Task<FacultyPhotoId?> FacultyPhotoIDAsync(Guid FacultyId)
+        {
+            var request = await context.facultyPersonalInformation.FirstOrDefaultAsync(s => s.FacultyId == FacultyId);
+            if (request is null) return null;
+            return new FacultyPhotoId()
+            {
+                Photo = request.Photo,
+                PhotoContentType = request.PhotoContentType,
+            };
+        }
     }
 }

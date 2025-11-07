@@ -49,5 +49,18 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await facultyRecord.DisplayFacultyDetailsAsync(FacultyId.Id);
             return Ok(response);
         }
+
+        [Authorize]
+        [HttpGet("Faculty PhotoID")]
+        public async Task<ActionResult<FacultyRecordDto>> FacultyPhotoIDAsync()
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
+            var UserId = Guid.Parse(FindUser.Value);
+            var FacultyId = await user.UserInfo(UserId);
+            if (FacultyId is null) return BadRequest("User Cannot Find");
+            var response = await facultyRecord.FacultyPhotoIDAsync(FacultyId.Id);
+            return Ok(response);
+        }
     }
 }

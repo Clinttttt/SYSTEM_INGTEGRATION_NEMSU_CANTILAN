@@ -7,6 +7,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 {
@@ -18,6 +19,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<List<HandlingStudentsDto>> DisplayStudentByDepartmentAsync(Guid AdminId, CourseDepartment department);
         Task<SummaryStatisticsDto> SummaryStatisticsAsync(Guid Admin);
         Task<List<DepartmentStatsDto>> DepartmentStatsAsync(Guid AdminId);
-      
+        Task<List<HandlingStudentsDto>> StudentByYearLevelAsync(Guid AdminId, CourseProgram choice, YearLevelChoice yearLevel);
+
+
     }
 }

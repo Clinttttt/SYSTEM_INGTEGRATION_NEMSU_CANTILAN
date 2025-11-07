@@ -15,51 +15,44 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
    public class HandlingStudentsApi : IHandlingStudentsApi
     {
         private readonly HttpClient _http;
-        private ProtectedLocalStorage _storage;
-        public HandlingStudentsApi(HttpClient http, ProtectedLocalStorage storage)
+     
+        private readonly IAuthHelper _authHelper;
+        public HandlingStudentsApi(HttpClient http, IAuthHelper authHelper)
         {
             _http = http;
-            _storage = storage;
+            _authHelper = authHelper;
         }
-        public async Task SetAuthentication()
-        {
-            var token = await _storage.GetAsync<string>("AccessToken");
-            var results = token.Success ? token.Value : null;
-            if (!string.IsNullOrEmpty(results))
-                _http.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", results);
 
-        }
         public async Task<List<HandlingStudentsDto>?> DisplayStudentsAsync()
         {
-       
-            await SetAuthentication();
+
+            await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<List<HandlingStudentsDto>>("api/HandlingStudents/Display%20Students");
         }
         public async Task<List<HandlingStudentsDto>?> DisplayStudentByCoursesAsync(string CourseCode)
         {
-            await SetAuthentication();
+            await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<List<HandlingStudentsDto>>($"api/HandlingStudents/Display%20Students%20ByCourses?CourseCode={CourseCode}");
         }
         public async Task<HandlingAllStudentsDetailsDto?> DisplayAllStudentsDetailsAsync(Guid StudentId)
         {
-            await SetAuthentication();
+            await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<HandlingAllStudentsDetailsDto>($"api/HandlingStudents/GetAll%20StudentDetails?StudentId={StudentId}");
 
         }
         public async Task<List<HandlingStudentsDto>?> DisplayStudentByDepartmentAsync( CourseDepartment department)
         {
-            await SetAuthentication();
+            await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<List<HandlingStudentsDto>>($"api/HandlingStudents/Display%20Students%20ByDepartment?department={department}");
         }
         public async Task<SummaryStatisticsDto?> SummaryStatisticsAsync()
         {
-            await SetAuthentication();
+            await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<SummaryStatisticsDto>("api/HandlingStudents/Summary%20Statistics");
         }
         public async Task<List<DepartmentStatsDto>?> DepartmentStatsAsync()
         {
-            await SetAuthentication();
+            await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<List<DepartmentStatsDto>>("api/HandlingStudents/Department%20Statistics");
         }
     }

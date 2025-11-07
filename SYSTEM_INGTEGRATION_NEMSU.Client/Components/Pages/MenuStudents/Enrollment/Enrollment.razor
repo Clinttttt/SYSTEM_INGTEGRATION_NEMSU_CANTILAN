@@ -44,11 +44,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                             <input type="text"
-                                   @bind="SearchQuery"
-                                   @bind:event="oninput"
-                                   @onkeyup="HandlingQuery"
-                                   placeholder="Search courses by Name or Course Code..."
-                                   class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all shadow-sm hover:shadow-md" />
+                            @bind="SearchQuery"
+                            @bind:event="oninput"
+                            @onkeyup="HandlingQuery"
+                            placeholder="Search courses by Name or Course Code..."
+                            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all shadow-sm hover:shadow-md" />
                         </div>
                     </div>
                     @if (!hasrender)
@@ -62,11 +62,12 @@
                             </div>
                         </div>
                     }
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        @if (filtered is not null)
-                        {
+                    @if (filtered?.Any() == true)
+                    {
 
-                            foreach (var C in filtered)
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                     
+                            @foreach (var C in filtered)
                             {
 
 
@@ -130,7 +131,7 @@
 
                                         <div class="mt-auto">
                                             <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
-                                                   class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+                                            class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
                                                 <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
@@ -144,11 +145,22 @@
                                 </div>
 
                             }
-                        }
+                   
 
                     </div>
+                        }
+                        else
+                        {
 
+                        <div class="bg-gray-50 rounded-lg shadow border border-gray-200 p-12 text-center">
+                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <h3 class="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent mb-2">No Available Course</h3>
+                            <p class="text-gray-600">No available courses at the moment.</p>
+                        </div>
 
+                        }
 
 
                 </div>

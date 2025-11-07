@@ -50,7 +50,7 @@
 
                 <div class="bg-gradient-to-b from-slate-50 to-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                     <div class="h-full overflow-y-auto max-h-[600px] p-6 scrollbar-hide">
-                        @if (pageState.CurrentViewPerInfo == PageState.SaveAsDraftPerInfo.ViewInfo)
+                        @if (pageState.CurrentViewPerInfo == PageState.SaveAsDraftPerInfo.ViewInfo )
                         {
                             <PersonalInformation />
                         }
@@ -62,6 +62,7 @@
                         {
                             <SaveInformation />
                         }
+                    
                     </div>
                 </div>
 
@@ -138,10 +139,12 @@
         }
         StateHasChanged();
     }
-
+   
+  
     protected override void OnInitialized()
     {
         pageState.Onchange += StateHasChanged;
+  
     }
 
     public void Dispose()

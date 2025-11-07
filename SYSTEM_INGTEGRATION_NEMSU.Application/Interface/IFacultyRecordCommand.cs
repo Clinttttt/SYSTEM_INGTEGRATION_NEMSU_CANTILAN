@@ -12,5 +12,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<FacultyRecordDto?> AddFacultyInformationAsync(FacultyRecordDto details);
         Task<FacultyRecordDto?> UpdateFacultyInformationAsync(FacultyRecordDto details);
         Task<FacultyRecordDto?> DisplayFacultyDetailsAsync(Guid FacultyId);
+        Task<FacultyPhotoId?> FacultyPhotoIDAsync(Guid FacultyId);
     }
 }

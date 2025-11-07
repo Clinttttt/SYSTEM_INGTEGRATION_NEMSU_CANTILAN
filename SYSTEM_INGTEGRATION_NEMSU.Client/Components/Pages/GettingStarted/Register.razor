@@ -4,8 +4,8 @@
 @inject IAuthApiServices Authservice
 @inject NavigationManager navigationManager
 
-<div class="h-screen content bg-gradient-to-br overflow-y-hidden from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-6">
-    <div class="w-full max-w-7xl flex items-center h-screen overflow-y-hidden">
+<div class="relative h-screen content bg-gradient-to-br overflow-y-hidden from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-6">
+    <div class="w-full max-w-7xl flex items-center h-screen overflow-y-hidden ">
         <div class="grid lg:grid-cols-3 gap-8 w-full h-screen mt-10 items-start p-5">
 
           
@@ -90,7 +90,18 @@
                 </div>
             </div>
 
-        
+
+            @if (spinner)
+            {
+                <div class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div class="text-center">
+                        <div class="relative">
+                            <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                        </div>
+                        <p class="text-white mt-6 text-lg font-semibold">Creating Account...</p>
+                    </div>
+                </div>
+            }
             <div class="lg:col-span-1 flex items-center justify-center scale-100  -mt-1">
                 <ul class="space-y-8">
                  
@@ -224,7 +235,7 @@
 @code {
     public UserDtos User { get; set; } = new();
     public string? Error { get; set; }
-
+    public bool spinner = false;
     public async Task Registers()
     {
         if (User.Password != User.ConfirmPassword)
@@ -232,16 +243,25 @@
             Error = "Passwords do not match.";
             return;
         }
+        var spinnerTask = Task.Delay(50).ContinueWith(_ =>
+          {
+              spinner = true;
+              InvokeAsync(StateHasChanged);
+          });
+        spinner = true;
         User.Role = UserRole.Student;
         var Results = await Authservice.RegisterAsync(User!);
 
         if (Results is null)
         {
             Error = "User Already Exists";
+            spinner = false;
         }
         else
         {
             navigationManager.NavigateTo("/loginuser");
+
         }
+        spinner = false;
     }
 }

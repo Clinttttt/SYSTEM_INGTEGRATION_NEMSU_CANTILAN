@@ -13,6 +13,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     [ApiController]
     public class HandlingMessageController(IUserRespository respository, IRespondCommand respondCommand) : ControllerBase
     {
+       
         [Authorize]
         [HttpPost("Auto Response")]
         public async Task<ActionResult<AutoResponsetDto>> AutoResponse(string CourseCode)
@@ -29,7 +30,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (response is null) { return BadRequest("Something went wrong"); }
             return Ok(response);
         }
-
+       
         [Authorize]
         [HttpPost("Announcement")]
         public async Task<ActionResult<AnnouncementDto>> Announcement(CreateAnnouncementDto announcement)
@@ -46,6 +47,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await respondCommand.AddAnnouncementAsync(announcement);
             return Ok(response);
         }
+       
         [Authorize]
         [HttpGet("Display Announcement")]
         public async Task<ActionResult<AnnouncementDto>> DisplayAnnouncementAsync()
@@ -59,6 +61,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await respondCommand.DisplayAnnouncementAsync(user.Id);
             return Ok(response);
         }
+      
         [Authorize]
         [HttpDelete("Delete Announcement/{AnnouncementId}")]
         public async Task<ActionResult<bool>> DeleteAnnouncementAsync(Guid AnnouncementId)
@@ -72,6 +75,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await respondCommand.DeleteAnnouncementAsync(user.Id, AnnouncementId);
             return Ok(response);
         }
+       
         [Authorize]
         [HttpPatch("Edit Announcement")]
         public async Task<ActionResult<AnnouncementDto>> EditAnnouncementAsync(EditAnnouncementDto editAnnouncement)
@@ -86,6 +90,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await respondCommand.EditAnnouncementAsync(editAnnouncement);
             return Ok(response);
         }
+      
         [Authorize]
         [HttpGet("Provision Announcement")]
         public async Task<ActionResult<AnnouncementDto>> ProvisionAnnouncementAsync()

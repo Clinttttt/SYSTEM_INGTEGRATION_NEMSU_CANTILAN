@@ -2,6 +2,7 @@
 @using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
 @inject PageState pageState
 @inject IStudentRecordApiCommand studentRecordApi
+@rendermode InteractiveServer
 
 <div class="space-y-4">
     <div class="text-center mb-6">
@@ -15,9 +16,10 @@
     </div>
 
     <EditForm Model="@contactInformation" OnValidSubmit="@HandleContactInformation" FormName="Contact">
+        <DataAnnotationsValidator/>
         <div class="space-y-5">
 
-           
+
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
                 <label class="block text-sm font-semibold text-slate-600 mb-3">Personal Mobile Number</label>
                 <div class="relative">
@@ -27,15 +29,16 @@
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M6 1C4.61929 1 3.5 2.11929 3.5 3.5V12.5C3.5 13.8807 4.61929 15 6 15H10C11.3807 15 12.5 13.8807 12.5 12.5V3.5C12.5 2.11929 11.3807 1 10 1H6ZM10 2.5H9.5V3C9.5 3.27614 9.27614 3.5 9 3.5H7C6.72386 3.5 6.5 3.27614 6.5 3V2.5H6C5.44771 2.5 5 2.94772 5 3.5V12.5C5 13.0523 5.44772 13.5 6 13.5H10C10.5523 13.5 11 13.0523 11 12.5V3.5C11 2.94772 10.5523 2.5 10 2.5Z" />
                         </svg>
                     </span>
-                    <input @bind="contactInformation.MobileNumber" type="tel"
-                           class="w-full pl-11 pr-3 py-3 bg-white border border-slate-300 rounded-lg text-sm font-medium
+                    <InputText @bind-Value="contactInformation.MobileNumber" type="tel"
+                    class="w-full pl-11 pr-3 py-3 bg-white border border-slate-300 rounded-lg text-sm font-medium
                                   focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
                                   hover:border-slate-400"
-                           required
-                           placeholder="09XX XXX XXXX"
-                           pattern="[0-9]*"
-                           minlength="11"
-                           maxlength="11" />
+                    required
+                    placeholder="09XX XXX XXXX"
+                    pattern="[0-9]*"
+                    minlength="11"
+                    maxlength="11" />
+                    <ValidationMessage For="@(() => contactInformation.MobileNumber)" class="text-red-600 text-xs mt-1" />
                 </div>
                 <div class="flex items-center gap-2 mt-2">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,7 +48,7 @@
                 </div>
             </div>
 
-      
+
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
                 <label class="block text-sm font-semibold text-slate-600 mb-3">Email Address</label>
                 <div class="relative">
@@ -55,12 +58,13 @@
                             <polyline points="22,6 12,13 2,6"></polyline>
                         </svg>
                     </span>
-                    <input @bind="contactInformation.EmailAddress" type="email"
-                           class="w-full pl-11 pr-3 py-3 bg-white border border-slate-300 rounded-lg text-sm font-medium
+                    <InputText @bind-Value="contactInformation.EmailAddress" type="email"
+                    class="w-full pl-11 pr-3 py-3 bg-white border border-slate-300 rounded-lg text-sm font-medium
                                   focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
                                   hover:border-slate-400"
-                           required
-                           placeholder="your.email@example.com" />
+                    required
+                    placeholder="your.email@example.com" />
+                    <ValidationMessage For="@(() => contactInformation.EmailAddress)" class="text-red-600 text-xs mt-1" />
                 </div>
                 <div class="flex items-center gap-2 mt-2">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,7 +74,7 @@
                 </div>
             </div>
 
-          
+
             <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
                 <label class="block text-sm font-semibold text-slate-600 mb-3">Emergency Contact Number</label>
                 <div class="relative">
@@ -79,15 +83,16 @@
                             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                         </svg>
                     </span>
-                    <input @bind="contactInformation.EmergencyContactNumber" type="tel"
-                           class="w-full pl-11 pr-3 py-3 bg-white border border-slate-300 rounded-lg text-sm font-medium
+                    <InputText @bind-Value="contactInformation.EmergencyContactNumber" type="tel"
+                    class="w-full pl-11 pr-3 py-3 bg-white border border-slate-300 rounded-lg text-sm font-medium
                                   focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all
                                   hover:border-slate-400"
-                           required
-                           placeholder="09XX XXX XXXX"
-                           pattern="[0-9]*"
-                           minlength="11"
-                           maxlength="11" />
+                    required
+                    placeholder="09XX XXX XXXX"
+                    pattern="[0-9]*"
+                    minlength="11"
+                    maxlength="11" />
+                    <ValidationMessage For="@(() => contactInformation.EmergencyContactNumber)" class="text-red-600 text-xs mt-1" />
                 </div>
                 <div class="flex items-center gap-2 mt-2">
                     <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,7 +102,7 @@
                 </div>
             </div>
 
-         
+
             <div class="bg-gradient-to-r from-cyan-50 to-teal-50 border-2 border-cyan-200 rounded-xl p-4">
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 bg-cyan-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -112,7 +117,7 @@
                 </div>
             </div>
 
-       
+
             @if (!string.IsNullOrEmpty(Error))
             {
                 <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
@@ -130,10 +135,10 @@
                 </div>
             }
 
-          
-            <div class="flex flex-col sm:flex-row justify-between gap-3 pt-6 border-t-2 border-slate-200">
+
+            <div  class="flex flex-col sm:flex-row justify-between gap-3 pt-6 border-t-2 border-slate-200">
                 <button type="button" @onclick="()=> HandleSaveAsDraft()"
-                        class="flex-1 px-4 py-2.5 text-sm  bg-white border border-slate-300 text-slate-700 rounded-lg font-medium
+                class="flex-1 px-4 py-2.5 text-sm  bg-white border border-slate-300 text-slate-700 rounded-lg font-medium
                                hover:bg-slate-50 hover:border-slate-400 transition-all shadow-sm
                                flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,7 +147,7 @@
                     Save as Draft
                 </button>
                 <button type="submit"
-                        class="flex-1 px-4 py-2.5 bg-gradient-to-br from-cyan-600 to-teal-600 text-white rounded-lg font-medium
+                class="flex-1 px-4 py-2.5 bg-gradient-to-br from-cyan-600 to-teal-600 text-white rounded-lg font-medium
                                hover:from-cyan-700 text-sm hover:to-teal-800 transition-all shadow-lg hover:shadow-xl
                                flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,22 +166,26 @@
 
     public async Task HandleContactInformation()
     {
+        Error = null;
         contactInformation.Savestatus = SaveStatusContact.Save;
         var results = await studentRecordApi.AddContactInformationAsync(contactInformation);
         if (results is null)
         {
             Error = "Fill up All Requirements";
+            return;
         }
         pageState.SetViewContact(PageState.SaveAsDraftContact.Save);
     }
 
     public async Task HandleSaveAsDraft()
     {
+        Error = null;
         contactInformation.Savestatus = SaveStatusContact.Save_As_Draft;
         var results = await studentRecordApi.AddContactInformationAsync(contactInformation);
         if (results is null)
         {
-            Error = "Fill up All Requirements";
+            Error = "Fill up All Requirements";     
+            return;
         }
         pageState.SetViewContact(PageState.SaveAsDraftContact.SaveASDraft);
     }

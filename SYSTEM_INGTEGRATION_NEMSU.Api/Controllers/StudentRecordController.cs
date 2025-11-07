@@ -8,6 +8,8 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
@@ -18,6 +20,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     [ApiController]
     public class StudentRecordController(IStudentRecordCommand studentRecordCommand, IUserRespository user) : ControllerBase
     {
+     
         [Authorize]
         [HttpPost("Add Personal Details")]
         public async Task<ActionResult<PersonalInformation>> AddPersonalDetailsAsync([FromBody] PersonalInformationDto personalInformation)
@@ -27,9 +30,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var UserId = Guid.Parse(FindUser.Value);
             var filter = personalInformation.Adapt<PersonalInformation>();
             filter.StudentId = UserId;
-            var response = await studentRecordCommand.AddPersonalDetailsAsync(filter);
+            var response = await studentRecordCommand.AddPersonalDetailsAsync(filter);         
             return Ok(filter);
         }
+       
         [Authorize]
         [HttpPatch("Update Personal Details")]
         public async Task<ActionResult<PersonalInformation>> UpdatePersonalDetailsAsync( PersonalInformationDto personalInformationDto)
@@ -41,6 +45,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await studentRecordCommand.UpdatePersonalInformationAsync(personalInformationDto);
             return Ok(response);
         }
+      
         [Authorize]
         [HttpGet("Display Personal Details")]
         public async Task<ActionResult<PersonalInformationDto>> DispalyPersonalDetailsAsync()
@@ -51,6 +56,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await studentRecordCommand.DisplayPersonalInformationAsync(UserId);
             return Ok(response);
         }
+     
         [Authorize]
         [HttpPost("Add Academic Details")]
         public async Task<ActionResult<PersonalInformation>> AddAcademicDetailsAsync([FromBody] AcademicInformationDto academicInformation)
@@ -63,6 +69,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await studentRecordCommand.AddAcademicInformationAsync(filter);
             return Ok(filter);
         }
+       
         [Authorize]
         [HttpPatch("Update Academic Details")]
         public async Task<ActionResult<PersonalInformation>> UpdateAcademicDetailsAsync(AcademicInformationDto academicInformation)
@@ -74,9 +81,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await studentRecordCommand.UpdateAcademicInformationAsync(academicInformation);
             return Ok(response);
         }
+       
         [Authorize]
         [HttpGet("Display Academic Details")]
-
+      
         public async Task<ActionResult<AcademicInformationDto>> DispalyAcademicDetailsAsync()
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -85,6 +93,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await studentRecordCommand.DisplayAcademicInformation(UserId);
             return Ok(response);
         }
+      
         [Authorize]
         [HttpPost("Add Contact Details")]
         public async Task<ActionResult<PersonalInformation>> AddContactDetailsAsync([FromBody] ContactInformationDto contactInformation)
@@ -95,8 +104,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var filter = contactInformation.Adapt<ContactInformation>();
             filter.StudentId = UserId;
             var response = await studentRecordCommand.AddContactInformationAsync(filter);
+            if (response is null) return BadRequest("Fill Up All Requirements");
             return Ok(filter);
         }
+      
         [Authorize]
         [HttpPatch("Update Contact Details")]
         public async Task<ActionResult<PersonalInformation>> UpdateContactDetailsAsync(ContactInformationDto contactInformationDto)
@@ -108,6 +119,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await studentRecordCommand.UpdateContactInformationAsync(contactInformationDto);
             return Ok(response);
         }
+       
         [Authorize]
         [HttpGet("Display Contact Details")]
         public async Task<ActionResult<PersonalInformationDto>> DispalyContactDetailsAsync()
@@ -118,6 +130,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await studentRecordCommand.DisplayContactInformationAsync(UserId);
             return Ok(response);
         }
+       
         [Authorize]
         [HttpPost("Assign StudentID")]
         public async Task<ActionResult<SchoolIdDto>?> StudentSchoolIdAsync(string SchoolId)
@@ -130,9 +143,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecordCommand.StudentSchoolIdAsync(StudentId.Id, SchoolId);
             return Ok(request);
         }
+  
         [Authorize]
-        [HttpPatch("UpdateAll Details")]
-        public async Task<ActionResult> UpdateAllDetailsAsync(StudentUpdateInformationDto udpate)
+        [HttpPatch("UpdateAllDetails")]
+        public async Task<ActionResult<ProfileUpdateDto>> UpdateAllDetailsAsync(ProfileUpdateDto udpate)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return BadRequest("Login First");
@@ -140,10 +154,25 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var StudentId = await user.UserInfo(UserId);
             if (StudentId is null) return BadRequest("User Cannot Find");
             udpate.StudentId = StudentId.Id;
-            var request = await studentRecordCommand.UpdateAllDetailsAsync(udpate);
-            if (request is null) return BadRequest("Something Went Wrong");
+            var request = await studentRecordCommand.UpdateAllDetailsAsync(udpate);           
             return Ok(request);
         }
+        
+        [Authorize]
+        [HttpPatch("Update EnrollmentForm")]
+        public async Task<ActionResult<EnrollmentFormDto>> UpdateEnrollmentFormAsyn(EnrollmentFormDto udpate)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
+            var UserId = Guid.Parse(FindUser.Value);
+            var StudentId = await user.UserInfo(UserId);
+            if (StudentId is null) return BadRequest("User Cannot Find");
+            udpate.StudentId = StudentId.Id;
+            var request = await studentRecordCommand.UpdateEnrollmentFormAsync(udpate);
+            return Ok(request);
+        }
+
+
         [Authorize]
         [HttpPatch("Student SaveInformationAsync")]
         public async Task<ActionResult<bool>> StudentSaveInformationAsync()
@@ -154,6 +183,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecordCommand.StudentSaveInformationAsync(StudentId);
             return Ok(request);
         }
+      
         [Authorize]
         [HttpGet("Display MiniDetailsMenu")]
         public async Task<ActionResult<MiniDisplayMenuDto>> MiniDisplayMenuAsync()
@@ -164,6 +194,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecordCommand.MiniDisplayMenuAsync(StudentId);
             return Ok(request);
         }
+      
         [Authorize]
         [HttpGet("Check Information")]
         public async Task<ActionResult<bool>> CheckInformationAsync()

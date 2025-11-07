@@ -25,7 +25,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             bool alreadyEnrolled = await context.enrollcourse
                 .AnyAsync(e => e.StudentId == paymentdetails.StudentId && e.CourseId == course.Id);
             if (alreadyEnrolled) return null;
-            if (course.Cost > paymentdetails.cost) return null;
+       
            
           
             var request  = await enrollmentServices.EnrollCourseAsync(paymentdetails.StudentId, paymentdetails.CourseCode!, EnrollmentStatus.Enrolled);

@@ -231,7 +231,7 @@
     public async Task EnrollmentHandling()
     {
         paymentDetails.CourseCode = PreviewCourse?.CourseCode;
-        if (string.IsNullOrWhiteSpace(paymentDetails.AccountNumber) || paymentDetails.cost <= 0)
+        if (string.IsNullOrWhiteSpace(paymentDetails.AccountNumber) || paymentDetails.cost <= 0 || paymentDetails.cost < PreviewCourse?.Cost)
         {
 
             await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_failed_enrolled').checked = true");

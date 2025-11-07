@@ -1,165 +1,222 @@
-﻿@inject IStudentRecordApiCommand studentRecordCommand
+﻿@using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto
+@inject IStudentRecordApiCommand studentRecordCommand
 @inject IJSRuntime JS
+
 <dialog id="my_modal_2" class="modal">
-
     <EditForm Model="@studentUpdateInformation" OnValidSubmit="@HandlingEdit" FormName="editstudentinfo" class="space-y-6">
-        <div class="modal-box w-11/12 max-w-5xl max-h-[90vh] p-0 overflow-hidden rounded-md">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
+        <div class="modal-box w-11/12 max-w-5xl max-h-[90vh] p-0 overflow-hidden rounded-md">
+            <!-- HEADER -->
             <div class="bg-gradient-to-r from-cyan-600 to-teal-700 p-6 sticky top-0 z-10">
                 <h3 class="text-2xl font-bold text-white">Edit Student Details</h3>
                 <p class="text-teal-100 text-sm mt-1">Update your personal and academic information</p>
             </div>
 
-
+            <!-- BODY -->
             <div class="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
 
+                <!-- PERSONAL INFORMATION -->
+                <div class="bg-gray-50 rounded-lg p-5 border border-gray-200 mb-6">
+                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
+                        Personal Information
+                    </h4>
 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                            <InputText @bind-Value="studentUpdateInformation.FirstName" class="inputfield" />
+                            <ValidationMessage For="@(() => studentUpdateInformation.FirstName)" />
+                        </div>
 
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Middle Name</label>
+                            <InputText @bind-Value="studentUpdateInformation.MiddleName" class="inputfield" />
+                            <ValidationMessage For="@(() => studentUpdateInformation.MiddleName)" />
+                        </div>
 
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                            <InputText @bind-Value="studentUpdateInformation.LastName" class="inputfield" />
+                            <ValidationMessage For="@(() => studentUpdateInformation.LastName)" />
+                        </div>
 
-                @if (studentUpdateInformation?.personalInformation is not null)
-                {
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                            <InputDate @bind-Value="studentUpdateInformation.DateOfBirth" class="inputfield" />
+                            <ValidationMessage For="@(() => studentUpdateInformation.DateOfBirth)" />
+                        </div>
 
-                    <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
-                        <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                            <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
-                            Personal Information
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-                                <input type="text" @bind="studentUpdateInformation.personalInformation.FirstName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Middle Name</label>
-                                <input type="text" @bind="studentUpdateInformation.personalInformation.MiddleName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-                                <input type="text" @bind="studentUpdateInformation.personalInformation.LastName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
-                                <input type="date" @bind="studentUpdateInformation.personalInformation.DateOfBirth" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
-                                <select @bind="studentUpdateInformation.personalInformation.Gender" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                    <option value="@GenderChoice.Male" selected>Male</option>
-                                    <option value="@GenderChoice.Female">Female</option>
-                                    <option value="@GenderChoice.Prefer_not_to_say">Prefer not to say</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Civil Status</label>
-                                <select @bind="studentUpdateInformation.personalInformation.CivilStatus" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                    <option value="@CivilStatusChoice.Single">Single</option>
-                                    <option value="@CivilStatusChoice.Taken">Taken</option>
-                                    <option value="@CivilStatusChoice.Married">Married</option>
-                                </select>
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Nationality</label>
-                                <input type="text" @bind="studentUpdateInformation.personalInformation.Nationality" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                            <InputSelect @bind-Value="studentUpdateInformation.Gender" class="inputfield">
+                                <option value="">-- Select Gender --</option>
+                                <option value="@GenderChoice.Male">Male</option>
+                                <option value="@GenderChoice.Female">Female</option>
+                                <option value="@GenderChoice.Prefer_not_to_say">Prefer not to say</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => studentUpdateInformation.Gender)" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Civil Status</label>
+                            <InputSelect @bind-Value="studentUpdateInformation.CivilStatus" class="inputfield">
+                                <option value="">-- Select Civil Status --</option>
+                                <option value="@CivilStatusChoice.Single">Single</option>
+                                <option value="@CivilStatusChoice.Taken">Taken</option>
+                                <option value="@CivilStatusChoice.Married">Married</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => studentUpdateInformation.CivilStatus)" />
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nationality</label>
+                            <InputText @bind-Value="studentUpdateInformation.Nationality" class="inputfield" />
+                            <ValidationMessage For="@(() => studentUpdateInformation.Nationality)" />
                         </div>
                     </div>
-                }
+                </div>
 
-                @if (studentUpdateInformation?.contactInformation is not null && studentUpdateInformation.personalInformation is not null)
-                {
-                    <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
-                        <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                            <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
-                            Contact Information
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Permanent Address</label>
-                                <textarea rows="2" @bind="studentUpdateInformation.personalInformation.PermanentAddress" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">P4 Sanvicente Carmen Surigao del Sur</textarea>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Mobile Number</label>
-                                <input type="tel" @bind="studentUpdateInformation.contactInformation.MobileNumber" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                                <input type="email" @bind="studentUpdateInformation.contactInformation.EmailAddress" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
+                <!-- CONTACT INFORMATION -->
+                <div class="bg-gray-50 rounded-lg p-5 border border-gray-200 mb-6">
+                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
+                        Contact Information
+                    </h4>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Permanent Address</label>
+                            <InputTextArea @bind-Value="studentUpdateInformation.PermanentAddress" class="inputfield" rows="2" />
+                            <ValidationMessage For="@(() => studentUpdateInformation.PermanentAddress)" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mobile Number</label>
+                            <InputText @bind-Value="studentUpdateInformation.MobileNumber" class="inputfield" />
+                            <ValidationMessage For="@(() => studentUpdateInformation.MobileNumber)" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <InputText @bind-Value="studentUpdateInformation.EmailAddress" type="email" class="inputfield" />
+                            <ValidationMessage For="@(() => studentUpdateInformation.EmailAddress)" />
                         </div>
                     </div>
-                }
+                </div>
 
+                <!-- ACADEMIC INFORMATION -->
+                <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
+                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
+                        Academic Information
+                    </h4>
 
-                @if (studentUpdateInformation?.academicInformation is not null)
-                {
-                    <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
-                        <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                            <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
-                            Academic Information
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Student Type</label>
-                                <select @bind="studentUpdateInformation.academicInformation.StudentType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                    <option value="@StudentTypeChoice.New">New Student</option>
-                                    <option value="@StudentTypeChoice.Transferee" selected>Transferee</option>
-                                    <option value="@StudentTypeChoice.Returning">Returnee</option>
-                                    <option value="@StudentTypeChoice.Old">Old Student</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Year Level</label>
-                                <select @bind="studentUpdateInformation.academicInformation.YearLevel" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                    <option value="@YearLevelChoice.First_Year">1st Year</option>
-                                    <option value="@YearLevelChoice.Second_Year">2nd Year</option>
-                                    <option value="@YearLevelChoice.Third_Year">3rd Year</option>
-                                    <option value="@YearLevelChoice.Fourth_Year">4th Year</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Semester</label>
-                                <select @bind="studentUpdateInformation.academicInformation.Semester" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                    <option value="@SemesterChoice.First_Semester">1st Semester</option>
-                                    <option value="@SemesterChoice.Second_Semester">2nd Semester</option>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Student Type</label>
+                            <InputSelect @bind-Value="studentUpdateInformation.StudentType" class="inputfield">
+                                <option value="">-- Select Type --</option>
+                                <option value="@StudentTypeChoice.New">New Student</option>
+                                <option value="@StudentTypeChoice.Transferee">Transferee</option>
+                                <option value="@StudentTypeChoice.Returning">Returnee</option>
+                                <option value="@StudentTypeChoice.Old">Old Student</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => studentUpdateInformation.StudentType)" />
+                        </div>
 
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">SHS Strand</label>
-                                <select @bind="studentUpdateInformation.academicInformation.Strand" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                    <option value="@StrandChoice.Stem">STEM</option>
-                                    <option value="@StrandChoice.Abm">ABM</option>
-                                    <option value="@StrandChoice.Humss">HUMSS</option>
-                                    <option value="@StrandChoice.Gas">GAS</option>
-                                    <option value="@StrandChoice.Tvl" selected>TVL</option>
-                                </select>
-                            </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Year Level</label>
+                            <InputSelect @bind-Value="studentUpdateInformation.YearLevel" class="inputfield">
+                                <option value="">-- Select Year Level --</option>
+                                <option value="@YearLevelChoice.First_Year">1st Year</option>
+                                <option value="@YearLevelChoice.Second_Year">2nd Year</option>
+                                <option value="@YearLevelChoice.Third_Year">3rd Year</option>
+                                <option value="@YearLevelChoice.Fourth_Year">4th Year</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => studentUpdateInformation.YearLevel)" />
+                        </div>
 
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Program</label>
-                                <select @bind="studentUpdateInformation.academicInformation.Program" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                    <option value="@ProgramChoice.Criminology">College of Criminal Justice Education</option>
-                                    <option value="@ProgramChoice.Hospitality_Management">Bachelor of Science in Hospitality Management</option>
-                                    <option value="@ProgramChoice.Business_Administration">Bachelor of Science in Business Administration</option>
-                                    <option value="@ProgramChoice.Tourism_Management">Bachelor of Science in Tourism Management</option>
-                                    <option value="@ProgramChoice.Industrial_Technology">Bachelor of Science in Industrial Technology</option>
-                                    <option value="@ProgramChoice.Computer_Engineering">Bachelor of Science in Computer Engineering</option>
-                                    <option value="@ProgramChoice.Computer_Science">Bachelor of Science in Computer Science</option>
-                                    <option value="@ProgramChoice.Computer_Technology" selected>Bachelor of Science in Computer Technology</option>
-                                    <option value="@ProgramChoice.Secondary_Education">Bachelor of Science in Secondary Education</option>
-                                    <option value="@ProgramChoice.Technology_AndLivelihood_Education">Bachelor of Science in Technology And Livelihood Education</option>
-                                    <option value="@ProgramChoice.Technical_Vocational_TeacherEducation">Bachelor of Science in Technical Vocational Teacher Education</option>
-                                </select>
-                            </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Semester</label>
+                            <InputSelect @bind-Value="studentUpdateInformation.Semester" class="inputfield">
+                                <option value="">-- Select Semester --</option>
+                                <option value="@SemesterChoice.First_Semester">1st Semester</option>
+                                <option value="@SemesterChoice.Second_Semester">2nd Semester</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => studentUpdateInformation.Semester)" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">SHS Strand</label>
+                            <InputSelect @bind-Value="studentUpdateInformation.Strand" class="inputfield">
+                                <option value="">-- Select Strand --</option>
+                                <option value="@StrandChoice.Stem">STEM</option>
+                                <option value="@StrandChoice.Abm">ABM</option>
+                                <option value="@StrandChoice.Humss">HUMSS</option>
+                                <option value="@StrandChoice.Gas">GAS</option>
+                                <option value="@StrandChoice.Tvl">TVL</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => studentUpdateInformation.Strand)" />
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Program</label>
+                            <InputSelect @bind-Value="studentUpdateInformation.Program" class="inputfield">
+                                <option value="">-- Select Program --</option>
+
+                                <!-- DCS -->
+                                <option value="@CourseProgram.Computer_Engineering">Bachelor of Science in Computer Engineering</option>
+                                <option value="@CourseProgram.Computer_Science">Bachelor of Science in Computer Science</option>
+                                <option value="@CourseProgram.Information_Technology">Bachelor of Science in Information Technology</option>
+
+                                <!-- DIT -->
+                                <option value="@CourseProgram.BSIT_ArchitecturalDraftingTechnology">BS in Industrial Technology Major in Architectural Drafting Technology</option>
+                                <option value="@CourseProgram.BSIT_AutomotiveTechnology">BS in Industrial Technology Major in Automotive Technology</option>
+                                <option value="@CourseProgram.BSIT_ComputerTechnology">BS in Industrial Technology Major in Computer Technology</option>
+                                <option value="@CourseProgram.BSIT_ElectricalTechnology">BS in Industrial Technology Major in Electrical Technology</option>
+                                <option value="@CourseProgram.BSIT_ElectronicsTechnology">BS in Industrial Technology Major in Electronics Technology</option>
+                                <option value="@CourseProgram.BSIT_FoodTechnology">BS in Industrial Technology Major in Food Technology</option>
+                                <option value="@CourseProgram.BSIT_GarmentsTechnology">BS in Industrial Technology Major in Garments Technology</option>
+                                <option value="@CourseProgram.BSIT_MechanicalTechnology">BS in Industrial Technology Major in Mechanical Technology</option>
+
+                                <!-- DGTT - BSEd -->
+                                <option value="@CourseProgram.BSEd_Filipino">Bachelor of Secondary Education Major in Filipino</option>
+                                <option value="@CourseProgram.BSEd_English">Bachelor of Secondary Education Major in English</option>
+                                <option value="@CourseProgram.BSEd_Mathematics">Bachelor of Secondary Education Major in Mathematics</option>
+                                <option value="@CourseProgram.BSEd_Science">Bachelor of Secondary Education Major in Science</option>
+
+                                <!-- DGTT - BTVTEd -->
+                                <option value="@CourseProgram.BTVTEd_AutomotiveTechnology">BTVTEd Major in Automotive Technology</option>
+                                <option value="@CourseProgram.BTVTEd_GarmentsAndFashionDesign">BTVTEd Major in Garments and Fashion Design</option>
+                                <option value="@CourseProgram.BTVTEd_ElectricalTechnology">BTVTEd Major in Electrical Technology</option>
+                                <option value="@CourseProgram.BTVTEd_ElectronicsTechnology">BTVTEd Major in Electronics Technology</option>
+                                <option value="@CourseProgram.BTVTEd_FoodAndServicesManagement">BTVTEd Major in Food and Services Management</option>
+                                <option value="@CourseProgram.BTVTEd_MechanicalTechnology">BTVTEd Major in Mechanical Technology</option>
+
+                                <!-- DGTT - BTLEd -->
+                                <option value="@CourseProgram.BTLEd_HomeEconomics">BTLEd Major in Home Economics</option>
+                                <option value="@CourseProgram.BTLEd_IndustrialArts">BTLEd Major in Industrial Arts</option>
+
+                                <!-- CCJE -->
+                                <option value="@CourseProgram.BS_Criminology">Bachelor of Science in Criminology</option>
+
+                                <!-- DBM -->
+                                <option value="@CourseProgram.BSHM_HospitalityManagement">Bachelor of Science in Hospitality Management</option>
+                                <option value="@CourseProgram.BSTM_TourismManagement">Bachelor of Science in Tourism Management</option>
+                                <option value="@CourseProgram.BSBA_FinancialManagement">BSBA Major in Financial Management</option>
+                                <option value="@CourseProgram.BSBA_HumanResourceManagement">BSBA Major in Human Resource Management</option>
+                            </InputSelect>
+
+                            <ValidationMessage For="@(() => studentUpdateInformation.Program)" />
                         </div>
                     </div>
-                }
-
-
+                </div>
             </div>
 
-
+            <!-- FOOTER -->
             <div class="bg-gray-50 border-t border-gray-200 p-5 flex justify-end gap-3 sticky bottom-0">
                 <form method="dialog">
                     <button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">
@@ -172,65 +229,50 @@
             </div>
         </div>
     </EditForm>
+
     <form method="dialog" class="modal-backdrop">
         <button>close</button>
     </form>
 </dialog>
+
 @code {
-    [Parameter]
-    public PersonalInformationDto? P { get; set; }
-    [Parameter]
-    public AcademicInformationDto? A { get; set; }
-    [Parameter]
-    public ContactInformationDto? C { get; set; }
-    public bool hasrender = false;
-    public StudentUpdateInformationDto studentUpdateInformation = new StudentUpdateInformationDto
-        {
-            personalInformation = new PersonalInformationDto(),
-            contactInformation = new ContactInformationDto(),
-            academicInformation = new AcademicInformationDto()
+    [Parameter] public PersonalInformationDto? P { get; set; }
+    [Parameter] public AcademicInformationDto? A { get; set; }
+    [Parameter] public ContactInformationDto? C { get; set; }
+    [Parameter] public EventCallback UpdateInformation { get; set; }
 
-        };
+    private bool hasLoaded = false;
+    private EnrollmentFormDto studentUpdateInformation = new();
 
-    [Parameter]
-    public EventCallback UpdateInformation {get;set;}
-    public bool hasloaded = false;
     protected override void OnParametersSet()
     {
-
-        if (!hasloaded && P is not null && A is not null && C is not null )
+        if (!hasLoaded && P is not null && A is not null && C is not null)
         {
-            hasloaded = true;
+            hasLoaded = true;
 
-                        studentUpdateInformation.personalInformation!.FirstName = P.FirstName;
-                        studentUpdateInformation.personalInformation!.MiddleName = P.MiddleName;
-                        studentUpdateInformation.personalInformation.LastName = P.LastName;
-                        studentUpdateInformation.personalInformation.DateOfBirth = P.DateOfBirth;
-                        studentUpdateInformation.personalInformation.Gender = P.Gender;
-                        studentUpdateInformation.personalInformation.CivilStatus = P.CivilStatus;
-                        studentUpdateInformation.personalInformation.Nationality = P.Nationality;
-                        studentUpdateInformation.personalInformation.PermanentAddress = P.PermanentAddress;
-                        studentUpdateInformation.contactInformation!.MobileNumber = C.MobileNumber;
-                        studentUpdateInformation.contactInformation.EmailAddress = C.EmailAddress;
-                        studentUpdateInformation.academicInformation!.StudentType = A.StudentType;
-                        studentUpdateInformation.academicInformation.YearLevel = A.YearLevel;
-                        studentUpdateInformation.academicInformation.Semester = A.Semester;
-                        studentUpdateInformation.academicInformation.Strand = A.Strand;
-                        studentUpdateInformation.academicInformation.Program = A.Program;
-                  
-            }
-          
-            StateHasChanged();
+            studentUpdateInformation.FirstName = P.FirstName;
+            studentUpdateInformation.MiddleName = P.MiddleName;
+            studentUpdateInformation.LastName = P.LastName;
+            studentUpdateInformation.DateOfBirth = P.DateOfBirth;
+            studentUpdateInformation.Gender = P.Gender;
+            studentUpdateInformation.CivilStatus = P.CivilStatus;
+            studentUpdateInformation.Nationality = P.Nationality;
+            studentUpdateInformation.PermanentAddress = P.PermanentAddress;
+            studentUpdateInformation.MobileNumber = C.MobileNumber;
+            studentUpdateInformation.EmailAddress = C.EmailAddress;
+            studentUpdateInformation.StudentType = A.StudentType;
+            studentUpdateInformation.YearLevel = A.YearLevel;
+            studentUpdateInformation.Semester = A.Semester;
+            studentUpdateInformation.Strand = A.Strand;
+            studentUpdateInformation.Program = A.Program;
         }
+    }
 
-    
-
-    public async Task HandlingEdit()
+    private async Task HandlingEdit()
     {
-        await studentRecordCommand.UpdateAllDetailsAsync(studentUpdateInformation!);
-      
+        await studentRecordCommand.UpdateEnrollmentFormAsync(studentUpdateInformation);
         await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_2");
         await UpdateInformation.InvokeAsync();
-
     }
 }
+

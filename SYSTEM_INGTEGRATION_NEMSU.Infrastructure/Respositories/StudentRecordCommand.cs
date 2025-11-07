@@ -12,6 +12,8 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
@@ -38,30 +40,56 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var dto = personalInformation.Adapt<PersonalInformationDto>();
             return dto;
         }
-        public async Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate)
+        public async Task<ProfileUpdateDto?> UpdateAllDetailsAsync(ProfileUpdateDto studentUpdate)
         {
             var personal = await context.personalInformation.FirstOrDefaultAsync(s => s.StudentId == studentUpdate.StudentId);
             var academic = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == studentUpdate.StudentId);
             var contact = await context.contactInformation.FirstOrDefaultAsync(s => s.StudentId == studentUpdate.StudentId);
             if (personal is null || academic is null || contact is null) { return null; }
 
-            personal.FirstName = studentUpdate.personalInformation?.FirstName;
-            personal.MiddleName = studentUpdate.personalInformation?.MiddleName;
-            personal.LastName = studentUpdate.personalInformation?.LastName;
-            personal.DateOfBirth = studentUpdate.personalInformation?.DateOfBirth;
-            personal.Gender = studentUpdate.personalInformation!.Gender;
-            personal.CivilStatus = studentUpdate.personalInformation.CivilStatus;
-            personal.Nationality = studentUpdate.personalInformation.Nationality;
-            personal.PermanentAddress = studentUpdate.personalInformation.PermanentAddress;
-            contact.MobileNumber = studentUpdate.contactInformation?.MobileNumber;
-            contact.EmailAddress = studentUpdate.contactInformation?.EmailAddress;
-            contact.EmergencyContactNumber = studentUpdate.contactInformation?.EmergencyContactNumber;
-            academic.StudentType = studentUpdate.academicInformation!.StudentType;
-            academic.YearLevel = studentUpdate.academicInformation.YearLevel;
-            academic.Semester = studentUpdate.academicInformation.Semester;
-            academic.Strand = studentUpdate.academicInformation.Strand;
-            academic.Program = studentUpdate.academicInformation.Program;
-            academic.Major = studentUpdate.academicInformation.Major;
+            personal.FirstName = studentUpdate?.FirstName;
+            personal.MiddleName = studentUpdate?.MiddleName;
+            personal.LastName = studentUpdate?.LastName;
+            personal.DateOfBirth = studentUpdate?.DateOfBirth;
+            personal.Gender = studentUpdate!.Gender;
+            personal.CivilStatus = studentUpdate.CivilStatus;
+            personal.Nationality = studentUpdate.Nationality;
+            personal.PermanentAddress = studentUpdate.PermanentAddress;
+            contact.MobileNumber = studentUpdate?.MobileNumber;
+            contact.EmailAddress = studentUpdate?.EmailAddress;
+            contact.EmergencyContactNumber = studentUpdate?.EmergencyContactNumber;
+            academic.StudentType = studentUpdate!.StudentType;
+            academic.YearLevel = studentUpdate.YearLevel;
+            academic.Semester = studentUpdate.Semester;
+            academic.Strand = studentUpdate.Strand;
+            academic.Program = studentUpdate.Program;
+          
+
+            await context.SaveChangesAsync();
+            return studentUpdate;
+        }
+        public async Task<EnrollmentFormDto?> UpdateEnrollmentFormAsync(EnrollmentFormDto studentUpdate )
+        {
+            var personal = await context.personalInformation.FirstOrDefaultAsync(s => s.StudentId == studentUpdate.StudentId);
+            var academic = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == studentUpdate.StudentId);
+            var contact = await context.contactInformation.FirstOrDefaultAsync(s => s.StudentId == studentUpdate.StudentId);
+            if (personal is null || academic is null || contact is null) { return null; }
+
+            personal.FirstName = studentUpdate?.FirstName;
+            personal.MiddleName = studentUpdate?.MiddleName;
+            personal.LastName = studentUpdate?.LastName;
+            personal.DateOfBirth = studentUpdate?.DateOfBirth;
+            personal.Gender = studentUpdate!.Gender;
+            personal.CivilStatus = studentUpdate.CivilStatus;
+            personal.Nationality = studentUpdate.Nationality;
+            personal.PermanentAddress = studentUpdate.PermanentAddress;
+            contact.MobileNumber = studentUpdate?.MobileNumber;
+            contact.EmailAddress = studentUpdate?.EmailAddress;  
+            academic.StudentType = studentUpdate!.StudentType;
+            academic.YearLevel = studentUpdate.YearLevel;
+            academic.Semester = studentUpdate.Semester;
+            academic.Strand = studentUpdate.Strand;
+            academic.Program = studentUpdate.Program;        
 
             await context.SaveChangesAsync();
             return studentUpdate;
@@ -116,7 +144,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             currentdetails.YearLevel = academicInformation.YearLevel;
             currentdetails.Semester = academicInformation.Semester;
             currentdetails.Program = academicInformation.Program;
-            currentdetails.Major = academicInformation.Major;
+         
             currentdetails.Strand = academicInformation.Strand;
             currentdetails.Savestatus = academicInformation.Savestatus;
             context.academicInformation.Update(currentdetails);
@@ -139,7 +167,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     YearLevel = s.YearLevel,
                     Semester = s.Semester,
                     Program = s.Program,
-                    Major = s.Major,
+                    
                     Strand = s.Strand,
                     Savestatus = s.Savestatus,
 
@@ -220,7 +248,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (academic is null) return null;
             var filter = new MiniDisplayMenuDto
             {
-                FullName = personal.FirstName + " " + personal.MiddleName + " " + personal.LastName,
+                FullName = personal.FirstName + " " + personal.MiddleName  + " " + personal.LastName,
                 StudentId = academic.StudentSchoolId,
                 FirstName = personal.FirstName,
             };

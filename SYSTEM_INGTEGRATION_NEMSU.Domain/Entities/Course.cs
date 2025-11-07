@@ -21,8 +21,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public int Unit { get; set; }
         public CourseDepartment Department { get; set; }
         public string? CourseDescriptiion { get; set; }
-        [JsonIgnore]
-        public List<LearningObjectives> LearningObjectives { get; set; } = new();
+       
+   
         public CourseSemester Semester { get; set; }
         public string? SchoolYear { get; set; }
         public string? Schedule { get; set; }
@@ -30,10 +30,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public Guid? FacultyPersonalsId { get; set; }
         [JsonIgnore]
         public FacultyPersonalInformation? FacultyPersonals { get; set; } 
-         [JsonIgnore]
-        public ICollection<EnrollmentCourse> Enrollments { get; set; } = new List<EnrollmentCourse>();
-        [JsonIgnore] 
-        public ICollection<InstructorAnnouncement> Announcements { get; set; } = new List<InstructorAnnouncement>();
+     
 
         public Guid? CategoryId { get; set; }
         [JsonIgnore]
@@ -48,6 +45,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
     }
     public enum CourseDepartment
     {
+        None,
         [Display(Name = "College of Criminal Justice Education")]
         CCJE,
         [Display(Name = "Department of Industrial Technology")]
@@ -59,15 +57,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         [Display(Name = "Department Of Computer Studies")]
         DCS,
     }
-    public class LearningObjectives
-    {
-        [JsonIgnore]
-        public Guid Id { get; set; }
-        public string? description { get; set; }
-
-        [JsonIgnore]
-        public Guid CourseId { get; set; }
-    }
+   
     public enum CourseSemester
     {
         [Display(Name = "1st Semester")]

@@ -12,6 +12,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     [ApiController]
     public class AuthHandlingController(IAuthServices authservice) : ControllerBase
     {
+      
         [HttpPost("Register")]
         public async Task<ActionResult<User>> RegisterAsync(UserDtos request)
         {
@@ -22,6 +23,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             }
             return Ok(request);
         }
+      
         [HttpPost("Login")]
         public async Task<ActionResult<User>> LoginAsync(LoginDto request)
         {
@@ -32,7 +34,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             }
             return Ok(response);
         }
-
+     
         [HttpPost("Refreshtoken")]
         public async Task<ActionResult<TokenResponseDto>> RefreshTokenAsync(RefreshTokenDto request)
         {
@@ -43,6 +45,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             }
             return Ok(user);
         }
+       
         [Authorize]
         [HttpPost("Logout")]
         public async Task<IActionResult> LogoutAsync()
@@ -59,6 +62,5 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             }
             return Ok(new { Message = " Login Successfully" });
         }
-
     }
 }

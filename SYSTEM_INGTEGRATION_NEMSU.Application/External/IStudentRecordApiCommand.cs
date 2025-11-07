@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 
@@ -23,9 +25,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation);
         Task<ContactInformationDto?> DisplayContactInformationAsync();
         Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId);
-        Task<StudentUpdateInformationDto?> UpdateAllDetailsAsync(StudentUpdateInformationDto studentUpdate);
+        Task<ProfileUpdateDto?> UpdateAllDetailsAsync(ProfileUpdateDto studentUpdate);
         Task<bool> StudentSaveInformationAsync();
         Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync();
         Task<bool> CheckInformationAsync();
+        Task<EnrollmentFormDto?> UpdateEnrollmentFormAsync(EnrollmentFormDto studentUpdate);
     }
 }

@@ -6,7 +6,7 @@
 @inject ProtectedLocalStorage localStorage
 @inject NavigationManager navigation
 @rendermode InteractiveServer
-
+@inject IStudentRecordApiCommand studentRecordApi
 <div class="relative flex justify-start h-screen content">
     <div class="absolute inset-0 bg-gradient-to-br from-amber-700/30 to-amber-100/30 rounded-full blur-3xl"></div>
 
@@ -105,7 +105,17 @@
         </EditForm>
     </div>
 
-
+    @if (spinner)
+    {
+        <div class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+            <div class="text-center">
+                <div class="relative">
+                    <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                </div>
+                <p class="text-white mt-6 text-lg font-semibold">Logging In...</p>
+            </div>
+        </div>
+    }
     <div class="absolute right-0 top-0 h-full w-[70%] z-0">
         <img src="/img/nemsu_gate.png" class="object-cover w-full h-full" style="border-left: solid 5px rgb(240, 134, 0)" />
 
@@ -126,6 +136,7 @@
                 </div>
             </div>
         </div>
+
 
 
         <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 w-[90%] z-10">
@@ -175,15 +186,17 @@
     public string? Error { get; set; }
     private bool Hasrender = false;
     private IEnumerable<Claim> claims = [];
+    public bool spinner = false;
 
     protected override async Task OnInitializedAsync()
     {
         var state = await authStateProvider.GetAuthenticationStateAsync();
         claims = state.User.Claims;
-      
+
     }
     private async Task HandleLogin()
     {
+
         if (string.IsNullOrEmpty(login.UserName) || string.IsNullOrEmpty(login.Password))
         {
             Error = "Empty bai";
@@ -191,10 +204,14 @@
         }
         try
         {
+
+
+            spinner = true;
             var results = await authServices.LoginAsync(login);
             if (results is null)
             {
                 Error = "Invalid Username or Password";
+                spinner = false;
                 return;
             }
             await localStorage.SetAsync("AccessToken", results.AccessToken!);
@@ -202,7 +219,27 @@
             await Task.Delay(100);
             authStateProvider.NotifyUserChanged();
             await Task.Delay(500);
-            navigation.NavigateTo("/FillOutRegistration");
+
+            try
+            {
+                var personal = await studentRecordApi.DisplayPersonalInformationAsync();
+                var academic = await studentRecordApi.DisplayAcademicInformation();
+                var contact = await studentRecordApi.DisplayContactInformationAsync();
+                if (personal is null && academic is null && contact is null)
+                {
+                    navigation.NavigateTo("/FillOutRegistration");
+                }
+                else
+                {
+
+
+                    navigation.NavigateTo("/studentmenu");
+              }
+            }
+            catch
+            {
+                navigation.NavigateTo("/FillOutRegistration");
+            }
 
         }
         catch (Exception ex)
@@ -228,6 +265,7 @@
             catch (Exception ex)
             {
                 Console.WriteLine("Error" + ex.Message);
+                spinner = false;
             }
             StateHasChanged();
         }

@@ -26,12 +26,20 @@
                         <p class="text-white font-semibold text-lg">Prof. @Fullname</p>
                         <p class="text-cyan-200 text-sm">ID: FAC-@info?.FacultyAcademicInformationDto?.FacultySchoolId</p>
                     </div>
-                    <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl border-2 border-white shadow-lg">
-                        @(Fullname?.Split(' ').Length >= 2
-                                         ? $"{Fullname.Split(' ')[0][0]}{Fullname.Split(' ')[1][0]}"
-                                         : Fullname?[0].ToString())
+                    @if (!string.IsNullOrEmpty(preview))
+                    {
+                        <img src="@preview" alt="Faculty Photo" class="w-12 h-12 rounded-full  " />
+                    }
+                    else
+                    {
+                        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl border-2 border-white shadow-lg">
+                            @(Fullname?.Split(' ').Length >= 2
+                                    ? $"{Fullname.Split(' ')[0][0]}{Fullname.Split(' ')[1][0]}"
+                                    : Fullname?[0].ToString())
 
-                    </div>
+                        </div>
+                    }
+
                 </div>
             </div>
         </div>
@@ -141,6 +149,8 @@
     public SummaryStatisticsDto? stats { get; set; } = null;
     private bool hasrender = false;
     private string? Fullname { get; set; }
+    public FacultyPhotoId? facultyPhoto { get; set; }
+    public string? preview { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstrender)
     {
 
@@ -151,7 +161,12 @@
             info = await facultyRecordApi.DisplayFacultyDetailsAsync();
             Fullname = $"{info?.FacultyPersonalInformationDto?.FirstName}" + " " +                    
                        $"{info?.FacultyPersonalInformationDto?.LastName}";
-           
+
+            facultyPhoto = await facultyRecordApi.FacultyPhotoIDAsync();
+            if(facultyPhoto?.Photo is not null)
+            {
+                preview = $"data:{facultyPhoto?.PhotoContentType};base64,{Convert.ToBase64String(facultyPhoto!.Photo)}";
+            }       
         }
         StateHasChanged();
     }
