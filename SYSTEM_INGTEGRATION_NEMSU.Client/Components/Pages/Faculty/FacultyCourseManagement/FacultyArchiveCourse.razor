@@ -20,9 +20,9 @@
             </label>
 
 
-            <div class="flex-1 p-6" >
+            <div class="flex-1 p-6">
                 <div>
-                    <NavLink href="/coursemanagemnt" class="cursor-pointer inline-flex items-center gap-2 text-cyan-700 hover:text-cyan-700 font-semibold text-sm mb-4">
+                    <NavLink href="/coursemanagemnt" class="cursor-pointer inline-flex items-center gap-2 text-teal-500 hover:text-teal-700 font-semibold text-sm mb-4">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
@@ -31,13 +31,13 @@
                 </div>
                 <div class="mb-6 flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                             </svg>
                         </div>
                         <div class="animate-fade-in">
-                            <h1 class="text-2xl font-bold text-cyan-700">Course Management</h1>
+                            <h1 class="text-2xl font-bold text-teal-600">Course Management</h1>
                             <p class="text-gray-500 text-xs">View and manage all courses</p>
                         </div>
                     </div>
@@ -53,12 +53,12 @@
                                 <path d="M12 7.205c4.418 0 8-1.165 8-2.602C20 3.165 16.418 2 12 2S4 3.165 4 4.603c0 1.437 3.582 2.602 8 2.602ZM12 22c4.963 0 8-1.686 8-2.603v-4.404c-.052.032-.112.06-.165.09a7.75 7.75 0 0 1-.745.387c-.193.088-.394.173-.6.253-.063.024-.124.05-.189.073a18.934 18.934 0 0 1-6.3.998c-2.135.027-4.26-.31-6.3-.998-.065-.024-.126-.05-.189-.073a10.143 10.143 0 0 1-.852-.373 7.75 7.75 0 0 1-.493-.267c-.053-.03-.113-.058-.165-.09v4.404C4 20.315 7.037 22 12 22Zm7.09-13.928a9.91 9.91 0 0 1-.6.253c-.063.025-.124.05-.189.074a18.935 18.935 0 0 1-6.3.998c-2.135.027-4.26-.31-6.3-.998-.065-.024-.126-.05-.189-.074a10.163 10.163 0 0 1-.852-.372 7.816 7.816 0 0 1-.493-.268c-.055-.03-.115-.058-.167-.09V12c0 .917 3.037 2.603 8 2.603s8-1.686 8-2.603V7.596c-.052.031-.112.059-.165.09a7.816 7.816 0 0 1-.745.386Z" />
                             </svg>
 
-                          All Course
+                            All Course
                         </NavLink>
                     </span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                     <div class="md:col-span-2 bg-white rounded-lg shadow-sm p-3 border border-cyan-100">
                         <label class="block text-[10px] font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Search Courses</label>
                         <div class="relative">
@@ -68,12 +68,15 @@
                                 </svg>
                             </div>
                             <input type="text"
+                                   @bind="SearchQuery"
+                                   @bind:event="oninput"
+                                   @onkeyup="SearchFilter"
                                    class="w-full pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
                                    placeholder="Search by course code, name..." />
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-sm p-3 border border-cyan-100">
+                    @*      <div class="bg-white rounded-lg shadow-sm p-3 border border-cyan-100">
                         <label class="block text-[10px] font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Filter by Department</label>
                         <select class="w-full px-2.5 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all">
                             <option>All Departments</option>
@@ -81,7 +84,7 @@
                             <option>Engineering</option>
                             <option>Business</option>
                         </select>
-                    </div>
+                    </div>*@
                 </div>
 
 
@@ -94,9 +97,9 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-13">
 
-                    @if (Course is not null)
+                    @if (Filtered is not null)
                     {
-                        @foreach (var course in Course)
+                        @foreach (var course in Filtered)
                         {
 
                             <div class="bg-white rounded-xl shadow-md border border-cyan-100 hover:shadow-xl transition-all overflow-hidden">
@@ -253,8 +256,8 @@
     public IEnumerable<CourseDto>? Course { get; set; }
     private string? Error { get; set; }
     private bool hasrender = false;
-
-
+    public IEnumerable<CourseDto>? Filtered { get; set; }
+    public string SearchQuery = "";
 
     public UpdateCourseDto udpatecourse { get; set; } = new();
     private bool Hasrender = false;
@@ -276,6 +279,7 @@
                 PreviewUrl = $"data:{facultyPhoto?.PhotoContentType};base64,{Convert.ToBase64String(facultyPhoto!.Photo)}";
             }
             Course = await handlingApiCourse.DisplayArchiveCourseAsync();
+
             StateHasChanged();
             if (Course is null)
             {
@@ -302,14 +306,30 @@
             udpatecourse.Room = firstCourse.Room;
             udpatecourse.CourseStatus = firstCourse.CourseStatus;
             udpatecourse.CourseCode = firstCourse.CourseCode;
+            Filtered = Course?.ToList();
             StateHasChanged();
 
         }
     }
+    public void SearchFilter()
+    {
+        if (string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            Filtered = Course?.ToList();
+        }
+        else
+        {
+            var query = SearchQuery.ToLower();
+            Filtered = Course?.Where(s => s.CourseCode!.ToLower().Contains(query) ||
+            s.Title!.ToLower().Contains(query)).ToList();
+        }
+        StateHasChanged();
+    }
+
     public async Task ReloadCourseData()
     {
         Course = await handlingApiCourse.DisplayArchiveCourseAsync();
     }
 }
-    
-    
+
+

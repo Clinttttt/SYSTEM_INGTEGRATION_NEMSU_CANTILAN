@@ -99,14 +99,27 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
         [Authorize]
         [HttpGet("Display StudentByYearLevel")]
-        public async Task<ActionResult<HandlingStudentsDto>> StudentByYearLevelAsync(CourseProgram choice, YearLevelChoice yearLevel)
+        public async Task<ActionResult<object>> StudentByYearLevelAsync( CourseProgram choice, YearLevelChoice yearLevel, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchQuery = "")
         {
             var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (Finduser is null) { return BadRequest("Login First"); }
+
             var UserId = Guid.Parse(Finduser.Value);
 
-            var request = await handlingStudents.StudentByYearLevelAsync(UserId,choice,yearLevel);
-            return Ok(request);
+            var result = await handlingStudents.StudentByYearLevelAsync(
+                UserId,
+                choice,
+                yearLevel,
+                pageNumber,
+                pageSize,
+                searchQuery);
+
+            // Return an object with both Students and TotalCount
+            return Ok(new
+            {
+                Students = result.Students,
+                TotalCount = result.TotalCount
+            });
         }
     }
 }

@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 {
@@ -54,6 +56,20 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         {
             await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<List<DepartmentStatsDto>>("api/HandlingStudents/Department%20Statistics");
+        }
+    
+        public async Task<StudentsByYearLevelResponse?> StudentByYearLevelAsync(
+        CourseProgram choice,
+        YearLevelChoice yearLevel,
+        int pageNumber = 1,
+        int pageSize = 10,
+        string searchQuery = "")
+        {
+            await _authHelper.SetAuthHeaderAsync(_http);
+
+            var url = $"api/HandlingStudents/Display%20StudentByYearLevel?choice={choice}&yearLevel={yearLevel}&pageNumber={pageNumber}&pageSize={pageSize}&searchQuery={Uri.EscapeDataString(searchQuery)}";
+
+            return await _http.GetFromJsonAsync<StudentsByYearLevelResponse>(url);
         }
     }
 }

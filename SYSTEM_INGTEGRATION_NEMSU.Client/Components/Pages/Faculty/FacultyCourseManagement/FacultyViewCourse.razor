@@ -23,7 +23,7 @@
 
             <div class="p-5 ">
                 <div>
-                    <NavLink href="/facultymainmenu" class="cursor-pointer inline-flex items-center gap-2 text-cyan-700 hover:text-cyan-700 font-semibold text-sm mb-4">
+                    <NavLink href="/facultymainmenu" class="cursor-pointer inline-flex items-center gap-2 text-teal-500 hover:text-teal-700 font-semibold text-sm mb-4">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="animate-fade-in">
-                        <h1 class="text-2xl font-bold text-cyan-700">Course Details</h1>
+                        <h1 class="text-2xl font-bold text-teal-600">Course Details</h1>
                         <p class="text-gray-500 text-xs">Manage your Course</p>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
 
 
                             <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-1 border-teal-500 mb-6">
-                                <div class=" p-6 text-white bg-gradient-to-br from-cyan-500 to-teal-600">
+                                <div class="@($" p-6 text-white bg-gradient-to-br {GetColorGradient(course.Category!.Color)}")">
                                     <div class="flex items-start justify-between ">
                                         <div>
                                             <div class="flex items-center gap-3 mb-2">
@@ -81,7 +81,7 @@
                                                 <span class="px-3 py-1  rounded-full text-xs font-semibold @(course.CourseStatus == CourseStatus.Archived ? "bg-orange-500 text-white" : "bg-teal-500 text-white")">@course.CourseStatus</span>
                                             </div>
                                             <h1 class="text-3xl font-semi mb-2">@course.Title</h1>
-                                            <p class="text-cyan-100 text-sm">@course.Department!.GetDisplayName()</p>
+                                            <p class="text-teal-100 text-sm">@course.Department!.GetDisplayName()</p>
                                         </div>
                                         <div class="flex gap-2">
                                             <button @onclick="() => OpenEditModal(course)" class="px-4 py-2 bg-white/75 text-cyan-600 rounded-lg text-sm font-semibold hover:bg-cyan-50 transition-colors flex items-center gap-2">
@@ -109,7 +109,7 @@
 
                                     <div class="bg-cyan-50 rounded-xl shadow-lg p-6 border border-cyan-100">
                                         <h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-                                            <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                             </svg>
                                             Course Information
@@ -133,7 +133,7 @@
                                             </div>
                                             <div>
                                                 <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Price</p>
-                                                <p class="text-lg font-bold text-cyan-600">₱ @course.Cost</p>
+                                                <p class="text-lg font-bold text-teal-600">₱ @course.Cost</p>
                                             </div>
                                             <div>
                                                 <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Status</p>
@@ -198,7 +198,7 @@
 
                                     <div class="bg-cyan-50 rounded-xl shadow-lg p-6 border border-cyan-100">
                                         <h2 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-                                            <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                             </svg>
                                             Schedule
@@ -478,6 +478,41 @@
 
 
         await JS.InvokeVoidAsync("eval", "my_modal_editcourse.showModal()");
+    }
+
+    private Dictionary<string, string> colorGradients = new()
+        {
+            ["teal"] = "bg-gradient-to-br from-teal-400 via-teal-500 to-cyan-600",
+            ["blue"] = "bg-gradient-to-br from-blue-400 via-blue-500 to-indigo-600",
+            ["green"] = "bg-gradient-to-br from-green-400 via-green-500 to-emerald-600",
+            ["orange"] = "bg-gradient-to-br from-orange-400 via-orange-500 to-red-500",
+            ["purple"] = "bg-gradient-to-br from-purple-400 via-purple-500 to-pink-500",
+            ["indigo"] = "bg-gradient-to-br from-indigo-400 via-indigo-500 to-blue-600",
+            ["pink"] = "bg-gradient-to-br from-pink-400 via-pink-500 to-rose-500"
+        };
+
+
+    private string GetColorGradient(string color)
+    {
+        return color != null && colorGradients.ContainsKey(color)
+        ? colorGradients[color]
+          : "bg-gradient-to-br from-gray-400 via-gray-500 to-gray-600";
+    }
+    private Dictionary<string, string> categoryTextColors = new()
+        {
+            ["teal"] = "text-teal-600",
+            ["blue"] = "text-blue-600",
+            ["green"] = "text-green-600",
+            ["orange"] = "text-orange-600",
+            ["purple"] = "text-purple-600",
+            ["indigo"] = "text-indigo-600",
+            ["pink"] = "text-pink-600"
+        };
+    private string GetTextColors(string color)
+    {
+        return color != null && categoryTextColors.ContainsKey(color)
+        ? categoryTextColors[color]
+         : "text-gray-600";
     }
 
 }

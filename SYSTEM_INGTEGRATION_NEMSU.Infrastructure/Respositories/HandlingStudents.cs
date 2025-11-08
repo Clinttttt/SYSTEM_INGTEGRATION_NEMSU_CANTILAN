@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
@@ -240,31 +241,66 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             return GetData;
         }
-        public async Task<List<HandlingStudentsDto>> StudentByYearLevelAsync(Guid AdminId, CourseProgram choice, YearLevelChoice yearLevel)
+        // Update your existing method to this:
+        public async Task<(List<HandlingStudentsDto> Students, int TotalCount)> StudentByYearLevelAsync(
+            Guid AdminId,
+            CourseProgram choice,
+            YearLevelChoice yearLevel,
+            int pageNumber = 1,
+            int pageSize = 10,
+            string searchQuery = "")
         {
-            var student = await context.enrollcourse
+            // Base query
+            var query = context.enrollcourse
                 .Include(s => s.Student)
                 .ThenInclude(s => s.StudentAcademicDetails)
                 .Include(s => s.Course)
-                .Include(s=> s.Student)
-                .ThenInclude(s=> s.StudentAcademicDetails)
-                .Include(s=> s.Student)
-                .ThenInclude(s=> s.StudentContactDetails)
+                .Include(s => s.Student)
+                .ThenInclude(s => s.StudentContactDetails)
                 .AsNoTracking()
-                .Where(s => s.Student.StudentAcademicDetails!.Program == choice && s.Course.AdminId == AdminId && s.Student.StudentAcademicDetails.YearLevel == yearLevel)
+                .Where(s => s.Student.StudentAcademicDetails!.Program == choice
+                    && s.Course.AdminId == AdminId
+                    && s.Student.StudentAcademicDetails.YearLevel == yearLevel);
+
+            // Apply search filter if searchQuery is provided
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                var search = searchQuery.ToLower();
+                query = query.Where(s =>
+                    s.Student.StudentsDetails!.FirstName!.ToLower().Contains(search) ||
+                    s.Student.StudentsDetails.LastName!.ToLower().Contains(search) ||
+                    s.Student.StudentAcademicDetails!.StudentSchoolId!.ToLower().Contains(search) ||
+                    s.Student.StudentContactDetails!.EmailAddress!.ToLower().Contains(search) ||
+                    s.Course.Title!.ToLower().Contains(search)
+                );
+            }
+
+            // Get total count BEFORE pagination
+            var totalCount = await query.CountAsync();
+
+            // Apply pagination and select
+            var students = await query
+                .Skip((pageNumber - 1) * pageSize)  // Skip previous pages
+                .Take(pageSize)                      // Take only 10 for current page
                 .Select(s => new HandlingStudentsDto
                 {
-                    StudentName = s.Student.StudentsDetails!.FirstName + " " + s.Student.StudentsDetails.MiddleName + " " + s.Student.StudentsDetails.LastName,
-                    StudentSchoolId  = s.Student.StudentAcademicDetails!.StudentSchoolId,
+                    StudentName = s.Student.StudentsDetails!.FirstName + " " +
+                                 s.Student.StudentsDetails.MiddleName + " " +
+                                 s.Student.StudentsDetails.LastName,
+                    StudentSchoolId = s.Student.StudentAcademicDetails!.StudentSchoolId,
                     CourseTitle = s.Course.Title!,
                     DateEnrolled = s.DateEnrolled,
                     Email = s.Student.StudentContactDetails!.EmailAddress,
                     studentCourseStatus = s.StudentCourseStatus,
                     Coursedepartment = s.Course.Department.GetDisplayName(),
                     ProfileColor = s.ProfileColor,
-                }).ToListAsync();
-            return student;
+                })
+                .ToListAsync();
+
+            // Return both students list and total count
+            return (students, totalCount);
         }
+
       
 
 

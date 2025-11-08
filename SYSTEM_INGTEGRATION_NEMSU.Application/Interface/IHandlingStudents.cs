@@ -19,7 +19,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<List<HandlingStudentsDto>> DisplayStudentByDepartmentAsync(Guid AdminId, CourseDepartment department);
         Task<SummaryStatisticsDto> SummaryStatisticsAsync(Guid Admin);
         Task<List<DepartmentStatsDto>> DepartmentStatsAsync(Guid AdminId);
-        Task<List<HandlingStudentsDto>> StudentByYearLevelAsync(Guid AdminId, CourseProgram choice, YearLevelChoice yearLevel);
+        Task<(List<HandlingStudentsDto> Students, int TotalCount)> StudentByYearLevelAsync(
+                   Guid AdminId,
+                   CourseProgram choice,
+                   YearLevelChoice yearLevel,
+                   int pageNumber = 1,
+                   int pageSize = 10,
+                   string searchQuery = "");
 
 
     }

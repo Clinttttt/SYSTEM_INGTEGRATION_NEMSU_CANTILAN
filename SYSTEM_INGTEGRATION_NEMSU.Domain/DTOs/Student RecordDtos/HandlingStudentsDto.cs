@@ -16,7 +16,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public DateTime DateEnrolled { get; set; }
         public string? StudentSchoolId { get; set; }
         public string? Email { get; set; }
-        public StudentCourseStatus? studentCourseStatus { get; set; }
+        public StudentCourseStatus studentCourseStatus { get; set; }
     
         public string? Coursedepartment { get; set; }
         public string? ProfileColor { get; set; }

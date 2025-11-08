@@ -55,7 +55,7 @@ else
                             </div>
                         </div>
                         <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold border @(student.studentCourseStatus == StudentCourseStatus.Inactive ? "border-amber-200 bg-amber-50 text-amber-600" : "bg-emerald-50 border-emerald-200 text-emerald-700")">
-                            @student.studentCourseStatus?.GetDisplayName()
+                            @student.studentCourseStatus.GetDisplayName()
                         </span>
                     </div>
                     <div class="flex justify-between">

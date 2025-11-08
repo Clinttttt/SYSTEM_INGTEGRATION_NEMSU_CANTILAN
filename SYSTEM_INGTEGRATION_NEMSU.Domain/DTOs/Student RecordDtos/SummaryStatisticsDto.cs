@@ -21,4 +21,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
         public int MaxCapacity { get; set; }
         public Guid CourseId {get;set;}
     }
+    public class StudentsByYearLevelResponse
+    {
+        public List<HandlingStudentsDto> Students { get; set; } = new();
+        public int TotalCount { get; set; }
+    }
 }
