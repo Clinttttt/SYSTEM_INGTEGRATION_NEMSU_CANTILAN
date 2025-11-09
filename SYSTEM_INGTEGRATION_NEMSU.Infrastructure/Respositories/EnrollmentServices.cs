@@ -345,7 +345,38 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             }
             return t;
         }
-       
+        public async Task<SchoolIdDto?> GenerateStudentId(Guid StudentId)
+        {
+            var request = await context.academicInformation.FirstOrDefaultAsync(s=> s.StudentId == StudentId);
+            if (request is null) return null;
+
+            int currentYear = DateTime.Now.Year;
+
+         
+            var lastStudent = await context.academicInformation
+                .Where(s => s.StudentSchoolId != null && s.StudentSchoolId.StartsWith(currentYear.ToString()) == true)
+                .OrderByDescending(s => s.StudentSchoolId)
+                .FirstOrDefaultAsync();
+
+            int nextNumber = 1; 
+
+            if (lastStudent != null)
+            {
+         
+                string lastId = lastStudent.StudentSchoolId!;
+                string numberPart = lastId.Split('-')[1];     
+                nextNumber = int.Parse(numberPart) + 1; 
+            }
+
+            var Id = new SchoolIdDto
+            {
+                StudentSchoolId = $"{currentYear}-{nextNumber:D4}"
+            };
+            request.StudentSchoolId = Id.StudentSchoolId;
+            await context.SaveChangesAsync();         
+            return Id;
+        }
+
 
 
     }

@@ -8,6 +8,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
 {
    public class SchoolIdDto
     {
-        public string? StudentSchoolId { get; set; }
+        public string StudentSchoolId { get; set; } = string.Empty;
     }
 }

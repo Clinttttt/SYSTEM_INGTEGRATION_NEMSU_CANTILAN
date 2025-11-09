@@ -14,27 +14,30 @@
                 Open drawer
             </label>
 
-            <div class="flex-1 p-6 " >
+            <div class="flex-1 p-6 ">
 
 
                 @if (pageState.Studentsview == PageState.StudentsView.AllStudents)
                 {
-                    <div>
-                        <button @onclick="()=> pageState.SetViewStudent(StudentsView.CurrentStudents)" class="cursor-pointer inline-flex items-center gap-2 text-teal-500 hover:text-teal-700 font-semibold text-sm mb-4">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                            Back to Dashboard
-                        </button>
-                    </div>
-                    <div class="mb-5 animate-fade-in">
-                        <h1 class="text-2xl font-semibold text-teal-500 mb-0.5">Student List</h1>
-                        <p class="text-gray-500 text-xs">Manage and view student records</p>
+                    <div class="flex justify-between">
+                        <div>
+                            <button @onclick="()=> pageState.SetViewStudent(StudentsView.CurrentStudents)" class="cursor-pointer inline-flex items-center gap-2 text-teal-500 hover:text-teal-700 font-semibold text-sm mb-4">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Back to Dashboard
+                            </button>
+                        </div>
+                        <div class="mb-5 animate-fade-in">
+                            <h1 class="text-2xl font-semibold text-teal-500 mb-0.5">Student List</h1>
+                            <p class="text-gray-500 text-xs">Manage and view student records</p>
+                        </div>
                     </div>
                 }
 
                 else if (pageState.Studentsview == PageState.StudentsView.ByDepartment)
                 {
+                    <div class="flex justify-between">
                     <div>
                         <button @onclick="()=> pageState.SetViewStudent(StudentsView.CurrentStudents)" class="cursor-pointer inline-flex items-center gap-2 text-teal-500 hover:text-teal-700 font-semibold text-sm mb-4">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,9 +50,11 @@
                         <h1 class="text-2xl font-semibold text-teal-500 mb-0.5">Enrolled By Department</h1>
                         <p class="text-gray-500 text-xs">Manage and view student Enrolled by Department</p>
                     </div>
+                    </div>
                 }
                 else if (pageState.Studentsview == PageState.StudentsView.CurrentStudents)
                 {
+                    <div class="flex justify-between">
                     <div>
                         <NavLink href="/facultymainmenu" class="cursor-pointer inline-flex items-center gap-2 text-teal-500 hover:text-teal-700 font-semibold text-sm mb-4">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,11 +67,12 @@
                         <h1 class="text-2xl font-semibold text-teal-500 mb-0.5 ">Student Dashboard</h1>
                         <p class="text-gray-500 text-xs">Manage and view student records</p>
                     </div>
+                    </div>
                 }
                 else if (pageState.Studentsview == PageState.StudentsView.ByDepartment)
                 {
                     <div class="mb-5 animate-fade-in">
-                        <h1 class="text-2xl font-bold text-teal-500 mb-0.5">Enrolled By Department</h1>
+                        <h1 class="text-2xl font-bold text-teal-500 mb-0.5">Manage Students</h1>
                         <p class="text-gray-500 text-xs">Manage and view student Enrolled by Department</p>
                     </div>
                 }
@@ -89,18 +95,18 @@
                                 </svg>
                             </div>
                             <input type="text"
-                            @bind="SearchQuery"
-                            @bind:event="oninput"
-                            @onkeyup="FilterStudent"
-                            class="w-[100%] pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
-                            placeholder="Search by name, ID, or email..." />
+                                   @bind="SearchQuery"
+                                   @bind:event="oninput"
+                                   @onkeyup="FilterStudent"
+                                   class="w-[100%] pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
+                                   placeholder="Search by name, ID, or email..." />
                         </div>
                     </div>
 
                     <NavLink @onclick="()=> pageState.SetViewStudent(PageState.StudentsView.AllStudents)" class="btn h-full bg-teal-500 btn-outline btn-teal-600 text-white rounded-lg shadow-sm p-3">
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex flex-row items-center gap-3">
-                                <h1 class="text-center font-normal text-xl">View All Students</h1>
+                                <h1 class="text-center font-normal text-xl">Browse Students</h1>
                             </div>
                             <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,7 +119,7 @@
                     <NavLink @onclick="()=> pageState.SetViewStudent(PageState.StudentsView.ByDepartment)" class="btn h-full bg-teal-500 btn-outline btn-teal-600 text-white rounded-lg shadow-sm p-3">
                         <div class="flex items-center justify-between gap-5">
                             <div class="flex flex-row items-center gap-3">
-                                <h1 class="text-center font-normal text-xl">Dept. Enrolled</h1>
+                                <h1 class="text-center font-normal text-xl">View Students</h1>
                             </div>
                             <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -153,7 +159,7 @@
                     }
                     else if (pageState.Studentsview == PageState.StudentsView.AllStudents)
                     {
-                        <FacultyAllStudents/>
+                        <FacultyAllStudents />
                     }
                 }
             </div>
@@ -163,15 +169,15 @@
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <div class="min-h-full w-64 bg-white shadow-xl flex flex-col border-r border-r-gray-200">
-            
+
 
                 <div class="relative p-6 bg-gradient-to-br from-cyan-500 to-teal-600">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
                     <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
 
-                    <div class="flex flex-col items-center">                      
+                    <div class="flex flex-col items-center">
 
-                        @if(!string.IsNullOrEmpty(PreviewUrl))
+                        @if (!string.IsNullOrEmpty(PreviewUrl))
                         {
                             <img src="@PreviewUrl" alt="Faculty Photo" class="w-20 h-20 rounded-full  shadow-lg mb-3" />
                         }
@@ -182,9 +188,9 @@
                             </svg>
                         }
 
-                        
-                        
-                     
+
+
+
 
 
                         <h3 class="text-white font-bold text-sm">Facilitator Dashboard</h3>
@@ -295,13 +301,13 @@
                 Console.WriteLine($"Authentication error: {ex.Message}");
             }
 
-            StateHasChanged(); 
+            StateHasChanged();
         }
     }
 
     private void FilterStudent()
     {
-      
+
 
         if (AllStudents == null || !AllStudents.Any())
         {
@@ -310,12 +316,12 @@
 
         if (string.IsNullOrWhiteSpace(SearchQuery))
         {
-          
+
             FilteredStudents = AllStudents;
         }
         else
         {
-         
+
             var query = SearchQuery.ToLower();
             FilteredStudents = AllStudents.Where(s =>
                 s.StudentName!.ToLower().Contains(query) ||

@@ -18,13 +18,13 @@
             <div class="flex-1 p-6 pb-17 " >
 
                 <div class="mb-6 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                     </div>
                     <div class="animate-fade-in">
-                        <h1 class="text-2xl font-bold text-cyan-700">Create New Course</h1>
+                        <h1 class="text-2xl font-bold text-teal-600">Create New Course</h1>
                         <p class="text-gray-500 text-xs">Fill in the details to add a new course</p>
                     </div>
                 </div>
@@ -34,8 +34,8 @@
                     <div class="bg-white rounded-2xl shadow-xl border border-cyan-100 overflow-hidden">
 
 
-                        <div class="bg-gradient-to-r from-cyan-500 to-cyan-600 px-6 py-4">
-                            <h2 class="text-white font-semibold text-sm">Course Information</h2>
+                        <div class="bg-gradient-to-r from-teal-500 to-cyan-600 px-6 py-4">
+                            <h2 class="text-white font-semibold text-md">Course Information</h2>
                         </div>
 
 
@@ -95,7 +95,7 @@
                                                     </div>
                                                     <select @bind="createCourse.CategoryId"
                                                     class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all bg-gray-50 focus:bg-white">
-                                                        <option value="">Select Category</option>
+                                                        <option value="">Select Category Theme</option>
                                                         <option value="11111111-1111-1111-1111-111111111111">Mathematics & Statistics</option>
                                                         <option value="22222222-2222-2222-2222-222222222222">Technology</option>
                                                         <option value="33333333-3333-3333-3333-333333333333">Natural Sciences</option>
@@ -122,12 +122,12 @@
                                                 </label>
                                                 <div class="relative group">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-cyan-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-teal-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                                         </svg>
                                                     </div>
                                                     <select @bind="createCourse.Department"
-                                                    class=" w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all bg-gray-50 focus:bg-white">
+                                                            class=" w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-teal-500 focus:ring-2 focus:ring-teal-100 outline-none transition-all bg-gray-50 focus:bg-white">
                                                         <option value="">Select Department</option>
                                                         <option value="@CourseDepartment.DIT">Department of Industrial Technology</option>
                                                         <option value="@CourseDepartment.DCS">Department of Computer Studies</option>
@@ -143,12 +143,12 @@
                                                 </label>
                                                 <div class="relative group">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-cyan-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-teal-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
                                                         </svg>
                                                     </div>
                                                     <input @bind="createCourse.MaxCapacity"
-                                                           class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all bg-gray-50 focus:bg-white"
+                                                           class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-teal-500 focus:ring-2 focus:ring-teal-100 outline-none transition-all bg-gray-50 focus:bg-white"
                                                            placeholder="3" />
                                                 </div>
                                             </div>
@@ -158,12 +158,12 @@
                                                 </label>
                                                 <div class="relative group">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-cyan-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-teal-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
                                                         </svg>
                                                     </div>
                                                     <input @bind="createCourse.Unit"
-                                                    class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all bg-gray-50 focus:bg-white"
+                                                           class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-teal-500 focus:ring-2 focus:ring-teal-100 outline-none transition-all bg-gray-50 focus:bg-white"
                                                     placeholder="3" />
                                                 </div>
                                             </div>
@@ -174,12 +174,12 @@
                                                 </label>
                                                 <div class="relative group">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-cyan-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-teal-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                         </svg>
                                                     </div>
                                                     <input @bind="createCourse.Cost"
-                                                    class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all bg-gray-50 focus:bg-white"
+                                                           class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-teal-500 focus:ring-2 focus:ring-teal-100 outline-none transition-all bg-gray-50 focus:bg-white"
                                                     placeholder="0.00" />
                                                 </div>
                                             </div>
@@ -191,7 +191,7 @@
                                             </label>
                                             <textarea @bind="createCourse.CourseDescriptiion"
                                             rows="3"
-                                            class="w-full px-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all resize-none bg-gray-50 focus:bg-white"
+                                                      class="w-full px-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-teal-500 focus:ring-2 focus:ring-teal-100 outline-none transition-all resize-none bg-gray-50 focus:bg-white"
                                             placeholder="Enter a detailed description of the course..." />
                                         </div>
                                     </div>
@@ -207,12 +207,12 @@
                                                 </label>
                                                 <div class="relative group">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-cyan-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                                         </svg>
                                                     </div>
                                                     <select @bind="createCourse.Semester"
-                                                    class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all bg-gray-50 focus:bg-white">
+                                                            class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-100 outline-none transition-all bg-gray-50 focus:bg-white">
                                                         <option value="">Select Semester</option>
                                                         <option value="@CourseSemester.First_Semester">1st Semester</option>
                                                         <option value="@CourseSemester.Second_Semester">2nd Semester</option>
@@ -227,12 +227,12 @@
                                                 </label>
                                                 <div class="relative group">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-cyan-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                                         </svg>
                                                     </div>
                                                     <input @bind="createCourse.SchoolYear"
-                                                    class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all bg-gray-50 focus:bg-white"
+                                                           class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-100 outline-none transition-all bg-gray-50 focus:bg-white"
                                                     placeholder="2024-2025" />
                                                 </div>
                                             </div>
@@ -244,12 +244,12 @@
                                                 </label>
                                                 <div class="relative group">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-cyan-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                         </svg>
                                                     </div>
                                                     <input @bind="createCourse.Schedule"
-                                                    class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all bg-gray-50 focus:bg-white"
+                                                           class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-100 outline-none transition-all bg-gray-50 focus:bg-white"
                                                     placeholder="MWF 10:00-11:00 AM" />
                                                 </div>
                                             </div>
@@ -261,12 +261,12 @@
                                                 </label>
                                                 <div class="relative group">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-cyan-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <svg class="w-4 h-4 text-gray-400 group-focus-within:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                                                         </svg>
                                                     </div>
                                                     <input @bind="createCourse.Room"
-                                                    class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 outline-none transition-all bg-gray-50 focus:bg-white"
+                                                           class="w-full pl-10 pr-3 py-2.5 text-xs border-1 border-stone-300 rounded-lg focus:border-amber-500 focus:ring-2 focus:ring-amber-100 outline-none transition-all bg-gray-50 focus:bg-white"
                                                     placeholder="Room 301" />
                                                 </div>
                                             </div>
@@ -276,7 +276,7 @@
 
                                     <div class="flex gap-3 pt-4 justify-end border-t-2 border-gray-100">
                                         <button type="submit"
-                                        class="btn p-4 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white py-3 rounded-lg text-sm font-normal hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                                        class="btn p-4 bg-gradient-to-r from-teal-500 to-cyan-600 text-white py-3 rounded-lg text-sm font-normal hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                             </svg>

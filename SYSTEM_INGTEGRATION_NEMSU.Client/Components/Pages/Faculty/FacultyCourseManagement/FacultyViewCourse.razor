@@ -72,13 +72,13 @@
                         <div class="max-w-6xl mx-auto -mt-4 ">
 
 
-                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-1 border-teal-500 mb-6">
+                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-1 border-gray-300 mb-6">
                                 <div class="@($" p-6 text-white bg-gradient-to-br {GetColorGradient(course.Category!.Color)}")">
                                     <div class="flex items-start justify-between ">
                                         <div>
                                             <div class="flex items-center gap-3 mb-2">
-                                                <span class="px-3 py-1 bg-white/20 rounded-lg text-sm font-semi">@course.CourseCode</span>
-                                                <span class="px-3 py-1  rounded-full text-xs font-semibold @(course.CourseStatus == CourseStatus.Archived ? "bg-orange-500 text-white" : "bg-teal-500 text-white")">@course.CourseStatus</span>
+                                                <span class="px-3 py-1 bg-white/20 rounded-lg text-sm font-semibold ">@course.CourseCode</span>
+                                                <span class="px-3 py-1  rounded-full text-xs font-semibold bg-white/20 @(course.CourseStatus == CourseStatus.Archived ? "bg-orange-500 text-white" : "bg-teal-500 text-white")">@course.CourseStatus</span>
                                             </div>
                                             <h1 class="text-3xl font-semi mb-2">@course.Title</h1>
                                             <p class="text-teal-100 text-sm">@course.Department!.GetDisplayName()</p>

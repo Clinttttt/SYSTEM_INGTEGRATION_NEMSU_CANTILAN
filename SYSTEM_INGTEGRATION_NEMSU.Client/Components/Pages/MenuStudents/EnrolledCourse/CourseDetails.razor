@@ -1,4 +1,5 @@
 ﻿@page "/coursedetails/{CourseId:guid}"
+@using SYSTEM_INGTEGRATION_NEMSU.Client.Components.Pages.ModalRespond
 
 @inject IEnrollmentApiServices enrollmentApi
 @rendermode InteractiveServer
@@ -12,19 +13,29 @@
         <div class="drawer-content flex flex-col h-screen overflow-auto">
 
 
-            <div class="flex-1 bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 p-6 pb-18">
+            <div class="flex-1 p-6 pb-18">
 
 
                 <div class="mb-6 animate-fade-in">
                     <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden mb-4">☰ Menu</label>
-                    <div class="flex items-center gap-2 mb-2">
-                        <button onclick="history.back()" class="btn  text-gray-600 btn-circle btn-ghost hover:bg-gray-100 transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                        </button>
-                        <h1 class="text-3xl font-semibold text-gray-600">Course Details</h1>
-                    </div>
+               <div class="flex justify-between">
+                        <div class="flex items-center gap-2 mb-2">
+                            <button onclick="history.back()" class="btn  text-gray-600 btn-circle btn-ghost hover:bg-gray-100 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <h1 class="text-2xl font-semibold text-gray-600">Course Details</h1>
+                        </div>
+                        <div>
+                            <label for="my_modal_course_action" class="btn cursor-pointer bg-none border-none bg-transparent  shadow-none">
+                                <svg class="w-6 h-6 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                          </label>
+                        </div>
+               </div>
                     <p class="text-gray-600 ml-14">Complete information about your enrolled course</p>
                 </div>
                 @if(enrolledCourseView is null)
@@ -173,7 +184,7 @@
                                                 </div>
                                                 <span class="text-xs text-gray-500">@announcement.DateCreated.ToString("MMM d, yyyy • h:mm tt")</span>
                                             </div>
-                                            <p class="text-gray-700 text-sm mb-2">
+                                            <p class="text-gray-700 whitespace-pre-line text-sm mb-2">
                                                 @announcement.Message
                                             </p>
                                             <p class="text-sm @(announcement.Type == AnnouncementType.System ? "text-amber-600" : "text-cyan-700") font-semibold">- @announcement.FacultyName</p>
@@ -188,7 +199,7 @@
 
                     </div>
                 }
-             
+             <CourseAction CourseCode="@enrolledCourseView?.CourseCode" CourseId="@enrolledCourseView!.CourseId"/>
             </div>
         </div>
 

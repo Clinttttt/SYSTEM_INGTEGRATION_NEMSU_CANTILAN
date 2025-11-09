@@ -28,6 +28,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<List<PaymentDetailsDto>?> DisplayPaymentAsync(Guid StudentId);
         Task<bool> DeletePaymentAsync(Guid StudentId, Guid PaymentId);
 
-
+        Task<SchoolIdDto?> GenerateStudentId(Guid StudentId);
     }
 }

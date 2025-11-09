@@ -20,7 +20,7 @@
                     </div>
                     <div class="flex items-center justify-between animate-fade-in">
                         <div>
-                            <h1 class=" text-3xl md:text-4xl font-semibold bg-gradient-to-r from-amber-600 to-orange-500 bg-clip-text text-transparent">
+                            <h1 class=" text-md md:text-2xl font-semibold bg-gradient-to-r from-amber-600 to-orange-500 bg-clip-text text-transparent">
                                 Profile Information
                             </h1>
                             <p class="text-gray-600 mt-2 flex items-center">
@@ -62,11 +62,21 @@
 
                             <div class="relative flex flex-col lg:flex-row items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-8">
                                 <div class="relative group">
-                                    <div class="w-[102px] h-[102px] bg-gradient-to-br from-amber-50 to-amber-50 rounded-full flex items-center justify-center border-4 border-orange-300 shadow-lg">
-                                        <svg class="w-13 h-13 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                        </svg>
-                                    </div>
+
+
+                                    @if (!string.IsNullOrEmpty(PreviewUrl))
+                                    {
+                                        <img src="@PreviewUrl" alt="Faculty Photo" class="w-[102px] h-[102px] rounded-full  shadow-lg mb-3 border-4 border-orange-300" />
+                                    }
+                                    else
+                                    {
+                                        <div class="w-[102px] h-[102px] bg-gradient-to-br from-amber-50 to-amber-50 rounded-full flex items-center justify-center border-4 border-orange-300 shadow-lg">
+                                            <svg class="w-13 h-13 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                            </svg>
+                                        </div>
+                                    }
+                                  
                                     <div class="absolute bottom-0 right-0 w-10 h-10 bg-amber-400 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
@@ -85,7 +95,7 @@
                                             @facultyRecord.FacultyAcademicInformationDto.FacultyDepartment
                                         </span>
                                         <span class="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
-                                            @facultyRecord.FacultyAcademicInformationDto.Position
+                                            @facultyRecord.FacultyAcademicInformationDto.Position.GetDisplayName()
                                         </span>
                                     </div>
                                     <p class="text-white/90 text-lg mb-4">@facultyRecord.FacultyAcademicInformationDto.FacultyDepartment.GetDisplayName()</p>
@@ -137,7 +147,7 @@
                                     <div class="space-y-4">
                                         <h4 class="font-semibold text-orange-600 text-lg mb-4 pb-2 border-b-2 border-orange-200">Academic Information</h4>
                                         <div><label class="text-xs font-bold text-gray-500 uppercase">Department</label><p class=" font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.FacultyDepartment</p></div>
-                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Position</label><p class="font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.Position</p></div>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Position</label><p class="font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.Position.GetDisplayName()</p></div>
                                         <div><label class="text-xs font-bold text-gray-500 uppercase">Year of Teaching</label><p class="font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.YearsOfTeaching</p></div>
 
                                     </div>

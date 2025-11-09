@@ -1,12 +1,24 @@
-﻿@inject IStudentRecordApiCommand studentRecordApi
+﻿
+
+@inject IStudentRecordApiCommand studentRecordApi
 @inject IJSRuntime JS
+@inject IEnrollmentApiServices enrollmentApi
 <input type="checkbox" id="my_modal_studentId_Assign" class="modal-toggle" />
 <div class="modal" role="dialog">
     <div class="modal-box max-w-md rounded-md">
         <div class="flex justify-between">
             <div>
                 <h3 class="text-2xl font-semibold text-gray-600 mb-1">Student ID Required</h3>
-                <p class="text-gray-500 mb-6 text-light">Input your Student ID before continuing.</p>
+                <p class="text-gray-500 mb-6 text-light">
+                    @if (needNewId)
+                    {
+                        <span>A new Student ID will be generated for you.</span>
+                    }
+                    else
+                    {
+                        <span>Input your Student ID before continuing.</span>
+                    }
+                </p>
             </div>
             <div class="w-12 rounded-full border-2 border-amber-500 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-amber-400 to-orange-500 p-0.5">
                 <img alt="NEMSU Cantilan Student Services"
@@ -14,7 +26,7 @@
                 class="w-full h-full rounded-full object-cover bg-white" />
             </div>
         </div>
-
+        
         <div class="form-control mb-6">
             <label class="label">
                 <span class="label-text font-light flex items-center gap-1">
@@ -25,29 +37,138 @@
                 </span>
             </label>
             <input type="text"
-            @bind="StudentId"
-            placeholder="Enter your Student ID (e.g., 2024-12345)"
+            @bind="StudentId.StudentSchoolId"
+            placeholder="@(needNewId ? "Click 'Proceed' to generate ID" : "Enter your Student ID (e.g., 2024-12345)")"
             class="input mt-1 input-bordered w-full focus:outline-none focus:ring-0 focus:ring-2 focus:ring-teal-500"
+            disabled="@needNewId"
             required />
         </div>
+
+        @if (showGeneratedId && !string.IsNullOrEmpty(generatedId))
+        {
+            <div class="alert alert-success mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <div>
+                    <div class="font-semibold">Your new Student ID is:</div>
+                    <div class="text-2xl font-bold">@generatedId</div>
+                </div>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(errorMsg))
+        {
+            <div class="alert alert-error mb-4">
+                <span>@errorMsg</span>
+            </div>
+        }
+
         <div class="modal-action gap-2">
-            <button @onclick="()=> HandlingStudentId()" class="btn bg-teal-600 hover:bg-teal-700 text-white border-none">Proceed to Enrollment</button>
+            @if (!needNewId)
+            {
+                <button @onclick="SwitchToNewId" class="btn btn-outline border-gray-600 text-gray-500">
+                    I don't have a Student ID
+                </button>
+            }       
+            
+            <button @onclick="ProceedEnrollment" 
+                    class="btn bg-teal-600 hover:bg-teal-700 text-white border-none" 
+                    disabled="@isLoading">
+                @if (isLoading)
+                {
+                    <span class="loading loading-spinner loading-sm"></span>
+                    <span>Processing...</span>
+                }
+                else
+                {
+                    <span>Proceed to Enrollment</span>
+                }
+            </button>
         </div>
     </div>
 </div>
 
+@code {
 
-
-@code{
-    public string? StudentId { get; set; }
-
+    private bool needNewId = false;
+    private bool isLoading = false;
+    private string? errorMsg = null;
+    private bool showGeneratedId = false;
+    private string? generatedId = null;
+    
+    public SchoolIdDto StudentId { get; set; } = new SchoolIdDto();
+    
     [Parameter]
     public EventCallback reload { get; set; }
-    public async Task HandlingStudentId()
+
+ 
+    private void SwitchToNewId()
     {
-        await studentRecordApi.StudentSchoolIdAsync(StudentId!);
-        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_studentId_Assign').checked = false");
-        await reload.InvokeAsync();
+        needNewId = true;
+        StudentId.StudentSchoolId = "";
+        showGeneratedId = false;
+        generatedId = null;
+        errorMsg = null;
     }
 
+   
+    private void SwitchToExisting()
+    {
+        needNewId = false;
+        StudentId.StudentSchoolId = "";
+        showGeneratedId = false;
+        generatedId = null;
+        errorMsg = null;
+    }
+
+    
+    public async Task ProceedEnrollment()
+    {
+        try
+        {
+            isLoading = true;
+            errorMsg = null;
+
+         
+            if (needNewId)
+            {
+              
+                StudentId = await enrollmentApi.GenerateStudentId();
+                
+              
+                generatedId = StudentId?.StudentSchoolId;
+                showGeneratedId = true;
+                
+              
+                await Task.Delay(2000);
+            }
+        
+            else
+            {
+                if (string.IsNullOrWhiteSpace(StudentId.StudentSchoolId))
+                {
+                    errorMsg = "Please enter your Student ID";
+                    return;
+                }
+            }
+
+        
+            await studentRecordApi.StudentSchoolIdAsync(StudentId?.StudentSchoolId!);
+            
+         
+            await JS.InvokeVoidAsync("eval", 
+                "document.getElementById('my_modal_studentId_Assign').checked = false");
+        
+
+            await reload.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMsg = $"Error: {ex.Message}";
+            showGeneratedId = false;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
 }

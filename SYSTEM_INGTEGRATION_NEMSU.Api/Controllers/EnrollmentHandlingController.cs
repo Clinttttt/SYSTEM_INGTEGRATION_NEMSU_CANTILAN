@@ -224,6 +224,22 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayAllCourseEnrolledAsync(UserId);
             return Ok(request);
         }
-     
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [Authorize]
+        [HttpPost("Generate StudentId")]
+        public async Task<ActionResult<SchoolIdDto>> GenerateStudentId()
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("User not found");
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.GenerateStudentId(UserId);
+            if(request is null)
+            {
+                return BadRequest("null");
+            }
+            return Ok(request);
+        }
+
+
     }
 }

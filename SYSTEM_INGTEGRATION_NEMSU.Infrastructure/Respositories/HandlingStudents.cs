@@ -193,14 +193,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             var allDepartments = Enum.GetValues(typeof(CourseDepartment))
                 .Cast<CourseDepartment>()
+                .Where(d => d != CourseDepartment.None)
                 .ToList();
 
             var departmentCounts = await context.enrollcourse
                 .Include(s => s.Course)
-                .Where(s => s.Course.AdminId == AdminId).ToListAsync();
+                .Where(s => s.Course.AdminId == AdminId ).ToListAsync();
 
             var distinctResults = departmentCounts
                 .GroupBy(s => s.StudentId)
+                
                 .Select(s => s.OrderByDescending(s => s.DateEnrolled).First()).ToList();
 
 
@@ -219,7 +221,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var totalStudents = disctinct.Sum(d => d.Count);
 
 
-            var GetData = allDepartments.Select((dept, index) =>
+            var GetData = allDepartments
+             
+                .Select((dept, index) =>
             {
                 var deptCount = disctinct.FirstOrDefault(d => d.Department == dept);
                 var count = deptCount?.Count ?? 0;
@@ -241,7 +245,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             return GetData;
         }
-        // Update your existing method to this:
+
         public async Task<(List<HandlingStudentsDto> Students, int TotalCount)> StudentByYearLevelAsync(
             Guid AdminId,
             CourseProgram choice,
@@ -250,7 +254,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             int pageSize = 10,
             string searchQuery = "")
         {
-            // Base query
+           
             var query = context.enrollcourse
                 .Include(s => s.Student)
                 .ThenInclude(s => s.StudentAcademicDetails)

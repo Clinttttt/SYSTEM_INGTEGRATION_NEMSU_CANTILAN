@@ -17,6 +17,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<IEnumerable<CourseDto>?> DisplayAllCourseDetailsAsync();
         Task<List<EnrollCourseDto>?> DisplayAllCourseEnrolledAsync();
         Task<bool> UnenrollCourse(string CourseId);
+        Task<bool> InactiveCourse(Guid CourseId);
         Task<ProvisionDto?> ProvisionAsync(string courseCode);
         Task<CourseDto?> PreviewCourseAsync(Guid CourseId);
         Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync();
@@ -27,6 +28,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<PaymentDetailsDto?> AddPaymentAsync(PaymentDetailsDto payment);
         Task<List<PaymentDetailsDto>?> DisplayPaymentAsync();
         Task<bool> DeletePaymentAsync(Guid PaymentId);
+        Task<SchoolIdDto?> GenerateStudentId();
 
     }
 }

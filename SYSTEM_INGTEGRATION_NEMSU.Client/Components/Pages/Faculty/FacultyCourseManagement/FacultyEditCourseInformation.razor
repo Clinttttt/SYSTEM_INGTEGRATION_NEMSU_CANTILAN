@@ -78,11 +78,16 @@
                                 <select @bind="CourseUpdate.CategoryId"
                                 class="select select-bordered w-full bg-gray-50 border-gray-300 focus:bg-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none pr-10">
                                     <option value="@Guid.Empty">Select Theme</option>
-                                    <option value="@Guid.Parse("11111111-1111-1111-1111-111111111111")">Mathematics</option>
-                                    <option value="@Guid.Parse("22222222-2222-2222-2222-222222222222")">Arts & Humanities</option>
-                                    <option value="@Guid.Parse("33333333-3333-3333-3333-333333333333")">Computer Science</option>
+                                    <option value="@Guid.Parse("11111111-1111-1111-1111-111111111111")">Mathematics & Statistics</option>
+                                    <option value="@Guid.Parse("22222222-2222-2222-2222-222222222222")">Technology</option>
+                                    <option value="@Guid.Parse("33333333-3333-3333-3333-333333333333")">Natural Sciences</option>
                                     <option value="@Guid.Parse("44444444-4444-4444-4444-444444444444")">Social Sciences</option>
-                                    <option value="@Guid.Parse("55555555-5555-5555-5555-555555555555")">Natural Sciences</option>
+                                    <option value="@Guid.Parse("55555555-5555-5555-5555-555555555555")">Arts & Humanities</option>
+                                    <option value="@Guid.Parse("66666666-6666-6666-6666-666666666666")">Business & Management</option>
+                                    <option value="@Guid.Parse("77777777-7777-7777-7777-777777777777")">Languages & Communication</option>
+
+
+                    
                                 </select>
                                 <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

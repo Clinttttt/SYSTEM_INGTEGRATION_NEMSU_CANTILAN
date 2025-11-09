@@ -32,23 +32,59 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record
     }
     public enum Position
     {
+        [Display(Name = "Contractual")]
         Contractual,
+
+        [Display(Name = "Instructor I")]
         Instructor_I,
+
+        [Display(Name = "Instructor II")]
         Instructor_II,
+
+        [Display(Name = "Instructor III")]
         Instructor_III,
+
+        [Display(Name = "Assistant Professor I")]
         Assistant_Professor_I,
+
+        [Display(Name = "Assistant Professor II")]
         Assistant_Professor_II,
+
+        [Display(Name = "Assistant Professor III")]
         Assistant_Professor_III,
+
+        [Display(Name = "Assistant Professor IV")]
         Assistant_Professor_IV,
+
+        [Display(Name = "Associate Professor I")]
         Associate_Professor_I,
+
+        [Display(Name = "Associate Professor II")]
         Associate_Professor_II,
+
+        [Display(Name = "Associate Professor III")]
         Associate_Professor_III,
+
+        [Display(Name = "Associate Professor IV")]
         Associate_Professor_IV,
+
+        [Display(Name = "Associate Professor V")]
         Associate_Professor_V,
+
+        [Display(Name = "Professor I")]
         Professor_I,
+
+        [Display(Name = "Professor II")]
         Professor_II,
+
+        [Display(Name = "Professor III")]
         Professor_III,
+
+        [Display(Name = "Professor IV")]
         Professor_IV,
-        Professor_V,
+
+        [Display(Name = "Professor V")]
+        Professor_V
     }
+
 }

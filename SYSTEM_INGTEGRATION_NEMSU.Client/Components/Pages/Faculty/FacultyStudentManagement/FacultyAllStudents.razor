@@ -27,9 +27,9 @@
 
                             <div class="w-10 h-10  rounded-lg flex items-center justify-center text-white font-bold text-xs" style="background-color: @student.ProfileColor;">
                                 @(
-                                    student.StudentName.Split(' ').Length >= 2
-                                    ? $"{student.StudentName.Split(' ')[0][0]}{student.StudentName.Split(' ')[1][0]}"
-                                    : student.StudentName[0].ToString())
+                                        student.StudentName.Split(' ').Length >= 2
+                                        ? $"{student.StudentName.Split(' ')[0][0]}{student.StudentName.Split(' ')[1][0]}"
+                                        : student.StudentName[0].ToString())
                             </div>
 
 
@@ -55,6 +55,16 @@
 
 
 
+    </div>
+}
+else
+{
+    <div class="bg-gray-50 rounded-lg shadow border border-gray-200 p-12 text-center">
+        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+        <h3 class="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent mb-2">No Enrolled Student</h3>
+        <p class="text-gray-600">You haven't any Enrolled Student yet.</p>
     </div>
 }
 

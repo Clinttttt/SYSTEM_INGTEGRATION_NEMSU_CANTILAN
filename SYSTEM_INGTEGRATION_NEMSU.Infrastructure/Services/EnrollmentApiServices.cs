@@ -7,6 +7,7 @@ using System.Net.Http.Json;
 using System.Net.Security;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
@@ -69,6 +70,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await SetAuthHeaderAsync();
             return await _http.DeleteFromJsonAsync<bool>($"api/EnrollmentHandling/UnEnroll%20Course/{CourseId}");     
         }
+        public async Task<bool> InactiveCourse(Guid CourseId)
+        {
+            await SetAuthHeaderAsync();
+            var response = await _http.PatchAsync(
+           $"api/EnrollmentHandling/inactive%20course?courseId={CourseId}",new StringContent(string.Empty));
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+            return await response.Content.ReadFromJsonAsync<bool>();
+        }
         public async Task<CourseDto?> PreviewCourseAsync(Guid CourseId)
         {
             await SetAuthHeaderAsync();
@@ -120,7 +132,27 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await SetAuthHeaderAsync();
             return await _http.GetFromJsonAsync<List<AnnouncementDto>>($"api/EnrollmentHandling/Display%20DisplayAllTypeAnnouncementAsync?CourseId={CourseId}");
         }
-     
+        public async Task<SchoolIdDto?> GenerateStudentId()
+        {
+            await SetAuthHeaderAsync();
+            var request = await _http.PostAsync("api/EnrollmentHandling/Generate%20StudentId",null);
+            if (!request.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+
+            var content = await request.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return null; 
+            }
+
+            return JsonSerializer.Deserialize<SchoolIdDto>(content);
+        }
+
+
 
 
 
