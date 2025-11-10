@@ -24,7 +24,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<ContactInformation?> AddContactInformationAsync(ContactInformationDto contactInformation);
         Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation);
         Task<ContactInformationDto?> DisplayContactInformationAsync();
-        Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId);
+        Task<SchoolIdDto?> StudentSchoolIdAsync(StudentMiniInfoDto data);
         Task<ProfileUpdateDto?> UpdateAllDetailsAsync(ProfileUpdateDto studentUpdate);
         Task<bool> StudentSaveInformationAsync();
         Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync();

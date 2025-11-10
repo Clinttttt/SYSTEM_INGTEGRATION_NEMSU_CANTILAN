@@ -71,7 +71,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
         [Authorize]
         [HttpGet("Get Course")]
-        public async Task<ActionResult<EnrolledCourseViewDto>?> GetCourse(Guid CourseId)
+        public async Task<ActionResult<EnrolledCourseViewDto>> GetCourse(Guid CourseId)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null)
@@ -83,6 +83,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (user is null) return BadRequest("User not found or Student ID missing");
             var StudentId = user.Id;
             var response = await enrollmentservices.GetCourse(CourseId, StudentId);
+            if (response is null) return BadRequest("Something went wrong ");
             return Ok(response);
         }
         [Authorize]
@@ -109,6 +110,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FindUser is null) { return BadRequest("User not found"); }
             var UserId = Guid.Parse(FindUser.Value);
             var request = await enrollmentservices.InactiveCourseAsync(UserId, CourseId);
+            if (request is false)
+            {
+                return BadRequest("Something went wrong");
+            }
             return Ok(request);
 
         }
@@ -119,7 +124,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) { return BadRequest("User not found"); }
             var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.InactiveCourseAsync(UserId, CourseId);
+            var request = await enrollmentservices.ActiveCourseAsync(UserId, CourseId);
+            if(request is false)
+            {
+                return BadRequest("Something went wrong");
+            }
             return Ok(request);
 
         }
@@ -231,7 +240,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return BadRequest("User not found");
-            var UserId = Guid.Parse(FindUser.Value);
+            var UserId = Guid.Parse(FindUser.Value);      
             var request = await enrollmentservices.GenerateStudentId(UserId);
             if(request is null)
             {

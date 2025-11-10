@@ -140,7 +140,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 SchoolYear = retrieve.SchoolYear,
                 FacultyName = retrieve.FacultyPersonals?.FirstName + " " + retrieve.FacultyPersonals?.LastName,
                 CourseDescription = retrieve.CourseDescriptiion,
-                Category = retrieve.Category
+                Category = retrieve.Category,
+                StudentStatus = request.StudentCourseStatus,
             };
             return filter;
         }
@@ -189,7 +190,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return true;
         }
 
-        public async Task<bool> IctiveCourseAsync(Guid StudentId, Guid CourseId)
+        public async Task<bool> ActiveCourseAsync(Guid StudentId, Guid CourseId)
         {
             var request = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
             if (request is null) { return false; }
@@ -279,7 +280,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             {
                 var request = await context.announcements
             .AsNoTracking()
-            .Where(s => (s.Type == AnnouncementType.instructor || s.Type == AnnouncementType.provision) && s.AdminId == r.Course.AdminId && s.course.CourseCode == r.Course.CourseCode)
+            .Where(s => (s.Type == AnnouncementType.instructor || s.Type == AnnouncementType.provision) && s.AdminId == r.Course.AdminId && s.course.CourseCode == r.Course.CourseCode && (s.StudentId == StudentId || s.StudentId == null))
             .ToListAsync();
                 t.AddRange(request.Adapt<List<AnnouncementDto>>());
             }
@@ -339,7 +340,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 var request = await context.announcements
             .AsNoTracking()
 
-            .Where(s => (s.Type == AnnouncementType.instructor || s.Type == AnnouncementType.provision) && s.AdminId == r.Course.AdminId && s.course.CourseCode!.Contains(r.Course.CourseCode!) && s.InformationType == type)
+            .Where(s => (s.Type == AnnouncementType.instructor || s.Type == AnnouncementType.provision) && s.AdminId == r.Course.AdminId && s.course.CourseCode!.Contains(r.Course.CourseCode!) && s.InformationType == type && (s.StudentId == null || s.StudentId == StudentId))
             .ToListAsync();
                 t.AddRange(request.Adapt<List<AnnouncementDto>>());
             }

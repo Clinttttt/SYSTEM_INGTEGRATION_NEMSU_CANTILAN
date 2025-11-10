@@ -32,7 +32,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 
         Task<ContactInformation?> UpdateContactInformationAsync(ContactInformationDto contactInformation);
         Task<ContactInformationDto?> DisplayContactInformationAsync(Guid Student);
-        Task<SchoolIdDto?> StudentSchoolIdAsync(Guid StudentId, string SchoolId);
+        Task<StudentMiniInfoDto?> StudentSchoolIdAsync(StudentMiniInfoDto data);
 
         Task<ProfileUpdateDto?> UpdateAllDetailsAsync(ProfileUpdateDto studentUpdate);
         Task<bool> StudentSaveInformationAsync(Guid StudentId);

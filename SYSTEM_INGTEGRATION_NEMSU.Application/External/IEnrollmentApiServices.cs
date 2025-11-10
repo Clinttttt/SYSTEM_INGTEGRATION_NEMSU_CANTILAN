@@ -18,6 +18,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<List<EnrollCourseDto>?> DisplayAllCourseEnrolledAsync();
         Task<bool> UnenrollCourse(string CourseId);
         Task<bool> InactiveCourse(Guid CourseId);
+        Task<bool> ActiveCourseAsync(Guid CourseId);
         Task<ProvisionDto?> ProvisionAsync(string courseCode);
         Task<CourseDto?> PreviewCourseAsync(Guid CourseId);
         Task<List<AnnouncementDto>?> DisplayAllAnnouncementAsync();

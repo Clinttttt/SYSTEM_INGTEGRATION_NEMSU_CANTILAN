@@ -44,7 +44,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
     {
         [Display(Name = "Active")]
         Active,
-        [Display(Name = "Inactive ")]
+        [Display(Name = "Inactive")]
         Inactive
     }
 

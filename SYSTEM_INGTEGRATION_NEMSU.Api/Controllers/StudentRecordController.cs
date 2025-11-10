@@ -133,14 +133,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
        
         [Authorize]
         [HttpPost("Assign StudentID")]
-        public async Task<ActionResult<SchoolIdDto>?> StudentSchoolIdAsync(string SchoolId)
+        public async Task<ActionResult<SchoolIdDto>?> StudentSchoolIdAsync(StudentMiniInfoDto data)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return BadRequest("Login First");
             var UserId = Guid.Parse(FindUser.Value);
             var StudentId = await user.UserInfo(UserId);
             if (StudentId is null) return BadRequest("User Cannot Find");
-            var request = await studentRecordCommand.StudentSchoolIdAsync(StudentId.Id, SchoolId);
+            data.StudentId = StudentId.Id;
+            var request = await studentRecordCommand.StudentSchoolIdAsync(data);
             return Ok(request);
         }
   

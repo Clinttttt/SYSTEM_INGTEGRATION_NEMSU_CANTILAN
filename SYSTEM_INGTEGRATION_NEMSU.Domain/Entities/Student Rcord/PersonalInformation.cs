@@ -26,6 +26,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public SaveStatus Savestatus { get; set; }
         [JsonIgnore]
         public User? User { get; set; }
+        public byte[]? Photo { get; set; }
+        public string? PhotoContentType { get; set; }
     }
     public enum GenderChoice
     {

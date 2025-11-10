@@ -10,9 +10,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
    public class EnrolledCourseViewDto
     {
         public Guid StudentId { get; set; }
-        public Guid CourseId { get; set; }
+        public Guid? CourseId { get; set; }
         public string? CourseCode { get; set; }
         public EnrolledCourseStatus enrolledCourseStatus { get; set; }
+        public StudentCourseStatus StudentStatus { get; set; }
         public string? CourseName { get; set; }
         public string? Schedule { get; set; }
         public string? Room { get; set; }

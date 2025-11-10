@@ -19,8 +19,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto
 
         [Required(ErrorMessage = "Last Name is required")]
         public string? LastName { get; set; }
-
-  
         public DateOnly DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Gender is required")]

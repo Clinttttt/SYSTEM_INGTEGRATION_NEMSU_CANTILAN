@@ -18,6 +18,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public int Unit { get; set; }
         public CategoryDto? Category { get; set; }
         public CourseDepartment? Department { get; set; }
+        [JsonPropertyName("course_description")]
         public string? CourseDescriptiion { get; set; }
         public int MaxCapacity { get; set; }
         public int TotalEnrolled { get; set; }

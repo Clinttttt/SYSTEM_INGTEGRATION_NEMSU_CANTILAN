@@ -89,10 +89,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await _authApi.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<ContactInformationDto>("api/StudentRecord/Display%20Contact%20Details");
         }
-        public async Task<SchoolIdDto?> StudentSchoolIdAsync(string SchoolId)
+        public async Task<SchoolIdDto?> StudentSchoolIdAsync(StudentMiniInfoDto data)
         {
             await _authApi.SetAuthHeaderAsync(_http);
-            var request = await _http.PostAsync($"api/StudentRecord/Assign%20StudentID?SchoolId={SchoolId}",null);
+            var request = await _http.PostAsJsonAsync($"api/StudentRecord/Assign%20StudentID", data);
             if (!request.IsSuccessStatusCode){ return null; }
             return await request.Content.ReadFromJsonAsync<SchoolIdDto>();
 

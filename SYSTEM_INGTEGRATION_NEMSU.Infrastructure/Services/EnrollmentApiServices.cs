@@ -81,6 +81,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             }
             return await response.Content.ReadFromJsonAsync<bool>();
         }
+        public async Task<bool> ActiveCourseAsync(Guid CourseId)
+        {
+            await SetAuthHeaderAsync();
+            var response = await _http.PatchAsync(
+           $"api/EnrollmentHandling/Active%20Course?courseId={CourseId}", new StringContent(string.Empty));
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+            return await response.Content.ReadFromJsonAsync<bool>();
+        }
         public async Task<CourseDto?> PreviewCourseAsync(Guid CourseId)
         {
             await SetAuthHeaderAsync();

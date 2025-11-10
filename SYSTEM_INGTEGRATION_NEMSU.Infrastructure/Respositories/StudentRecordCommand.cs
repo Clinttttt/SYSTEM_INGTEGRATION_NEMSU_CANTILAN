@@ -209,20 +209,25 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return details.Adapt<ContactInformationDto>();
         }
 
-        public async Task<SchoolIdDto?> StudentSchoolIdAsync(Guid StudentId, string SchoolId)
+        public async Task<StudentMiniInfoDto?> StudentSchoolIdAsync(StudentMiniInfoDto data)
         {
             var studentIdExists = await context.academicInformation
-                .AnyAsync(s => s.StudentSchoolId == SchoolId);
+                .AnyAsync(s => s.StudentSchoolId == data.StudentSchoolId);
             if (studentIdExists) { return null; }
 
-            var request = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == StudentId);
+            var personal = await context.personalInformation.FirstOrDefaultAsync(s => s.StudentId == data.StudentId);
+            if (personal is null) return null;
+            personal.Photo = data.Photo;
+            personal.PhotoContentType = data.PhotoContentType;
+
+            var request = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == data.StudentId);
             if (request is null) return null;
 
 
-            request.StudentSchoolId = SchoolId;
+            request.StudentSchoolId = data.StudentSchoolId;
 
             await context.SaveChangesAsync();
-            return request.Adapt<SchoolIdDto>();
+            return request.Adapt<StudentMiniInfoDto>();
         }
         public async Task<bool> StudentSaveInformationAsync(Guid StudentId)
         {
