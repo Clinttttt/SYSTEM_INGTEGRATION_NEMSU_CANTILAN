@@ -18,5 +18,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<QuickStatsDto?> DisplayStatsAsync(Guid AdminId, string CourseCode);
         Task<bool> ArchivedCourseAsync(Guid AdminId, string CourseCode);
         Task<IEnumerable<CourseDto>> DisplayArchiveCourseAsync(Guid adminid);
+        Task<bool> ActiveCourseAsync(Guid AdminId, string CourseCode);
     }
 }

@@ -63,7 +63,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         {
             await _authHelper.SetAuthHeaderAsync(_http);
             var response = await _http.PatchAsync($"api/CourseHandling/Archive Course?CourseCode={CourseCode}", null);
-
+            if (!response.IsSuccessStatusCode) return false;
+            return await response.Content.ReadFromJsonAsync<bool>();
+        }
+        public async Task<bool> ActiveCourseAsync(string CourseCode)
+        {
+            await _authHelper.SetAuthHeaderAsync(_http);
+            var response = await _http.PatchAsync($"api/CourseHandling/Active CourseAsync?CourseCode={CourseCode}", null);
             if (!response.IsSuccessStatusCode) return false;
             return await response.Content.ReadFromJsonAsync<bool>();
         }

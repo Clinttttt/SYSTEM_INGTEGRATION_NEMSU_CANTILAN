@@ -1,0 +1,43 @@
+﻿@rendermode InteractiveServer
+<dialog id="my_modal_active_course" class="modal modal-bottom sm:modal-middle ">
+    <div class="modal-box rounded-sm">
+
+        <div class="flex justify-center mb-4">
+            <div class="rounded-full bg-success/10 p-3">
+                <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+        </div>
+
+        <h3 class="text-2xl font-bold text-center mb-2 text-gray-700">Activate Course?</h3>
+
+        <p class="text-center text-gray-600 mb-6">
+            Are you sure you want to activate this course? This will make the course available to users again.
+        </p>
+
+        <div class="modal-action justify-center">
+            <form method="dialog" class="flex gap-3">
+
+                <button class="btn btn-ghost text-gray-700">Cancel</button>
+
+                <button @onclick="OnClickHandler" class="btn text-teal-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Activate
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+@code {
+
+    [Parameter]
+    public EventCallback OnClickHandler { get; set; }
+}

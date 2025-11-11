@@ -122,7 +122,21 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var response = await handlingCourse.ArchivedCourseAsync(user.Id, CourseCode);
             return Ok(response);
         }
+        [Authorize]
+        [HttpPatch("Active CourseAsync")]
+        public async Task<ActionResult<bool>> ActiveCourseAsync(string CourseCode)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("Login First");
 
+            var GetUserId = Guid.Parse(FindUser.Value);
+            var user = await respository.UserInfo(GetUserId);
+            if (user is null) { return BadRequest("User not found "); }
+            var response = await handlingCourse.ActiveCourseAsync(user.Id, CourseCode);
+            return Ok(response);
+        }
+
+       
         [Authorize]
         [HttpGet("Display ArchiveCourse")]
         public async Task<ActionResult<CourseDto>> DisplayAllArchiveCourse()

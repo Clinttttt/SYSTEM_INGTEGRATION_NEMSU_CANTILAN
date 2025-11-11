@@ -95,9 +95,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         {
             var request = await context.users.FirstOrDefaultAsync(s => s.Id == AdminId);
             if (request is null) return null;
+
             var GetCourse = await context.course
-                .Include(s => s.Category)
-            
+                .Include(s => s.Category)          
                 .FirstOrDefaultAsync(s => s.AdminId == request.Id && s.Id == CourseId);
             if (GetCourse is null) return null;
             var liststudent = await context.enrollcourse.Where(s => s.CourseId == CourseId).ToListAsync();
@@ -124,6 +124,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.course.FirstOrDefaultAsync(s => s.AdminId == AdminId && s.CourseCode == CourseCode);
             if (request is null) return false;
             request.CourseStatus = CourseStatus.Archived;
+            await context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> ActiveCourseAsync(Guid AdminId, string CourseCode)
+        {
+            var request = await context.course.FirstOrDefaultAsync(s => s.AdminId == AdminId && s.CourseCode == CourseCode);
+            if (request is null) return false;
+            request.CourseStatus = CourseStatus.Active;
             await context.SaveChangesAsync();
             return true;
         }

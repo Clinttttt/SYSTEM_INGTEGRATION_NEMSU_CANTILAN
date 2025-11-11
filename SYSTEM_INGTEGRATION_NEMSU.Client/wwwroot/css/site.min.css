@@ -6229,6 +6229,9 @@
   .text-green-100 {
     color: var(--color-green-100);
   }
+  .text-green-500 {
+    color: var(--color-green-500);
+  }
   .text-green-600 {
     color: var(--color-green-600);
   }
@@ -7195,6 +7198,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-teal-50);
+      }
+    }
+  }
+  .hover\:bg-teal-600 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-teal-600);
       }
     }
   }

@@ -17,5 +17,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<QuickStatsDto?> DisplayStatsAsync(string CourseCode);
         Task<bool> ArchivedCourseAsync(string CourseCode);
         Task<IEnumerable<CourseDto>?> DisplayArchiveCourseAsync();
+        Task<bool> ActiveCourseAsync(string CourseCode);
     }
 }
