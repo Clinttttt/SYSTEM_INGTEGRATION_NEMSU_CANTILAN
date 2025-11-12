@@ -9,6 +9,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
@@ -29,14 +30,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
            
           
             var request  = await enrollmentServices.EnrollCourseAsync(paymentdetails.StudentId, paymentdetails.CourseCode!, EnrollmentStatus.Enrolled);
+            if (request is null) return null;
             var purchase = await enrollmentServices.AddPaymentAsync(paymentdetails);
-        
-          
+             await enrollmentServices.CourseTrackAdd(paymentdetails.StudentId, request.CourseId, EnrollmentStatus.Enrolled);
+
             if (request is null) return null;
             if (purchase is null) return null;
 
            
-                var invoice = new Invoice
+                var invoice = new Domain.Entities.Invoice
                 {
                     Id = Guid.NewGuid(),
                     StudentId = paymentdetails.StudentId,
@@ -66,9 +68,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .AnyAsync(e => e.StudentId == studentId && e.CourseId == course.Id);
             if (alreadyEnrolled) return null;
 
-            await enrollmentServices.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Provisioned);
-       
-            var invoice = new Invoice
+          var request = await enrollmentServices.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Provisioned);
+            if (request is null) return null;
+            await enrollmentServices.CourseTrackAdd(studentId, request.CourseId, EnrollmentStatus.Provisioned);
+            var invoice = new Domain.Entities.Invoice
             {
                 Id = Guid.NewGuid(),
                 StudentId = studentId,
@@ -81,6 +84,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Standing = "Temporary enrollment",
                 PaymentDeadline = DateTime.UtcNow.AddDays(15)
             };
+
             var filter = new ProvisionDto
             {
                 CourseCode = invoice.CourseCode,

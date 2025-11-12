@@ -8,6 +8,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
@@ -248,6 +249,30 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             }
             return Ok(request);
         }
+    
+        [Authorize]
+        [HttpGet("Course TrackerAsync")]
+        public async Task<ActionResult<CourseTrack>> CourseTrackerAsync(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("User not found");
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.CourseTrackerAsync(UserId, CourseId);
+            return Ok(request);
+        } 
+
+        [Authorize]
+        [HttpPost("Direct EnrollAsync")]
+        public async Task<IActionResult> DirectEnrollAsync(Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return BadRequest("User not found");
+            var UserId = Guid.Parse(FindUser.Value);
+            var request = await enrollmentservices.DirectEnrollAsync(UserId, CourseId);
+            return Ok(request);
+        }
+
+
 
 
     }

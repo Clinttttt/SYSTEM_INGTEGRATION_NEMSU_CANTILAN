@@ -7,6 +7,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using static System.Net.WebRequestMethods;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
@@ -30,6 +31,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<List<PaymentDetailsDto>?> DisplayPaymentAsync();
         Task<bool> DeletePaymentAsync(Guid PaymentId);
         Task<SchoolIdDto?> GenerateStudentId();
-
+        Task<CourseTrack> CourseTrackerAsync(Guid CourseId);
     }
 }

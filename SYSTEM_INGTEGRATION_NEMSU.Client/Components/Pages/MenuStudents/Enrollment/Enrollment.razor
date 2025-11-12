@@ -62,105 +62,154 @@
                             </div>
                         </div>
                     }
-                    @if (filtered?.Any() == true)
+                    else
                     {
+                        @if (filtered?.Any() == true)
+                        {
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                     
-                            @foreach (var C in filtered)
-                            {
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-
-                                <div class="@(C.TotalEnrolled == C.MaxCapacity ? "opacity-85" : "opacity-100 hover:scale-105 hover:-translate-y-1  hover:shadow-2xl transition-all duration-500") group bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
-
-                                    <div class="@(C.TotalEnrolled == C.MaxCapacity ? "bg-gradient-to-r from-gray-400 to-gray-500" : $"{GetGradientClass(C.Category?.Color)}") h-40 flex items-center justify-center relative overflow-hidden">
-
-                                        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
-                                        <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
+                                @foreach (var C in filtered)
+                                {
 
 
-                                        <div class="relative z-10 text-7xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
-                                            @C.Category?.Icon
+                                    <div class="@(C.TotalEnrolled == C.MaxCapacity ? "opacity-85" : "opacity-100 hover:scale-105 hover:-translate-y-1  hover:shadow-2xl transition-all duration-500") group bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+
+                                        <div class="@(C.TotalEnrolled == C.MaxCapacity ? "bg-gradient-to-r from-gray-400 to-gray-500" : $"{GetGradientClass(C.Category?.Color)}") h-40 flex items-center justify-center relative overflow-hidden">
+
+                                            <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                                            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
+
+
+                                            <div class="relative z-10 text-7xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
+                                                @C.Category?.Icon
+                                            </div>
+                                        </div>
+
+                                        <div class="p-5 flex-1 flex flex-col">
+
+                                            <h3 class="text-sm font-bold text-gray-700 mb-2  @(C.TotalEnrolled == C.MaxCapacity ? "text-gray-600" : "group-hover:text-teal-600 transition-color")  s min-h-[2.5rem]">
+                                                @C.Title
+                                            </h3>
+
+
+                                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3 flex-wrap">
+                                                <span class="flex items-center gap-1">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                                    </svg>
+                                                    @C.CourseCode
+                                                </span>
+                                                <span class="text-gray-400">•</span>
+                                                <span class="flex items-center gap-1">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                    </svg>
+                                                    @C.Unit Units
+                                                </span>
+                                                <span class="text-gray-400">•</span>
+                                                <span class="@(C.TotalEnrolled == C.MaxCapacity ? "text-gray-600" : $"{GetCategoryTextColor(C.Category?.Color)}")  font-semibold text-[11px]">
+                                                    @C.Department?.GetDisplayName()
+                                                </span>
+                                            </div>
+
+
+                                            <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
+                                                <span class="flex items-center gap-1 text-[10px]      @(C.TotalEnrolled == C.MaxCapacity ? "text-red-500" : "text-emerald-700")">
+                                                    <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                                    </svg>
+                                                    @(C.TotalEnrolled == C.MaxCapacity ? "Full" : "Available")
+                                                </span>
+
+                                                <span class="flex items-center gap-1.5 text-sm text-gray-600 font-medium">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                                    </svg>
+                                                    <span class="  @(C.TotalEnrolled == C.MaxCapacity ? "text-red-500" : "text-teal-600 ") font-bold">@C.TotalEnrolled</span>/@C.MaxCapacity slots
+                                                </span>
+                                            </div>
+
+
+                                            <div class="mt-auto">
+
+
+                                                @if (coursestatus == CourseTrack.not_enrolled)
+                                                {
+                                                    <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
+                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+
+                                                        <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+                                                        </svg>
+                                                        @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Enroll for  ₱{@C.Cost}.00")
+                                                    </label>
+                                                }
+                                                else if (coursestatus == CourseTrack.Course_Already_Paid)
+                                                {
+                                                    <label class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+
+                                                        <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+                                                        </svg>
+                                                        @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Enrolled")
+                                                    </label>
+                                                }
+                                                else if (coursestatus == CourseTrack.Course_Already_Provisioned)
+                                                {
+                                                    <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
+                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+
+                                                        <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+                                                        </svg>
+                                                        @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Provisioned")
+                                                    </label>
+                                                }
+                                                else if (coursestatus == CourseTrack.Deleted_Paid)
+                                                {
+                                                    <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
+                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+
+                                                        <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+                                                        </svg>
+                                                        @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Enroll Now")
+                                                    </label>
+                                                }
+                                                else if (coursestatus == CourseTrack.Deleted_Provisioned)
+                                                {
+
+                                                    <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
+                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+
+                                                        <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+                                                        </svg>
+                                                        @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Enroll for  ₱{@C.Cost}.00")
+                                                    </label>
+                                                }
+
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="p-5 flex-1 flex flex-col">
-
-                                        <h3 class="text-sm font-bold text-gray-700 mb-2  @(C.TotalEnrolled == C.MaxCapacity ? "text-gray-600" : "group-hover:text-teal-600 transition-color")  s min-h-[2.5rem]">
-                                            @C.Title
-                                        </h3>
-
-
-                                        <div class="flex items-center gap-2 text-sm text-gray-600 mb-3 flex-wrap">
-                                            <span class="flex items-center gap-1">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                                                </svg>
-                                                @C.CourseCode
-                                            </span>
-                                            <span class="text-gray-400">•</span>
-                                            <span class="flex items-center gap-1">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                                </svg>
-                                                @C.Unit Units
-                                            </span>
-                                            <span class="text-gray-400">•</span>
-                                            <span class="@(C.TotalEnrolled == C.MaxCapacity ? "text-gray-600" : $"{GetCategoryTextColor(C.Category?.Color)}")  font-semibold text-[11px]">
-                                                @C.Department?.GetDisplayName()
-                                            </span>
-                                        </div>
-
-
-                                        <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
-                                            <span class="flex items-center gap-1 text-[10px]      @(C.TotalEnrolled == C.MaxCapacity ? "text-red-500" : "text-emerald-700")">
-                                                <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                                </svg>
-                                                @(C.TotalEnrolled == C.MaxCapacity ? "Full" : "Available")
-                                            </span>
-
-                                            <span class="flex items-center gap-1.5 text-sm text-gray-600 font-medium">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                                </svg>
-                                                <span class="  @(C.TotalEnrolled == C.MaxCapacity ? "text-red-500" : "text-teal-600 ") font-bold">@C.TotalEnrolled</span>/@C.MaxCapacity slots
-                                            </span>
-                                        </div>
-
-
-                                        <div class="mt-auto">
-                                            <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
-                                            class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
-
-                                                <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
-                                                </svg>
-
-                                                @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Enroll for  ₱{@C.Cost}.00")
-
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            }
-                   
-
-                    </div>
+                                }
+                            </div>
                         }
                         else
                         {
 
-                        <div class="bg-gray-50 rounded-lg shadow border border-gray-200 p-12 text-center">
-                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            <h3 class="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent mb-2">No Available Course</h3>
-                            <p class="text-gray-600">No available courses at the moment.</p>
-                        </div>
+                            <div class="bg-gray-50 rounded-lg shadow border border-gray-200 p-12 text-center">
+                                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <h3 class="text-xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent mb-2">No Available Course</h3>
+                                <p class="text-gray-600">No available courses at the moment.</p>
+                            </div>
 
                         }
+                    }
+
 
 
                 </div>
@@ -189,6 +238,18 @@
 
 
                     <div class="modal-action mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                        @if (coursestatus == CourseTrack.Deleted_Paid)
+                      {
+                        <div class="flex flex-col sm:flex-row gap-3 w-full">                     
+                                <button for="my_modal_5" class="btn bg-teal-600 text-white  flex-1 rounded-lg hover:bg-cyan-600  transition-all">
+                                    Enroll Now
+                                </button>
+                            <label for="my_modal_5" class="btn btn-outline btn-primary flex-1 rounded-lg hover:bg-cyan-600 hover:text-white transition-all">
+                                Cancel
+                            </label>
+                        </div>
+                       }
+                       else{
                         <div class="flex flex-col sm:flex-row gap-3 w-full">
                             <NavLink href="@($"/enrollmentdetails/{SelectedCourse}")" class="btn btn-outline btn-primary flex-1 rounded-lg hover:bg-teal-700 hover:text-white transition-all">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -201,6 +262,7 @@
                                 Cancel
                             </label>
                         </div>
+                        }
                     </div>
 
 
@@ -217,7 +279,7 @@
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <div class="min-h-full w-64 bg-white shadow-xl flex flex-col border-r border-r-gray-200">
 
-            
+
                 <div class="relative p-6 bg-gradient-to-br from-cyan-500 to-teal-600">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
                     <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
@@ -230,12 +292,12 @@
                     </div>
                 </div>
 
-            
+
                 <nav class="flex-1 p-4 overflow-y-auto">
 
-              
 
-                
+
+
                     <div class="space-y-1 mb-6">
                         <NavLink href="/enrolledcourse" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
                             <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -266,10 +328,10 @@
                         </NavLink>
                     </div>
 
-                
+
                     <div class="border-t border-gray-200 my-4"></div>
 
-                
+
                     <div class="space-y-1">
                         <a class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group cursor-pointer">
                             <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -288,16 +350,13 @@
                     </div>
                 </nav>
 
-          
+
                 <div class="p-4 border-t border-gray-200 bg-gray-50">
                     <p class="text-xs text-gray-500 text-center">© 2025 Student Portal</p>
                 </div>
             </div>
         </div>
     </div>
-
-
-
 
 
 </div>
@@ -312,6 +371,7 @@
     private string? Error { get; set; }
     public string? Status { get; set; }
     public Guid SelectedCourse { get; set; }
+    public CourseTrack coursestatus { get; set; }
 
     public List<CourseDto>? filtered { get; set; }
     public string SearchQuery = "";
@@ -322,9 +382,16 @@
             hasrender = true;
             course = await enrollmentApi.DisplayAllCourseDetailsAsync();
             filtered = course?.ToList();
+            foreach (var c in course!)
+            {
+                coursestatus = await enrollmentApi.CourseTrackerAsync(c.Id);
+            }
             StateHasChanged();
+
         }
+
     }
+
     public void HandlingQuery()
     {
         if (string.IsNullOrWhiteSpace(SearchQuery))

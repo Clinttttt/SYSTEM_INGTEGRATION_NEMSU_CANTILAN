@@ -12,11 +12,104 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Text.Json.Serialization;
 using System.Runtime.InteropServices;
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore.Storage.Json;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations;
+
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
     public class EnrollmentServices(ApplicationDbContext context) : IEnrollmentServices
     {
+        public async Task<bool> DirectEnrollAsync(Guid StudentId, Guid CourseId)
+        {
+            var enrollment = new EnrollmentCourse
+            {
+                Id = Guid.NewGuid(),
+                StudentId = StudentId,
+                CourseId = CourseId,
+                DateEnrolled = DateTime.UtcNow,
+                EnrollmentStatus = EnrollmentStatus.Enrolled,
+                StudentCourseStatus = StudentCourseStatus.Active,
+                ProfileColor = RandomColor.Generate(),
+                enrolledCourseStatus = EnrolledCourseStatus.Inprogress,
+            };
+            var coursestatus = await context.courseTrackers.FirstOrDefaultAsync(s=> s.StudentId == StudentId && s.CourseId == CourseId);
+         
+            if (coursestatus is null) return false;
+            coursestatus.CourseTrack = CourseTrack.Course_Already_Paid;
+
+            await context.Database.ExecuteSqlInterpolatedAsync(
+        $"UPDATE Course SET TotalEnrolled = TotalEnrolled + 1 WHERE Id = {CourseId}");
+            context.enrollcourse.Add(enrollment);
+            await context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<CourseTrack> CourseTrackerAsync(Guid StudentId, Guid CourseId)
+        {
+            var enroll = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
+            var coursetracker = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
+            var coursetrack = new CourseTrack();
+            if (enroll is null && coursetracker is null)
+            {
+                coursetrack = CourseTrack.not_enrolled;
+            }
+            else if (enroll is not null && coursetracker?.CourseTrack == CourseTrack.Course_Already_Paid)
+            {
+                coursetrack = CourseTrack.Course_Already_Paid;
+            }
+            else if (enroll is not null && coursetracker?.CourseTrack == CourseTrack.Course_Already_Provisioned)
+            {
+                coursetrack = CourseTrack.Course_Already_Provisioned;
+            }
+            else if (coursetracker?.CourseTrack == CourseTrack.Deleted_Paid)
+            {
+                coursetrack = CourseTrack.Deleted_Paid;
+            }
+            else if (coursetracker?.CourseTrack == CourseTrack.Deleted_Provisioned)
+            {
+                coursetrack = CourseTrack.Deleted_Provisioned;
+            }
+            else
+            {
+                coursetrack = CourseTrack.not_enrolled;
+            }
+            return coursetrack;
+        }
+        public async Task<bool> CourseTrackAdd(Guid StudentId, Guid CourseId, EnrollmentStatus status)
+        {
+            var checkcourse = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
+            var course = await context.course
+             .FirstOrDefaultAsync(c => c.Id == CourseId);
+            if (course is null) return false;
+
+            if (checkcourse is null)
+            {
+                var coursetracker = new CourseTracker();
+                coursetracker.Id = new Guid();
+                coursetracker.StudentId = StudentId;
+                coursetracker.CourseId = CourseId;
+                coursetracker.CourseName = course.Title;
+
+                if (status == EnrollmentStatus.Provisioned)
+                {
+                    coursetracker.CourseTrack = CourseTrack.Course_Already_Provisioned;
+                }
+                else if (status == EnrollmentStatus.Enrolled)
+                {
+                    coursetracker.CourseTrack = CourseTrack.Course_Already_Paid;
+                }
+                context.courseTrackers.Add(coursetracker);           
+            }
+            else if (checkcourse is not null)
+            {
+                if (status == EnrollmentStatus.Enrolled)
+                {
+                    checkcourse.CourseTrack = CourseTrack.Course_Already_Paid;
+                }
+            }
+                return true;           
+        }
         public async Task<EnrollCourseDto?> EnrollCourseAsync(Guid studentId, string courseCode, EnrollmentStatus status = EnrollmentStatus.Provisioned)
         {
 
@@ -35,7 +128,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .AnyAsync(e => e.StudentId == studentId && e.CourseId == course.Id);
             if (alreadyEnrolled) return null;
 
-
             var enrollment = new EnrollmentCourse
             {
                 Id = Guid.NewGuid(),
@@ -52,13 +144,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             context.enrollcourse.Add(enrollment);
             await context.SaveChangesAsync();
 
-
             var dto = new EnrollCourseDto
             {
                 CourseCode = course.CourseCode,
                 Title = course.Title,
                 Unit = course.Unit,
-
                 StudentId = studentId,
                 CourseId = enrollment.CourseId,
                 DateEnrolled = enrollment.DateEnrolled,
@@ -78,6 +168,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             var course = await context.course
                 .Include(s => s.Category)
+                .Where(s => s.CourseStatus == Domain.Entities.CourseStatus.Active)
                 .ToListAsync();
             return course.Adapt<List<CourseDto>>();
         }
@@ -169,14 +260,27 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var invoice = await context.invoice
                 .FirstOrDefaultAsync(i => i.StudentId == enrollment.StudentId && i.CourseId == enrollment.CourseId);
 
-            if (invoice != null){ context.invoice.Remove(invoice); }
+            if (invoice != null) { context.invoice.Remove(invoice); }
             var announcements = await context.announcements.Where(s => s.StudentId == studentId && s.CourseCode == courseCode).ToListAsync();
             foreach (var announcement in announcements)
             {
                 context.announcements.Remove(announcement);
             }
 
-            context.enrollcourse.Remove(enrollment);
+
+            var coursestatus = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == studentId && s.CourseId == enrollment.CourseId);
+            if (coursestatus is null) return false;
+
+            if(coursestatus.CourseTrack == CourseTrack.Course_Already_Paid)
+            {
+                coursestatus.CourseTrack = CourseTrack.Deleted_Paid;
+            }
+            else if (coursestatus.CourseTrack == CourseTrack.Course_Already_Provisioned)
+            {
+                coursestatus.CourseTrack = CourseTrack.Deleted_Provisioned;
+            }
+
+            context.enrollcourse.Remove(enrollment);           
             await context.SaveChangesAsync();
             return true;
         }
@@ -207,7 +311,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 return null;
             }
             var course = await context.course
-               
+
                 .Where(s => s.CourseCode == payment.CourseCode)
                 .FirstOrDefaultAsync();
 
@@ -235,7 +339,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             };
             return filter;
         }
-        public async Task<List<PaymentDetailsDto>?> DisplayPaymentAsync( Guid StudentId)
+        public async Task<List<PaymentDetailsDto>?> DisplayPaymentAsync(Guid StudentId)
         {
             var User = await context.users.FindAsync(StudentId);
             if (User is null)
@@ -243,16 +347,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 return null;
             }
             var request = await context.paymentDetails
-             
+
                 .Where(s => s.StudentId == StudentId)
-                .Select(s=> new PaymentDetailsDto {
+                .Select(s => new PaymentDetailsDto
+                {
                     PaymentId = s.Id,
                     AccountNumber = s.AccountNumber,
                     paymentMethod = s.paymentMethod,
                     PurchaseDate = s.PurchaseDate,
                     CourseCode = s.CourseCode,
                     cost = s.Cost,
-                    Category = s.Category  
+                    Category = s.Category
                 })
                 .ToListAsync();
             return request;
@@ -260,9 +365,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         public async Task<bool> DeletePaymentAsync(Guid StudentId, Guid PaymentId)
         {
             var request = await context.paymentDetails
-                .FirstOrDefaultAsync( s=> s.StudentId == StudentId && s.Id == PaymentId);
+                .FirstOrDefaultAsync(s => s.StudentId == StudentId && s.Id == PaymentId);
             if (request is null) return false;
-             context.paymentDetails.Remove(request);
+            context.paymentDetails.Remove(request);
             await context.SaveChangesAsync();
             return true;
         }
@@ -306,7 +411,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             if (CourseAdmin is null) return null;
             var request = await context.announcements
-                .Include(s=> s.course)
+                .Include(s => s.course)
                 .AsNoTracking()
                 .Where(s => s.CourseId == CourseId && s.InformationType != InformationType.Warning && s.AdminId == CourseAdmin.AdminId && (s.StudentId == null || s.StudentId == StudentId))
                 .Select(s => new AnnouncementDto
@@ -322,7 +427,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     FacultyName = s.course.FacultyPersonals!.FirstName + " " + s.course.FacultyPersonals.LastName,
                     Type = (AnnouncementType)s.Type!,
                 })
-             
+
                 .ToListAsync();
             return request;
         }
@@ -348,25 +453,25 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         }
         public async Task<SchoolIdDto?> GenerateStudentId(Guid StudentId)
         {
-            var request = await context.academicInformation.FirstOrDefaultAsync(s=> s.StudentId == StudentId);
+            var request = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == StudentId);
             if (request is null) return null;
 
             int currentYear = DateTime.Now.Year;
 
-         
+
             var lastStudent = await context.academicInformation
                 .Where(s => s.StudentSchoolId != null && s.StudentSchoolId.StartsWith(currentYear.ToString()) == true)
                 .OrderByDescending(s => s.StudentSchoolId)
                 .FirstOrDefaultAsync();
 
-            int nextNumber = 1; 
+            int nextNumber = 1;
 
             if (lastStudent != null)
             {
-         
+
                 string lastId = lastStudent.StudentSchoolId!;
-                string numberPart = lastId.Split('-')[1];     
-                nextNumber = int.Parse(numberPart) + 1; 
+                string numberPart = lastId.Split('-')[1];
+                nextNumber = int.Parse(numberPart) + 1;
             }
 
             var Id = new SchoolIdDto
@@ -374,7 +479,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 StudentSchoolId = $"{currentYear}-{nextNumber:D4}"
             };
             request.StudentSchoolId = Id.StudentSchoolId;
-            await context.SaveChangesAsync();         
+            await context.SaveChangesAsync();
             return Id;
         }
 

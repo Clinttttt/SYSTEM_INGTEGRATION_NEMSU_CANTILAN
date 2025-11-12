@@ -131,7 +131,7 @@ Example: The final examination schedule for the 1st Semester, A.Y. 2024-2025 has
 
         <div class="modal-action mt-8 pt-4 border-t-1 border-gray-400">
             
-                <button @onclick="@(() => JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_4"))"
+                <button type="button" @onclick="@(() => JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_4"))"
                     class="btn btn-gray-700 text-gray-700 btn-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -174,7 +174,6 @@ Example: The final examination schedule for the 1st Semester, A.Y. 2024-2025 has
             return;
         }
         await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_4");
-
 
     }
 }

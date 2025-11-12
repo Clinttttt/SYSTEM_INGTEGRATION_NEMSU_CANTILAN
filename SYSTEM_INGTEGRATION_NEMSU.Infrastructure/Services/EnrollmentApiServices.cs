@@ -14,6 +14,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 {
@@ -142,6 +143,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         {
             await SetAuthHeaderAsync();
             return await _http.GetFromJsonAsync<List<AnnouncementDto>>($"api/EnrollmentHandling/Display%20DisplayAllTypeAnnouncementAsync?CourseId={CourseId}");
+        }
+        public async Task<CourseTrack> CourseTrackerAsync(Guid CourseId)
+        {
+            await SetAuthHeaderAsync();
+            return await _http.GetFromJsonAsync<CourseTrack>($"api/EnrollmentHandling/Course%20TrackerAsync?CourseId={CourseId}");
         }
         public async Task<SchoolIdDto?> GenerateStudentId()
         {

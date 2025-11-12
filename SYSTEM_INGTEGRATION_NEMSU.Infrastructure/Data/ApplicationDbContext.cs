@@ -70,7 +70,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
                 .ValueGeneratedNever();
 
         }
-
+        public DbSet<CourseTracker> courseTrackers { get; set; }
         public DbSet<User> users { get; set; }
         public DbSet<Course> course { get; set; }
         public DbSet<EnrollmentCourse> enrollcourse { get; set; }

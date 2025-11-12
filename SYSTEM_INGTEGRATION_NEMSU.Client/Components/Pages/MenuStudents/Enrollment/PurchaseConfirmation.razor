@@ -1,6 +1,7 @@
 ﻿@using SYSTEM_INGTEGRATION_NEMSU.Client.Components.Pages.ModalRespond
 @inject IEnrollmentApiServices enrollmentApi
 @inject IJSRuntime JS
+
 <!--hehehe-->
 <!-- proceed to payment ni -->
 <dialog id="my_modal_payment" class="modal ">
@@ -197,12 +198,23 @@
                             Cancel
                         </button>
                     </form>
-                    <label for="my_modal_provision" class=" btn flex-1 btn bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-700 text-white border-0 shadow-lg text-sm h-10 min-h-10">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Start Provisional Access
-                    </label>
+                    @if (courseTrack == CourseTrack.Course_Already_Provisioned || courseTrack == CourseTrack.Deleted_Provisioned)
+                    {
+                        <label for="my_modal_provision_limit" class=" btn flex-1 btn bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-700 text-white border-0 shadow-lg text-sm h-10 min-h-10">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Start Provisional Access
+                        </label>
+                    }else
+                    {
+                        <label for="my_modal_provision" class=" btn flex-1 btn bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-700 text-white border-0 shadow-lg text-sm h-10 min-h-10">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Start Provisional Access
+                        </label>
+                    }
                     <button type="submit" class="flex-1 btn bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white border-0 shadow-lg text-sm h-10 min-h-10">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -219,15 +231,28 @@
     <EnrollmentProvision ConfirmProvision="ProvisionHandling" />
     <EnrollmentSuccessfullProvision />
     <AlreadyEnrolledRespond />
+    <ProvisionLimitRespond/>
 
 </dialog>
 @code {
     [Parameter]
-    public CourseDto? PreviewCourse { get; set; }
+    public Guid CourseId { get; set; }
+    [Parameter]
+    public CourseDto PreviewCourse { get; set; } = new();
+    public bool hasrender = false;
     [Parameter]
     public PaymentDetailsDto paymentDetails { get; set; } = new();
     public double Payment { get; set; }
+    public CourseTrack courseTrack { get; set; }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            courseTrack = await enrollmentApi.CourseTrackerAsync(CourseId);
+            StateHasChanged();
+        }
+    }
     public async Task EnrollmentHandling()
     {
         paymentDetails.CourseCode = PreviewCourse?.CourseCode;
@@ -251,7 +276,7 @@
     public async Task ProvisionHandling()
     {
         paymentDetails.CourseCode = PreviewCourse?.CourseCode;
-        var context =  await enrollmentApi.ProvisionAsync(paymentDetails.CourseCode!);
+        var context = await enrollmentApi.ProvisionAsync(paymentDetails.CourseCode!);
         if (context is null)
         {
 
