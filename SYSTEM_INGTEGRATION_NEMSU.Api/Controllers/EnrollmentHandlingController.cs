@@ -36,21 +36,30 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
                 return Conflict("Already enrolled.");
             return Ok(response);
         }
+
         [Authorize]
         [HttpPost("ProvisionEnrollCourse")]
         public async Task<ActionResult<ProvisionDto>?> ProvisionAsync(string courseCode)
         {
             var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
             if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) return BadRequest("User not found or Student ID missing");
-
-            var StudentId = user.Id;
+            var GetUserId = Guid.Parse(FindUser.Value);           
+            var StudentId = GetUserId;
             var response = await enrollmenthandling.ProvisionAsync(StudentId, courseCode);
             if (response == null)
                 return Conflict("Already enrolled.");
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpPost("Pay ProvisionAsync")]
+        public async Task<ActionResult<bool>?> PayProvisionAsync(PaymentDetailsDto paymentDetails, Guid CourseId)
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) return Unauthorized("Login First");
+            var GetUserId = Guid.Parse(FindUser.Value);
+            paymentDetails.StudentId = GetUserId;
+            var response = await enrollmenthandling.PayProvisionAsync(paymentDetails);
             return Ok(response);
         }
 
@@ -70,6 +79,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (response is null) { return BadRequest("Nothing to Display"); }
             return Ok(response);
         }
+
         [Authorize]
         [HttpGet("Get Course")]
         public async Task<ActionResult<EnrolledCourseViewDto>> GetCourse(Guid CourseId)
@@ -87,6 +97,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (response is null) return BadRequest("Something went wrong ");
             return Ok(response);
         }
+
         [Authorize]
         [HttpDelete("UnEnroll Course/{CourseId}")]
         public async Task<IActionResult> UnenrollCourse(string CourseId)
@@ -103,6 +114,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (response is false) return BadRequest("Something went wrong");
             return Ok(response);
         }
+
         [Authorize]
         [HttpPatch("Inactive Course")]
         public async Task<ActionResult<bool>> InactiveCourse(Guid CourseId)
@@ -118,6 +130,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(request);
 
         }
+
         [Authorize]
         [HttpPatch("Active Course")]
         public async Task<ActionResult<bool>> ActiveCourse(Guid CourseId)
@@ -133,6 +146,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             return Ok(request);
 
         }
+
         [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize]
         [HttpGet("Display PreviewCourse")]
@@ -159,6 +173,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.AddPaymentAsync(payment);
             return Ok(request);
         }
+
         [Authorize]
         [HttpGet("Display Payment")]
         public async Task<ActionResult<PaymentDetailsDto>> DisplayPaymentAsync()
@@ -169,6 +184,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayPaymentAsync(UserId);
             return Ok(request);
         }
+
         [Authorize]
         [HttpDelete("Delete PaymentDetails")]
         public async Task<ActionResult<bool>> DeletePaymentAsync(Guid PaymentId)
@@ -192,6 +208,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayAllAnnouncementAsync(UserId);
             return Ok(request);
         }
+
         [Authorize]
         [HttpGet("Display CourseAnnouncement")]
         public async Task<ActionResult<AnnouncementDto>> DisplayCourseAnnouncementAsync(Guid CourseId)
@@ -202,6 +219,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayAnnouncementAsync(CourseId, UserId);
             return Ok(request);
         }
+
         [Authorize]
         [HttpGet("Display AnnouncementByType")]
         public async Task<ActionResult<AnnouncementDto>> DisplayAnnouncementByType(InformationType type)
@@ -234,7 +252,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.DisplayAllCourseEnrolledAsync(UserId);
             return Ok(request);
         }
-        [ApiExplorerSettings(IgnoreApi = true)]
+        
         [Authorize]
         [HttpPost("Generate StudentId")]
         public async Task<ActionResult<SchoolIdDto>> GenerateStudentId()
@@ -243,10 +261,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FindUser is null) return BadRequest("User not found");
             var UserId = Guid.Parse(FindUser.Value);      
             var request = await enrollmentservices.GenerateStudentId(UserId);
-            if(request is null)
-            {
-                return BadRequest("null");
-            }
+            if(request is null) { return BadRequest("null"); }
             return Ok(request);
         }
     
@@ -269,6 +284,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FindUser is null) return BadRequest("User not found");
             var UserId = Guid.Parse(FindUser.Value);
             var request = await enrollmentservices.DirectEnrollAsync(UserId, CourseId);
+            if(request is false) return BadRequest("Something went wrong");
             return Ok(request);
         }
 

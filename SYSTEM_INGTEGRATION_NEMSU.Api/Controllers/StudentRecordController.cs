@@ -6,6 +6,7 @@ using Microsoft.SqlServer.Server;
 using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto;
@@ -204,6 +205,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FindUser is null) { return BadRequest("Login First"); }
             var StudentId = Guid.Parse(FindUser.Value);
             var request = await studentRecordCommand.CheckInformationAsync(StudentId);
+            return Ok(request);
+        }
+        [Authorize]
+        [HttpGet("Student PhotoID")]
+        public async Task<ActionResult> StudentPhotoIDAsync()
+        {
+            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (FindUser is null) { return BadRequest("Login First"); }
+            var StudentId = Guid.Parse(FindUser.Value);
+            var request = await studentRecordCommand.StudentPhotoIDAsync(StudentId);
+            if (request is null) { return BadRequest("Something went wrong"); }
             return Ok(request);
         }
     }

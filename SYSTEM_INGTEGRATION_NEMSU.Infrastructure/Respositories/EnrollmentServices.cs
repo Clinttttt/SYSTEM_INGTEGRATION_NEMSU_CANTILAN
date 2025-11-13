@@ -458,7 +458,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             int currentYear = DateTime.Now.Year;
 
-
             var lastStudent = await context.academicInformation
                 .Where(s => s.StudentSchoolId != null && s.StudentSchoolId.StartsWith(currentYear.ToString()) == true)
                 .OrderByDescending(s => s.StudentSchoolId)

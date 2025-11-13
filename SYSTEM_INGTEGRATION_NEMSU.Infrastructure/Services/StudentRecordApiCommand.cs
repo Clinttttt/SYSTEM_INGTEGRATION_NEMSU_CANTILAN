@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto;
@@ -23,14 +24,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
     {
         private readonly HttpClient _http;
         private readonly IAuthHelper _authApi;
-   
+
         public StudentRecordApiCommand(HttpClient http, IAuthHelper authApi)
         {
             _http = http;
             _authApi = authApi;
-        
+
         }
-       
+
 
         public async Task<PersonalInformation?> AddPersonalDetailsAsync(PersonalInformationDto personalInformation)
         {
@@ -93,7 +94,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         {
             await _authApi.SetAuthHeaderAsync(_http);
             var request = await _http.PostAsJsonAsync($"api/StudentRecord/Assign%20StudentID", data);
-            if (!request.IsSuccessStatusCode){ return null; }
+            if (!request.IsSuccessStatusCode) { return null; }
             return await request.Content.ReadFromJsonAsync<SchoolIdDto>();
 
         }
@@ -135,6 +136,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         {
             await _authApi.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<bool>("api/StudentRecord/Check%20Information");
+        }
+        public async Task<FacultyPhotoId?> StudentPhotoIDAsync()
+        {
+            await _authApi.SetAuthHeaderAsync(_http);
+            return await _http.GetFromJsonAsync<FacultyPhotoId>("api/StudentRecord/Student%20PhotoID");
         }
     }
 }

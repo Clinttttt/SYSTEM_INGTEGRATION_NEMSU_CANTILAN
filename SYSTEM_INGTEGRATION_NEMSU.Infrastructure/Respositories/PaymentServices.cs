@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
@@ -97,6 +98,40 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             await respondCommand.AutoResponseAsync(studentId, courseCode);
             await respondCommand.ProvisionAnnouncementAsync(studentId);
             return filter;
+        }
+        public async Task<bool> PayProvisionAsync(PaymentDetailsDto paymentDetails)
+        {
+            var invoice = await context.invoice.FirstOrDefaultAsync(s => s.StudentId == paymentDetails.StudentId && s.CourseId == paymentDetails.CourseId);
+            if (invoice is null) return false;
+            var enroll = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == paymentDetails.StudentId && s.CourseId == paymentDetails.CourseId);
+            if (enroll is null) return false;
+            var course = await context.course.FirstOrDefaultAsync(s => s.Id == paymentDetails.CourseId);
+            if (course is null) return false;
+            if (course.Cost > paymentDetails.cost) { return false; }
+            invoice.Cost = course.Cost;
+            invoice.Status = InvoiceStatus.Paid;
+            invoice.DatePaid = DateTime.UtcNow;
+            invoice.DateCreated = DateTime.UtcNow;
+            invoice.Standing = "Enrolled";
+            invoice.PaymentDeadline = DateTime.MinValue;
+            enroll.EnrollmentStatus = EnrollmentStatus.Enrolled;
+
+            var coursetracker = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == paymentDetails.StudentId && s.CourseId == paymentDetails.CourseId);
+            if (coursetracker is null) return false;
+            coursetracker.CourseTrack = Domain.Entities.Student_Rcord.CourseTrack.Course_Already_Paid;
+           
+            var payment = new PaymentDetails
+            {
+                StudentId = paymentDetails.StudentId,
+                AccountNumber = paymentDetails.AccountNumber,
+                PurchaseDate = DateTime.UtcNow,
+                CourseCode = course.CourseCode,
+                Cost = course.Cost,
+                CategoryId = course.CategoryId
+            };
+            context.paymentDetails.Add(payment);
+            await context.SaveChangesAsync();
+            return true;
         }
 
     }

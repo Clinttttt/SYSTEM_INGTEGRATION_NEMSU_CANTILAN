@@ -1,11 +1,12 @@
 ﻿@inject IStudentRecordApiCommand studentRecordApi
 @inject IJSRuntime JS
 @inject IEnrollmentApiServices enrollmentApi
+@rendermode InteractiveServer
 
 <input type="checkbox" id="my_modal_studentId_Assign" class="modal-toggle" />
 <div class="modal" role="dialog">
     <div class="modal-box max-w-lg rounded-xl shadow-2xl p-0">
-        <!-- Header Section -->
+
         <div class="bg-gradient-to-r from-teal-500 to-cyan-600 p-6 rounded-t-xl">
             <h3 class="text-2xl font-bold text-white mb-2">Student ID Setup</h3>
             <p class="text-teal-50 text-sm">
@@ -20,9 +21,8 @@
             </p>
         </div>
 
-        <!-- Content Section -->
         <div class="p-6 space-y-6">
-            <!-- Photo Upload Section -->
+
             <div class="flex flex-col items-center">
                 <label class="relative group cursor-pointer">
                     <div class="w-32 h-32 rounded-2xl overflow-hidden border-4 border-gray-200 group-hover:border-teal-500 transition-all duration-300 shadow-lg">
@@ -53,7 +53,6 @@
                 <p class="text-xs text-gray-500 mt-3 text-center">Click to upload your photo<br />(Max 10MB)</p>
             </div>
 
-            
             <div class="space-y-2">
                 <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,13 +62,12 @@
                     <span class="text-red-500">*</span>
                 </label>
                 <input type="text"
-                @bind="StudentId.StudentSchoolId"
+                @bind="studentSchoolId"
                 placeholder="@(needNewId ? "Will be auto-generated" : "Enter your Student ID (e.g., 2024-1234)")"
                 class="input input-bordered w-full h-12 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                 disabled="@needNewId"
                 required />
             </div>
-
 
             @if (showGeneratedId && !string.IsNullOrEmpty(generatedId))
             {
@@ -86,7 +84,6 @@
                 </div>
             }
 
-            <!-- Error Message -->
             @if (!string.IsNullOrEmpty(errorMsg))
             {
                 <div class="bg-red-50 border-l-4 border-red-500 rounded-lg p-4">
@@ -99,7 +96,6 @@
                 </div>
             }
         </div>
-
 
         <div class="bg-gray-50 px-6 py-4 rounded-b-xl flex flex-col-reverse sm:flex-row gap-3 sm:justify-end border-t border-gray-200">
             @if (!needNewId)
@@ -134,83 +130,145 @@
 </div>
 
 @code {
+  
     private bool needNewId = false;
     private bool isLoading = false;
-    private string? errorMsg = null;
     private bool showGeneratedId = false;
     private string? generatedId = null;
+    private string? studentSchoolId = null;
+    private string? errorMsg = null;
 
+  
     public string? PreviewUrl { get; set; }
     public byte[]? Photo { get; set; }
     public string? PhotoContentType { get; set; }
 
-    public StudentMiniInfoDto info { get; set; } =  new StudentMiniInfoDto();
-    public SchoolIdDto StudentId { get; set; } = new SchoolIdDto();
+
+    public SchoolIdDto? generatedIdResult { get; set; }
+
+
     [Parameter]
     public EventCallback reload { get; set; }
 
+  
     private void SwitchToNewId()
     {
         needNewId = true;
-        StudentId.StudentSchoolId = "";
-        showGeneratedId = false;
-        generatedId = null;
-        errorMsg = null;
+        ResetState();
     }
+
 
     private void SwitchToExisting()
     {
         needNewId = false;
-        StudentId.StudentSchoolId = "";
+        ResetState();
+    }
+
+    
+    private void ResetState()
+    {
+        studentSchoolId = string.Empty;
         showGeneratedId = false;
         generatedId = null;
         errorMsg = null;
     }
 
+   
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
-        var file = e.File;
+        try
+        {
+            var file = e.File;
 
-        using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
-        using var ms = new MemoryStream();
-        await stream.CopyToAsync(ms);
+            if (file.Size > 10 * 1024 * 1024)
+            {
+                errorMsg = "File size exceeds 10MB limit.";
+                return;
+            }
 
-        var buffer = ms.ToArray();
-        Photo = buffer;
-        PhotoContentType = file.ContentType;
+            using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
 
-        PreviewUrl = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
-        info.Photo = Photo;
-        info.PhotoContentType = PhotoContentType;
-        StateHasChanged();
+            Photo = ms.ToArray();
+            PhotoContentType = file.ContentType;
+            PreviewUrl = $"data:{file.ContentType};base64,{Convert.ToBase64String(Photo)}";
+            errorMsg = null;
+
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            errorMsg = $"Error uploading photo: {ex.Message}";
+        }
     }
 
+ 
     public async Task ProceedEnrollment()
     {
         try
         {
             isLoading = true;
             errorMsg = null;
+            StateHasChanged();
 
+            
+            if (Photo == null || PhotoContentType == null)
+            {
+                errorMsg = "Please upload your photo before proceeding.";
+                return;
+            }
+
+           
             if (needNewId)
             {
-                StudentId = await enrollmentApi.GenerateStudentId();
-                generatedId = StudentId?.StudentSchoolId;
+                generatedIdResult = await enrollmentApi.GenerateStudentId();
+                Console.WriteLine($"Generated StudentSchoolId: {generatedIdResult?.StudentSchoolId}");
+
+                if (generatedIdResult?.StudentSchoolId == null)
+                {
+                    errorMsg = "Failed to generate Student ID. Please try again.";
+                    return;
+                }
+
+                studentSchoolId = generatedIdResult.StudentSchoolId;
+                generatedId = studentSchoolId;
                 showGeneratedId = true;
-                await Task.Delay(2000);
+
+                StateHasChanged();
+                await Task.Delay(2000); 
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(StudentId.StudentSchoolId))
+                if (string.IsNullOrWhiteSpace(studentSchoolId))
                 {
                     errorMsg = "Please enter your Student ID";
                     return;
                 }
             }
-            info.StudentSchoolId = StudentId!.StudentSchoolId;
-            await studentRecordApi.StudentSchoolIdAsync(info);
-            await JS.InvokeVoidAsync("eval",
-                "document.getElementById('my_modal_studentId_Assign').checked = false");
+
+        
+            var info = new StudentMiniInfoDto
+                {
+                    StudentSchoolId = studentSchoolId,
+                    Photo = Photo,
+                    PhotoContentType = PhotoContentType
+                };
+
+            Console.WriteLine($"StudentSchoolId: {info.StudentSchoolId}");
+            Console.WriteLine($"Photo size: {info.Photo?.Length ?? 0}");
+            Console.WriteLine($"PhotoContentType: {info.PhotoContentType}");
+
+        
+            var response = await studentRecordApi.StudentSchoolIdAsync(info);
+            if (response == null)
+            {
+                errorMsg = "Failed to save student information. Please try again.";
+                return;
+            }
+
+         
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_studentId_Assign').checked = false");
             await reload.InvokeAsync();
         }
         catch (Exception ex)
@@ -221,6 +279,7 @@
         finally
         {
             isLoading = false;
+            StateHasChanged();
         }
     }
 }

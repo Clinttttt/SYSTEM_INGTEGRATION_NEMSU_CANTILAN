@@ -32,5 +32,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<bool> DeletePaymentAsync(Guid PaymentId);
         Task<SchoolIdDto?> GenerateStudentId();
         Task<CourseTrack> CourseTrackerAsync(Guid CourseId);
+        Task<bool> DirectEnrollAsync(Guid CourseId);
+        Task<bool> PayProvisionAsync(PaymentDetailsDto paymentDetails);
     }
 }

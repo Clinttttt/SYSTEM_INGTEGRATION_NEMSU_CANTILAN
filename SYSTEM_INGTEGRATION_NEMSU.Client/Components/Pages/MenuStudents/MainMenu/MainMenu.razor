@@ -14,11 +14,17 @@
             <div class="flex items-center justify-between">
 
                 <div class="flex items-center gap-4">
-                    <div class="w-12 rounded-full border-2 border-amber-500 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-amber-400 to-orange-500 p-0.5">
-                        <img alt="NEMSU Cantilan Student Services"
-                        src="/img/student_logo.jpg"
-                        class="w-full h-full rounded-full object-cover bg-white" />
-                    </div>
+                    @if (!string.IsNullOrEmpty(preview))
+                    {
+                        <img src="@preview" alt="Student Photo" class="w-12 h-12 rounded-full " />
+                    }
+                    else
+                    {
+                        <div class="w-12 rounded-full border-2 border-amber-500 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-amber-400 to-orange-500 p-0.5">
+                            <img alt="NEMSU Cantilan Student Services" src="/img/student_logo.jpg"
+                            class="w-full h-full rounded-full object-cover bg-white" /> 
+                        </div>
+                    }
                     <div class="hidden md:block">
                         <h1 class="text-lg font-semibold text-gray-700 italic"> What you learn is yours forever</h1>
                     </div>
@@ -34,11 +40,23 @@
                         <div class="text-xs text-gray-500">ID: @miniDisplayMenu?.StudentId</div>
                     </div>
                     <div class="w-11 h-11 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
-                    @(
-                            miniDisplayMenu?.FullName?.Split(' ').Length >= 2
-                            ? $"{miniDisplayMenu?.FullName.Split(' ')[0][0]}{miniDisplayMenu?.FullName.Split(' ')[1][0]}"
-                            : miniDisplayMenu?.FullName?[0].ToString()
-                            )
+                        @{
+                            var initials = "";
+                            if (!string.IsNullOrWhiteSpace(miniDisplayMenu?.FullName))
+                            {
+                                var parts = miniDisplayMenu.FullName
+                                .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                                if (parts.Length >= 2)
+                                    initials = $"{parts[0][0]}{parts[2][0]}";
+                                else if (parts.Length == 1 && parts[0].Length > 0)
+                                    initials = parts[0][0].ToString();
+                            }
+                        }
+
+                        <div class="w-11 h-11 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
+                            @initials
+                        </div>
+
                     </div>
                 </div> 
             </div>
@@ -208,24 +226,36 @@
 
     public MiniDisplayMenuDto? miniDisplayMenu { get; set; }
     public bool hasrender = false;
+    public FacultyPhotoId? photo { get; set; }
+    public string? preview { get; set; }
 
-    protected override async Task OnAfterRenderAsync(bool firstrender)
-    {
+    protected override async Task OnAfterRenderAsync(bool firstrender) 
+    { 
         if (!hasrender && firstrender)
-        {
+        { 
             hasrender = true;
-            miniDisplayMenu = await studentRecordApi.MiniDisplayMenuAsync();
-            if(miniDisplayMenu?.StudentId is null)
+            photo = await studentRecordApi.StudentPhotoIDAsync();
+            miniDisplayMenu = await studentRecordApi.MiniDisplayMenuAsync(); 
+            if (string.IsNullOrEmpty(miniDisplayMenu?.StudentId)) 
             {
-                await ActivateStudentId();
-            }           
-        }
+                await ActivateStudentId(); 
+            }        
+            if(photo?.Photo is not null) 
+            {
+                preview = $"data:{photo?.PhotoContentType};base64,{Convert.ToBase64String(photo!.Photo)}";
+            } 
+        } 
         StateHasChanged();
-    }
+
+        }
 
     public async Task ReloadDisplay()
     {
         miniDisplayMenu = await studentRecordApi.MiniDisplayMenuAsync();
+        if (photo?.Photo is not null)
+        {
+            preview = $"data:{photo?.PhotoContentType};base64,{Convert.ToBase64String(photo!.Photo)}";
+        }
         StateHasChanged();
     }
     public async Task ActivateStudentId()
@@ -235,8 +265,6 @@
     }
 
   
-
-
     private string StudentName { get; set; } = "Clint Villanueva";
     private string StudentId { get; set; } = "2024-12345";
     private string FirstName { get; set; } = "Clint";

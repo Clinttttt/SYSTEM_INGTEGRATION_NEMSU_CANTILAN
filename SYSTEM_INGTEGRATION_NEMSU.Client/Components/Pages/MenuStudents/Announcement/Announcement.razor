@@ -1,14 +1,14 @@
 ﻿@page "/announcement"
 @inject IEnrollmentApiServices enrollmentApi
 @rendermode InteractiveServer
-
+@inject IStudentRecordApiCommand studentRecordApi
 <div class="relative h-screen content overflow-hidden">
     <div class="drawer lg:drawer-open h-screen">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col h-screen overflow-auto">
 
 
-            <div class="flex-1 bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 p-6 pb-18">
+            <div class="flex-1  p-6 pb-18">
 
 
                 <div class="mb-6 animate-fade-in">
@@ -124,9 +124,16 @@
                     <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
 
                     <div class="flex flex-col items-center">
-                        <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
-                            <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
-                        </div>
+                        @if (!string.IsNullOrEmpty(preview))
+                        {
+                            <img src="@preview" alt="Student Photo" class="w-20 h-20 rounded-full " />
+                        }
+                        else
+                        {
+                            <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
+                                <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
+                            </div>
+                        }
                         <h3 class="text-white font-bold text-sm">Student Dashboard</h3>
                     </div>
                 </div>
@@ -203,12 +210,18 @@
     public bool hasrender = false;
     public List<AnnouncementDto>? filtered { get; set; }
     public List<AnnouncementDto>? bytype { get; set; }
-
+    public FacultyPhotoId? photo { get; set; }
+    public string? preview { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstrender)
     {
         if (!hasrender && firstrender)
         {
             hasrender = true;
+            photo = await studentRecordApi.StudentPhotoIDAsync();
+            if (photo?.Photo is not null)
+            {
+                preview = $"data:{photo?.PhotoContentType};base64,{Convert.ToBase64String(photo!.Photo)}";
+            }
             announcements = await enrollmentApi.DisplayAllAnnouncementAsync();
             bytype = announcements;
         }

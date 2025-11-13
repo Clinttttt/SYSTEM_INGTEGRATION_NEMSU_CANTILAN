@@ -4,7 +4,7 @@
 @inject IEnrollmentApiServices enrollmentApi
 @rendermode InteractiveServer
 @inject IJSRuntime JS
-
+@inject IStudentRecordApiCommand studentRecordApi
 
 
 <div class="relative h-screen content overflow-hidden">
@@ -231,9 +231,16 @@
                     <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
 
                     <div class="flex flex-col items-center">
-                        <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
-                            <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
-                        </div>
+                        @if (!string.IsNullOrEmpty(preview))
+                        {
+                                  <div class="w-20 h-20"><img src="@preview" alt="Student Photo" class=" w-full h-full object-cover rounded-full " /></div>
+                        }
+                        else
+                        {
+                            <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
+                                <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
+                            </div>
+                        }
                         <h3 class="text-white font-bold text-sm">Student Dashboard</h3>
                     </div>
                 </div>
@@ -460,7 +467,8 @@
     public bool unenroll { get; set; }
     public bool inactive { get; set; }
     public bool active { get; set; }
-
+    public FacultyPhotoId? photo { get; set; }
+    public string? preview { get; set; }
     [Parameter]
     public EventCallback unenrollshow { get; set; }
 
@@ -532,6 +540,11 @@
         if (!hasrender && firstRender)
         {
             hasrender = true;
+            photo = await studentRecordApi.StudentPhotoIDAsync();
+            if (photo?.Photo is not null)
+            {
+                preview = $"data:{photo?.PhotoContentType};base64,{Convert.ToBase64String(photo!.Photo)}";
+            }
             enrolledCourseView = await enrollmentApi.GetCourse(CourseId);
             announcements = await enrollmentApi.DisplayAllTypeAnnouncementAsync(CourseId);
         }

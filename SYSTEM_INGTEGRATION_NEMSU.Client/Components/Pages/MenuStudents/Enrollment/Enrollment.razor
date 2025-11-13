@@ -1,8 +1,9 @@
 ﻿@rendermode InteractiveServer
 @inject IEnrollmentApiServices enrollmentApi
-
+@inject IJSRuntime JS
 @page "/enrollment"
-
+@using SYSTEM_INGTEGRATION_NEMSU.Client.Components.Pages.ModalRespond
+@inject IStudentRecordApiCommand studentRecordApi
 
 <div class="relative overflow-hidden  h-screen content ">
     <div class="drawer lg:drawer-open h-screen">
@@ -137,7 +138,7 @@
                                                 @if (coursestatus == CourseTrack.not_enrolled)
                                                 {
                                                     <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
-                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+                                                    class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
                                                         <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
@@ -157,19 +158,19 @@
                                                 }
                                                 else if (coursestatus == CourseTrack.Course_Already_Provisioned)
                                                 {
-                                                    <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
-                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+                                                    <div onclick="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_pay_provision.showModal()")" 
+                                                    class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
                                                         <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
                                                         </svg>
-                                                        @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Provisioned")
-                                                    </label>
+                                                        @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Trial Ongoing")
+                                                    </div>
                                                 }
                                                 else if (coursestatus == CourseTrack.Deleted_Paid)
                                                 {
                                                     <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
-                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+                                                    class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
                                                         <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
@@ -181,7 +182,7 @@
                                                 {
 
                                                     <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
-                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+                                                    class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
                                                         <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
@@ -221,8 +222,6 @@
 
 
             <input type="checkbox" id="my_modal_5" class="modal-toggle" />
-
-
             <div class="modal">
                 <div class="modal-box z-10 rounded-xl shadow-2xl max-w-md bg-cyan-50">
 
@@ -239,29 +238,30 @@
 
                     <div class="modal-action mt-6 flex flex-col sm:flex-row gap-3 justify-center">
                         @if (coursestatus == CourseTrack.Deleted_Paid)
-                      {
-                        <div class="flex flex-col sm:flex-row gap-3 w-full">                     
-                                <button for="my_modal_5" class="btn bg-teal-600 text-white  flex-1 rounded-lg hover:bg-cyan-600  transition-all">
+                        {
+                            <div class="flex flex-col sm:flex-row gap-3 w-full">
+                                <button @onclick="()=> DirectEnroll()" class="btn bg-teal-600 text-white  flex-1 rounded-lg hover:bg-cyan-600  transition-all">
                                     Enroll Now
                                 </button>
-                            <label for="my_modal_5" class="btn btn-outline btn-primary flex-1 rounded-lg hover:bg-cyan-600 hover:text-white transition-all">
-                                Cancel
-                            </label>
-                        </div>
-                       }
-                       else{
-                        <div class="flex flex-col sm:flex-row gap-3 w-full">
-                            <NavLink href="@($"/enrollmentdetails/{SelectedCourse}")" class="btn btn-outline btn-primary flex-1 rounded-lg hover:bg-teal-700 hover:text-white transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                                View Details
-                            </NavLink>
-                            <label for="my_modal_5" class="btn btn-outline btn-primary flex-1 rounded-lg hover:bg-cyan-700 hover:text-white transition-all">
-                                Cancel
-                            </label>
-                        </div>
+                                <label for="my_modal_5" class="btn btn-outline btn-primary flex-1 rounded-lg hover:bg-cyan-600 hover:text-white transition-all">
+                                    Cancel
+                                </label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="flex flex-col sm:flex-row gap-3 w-full">
+                                <NavLink href="@($"/enrollmentdetails/{SelectedCourse}")" class="btn btn-outline btn-primary flex-1 rounded-lg hover:bg-teal-700 hover:text-white transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    View Details
+                                </NavLink>
+                                <label for="my_modal_5" class="btn btn-outline btn-primary flex-1 rounded-lg hover:bg-cyan-700 hover:text-white transition-all">
+                                    Cancel
+                                </label>
+                            </div>
                         }
                     </div>
 
@@ -272,9 +272,12 @@
 
                 <label class="modal-backdrop" for="my_modal_5">Close</label>
             </div>
-
-
         </div>
+
+
+        <EnrollDirectSuccessfully callback="UpdatedRender" />
+        <PayProvisionRespond PreviewCourse="SelectedProvision" />
+
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <div class="min-h-full w-64 bg-white shadow-xl flex flex-col border-r border-r-gray-200">
@@ -285,13 +288,20 @@
                     <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
 
                     <div class="flex flex-col items-center">
-                        <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
-                            <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
-                        </div>
+                        @if (!string.IsNullOrEmpty(preview))
+                    {
+                            <img src="@preview" alt="Student Photo" class="w-20 h-20 rounded-full " />
+                    }
+                    else{
+                            <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
+                                <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
+                            </div>
+                    }
+                        
+                        
                         <h3 class="text-white font-bold text-sm">Student Dashboard</h3>
                     </div>
                 </div>
-
 
                 <nav class="flex-1 p-4 overflow-y-auto">
 
@@ -358,9 +368,7 @@
         </div>
     </div>
 
-
 </div>
-
 
 
 @code {
@@ -372,24 +380,79 @@
     public string? Status { get; set; }
     public Guid SelectedCourse { get; set; }
     public CourseTrack coursestatus { get; set; }
-
+    public bool enroll { get; set; }
     public List<CourseDto>? filtered { get; set; }
     public string SearchQuery = "";
+
+    public CourseDto SelectedProvision { get; set; } = new CourseDto();
+    public FacultyPhotoId? photo { get; set; }
+    public string? preview { get; set; }
+
+
+
     protected override async Task OnAfterRenderAsync(bool firstrender)
     {
         if (!hasrender && firstrender)
         {
             hasrender = true;
+
+            photo = await studentRecordApi.StudentPhotoIDAsync();
+            if (photo?.Photo is not null)
+            {
+                preview = $"data:{photo?.PhotoContentType};base64,{Convert.ToBase64String(photo!.Photo)}";
+            }
             course = await enrollmentApi.DisplayAllCourseDetailsAsync();
             filtered = course?.ToList();
-            foreach (var c in course!)
+            if(course is not null)
             {
-                coursestatus = await enrollmentApi.CourseTrackerAsync(c.Id);
+                foreach (var c in course)
+                {
+                    coursestatus = await enrollmentApi.CourseTrackerAsync(c.Id);
+                    SelectedProvision.Cost = c.Cost;
+                    SelectedProvision.CourseCode = c.CourseCode;
+                    SelectedProvision.Unit = c.Unit;
+                    SelectedProvision.Title = c.Title;
+                    SelectedProvision.Id = c.Id;
+                }
             }
+           
+
             StateHasChanged();
 
         }
 
+    }
+    public async Task PayProvisionAsync()
+    {
+        foreach (var C in course!)
+        {
+            enroll = await enrollmentApi.DirectEnrollAsync(C.Id);
+        }
+        StateHasChanged();
+    }
+
+
+
+    public async Task DirectEnroll()
+    {
+
+        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_5').checked = false");
+        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_direct_enroll_successfully').checked = true");
+        foreach (var C in course!)
+        {
+            enroll = await enrollmentApi.DirectEnrollAsync(C.Id);
+        }
+        StateHasChanged();
+    }
+
+    public async Task UpdatedRender()
+    {
+        filtered = course?.ToList();
+        foreach (var c in filtered!)
+        {
+            coursestatus = await enrollmentApi.CourseTrackerAsync(c.Id);
+        }
+        StateHasChanged();
     }
 
     public void HandlingQuery()
@@ -406,9 +469,6 @@
         }
         StateHasChanged();
     }
-
-
-
 
     public async Task OpenModal(Guid CourseId)
     {

@@ -18,7 +18,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public DateTime PurchaseDate { get; set; }
         public string? CourseCode { get; set; }
         public double cost { get; set; }
-        
+        public Guid CourseId { get; set; }
         public Category? Category { get; set; }
     }
 }

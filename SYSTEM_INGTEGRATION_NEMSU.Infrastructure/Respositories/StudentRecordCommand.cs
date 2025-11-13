@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto;
@@ -211,10 +212,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
         public async Task<StudentMiniInfoDto?> StudentSchoolIdAsync(StudentMiniInfoDto data)
         {
-            var studentIdExists = await context.academicInformation
-                .AnyAsync(s => s.StudentSchoolId == data.StudentSchoolId);
-            if (studentIdExists) { return null; }
-
+          
             var personal = await context.personalInformation.FirstOrDefaultAsync(s => s.StudentId == data.StudentId);
             if (personal is null) return null;
             personal.Photo = data.Photo;
@@ -223,9 +221,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.academicInformation.FirstOrDefaultAsync(s => s.StudentId == data.StudentId);
             if (request is null) return null;
 
-
             request.StudentSchoolId = data.StudentSchoolId;
-
             await context.SaveChangesAsync();
             return request.Adapt<StudentMiniInfoDto>();
         }
@@ -269,6 +265,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (contact is null) return false;
             return true;
         }
-      
+        public async Task<FacultyPhotoId?> StudentPhotoIDAsync(Guid StudentId)
+        {
+            var request = await context.personalInformation.FirstOrDefaultAsync(s => s.StudentId == StudentId);
+            if (request is null) return null;
+            return new FacultyPhotoId()
+            {
+                Photo = request.Photo,
+                PhotoContentType = request.PhotoContentType,
+            };
+        }
+
     }
 }

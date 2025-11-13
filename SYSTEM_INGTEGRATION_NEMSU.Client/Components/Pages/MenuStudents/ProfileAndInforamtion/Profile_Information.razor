@@ -15,9 +15,9 @@
 
 
                     <div class="flex flex-row justify-between items-start">
-                    
+
                         <div class="flex items-center space-x-2 flex-col">
-                         <div class="flex gap-2 ">
+                            <div class="flex gap-2 ">
                                 <NavLink href="/studentmenu" class="btn btn-circle btn-ghost hover:bg-cyan-100 transition-colors">
                                     <svg class="w-5 h-5 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -26,14 +26,16 @@
                                 <h1 class="text-3xl md:text-4xl font-semibold bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
                                     Profile Information
                                 </h1>
-                         </div>
-                            <p class="text-gray-600 mt-2 flex items-center"> 
-                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"> </path> 
-                            </svg> View and manage your personal details </p>
+                            </div>
+                            <p class="text-gray-600 mt-2 flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"> </path>
+                                </svg> View and manage your personal details
+                            </p>
                         </div>
 
-                 
+
                         <div class="flex flex-col items-end">
                             @if (P?.Savestatus == SaveStatus.Save_As_Draft
                             || A?.Savestatus == SaveStatusAcademic.Save_As_Draft
@@ -57,7 +59,7 @@
 
                 </div>
 
-                @if(A is null && P is null && C is null )
+                @if (A is null && P is null && C is null)
                 {
                     <div class="flex justify-center items-center py-32">
                         <div class="text-center">
@@ -82,7 +84,15 @@
                             <div class="relative flex flex-col lg:flex-row items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-8">
                                 <div class="relative group">
                                     <div class="w-32 h-32 rounded-full border-1 border-teal-600 flex items-center justify-center overflow-hidden bg-white shadow-2xl transform group-hover:scale-110 transition-all duration-300">
-                                        <img src="/img/student_logo.jpg" class="w-full h-full object-contain" alt="Profile" />
+                                        @if (!string.IsNullOrEmpty(preview))
+                                        {
+                                            <img src="@preview" class="w-full h-full object-cover" alt="Profile" />
+                                        }
+                                        else
+                                        {
+                                            <img src="/img/student_logo.jpg" class="w-full h-full object-contain" alt="Profile" />
+                                        }
+
                                     </div>
                                     <div class="absolute bottom-0 right-0 w-10 h-10 bg-teal-400 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -156,7 +166,7 @@
                                         <div><label class="text-xs font-bold text-gray-500 uppercase">Year Level</label><p class="font-light text-gray-800">@A.YearLevel?.GetDisplayName()</p></div>
                                         <div><label class="text-xs font-bold text-gray-500 uppercase">Semester</label><p class="font-light text-gray-800">@A.Semester?.GetDisplayName()</p></div>
                                         <div><label class="text-xs font-bold text-gray-500 uppercase">Program</label><p class="font-light text-gray-800">@A.Program?.GetDisplayName()</p></div>
-          
+
                                         <div><label class="text-xs font-bold text-gray-500 uppercase">Strand</label><p class="font-light text-gray-800">@A.Strand?.GetDisplayName()</p></div>
                                     </div>
 
@@ -204,9 +214,9 @@
 
 
 
-        <EditProfileInformation P="P" A="A" C="C"  UpdateInfo="ReloadInfo"/>
+        <EditProfileInformation P="P" A="A" C="C" UpdateInfo="ReloadInfo" />
         <SaveInformationRespond SaveInfo="SaveInformation" />
-         
+
 
 
 
@@ -220,9 +230,16 @@
                     <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
 
                     <div class="flex flex-col items-center">
-                        <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
-                            <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
-                        </div>
+                        @if (!string.IsNullOrEmpty(preview))
+                        {
+                            <div class="w-20 h-20"><img src="@preview" alt="Student Photo" class=" w-full h-full object-cover rounded-full " /></div>
+                        }
+                        else
+                        {
+                            <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
+                                <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
+                            </div>
+                        }
                         <h3 class="text-white font-bold text-sm">Student Dashboard</h3>
                     </div>
                 </div>
@@ -300,11 +317,19 @@
     public PersonalInformationDto? P { get; set; }
     public AcademicInformationDto? A { get; set; }
     public ContactInformationDto? C { get; set; }
+    public FacultyPhotoId? photo { get; set; }
+    public string? preview { get; set; }
     protected override async Task OnAfterRenderAsync(bool firstrender)
     {
+
         if (!hasrender && firstrender)
         {
             hasrender = true;
+            photo = await studentRecordApi.StudentPhotoIDAsync();
+            if (photo?.Photo is not null)
+            {
+                preview = $"data:{photo?.PhotoContentType};base64,{Convert.ToBase64String(photo!.Photo)}";
+            }
             P = await studentRecordApi.DisplayPersonalInformationAsync();
             A = await studentRecordApi.DisplayAcademicInformation();
             C = await studentRecordApi.DisplayContactInformationAsync();

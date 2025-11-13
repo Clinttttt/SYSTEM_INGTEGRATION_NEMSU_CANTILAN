@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDto;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto;
@@ -30,5 +31,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync();
         Task<bool> CheckInformationAsync();
         Task<EnrollmentFormDto?> UpdateEnrollmentFormAsync(EnrollmentFormDto studentUpdate);
+        Task<FacultyPhotoId?> StudentPhotoIDAsync();
     }
 }

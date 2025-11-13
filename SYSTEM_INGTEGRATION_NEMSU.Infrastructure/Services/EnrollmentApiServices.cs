@@ -55,6 +55,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             }
             return await response.Content.ReadFromJsonAsync<ProvisionDto>();
         }
+        public async Task<bool> PayProvisionAsync(PaymentDetailsDto paymentDetails)
+        {
+            await SetAuthHeaderAsync();
+            var response = await _http.PostAsJsonAsync($"api/EnrollmentHandling/Pay%20ProvisionAsync", paymentDetails);
+            if(!response.IsSuccessStatusCode) { return false; }
+            return await response.Content.ReadFromJsonAsync<bool>();
+        }
 
         public async Task<List<EnrollCourseDto>?> DisplayAllCourseEnrolledAsync()
         {
@@ -157,16 +164,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             {
                 return null;
             }
-
-
-            var content = await request.Content.ReadAsStringAsync();
-
-            if (string.IsNullOrWhiteSpace(content))
-            {
-                return null; 
-            }
-
-            return JsonSerializer.Deserialize<SchoolIdDto>(content);
+            return await request.Content.ReadFromJsonAsync<SchoolIdDto>();
+        }
+        public async Task<bool> DirectEnrollAsync(Guid CourseId)
+        {
+            await SetAuthHeaderAsync();
+            var request = await _http.PostAsync($"api/EnrollmentHandling/Direct%20EnrollAsync?CourseId={CourseId}",null);
+            if (!request.IsSuccessStatusCode) { return false; }
+            return await request.Content.ReadFromJsonAsync<bool>();
         }
 
 

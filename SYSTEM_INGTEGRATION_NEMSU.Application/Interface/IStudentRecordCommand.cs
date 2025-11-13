@@ -11,6 +11,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 {
@@ -39,7 +40,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync(Guid StudentId);
         Task<bool> CheckInformationAsync(Guid StudentId);
         Task<EnrollmentFormDto?> UpdateEnrollmentFormAsync(EnrollmentFormDto studentUpdate);
-
+        Task<FacultyPhotoId?> StudentPhotoIDAsync(Guid StudentId);
 
     }
 }

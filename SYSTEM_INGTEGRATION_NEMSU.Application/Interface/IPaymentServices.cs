@@ -12,5 +12,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
     {
         Task<PaymentDetailsDto?> InvoiceAsync( PaymentDetailsDto paymentdetails);
         Task<ProvisionDto?> ProvisionAsync(Guid studentId, string courseCode);
+        Task<bool> PayProvisionAsync(PaymentDetailsDto paymentDetails);
     }
 }

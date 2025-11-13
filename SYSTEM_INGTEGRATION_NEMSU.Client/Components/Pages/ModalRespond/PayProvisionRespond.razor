@@ -1,0 +1,216 @@
+﻿@using SYSTEM_INGTEGRATION_NEMSU.Client.Components.Pages.ModalRespond
+@inject IEnrollmentApiServices enrollmentApi
+@inject IJSRuntime JS
+
+<!--hehehe-->
+<!-- proceed to payment ni -->
+<dialog id="my_modal_pay_provision" class="modal ">
+
+    <EditForm Model="paymentDetails" OnValidSubmit="EnrollmentHandling" FormName="Enrollment">
+        <div class="modal-box max-w-2xl p-0 overflow-hidden rounded-sm ">
+
+            <div class="p-3 text-white  relative  bg-gradient-to-br from-cyan-500 to-teal-600">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+                <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
+
+
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold">Get full, uninterrupted access</h3>
+                        <p class="text-cyan-100 text-[10px] mt-0.5">Enroll in the full course to enjoy seamless learning</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="p-5 bg-gradient-to-br from-gray-50 to-cyan-50 gap-2">
+
+
+
+                <div class="px-5 py-4 bg-white">
+                    <h4 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                        </svg>
+                        Payment Information
+                    </h4>
+
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="payment_method" value="@PaymentMethod.Gcash" checked="@(paymentDetails.paymentMethod == PaymentMethod.Gcash)" @onchange="@(()=> paymentDetails.paymentMethod = PaymentMethod.Gcash)" class="peer hidden">
+                                <div class="border-2 border-gray-200 peer-checked:border-cyan-500 peer-checked:bg-cyan-50 rounded-lg p-2 text-center hover:border-cyan-300 transition-all">
+                                    <div class="text-sm font-bold text-cyan-600">GCash</div>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="payment_method" value="@PaymentMethod.Card" checked="@(paymentDetails.paymentMethod == PaymentMethod.Card)" @onchange="@(()=> paymentDetails.paymentMethod = PaymentMethod.Card)" class="peer hidden">
+                                <div class="border-2 border-gray-200 peer-checked:border-cyan-500 peer-checked:bg-cyan-50 rounded-lg p-2 text-center hover:border-cyan-300 transition-all">
+                                    <div class="text-sm font-bold text-cyan-600">Card</div>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="payment_method" value="@PaymentMethod.Bank" checked="@(paymentDetails.paymentMethod == PaymentMethod.Bank)" @onchange="@(()=> paymentDetails.paymentMethod = PaymentMethod.Bank)" class="peer hidden">
+                                <div class="border-2 border-gray-200 peer-checked:border-cyan-500 peer-checked:bg-cyan-50 rounded-lg p-2 text-center hover:border-cyan-300 transition-all">
+                                    <div class="text-sm font-bold text-cyan-600">Bank</div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <span>
+                                <label class="text-xs font-light text-gray-700 mb-1.5 block">Account No./Gcash/Bank/Card</label>
+                                <input type="text"
+                                minlength="11"
+                                maxlength="11"
+                                title="Must be 11 digits"
+                                @bind="paymentDetails.AccountNumber"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </span>
+                            <span class="relative">
+                                <label class="text-xs font-light text-gray-700 mb-1.5 block">Enter amount</label>
+                                <input type="number" @bind="paymentDetails.cost"
+                                class="input validator w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                <p class="validator-hint absolute left-0 top-full mt-1 text-xs text-red-500 z-10">
+                                    Must be 10 digits
+                                </p>
+                            </span>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+
+                    @if (PreviewCourse is not null)
+                    {
+
+
+
+                        <div class="bg-white rounded-lg shadow-sm border border-cyan-100 p-3">
+                            <h4 class="text-xs font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                                Course Information
+                            </h4>
+
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center text-[10px]">
+                                    <span class="text-gray-600">Course Code:</span>
+                                    <span class="font-semibold text-gray-800">@PreviewCourse.CourseCode</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px]">
+                                    <span class="text-gray-600">Course Name:</span>
+                                    <span class="font-semibold text-gray-800">@PreviewCourse.Title</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px]">
+                                    <span class="text-gray-600">Units:</span>
+                                    <span class="font-semibold text-gray-800">@PreviewCourse.Unit Units</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] pt-1.5 border-t border-gray-100">
+                                    <span class="text-gray-600">Course Fee:</span>
+                                    <span class="font-semibold text-gray-800">₱ @PreviewCourse.Cost</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-cyan-500 to-teal-600 rounded-lg shadow-lg p-6 btn ">
+                            <div class="flex justify-between items-center w-full">
+                                <div>
+                                    <p class="text-cyan-100 text-[10px] font-medium mb-0.5">Total Amount</p>
+                                    <p class="text-xl font-bold text-white">₱ @PreviewCourse.Cost</p>
+                                </div>
+                                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    }
+
+
+
+
+                </div>
+
+            </div>
+
+
+            <div class="bg-white border-t border-gray-200 px-5 py-3">
+                <div class="flex gap-3">
+                    <form method="dialog" class="flex-1">
+                        <button class="w-full btn btn-ghost border border-gray-300 hover:bg-gray-100 text-sm h-10 min-h-10">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancel
+                        </button>
+                    </form>              
+                    <button type="submit" class="flex-1 btn bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white border-0 shadow-lg text-sm h-10 min-h-10">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Confirm Purchase
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </EditForm>
+    <EnrollmentSuccessfull previewCourse="PreviewCourse" paymentDetails="paymentDetails" />
+    <EnrollmentFailed previewCourse="PreviewCourse" paymentDetails="paymentDetails" />
+
+
+</dialog>
+@code {
+    [Parameter]
+    public Guid CourseId { get; set; }
+    [Parameter]
+    public CourseDto PreviewCourse { get; set; } = new();
+    public bool hasrender = false;
+    [Parameter]
+    public PaymentDetailsDto paymentDetails { get; set; } = new();
+    public double Payment { get; set; }
+    public CourseTrack courseTrack { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            courseTrack = await enrollmentApi.CourseTrackerAsync(CourseId);
+            StateHasChanged();
+        }
+    }
+    public async Task EnrollmentHandling()
+    {
+        paymentDetails.CourseCode = PreviewCourse?.CourseCode;
+        if (string.IsNullOrWhiteSpace(paymentDetails.AccountNumber) || paymentDetails.cost <= 0 || paymentDetails.cost < PreviewCourse?.Cost)
+        {
+
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_failed_enrolled').checked = true");
+            return;
+        }
+        if(PreviewCourse is not null)
+        {
+            paymentDetails.CourseId = PreviewCourse.Id;
+        }
+        var context = await enrollmentApi.PayProvisionAsync(paymentDetails);
+      
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_successfull').checked = true");
+    }
+
+
+
+}

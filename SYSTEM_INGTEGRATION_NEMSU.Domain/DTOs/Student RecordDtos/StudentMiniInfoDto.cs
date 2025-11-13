@@ -13,7 +13,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
         [Required(ErrorMessage = "Photo Required")]
         public byte[]? Photo { get; set; }
         public string? PhotoContentType { get; set; }
-        [Required(ErrorMessage = "Student ID is required")]
+       
         public string StudentSchoolId { get; set; } = string.Empty;
     }
 }
