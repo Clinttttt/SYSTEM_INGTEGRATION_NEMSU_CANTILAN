@@ -83,5 +83,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
         public DbSet<FacultyPersonalInformation> facultyPersonalInformation { get; set; }
         public DbSet<FacultyAcademicInformation> facultyAcademics { get; set; }
         public DbSet<PaymentDetails> paymentDetails { get; set; }
+    
     }
 }

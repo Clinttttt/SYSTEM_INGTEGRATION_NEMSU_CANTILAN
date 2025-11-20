@@ -1,4 +1,6 @@
-﻿using Mapster;
+﻿using Azure.Core;
+using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
@@ -6,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
@@ -13,6 +16,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 {
@@ -107,7 +111,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 FacultyAcademicInformationDto = filteracademicdto
             };
         }
-      
+
         public async Task<FacultyPhotoId?> FacultyPhotoIDAsync(Guid FacultyId)
         {
             var request = await context.facultyPersonalInformation.FirstOrDefaultAsync(s => s.FacultyId == FacultyId);
@@ -118,5 +122,42 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 PhotoContentType = request.PhotoContentType,
             };
         }
+
+        public async Task<string?> ForgotPassword(string EmailAddress)
+        {
+            var request = await context.facultyPersonalInformation.FirstOrDefaultAsync();
+            if (request is null)
+                return null;
+            if (request.EmailAddress != EmailAddress)
+            {
+                return null;
+            }
+            var generatecode = new Byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(generatecode);
+            var base64 = Convert.ToBase64String(generatecode);
+            return base64.Substring(0, 6);
+        }
+        public async Task<bool> NewPassword(string Password, string EmailAdress)
+        {
+            var faculty = await context.facultyPersonalInformation
+        .FirstOrDefaultAsync(s => s.EmailAddress == EmailAdress);
+
+            if (faculty is null)
+                return false;
+
+            var user = await context.users
+                .FirstOrDefaultAsync(u => u.Id == faculty.FacultyId);
+
+            if (user is null)         
+                return false;
+            
+            var PasswordHasher = new PasswordHasher<User>()
+                .HashPassword(user,Password);
+            user.Password = PasswordHasher;
+            await context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

@@ -213,8 +213,8 @@
         </div>
 
 
-
-        <EditProfileInformation P="P" A="A" C="C" UpdateInfo="ReloadInfo" />
+         
+        <EditProfileInformation P="P" A="A" C="C" UpdateInfo="ReloadInfo" photo="photo" PreviewChanged="HandlePreviewChanged" />
         <SaveInformationRespond SaveInfo="SaveInformation" />
 
 
@@ -319,6 +319,8 @@
     public ContactInformationDto? C { get; set; }
     public FacultyPhotoId? photo { get; set; }
     public string? preview { get; set; }
+
+
     protected override async Task OnAfterRenderAsync(bool firstrender)
     {
 
@@ -338,6 +340,7 @@
     }
     public async Task ReloadInfo()
     {
+        photo = await studentRecordApi.StudentPhotoIDAsync();
         P = await studentRecordApi.DisplayPersonalInformationAsync();
         A = await studentRecordApi.DisplayAcademicInformation();
         C = await studentRecordApi.DisplayContactInformationAsync();
@@ -349,6 +352,10 @@
         await ReloadInfo();
         StateHasChanged();
     }
-
+    public async Task HandlePreviewChanged(string newPreview)
+    {
+        preview = newPreview;
+        StateHasChanged();
+    }
 
 }

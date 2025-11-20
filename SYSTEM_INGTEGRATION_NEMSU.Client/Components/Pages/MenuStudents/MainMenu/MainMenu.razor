@@ -16,7 +16,7 @@
                 <div class="flex items-center gap-4">
                     @if (!string.IsNullOrEmpty(preview))
                     {
-                        <img src="@preview" alt="Student Photo" class="w-12 h-12 rounded-full " />
+                        <div class="w-12 h-12"> <img src="@preview" alt="Student Photo" class="w-full h-full object-cover rounded-full " /></div>
                     }
                     else
                     {

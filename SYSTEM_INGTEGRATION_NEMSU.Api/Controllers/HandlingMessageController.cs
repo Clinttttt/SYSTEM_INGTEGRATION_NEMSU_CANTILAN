@@ -13,7 +13,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     [ApiController]
     public class HandlingMessageController(IUserRespository respository, IRespondCommand respondCommand) : ControllerBase
     {
-       
+      
         [Authorize]
         [HttpPost("Auto Response")]
         public async Task<ActionResult<AutoResponsetDto>> AutoResponse(string CourseCode)

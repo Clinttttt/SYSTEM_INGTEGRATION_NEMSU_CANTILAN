@@ -17,7 +17,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     [ApiController]
     public class HandlingStudentsController(IHandlingStudents handlingStudents, IUserRespository user) : ControllerBase
     {
-   
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize]
         [HttpGet("Display Students")]
         public async Task<ActionResult<HandlingStudentsDto>> DisplayStudents()
@@ -114,7 +114,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
                 pageSize,
                 searchQuery);
 
-            // Return an object with both Students and TotalCount
+           
             return Ok(new
             {
                 Students = result.Students,

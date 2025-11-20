@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
@@ -61,6 +62,22 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FacultyId is null) return BadRequest("User Cannot Find");
             var response = await facultyRecord.FacultyPhotoIDAsync(FacultyId.Id);
             return Ok(response);
+        }  
+
+        [HttpPost("ForgotPassword")]
+        public async Task<ActionResult<string>> ForgotPassword([FromBody] ForgotPasswordDto email)
+        {         
+            var request = await facultyRecord.ForgotPassword(email.Email!);
+            return Ok(request);
+        }
+        [HttpPatch("NewPassword")]
+        public async Task<ActionResult> NewPassword([FromBody] NewPasswordDto dto)
+        {
+            var request = await facultyRecord.NewPassword(dto.Password!, dto.EmailAddress!);
+            if (!request)
+                return BadRequest("Email not found.");
+
+            return Ok(new { message = "Password updated successfully." });
         }
     }
 }

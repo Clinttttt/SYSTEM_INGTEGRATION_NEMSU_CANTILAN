@@ -13,5 +13,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<FacultyRecordDto?> UpdateFacultyInformationAsync(FacultyRecordDto details);
         Task<FacultyRecordDto?> DisplayFacultyDetailsAsync(Guid FacultyId);
         Task<FacultyPhotoId?> FacultyPhotoIDAsync(Guid FacultyId);
+        Task<string?> ForgotPassword(string EmailAddress);
+        Task<bool> NewPassword(string Password, string EmailAdress);
     }
 }

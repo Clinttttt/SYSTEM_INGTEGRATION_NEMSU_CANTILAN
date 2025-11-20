@@ -21,11 +21,10 @@
         </div>
 
         <EditForm Model="@studentUpdateInformation" OnValidSubmit="@HandlingUpdate" FormName="UpdatingAllInfo">
-            <DataAnnotationsValidator/>
+            <DataAnnotationsValidator />
             <div class="pb-4 max-h-[70vh] overflow-y-auto scrollbar-hide -mb-6">
 
                 <div class="grid lg:grid-cols-3 gap-8">
-
 
                     <div class="space-y-4">
                         <h4 class="font-bold text-cyan-600 text-lg mb-4 pb-2 border-b-2 border-cyan-200 flex items-center gap-2">
@@ -34,7 +33,7 @@
 
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold text-xs uppercase">Full Name</span>
+                                <span class="label-text font-semibold text-xs uppercase">First Name</span>
                             </label>
                             <InputText type="text" @bind-Value="studentUpdateInformation!.FirstName" class="input input-bordered input-sm" />
                         </div>
@@ -55,7 +54,7 @@
                             <label class="label">
                                 <span class="label-text font-semibold text-xs uppercase">Date of Birth</span>
                             </label>
-                            <InputDate  @bind-Value="studentUpdateInformation.DateOfBirth" class="input input-bordered input-sm" />
+                            <InputDate @bind-Value="studentUpdateInformation.DateOfBirth" class="input input-bordered input-sm" />
                         </div>
 
                         <div class="form-control">
@@ -77,7 +76,6 @@
                                 <option value="@CivilStatusChoice.Single">Single</option>
                                 <option value="@CivilStatusChoice.Married">Married</option>
                                 <option value="@CivilStatusChoice.Taken">Taken</option>
-
                             </InputSelect>
                         </div>
 
@@ -89,7 +87,7 @@
                         </div>
                     </div>
 
-
+               
                     <div class="space-y-4">
                         <h4 class="font-bold text-teal-600 text-lg mb-4 pb-2 border-b-2 border-teal-200 flex items-center gap-2">
                             Academic Information
@@ -135,13 +133,11 @@
                             <InputSelect class="select select-bordered select-sm" @bind-Value="studentUpdateInformation!.Program">
                                 <option value="">-- Select Program --</option>
 
-                            
                                 <option disabled class="font-semibold text-slate-600">College of Computer Studies</option>
                                 <option value="@CourseProgram.Computer_Engineering">Bachelor of Science in Computer Engineering</option>
                                 <option value="@CourseProgram.Computer_Science">Bachelor of Science in Computer Science</option>
                                 <option value="@CourseProgram.Information_Technology">Bachelor of Science in Information Technology</option>
 
-                              
                                 <option disabled class="font-semibold text-slate-600">Department of Industrial Technology</option>
                                 <option value="@CourseProgram.BSIT_ArchitecturalDraftingTechnology">BS in Industrial Technology Major in Architectural Drafting Technology</option>
                                 <option value="@CourseProgram.BSIT_AutomotiveTechnology">BS in Industrial Technology Major in Automotive Technology</option>
@@ -166,21 +162,16 @@
                                 <option value="@CourseProgram.BTLEd_HomeEconomics">BTLEd Major in Home Economics</option>
                                 <option value="@CourseProgram.BTLEd_IndustrialArts">BTLEd Major in Industrial Arts</option>
 
-                              
                                 <option disabled class="font-semibold text-slate-600">College of Criminal Justice Education</option>
                                 <option value="@CourseProgram.BS_Criminology">Bachelor of Science in Criminology</option>
 
-                       
                                 <option disabled class="font-semibold text-slate-600">Department of Business and Management</option>
                                 <option value="@CourseProgram.BSHM_HospitalityManagement">Bachelor of Science in Hospitality Management</option>
                                 <option value="@CourseProgram.BSTM_TourismManagement">Bachelor of Science in Tourism Management</option>
                                 <option value="@CourseProgram.BSBA_FinancialManagement">BSBA Major in Financial Management</option>
                                 <option value="@CourseProgram.BSBA_HumanResourceManagement">BSBA Major in Human Resource Management</option>
                             </InputSelect>
-
                         </div>
-
-
 
                         <div class="form-control">
                             <label class="label">
@@ -194,8 +185,35 @@
                                 <option value="@StrandChoice.Tvl" selected>TVL</option>
                             </InputSelect>
                         </div>
-                    </div>
 
+               
+                        <div class="form-control">
+                        
+                            <div class="relative mr-10">
+                                <div class="w-32 h-32 rounded-full border-4 border-gray-200 overflow-hidden bg-gray-100 flex items-center justify-center mx-auto">
+                                    @if (!string.IsNullOrEmpty(Preview))
+                                    {
+                                        <img src="@Preview" alt="Profile Photo" class="object-cover w-full h-full" />
+                                    }
+                                    else
+                                    {
+                                        <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    }
+                                </div>
+                                <label class="absolute bottom-0 right-1/2 translate-x-16 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-cyan-700 transition-colors shadow-lg">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    <InputFile OnChange="HandleFileSelected" type="file" accept="image/*" class="hidden" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="space-y-4">
                         <h4 class="font-bold text-stone-600 text-lg mb-4 pb-2 border-b-2 border-stone-300 flex items-center gap-2">
@@ -230,24 +248,23 @@
                             <InputTextArea class="textarea textarea-bordered textarea-sm h-24" @bind-Value="studentUpdateInformation!.PermanentAddress" placeholder="Enter address"></InputTextArea>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="modal-action mt-6 pt-4 border-t-2 border-gray-200">
-
-                    <button class="btn btn-outline btn-primary gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn bg-cyan-600 gap-2 text-white">
+                    <form method="dialog">
+                        <button class="btn btn-outline btn-primary gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancel
+                        </button>
+                    </form>
+                    <button type="submit" class="btn bg-cyan-600 gap-2 text-white hover:bg-cyan-700">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                         Save Changes
                     </button>
-
                 </div>
             </div>
         </EditForm>
@@ -257,22 +274,59 @@
 @code {
     [Parameter]
     public PersonalInformationDto? P { get; set; }
+
     [Parameter]
     public AcademicInformationDto? A { get; set; }
+
     [Parameter]
     public ContactInformationDto? C { get; set; }
 
     public bool hasloaded = false;
     public ProfileUpdateDto studentUpdateInformation = new();
 
+
+    public string? Preview { get; set; }
+    [Parameter]
+    public FacultyPhotoId? photo { get; set; }
+
+    [Parameter]
+    public EventCallback<string> PreviewChanged { get; set; }
+
+    public byte[]? Photo { get; set; }
+    public string? PhotoContentType { get; set; }
+
     [Parameter]
     public EventCallback UpdateInfo { get; set; }
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        if (file.Size > 10 * 1024 * 1024)
+        {
+           
+            return;
+        }
+
+        using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+
+        Photo = ms.ToArray();
+        PhotoContentType = file.ContentType;
+        Preview = $"data:{photo?.PhotoContentType};base64,{Convert.ToBase64String(photo.Photo!)}";
+
+       
+        await PreviewChanged.InvokeAsync(Preview);
+        StateHasChanged();
+    }
+
     protected override void OnParametersSet()
     {
-
         if (!hasloaded && P is not null && A is not null && C is not null)
         {
             hasloaded = true;
+              
             studentUpdateInformation.StudentId = P.StudentId;
             studentUpdateInformation.FirstName = P.FirstName;
             studentUpdateInformation.MiddleName = P.MiddleName;
@@ -290,28 +344,38 @@
             studentUpdateInformation.Semester = A.Semester;
             studentUpdateInformation.Strand = A.Strand;
             studentUpdateInformation.Program = A.Program;
-    
         }
 
         StateHasChanged();
     }
+
     public async Task HandlingUpdate()
     {
         Console.WriteLine("HandlingUpdate CALLED!");
+
         try
         {
-            await studentRecordCommand.UpdateAllDetailsAsync(studentUpdateInformation);
+          
+            if (Photo != null && PhotoContentType != null)
+            {
+                var info = new StudentMiniInfoDto
+                    {
+                        Photo = Photo,
+                        PhotoContentType = PhotoContentType
+                    };
+                await studentRecordCommand.StudentSchoolIdAsync(info);
+            }
+
+       
+            await studentRecordCommand.UpdateAllDetailsAsync(studentUpdateInformation); 
             await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_4");
+
+           
             await UpdateInfo.InvokeAsync();
-    }
+        }
         catch (Exception ex)
         {
-            Console.WriteLine("Error Caused:" + ex.Message);
+            Console.WriteLine("Error Caused: " + ex.Message);
         }
-            
-        
-      
     }
-
 }
-
