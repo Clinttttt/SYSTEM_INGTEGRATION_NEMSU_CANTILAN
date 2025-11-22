@@ -15,6 +15,7 @@ using System.Reflection.Metadata.Ecma335;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations;
+using Azure.Core;
 
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
@@ -38,7 +39,43 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
          
             if (coursestatus is null) return false;
             coursestatus.CourseTrack = CourseTrack.Course_Already_Paid;
+  
+            var provision = await context.announcements.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId && s.Type == AnnouncementType.provision);
+           if(provision is not null)
+            {
+                context.announcements.Remove(provision);
+            }
+            var course = await context.announcements
+                 .Include(s => s.course)
+                 .FirstOrDefaultAsync(s => s.CourseId == CourseId);
 
+            var Response = new AutoResponsetDto();
+            Response.Message = "Welcome, everyone! It’s great to have you all here. Each new term brings " +
+                "fresh opportunities to learn and connect," +
+                " and I’m excited to see what we’ll accomplish together. Stay open, " +
+                "stay curious, and let’s make this a great start.";
+            Response.Type = AnnouncementType.System;
+            Response.DateCreated = DateTime.UtcNow;
+            Response.CourseCode = course?.course.CourseCode;
+            Response.StudentId = StudentId;
+            var save = new InstructorAnnouncement
+            {
+                AdminId = course?.course.AdminId,
+                Message = Response.Message,
+                DateCreated = Response.DateCreated,
+                Type = AnnouncementType.System,
+                CourseId = course?.course.Id,
+                InformationType = InformationType.System,
+                CourseCode = course?.course.CourseCode,
+                CourseName = course?.course.Title,
+                Title = "Welcome Message",
+                StudentId = StudentId,
+            };
+            var announcemntCheck = await context.announcements.FirstOrDefaultAsync(s => s.CourseId == save.CourseId && s.StudentId == StudentId && s.Type == AnnouncementType.System);
+            if (announcemntCheck is null)
+            {
+                context.announcements.Add(save);
+            }          
             await context.Database.ExecuteSqlInterpolatedAsync(
         $"UPDATE Course SET TotalEnrolled = TotalEnrolled + 1 WHERE Id = {CourseId}");
             context.enrollcourse.Add(enrollment);

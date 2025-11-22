@@ -87,11 +87,18 @@
                         </div>
                     </div>
 
-               
+
                     <div class="space-y-4">
                         <h4 class="font-bold text-teal-600 text-lg mb-4 pb-2 border-b-2 border-teal-200 flex items-center gap-2">
                             Academic Information
                         </h4>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold text-xs uppercase">School ID</span>
+                            </label>
+                            <InputText type="text" @bind-Value="studentUpdateInformation!.StudentSchoolId" class="input input-bordered input-sm" />
+                        </div>
 
                         <div class="form-control">
                             <label class="label">
@@ -186,9 +193,9 @@
                             </InputSelect>
                         </div>
 
-               
+
                         <div class="form-control">
-                        
+
                             <div class="relative mr-10">
                                 <div class="w-32 h-32 rounded-full border-4 border-gray-200 overflow-hidden bg-gray-100 flex items-center justify-center mx-auto">
                                     @if (!string.IsNullOrEmpty(Preview))
@@ -205,9 +212,9 @@
                                 <label class="absolute bottom-0 right-1/2 translate-x-16 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-cyan-700 transition-colors shadow-lg">
                                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
                                     <InputFile OnChange="HandleFileSelected" type="file" accept="image/*" class="hidden" />
                                 </label>
@@ -304,7 +311,7 @@
 
         if (file.Size > 10 * 1024 * 1024)
         {
-           
+
             return;
         }
 
@@ -316,7 +323,7 @@
         PhotoContentType = file.ContentType;
         Preview = $"data:{photo?.PhotoContentType};base64,{Convert.ToBase64String(photo.Photo!)}";
 
-       
+
         await PreviewChanged.InvokeAsync(Preview);
         StateHasChanged();
     }
@@ -326,7 +333,7 @@
         if (!hasloaded && P is not null && A is not null && C is not null)
         {
             hasloaded = true;
-              
+
             studentUpdateInformation.StudentId = P.StudentId;
             studentUpdateInformation.FirstName = P.FirstName;
             studentUpdateInformation.MiddleName = P.MiddleName;
@@ -344,6 +351,7 @@
             studentUpdateInformation.Semester = A.Semester;
             studentUpdateInformation.Strand = A.Strand;
             studentUpdateInformation.Program = A.Program;
+            studentUpdateInformation.StudentSchoolId = A.StudentSchoolId;
         }
 
         StateHasChanged();

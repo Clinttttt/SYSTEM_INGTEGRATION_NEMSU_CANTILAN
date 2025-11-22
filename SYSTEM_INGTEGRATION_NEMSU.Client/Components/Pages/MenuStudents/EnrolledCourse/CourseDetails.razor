@@ -294,12 +294,12 @@
                             <span class="font-medium">Settings</span>
                         </a>
 
-                        <a class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
+                        <label for="my_modal_logout" class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                             <span class="font-medium">Logout</span>
-                        </a>
+                        </label>
                     </div>
                 </nav>
 
@@ -316,9 +316,9 @@
 <InactiveSuccessfully CourseId="enrolledCourseView?.CourseId" />
 <ActivateSuccessfully CourseId="enrolledCourseView?.CourseId" />
 <CourseAction unenrollshow="@Unenroll" inactiveshow="@Inactive" activateshow="@Active" studentstatus="enrolledCourseView != null ? enrolledCourseView.StudentStatus : StudentCourseStatus.Active" />
+<LogoutRespond />
 
 
-@*unenroll drea*@
 <input type="checkbox" id="my_modal_unenrol_course" class="modal-toggle" />
 <div class="modal modal-bottom sm:modal-middle">
     <div class="modal-box rounded-sm">
@@ -361,7 +361,7 @@
 
 
 
-@*inactive drea*@
+
 <input type="checkbox" id="my_modal_inactive_course" class="modal-toggle" />
 <div class="modal modal-bottom sm:modal-middle">
     <div class="modal-box rounded-sm">
@@ -406,7 +406,7 @@
 
 
 
-@*active drea*@
+
 <input type="checkbox" id="my_modal_active_course" class="modal-toggle" />
 <div class="modal modal-bottom sm:modal-middle">
     <div class="modal-box rounded-sm">

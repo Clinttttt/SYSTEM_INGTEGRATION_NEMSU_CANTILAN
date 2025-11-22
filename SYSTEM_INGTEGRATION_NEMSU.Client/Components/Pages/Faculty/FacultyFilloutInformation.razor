@@ -1,5 +1,6 @@
 ﻿@page "/facultyfillout"
-
+@using SYSTEM_INGTEGRATION_NEMSU.Client.Components.Pages.ModalRespond
+@inject IJSRuntime JS
 
 @rendermode InteractiveServer
 @inject IFacultyRecordApi facultyRecordApi
@@ -49,19 +50,32 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
         <div class="flex-1 overflow-y-auto p-8 pb-4 lg:p-12 lg:pb-6 scrollbar-hide bg-gray-50">
             <EditForm Model="@PersonalRecord" OnValidSubmit="@HandleRecord" FormName="Filloutfaculty">
                 <DataAnnotationsValidator />
-             
+
 
                 <div class="max-w-2xl mx-auto -mt-6">
-                    <div class="mb-8 border-b border-gray-300 pb-6">
-                        <h2 class="text-3xl font-semibold text-cyan-600 mb-2">Faculty Registration</h2>
-                        <p class="text-gray-600 text-sm">Please fill out all required information accurately</p>
+                    <div class="mb-8 border-b border-gray-300 pb-6 flex justify-between">
+                     <div>
+                            <h2 class="text-3xl font-semibold text-cyan-600 mb-2">Faculty Registration</h2>
+                            <p class="text-gray-600 text-sm">Please fill out all required information accurately</p>
+                     </div>
+
+                        <div>
+                            <div class="breadcrumbs text-sm">
+                                <ul>
+                 
+                                    
+                                    <li class="text-slate-600 font-semibold">Enrollment Application</li>
+                                    <li><NavLink href="/facultylogin" class="text-cyan-600 hover:text-cyan-700 font-medium">Login</NavLink></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="-mt-3">
                         <h3 class="text-lg font-semibold text-gray-600 mb-5 pb-3 border-b-2 border-gray-300 uppercase tracking-wide">Personal Information</h3>
                         <div class="space-y-5 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
 
-                 
+
                             <div class="flex flex-col md:flex-row gap-6 pb-5 border-b border-gray-200 items-center md:items-start">
                                 <div class="flex flex-col items-center">
                                     <label class="label mb-2">
@@ -83,9 +97,9 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                         <label class="absolute bottom-0 right-0 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-cyan-700 transition-colors shadow-lg">
                                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                                             </svg>
                                             <InputFile OnChange="HandleFileSelected" type="file" accept="image/*" class="hidden" />
                                         </label>
@@ -98,35 +112,35 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                         <label class="label">
                                             <span class="label-text font-medium text-gray-700 text-sm">Employment Status <span class="text-red-500">*</span></span>
                                         </label>
-                                        <InputSelect @bind-Value="PersonalRecord.FacultyPersonalInformationDto!.employmentStatus" class="select select-bordered font-normal text-gray-700 focus:border-gray-400 focus:ring-0 focus:outline-none text-sm">
+                                        <InputSelect @bind-Value="PersonalRecord.FacultyPersonalInformationDto!.EmploymentStatus" class="select select-bordered font-normal text-gray-700 focus:border-gray-400 focus:ring-0 focus:outline-none text-sm">
                                             <option value="">Select Status</option>
                                             <option value="@EmploymentStatus.Active">✓ &nbsp; Active</option>
                                             <option value="@EmploymentStatus.Inactive">✕ &nbsp; Inactive</option>
                                         </InputSelect>
-                                        <ValidationMessage For="@(() => PersonalRecord.FacultyPersonalInformationDto!.employmentStatus)" class="text-red-500 text-xs" />
+                                        <ValidationMessage For="@(() => PersonalRecord.FacultyPersonalInformationDto!.EmploymentStatus)" class="text-red-500 text-xs" />
                                     </div>
                                 </div>
                             </div>
 
-                         
+
                             <div class="grid md:grid-cols-3 gap-4">
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text font-medium text-gray-700 text-sm">First Name <span class="text-red-500">*</span></span>
                                     </label>
                                     <InputText type="text" @bind-Value="PersonalRecord.FacultyPersonalInformationDto!.FirstName"
-                                           placeholder="Juan"
-                                           class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
+                                    placeholder="Juan"
+                                    class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
                                     <ValidationMessage For="@(() => PersonalRecord.FacultyPersonalInformationDto!.FirstName)" class="text-red-500 text-xs" />
                                 </div>
 
                                 <div class="form-control">
                                     <label class="label">
-                                        <span class="label-text font-medium text-gray-700 text-sm">Middle Name</span>
+                                        <span class="label-text font-medium text-gray-700 text-sm">Middle Name <span class="text-red-500">*</span></span>
                                     </label>
                                     <InputText type="text" @bind-Value="PersonalRecord.FacultyPersonalInformationDto.MiddleName"
-                                           placeholder="Santos"
-                                           class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
+                                    placeholder="Santos"
+                                    class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
                                 </div>
 
                                 <div class="form-control">
@@ -134,20 +148,20 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                         <span class="label-text font-medium text-gray-700 text-sm">Last Name <span class="text-red-500">*</span></span>
                                     </label>
                                     <InputText type="text" @bind-Value="PersonalRecord.FacultyPersonalInformationDto.LastName"
-                                           placeholder="Dela Cruz"
-                                           class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
+                                    placeholder="Dela Cruz"
+                                    class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
                                     <ValidationMessage For="@(() => PersonalRecord.FacultyPersonalInformationDto!.LastName)" class="text-red-500 text-xs" />
                                 </div>
                             </div>
 
-                            <!-- Gender + DOB -->
+
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text font-medium text-gray-700 text-sm">Gender <span class="text-red-500">*</span></span>
                                     </label>
                                     <InputSelect @bind-Value="PersonalRecord.FacultyPersonalInformationDto.FacultyGender"
-                                            class="select select-bordered font-normal text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm">
+                                    class="select select-bordered font-normal text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm">
                                         <option value="">Select Gender</option>
                                         <option value="@FacultyGender.Male">Male</option>
                                         <option value="@FacultyGender.Female">Female</option>
@@ -161,20 +175,20 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                         <span class="label-text font-medium text-gray-700 text-sm">Date of Birth <span class="text-red-500">*</span></span>
                                     </label>
                                     <InputDate  @bind-Value="PersonalRecord.FacultyPersonalInformationDto.DateofBirth"
-                                           class="input input-bordered font-normal text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
+                                    class="input input-bordered font-normal text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
                                     <ValidationMessage For="@(() => PersonalRecord.FacultyPersonalInformationDto!.DateofBirth)" class="text-red-500 text-xs" />
                                 </div>
                             </div>
 
-                          
+
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div class="form-control">
                                     <label class="label">
                                         <span class="label-text font-medium text-gray-700 text-sm">Contact Number <span class="text-red-500">*</span></span>
                                     </label>
                                     <InputText type="tel" @bind-Value="PersonalRecord.FacultyPersonalInformationDto.ContactNumber"
-                                           placeholder="+63 912 345 6789"
-                                           class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
+                                    placeholder="+63 912 345 6789"
+                                    class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
                                     <ValidationMessage For="@(() => PersonalRecord.FacultyPersonalInformationDto!.ContactNumber)" class="text-red-500 text-xs" />
                                 </div>
 
@@ -183,27 +197,27 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                         <span class="label-text font-medium text-gray-700 text-sm">Email Address <span class="text-red-500">*</span></span>
                                     </label>
                                     <InputText type="email" @bind-Value="PersonalRecord.FacultyPersonalInformationDto.EmailAddress"
-                                           placeholder="juan.delacruz@nemsu.edu.ph"
-                                           class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
+                                    placeholder="juan.delacruz@nemsu.edu.ph"
+                                    class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
                                     <ValidationMessage For="@(() => PersonalRecord.FacultyPersonalInformationDto!.EmailAddress)" class="text-red-500 text-xs" />
                                 </div>
                             </div>
 
-                         
+
                             <div class="form-control pt-2">
                                 <label class="label">
                                     <span class="label-text font-medium text-gray-700 text-sm">Complete Address <span class="text-red-500">*</span></span>
                                 </label>
                                 <InputTextArea @bind-Value="PersonalRecord.FacultyPersonalInformationDto.Address"
-                                          placeholder="Street, Barangay, City/Municipality, Province"
-                                          class="textarea textarea-bordered h-20 text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm resize-none"
-                                          rows="3"></InputTextArea>
+                                placeholder="Street, Barangay, City/Municipality, Province"
+                                class="textarea textarea-bordered h-20 text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm resize-none"
+                                rows="3"></InputTextArea>
                                 <ValidationMessage For="@(() => PersonalRecord.FacultyPersonalInformationDto!.Address)" class="text-red-500 text-xs" />
                             </div>
                         </div>
                     </div>
 
-                 
+
                     <div class="mt-8">
                         <h3 class="text-lg font-semibold text-gray-600 mb-5 pb-3 border-b-2 border-gray-300 uppercase tracking-wide">
                             Academic Information
@@ -216,8 +230,8 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                     <span class="label-text font-medium text-gray-700 text-sm">Faculty ID <span class="text-red-500">*</span></span>
                                 </label>
                                 <InputText type="text" @bind-Value="PersonalRecord.FacultyAcademicInformationDto!.FacultySchoolId"
-                                       placeholder="e.g., FAC-2024-001"
-                                       class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
+                                placeholder="e.g., 2024-001"
+                                class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
                                 <ValidationMessage For="@(() => PersonalRecord.FacultyAcademicInformationDto!.FacultySchoolId)" class="text-red-500 text-xs" />
                             </div>
 
@@ -227,8 +241,8 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                         <span class="label-text font-medium text-gray-700 text-sm">Department <span class="text-red-500">*</span></span>
                                     </label>
                                     <InputSelect @bind-Value="PersonalRecord.FacultyAcademicInformationDto.FacultyDepartment"
-                                            class="select select-bordered font-normal text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm">
-                                        <option select value="">Select Department</option>
+                                    class="select select-bordered font-normal text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm">
+                                        <option  value="">Select Department</option>
                                         <option value="@FacultyDepartment.DIT">DIT - Department of Information Technology</option>
                                         <option value="@FacultyDepartment.DGTT">DGTT - Department of General Teacher Training</option>
                                         <option value="@FacultyDepartment.DBM">DBM - Department of Business Management</option>
@@ -242,7 +256,7 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                         <span class="label-text font-medium text-gray-700 text-sm">Position <span class="text-red-500">*</span></span>
                                     </label>
                                     <InputSelect @bind-Value="PersonalRecord.FacultyAcademicInformationDto.Position"
-                                            class="select select-bordered font-normal text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm">
+                                    class="select select-bordered font-normal text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm">
                                         <option value="">Select Position</option>
                                         <option value="@Position.Contractual">Contractual</option>
                                         <option value="@Position.Instructor_I">Instructor I</option>
@@ -271,9 +285,9 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                 <label class="label">
                                     <span class="label-text font-medium text-gray-700 text-sm">Years of Teaching <span class="text-red-500">*</span></span>
                                 </label>
-                                <InputText type="text" @bind-Value="PersonalRecord.FacultyAcademicInformationDto.YearsOfTeaching"
-                                       placeholder="e.g., 5 years"
-                                       class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
+                                <InputNumber  @bind-Value="PersonalRecord.FacultyAcademicInformationDto.YearsOfTeaching"
+                                placeholder="e.g., 5 years"
+                                class="input input-bordered text-gray-700 focus:border-cyan-400 focus:ring-0 focus:outline-none text-sm" />
                                 <ValidationMessage For="@(() => PersonalRecord.FacultyAcademicInformationDto!.YearsOfTeaching)" class="text-red-500 text-xs" />
                             </div>
                         </div>
@@ -289,18 +303,35 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
 
 
         </div>
-
+        @if (spinner)
+        {
+            <div class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+                <div class="text-center">
+                    <div class="relative">
+                        <div class="w-20 h-20 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin mx-auto"></div>
+                    </div>
+                    <p class="text-white mt-6 text-lg font-semibold">Logging In...</p>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
+<FilloutFacultyFailed />
+<FilloutFacultySuccess />
 @code {
-    public FacultyRecordDto PersonalRecord { get; set; } = new();
-    private string? Error { get; set; }
 
+    private string? Error { get; set; }
+    private bool spinner = false;
 
     public string? PreviewUrl { get; set; }
     public byte[]? Photo { get; set; }
     public string? PhotoContentType { get; set; }
+    public FacultyRecordDto PersonalRecord { get; set; } = new()
+        {
+            FacultyPersonalInformationDto = new FacultyPersonalInformationDto(),
+            FacultyAcademicInformationDto = new FacultyAcademicInformationDto()
+        };
 
 
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
@@ -322,19 +353,18 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
         StateHasChanged();
     }
 
-
- 
-
-
     public async Task HandleRecord()
     {
+        spinner = true;
         PersonalRecord.facultySaveStatus = FacultySaveStatus.Save;
         var request = await facultyRecordApi.AddFacultyInformationAsync(PersonalRecord);
         if (request is null)
         {
-            Error = "Fill All the Requirements";
+            spinner = false;
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_fillout_failed').checked = true;");
             return;
         }
+        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_fillout_success').checked = true;");
         navigation.NavigateTo("/facultymainmenu");
 
     }

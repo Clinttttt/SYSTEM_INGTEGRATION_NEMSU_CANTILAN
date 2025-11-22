@@ -14,7 +14,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Faculty_Record
         public Guid FacultyId { get; set; }
         public FacultyDepartment? FacultyDepartment { get; set; }
         public Position? Position { get; set; }
-        public string? YearsOfTeaching { get; set; }
+        public int YearsOfTeaching { get; set; }
 
     }
     public enum FacultyDepartment

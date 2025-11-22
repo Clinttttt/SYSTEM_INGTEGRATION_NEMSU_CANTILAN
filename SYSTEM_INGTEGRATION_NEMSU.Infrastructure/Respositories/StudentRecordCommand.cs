@@ -1,10 +1,12 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
@@ -64,7 +66,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             academic.Semester = studentUpdate.Semester;
             academic.Strand = studentUpdate.Strand;
             academic.Program = studentUpdate.Program;
-          
+            academic.StudentSchoolId = studentUpdate.StudentSchoolId;
 
             await context.SaveChangesAsync();
             return studentUpdate;
@@ -274,6 +276,38 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Photo = request.Photo,
                 PhotoContentType = request.PhotoContentType,
             };
+        }
+        public async Task<string?> StudentForgotPassword(string EmailAddress)
+        {
+            var request = await context.contactInformation.FirstOrDefaultAsync();
+            if (request is null)
+                return null;
+         
+            var generatecode = new Byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(generatecode);
+            var base64 = Convert.ToBase64String(generatecode);
+            return base64.Substring(0, 6);
+        }
+        public async Task<bool> StudentNewPassword(string Password, string EmailAdress)
+        {
+            var studentId = await context.contactInformation
+        .FirstOrDefaultAsync(s => s.EmailAddress == EmailAdress);
+
+            if (studentId is null)
+                return false;
+
+            var user = await context.users
+                .FirstOrDefaultAsync(u => u.Id == studentId.StudentId);
+
+            if (user is null)
+                return false;
+
+            var PasswordHasher = new PasswordHasher<User>()
+                .HashPassword(user, Password);
+            user.Password = PasswordHasher;
+            await context.SaveChangesAsync();
+            return true;
         }
 
     }

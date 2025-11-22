@@ -62,18 +62,23 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FacultyId is null) return BadRequest("User Cannot Find");
             var response = await facultyRecord.FacultyPhotoIDAsync(FacultyId.Id);
             return Ok(response);
-        }  
-
+        }
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost("ForgotPassword")]
         public async Task<ActionResult<string>> ForgotPassword([FromBody] ForgotPasswordDto email)
-        {         
-            var request = await facultyRecord.ForgotPassword(email.Email!);
+        {
+            if (string.IsNullOrWhiteSpace(email.Email))
+                return BadRequest("Email is required.");
+            var request = await facultyRecord.ForgotPassword(email.Email);
             return Ok(request);
         }
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPatch("NewPassword")]
         public async Task<ActionResult> NewPassword([FromBody] NewPasswordDto dto)
         {
-            var request = await facultyRecord.NewPassword(dto.Password!, dto.EmailAddress!);
+            if (string.IsNullOrWhiteSpace(dto.EmailAddress) || string.IsNullOrWhiteSpace(dto.Password))
+                return BadRequest("Email or Password is required.");
+            var request = await facultyRecord.NewPassword(dto.Password, dto.EmailAddress);
             if (!request)
                 return BadRequest("Email not found.");
 

@@ -17,6 +17,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Helper;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services;
 
@@ -61,7 +62,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure
             services.AddScoped<IStudentRecordCommand, StudentRecordCommand>();
             services.AddScoped<IFacultyRecordCommand, FacultyRecordCommand>();
             services.AddScoped<IHandlingStudents, HandlingStudents>();
-        
+      
           
          
             return services;

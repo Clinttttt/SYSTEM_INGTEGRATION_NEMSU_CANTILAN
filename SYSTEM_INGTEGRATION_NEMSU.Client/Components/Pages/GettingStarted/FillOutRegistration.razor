@@ -12,13 +12,13 @@
 
             <div class="breadcrumbs text-sm">
                 <ul>
-                    <li><a class="text-cyan-600 hover:text-blue-700 font-medium">Home</a></li>
-                    <li><a class="text-cyan-600 hover:text-blue-700 font-medium">Registration</a></li>
+                    <li><NavLink href="/" class="text-cyan-600 hover:text-blue-700 font-medium">Home</NavLink></li>
+                    <li><NavLink href="/loginuser" class="text-cyan-600 hover:text-blue-700 font-medium">Login</NavLink></li>
                     <li class="text-slate-600 font-semibold">Enrollment Application</li>
                 </ul>
             </div>
 
-            <!--@onclick="()=> pageState.SetView(PageState.Timeline.LoginReady)"--> <!--for="my_modal_7"-->
+          
             <label @onclick="()=> CompleteRegistration()" class="text-xs btn bg-gradient-to-r from-cyan-600 to-teal-700 hover:from-cyan-700 hover:to-teal-800 text-white border-0 shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />

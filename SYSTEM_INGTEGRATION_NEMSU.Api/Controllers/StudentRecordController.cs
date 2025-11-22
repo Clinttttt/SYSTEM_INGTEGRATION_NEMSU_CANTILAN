@@ -13,6 +13,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
@@ -185,7 +186,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecordCommand.StudentSaveInformationAsync(StudentId);
             return Ok(request);
         }
-      
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize]
         [HttpGet("Display MiniDetailsMenu")]
         public async Task<ActionResult<MiniDisplayMenuDto>> MiniDisplayMenuAsync()
@@ -194,6 +195,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (FindUser is null) { return BadRequest("Login First"); }
             var StudentId = Guid.Parse(FindUser.Value);
             var request = await studentRecordCommand.MiniDisplayMenuAsync(StudentId);
+            if (request is null) { return BadRequest("error"); }
             return Ok(request);
         }
       
@@ -217,6 +219,25 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecordCommand.StudentPhotoIDAsync(StudentId);
             if (request is null) { return BadRequest("Something went wrong"); }
             return Ok(request);
+        }
+        [HttpPost("Student ForgotPassword")]
+        public async Task<ActionResult<string>> ForgotPassword([FromBody] ForgotPasswordDto email)
+        {
+            if (string.IsNullOrWhiteSpace(email.Email))
+                return BadRequest("Email is required.");
+            var request = await studentRecordCommand.StudentForgotPassword(email.Email);
+            return Ok(request);
+        }
+        [HttpPatch("Student NewPassword")]
+        public async Task<ActionResult> NewPassword([FromBody] NewPasswordDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.EmailAddress) || string.IsNullOrWhiteSpace(dto.Password))
+                return BadRequest("Email or Password is required.");
+            var request = await studentRecordCommand.StudentNewPassword(dto.Password, dto.EmailAddress);
+            if (!request)
+                return BadRequest("Email not found.");
+
+            return Ok(new { message = "Password updated successfully." });
         }
     }
 }

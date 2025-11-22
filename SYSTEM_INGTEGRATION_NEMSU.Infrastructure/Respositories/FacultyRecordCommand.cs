@@ -78,6 +78,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             personal.ContactNumber = details.FacultyPersonalInformationDto.ContactNumber;
             personal.EmailAddress = details.FacultyPersonalInformationDto.EmailAddress;
             personal.Address = details.FacultyPersonalInformationDto.Address;
+            personal.Photo = details.FacultyPersonalInformationDto.Photo;
+            personal.PhotoContentType = details.FacultyPersonalInformationDto.PhotoContentType;
 
             academic.FacultySchoolId = details.FacultyAcademicInformationDto.FacultySchoolId;
             academic.FacultyDepartment = details.FacultyAcademicInformationDto.FacultyDepartment;
@@ -128,10 +130,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var request = await context.facultyPersonalInformation.FirstOrDefaultAsync();
             if (request is null)
                 return null;
-            if (request.EmailAddress != EmailAddress)
-            {
-                return null;
-            }
+          
             var generatecode = new Byte[32];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(generatecode);

@@ -8,6 +8,8 @@
 @inject NavigationManager navigation
 @rendermode InteractiveServer
 @inject IStudentRecordApiCommand studentRecordApi
+@inject IJSRuntime JS
+
 <div class="relative flex justify-start h-screen content">
     <div class="absolute inset-0 bg-gradient-to-br from-amber-700/30 to-amber-100/30 rounded-full blur-3xl"></div>
 
@@ -67,7 +69,7 @@
 
 
                 <div class="flex justify-between text-sm mt-2">
-                    <a href="#" class="text-amber-600 hover:underline">Forgot password?</a>
+                    <label for="my_modal_forgotpassword" class="text-amber-600 hover:underline">Forgot password?</label>
                     <a href="/register" class="text-amber-600 hover:underline">Sign up</a>
                 </div>
             </div>
@@ -151,18 +153,71 @@
 </div>
 
 
+<ForgotPassword sendcode="HandlePassword" />
+<ForgotPasswordNewPassword Code="HandleCode" newpassword="NewPassword" />
+<ForgotPasswordCode Code="@forgotPassword" />
+<ForgotPasswordCodeFailed />
+<ForgotPasswordFailed />
+<ForgotPasswordSuccess />
+
+
+
 @code {
     public LoginDto login { get; set; } = new();
     public string? Error { get; set; }
     private bool Hasrender = false;
     private IEnumerable<Claim> claims = [];
-    public bool spinner = false;
-
+    public bool spinner = false; public bool newpassword { get; set; }
+    public string? AssignedCode { get; set; }
+    public string? forgotPassword { get; set; }
+    public string? EmailAddress { get; set; }
     protected override async Task OnInitializedAsync()
     {
         var state = await authStateProvider.GetAuthenticationStateAsync();
         claims = state.User.Claims;
 
+    }
+
+    public void HandleCode(string Code)
+    {
+        AssignedCode = Code;
+    }
+    public async Task NewPassword(string newPassword)
+    {
+        if (AssignedCode != forgotPassword)
+        {
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_code_failed').checked = true;");
+            return;
+        }
+
+        var dto = new NewPasswordDto
+            {
+                Password = newPassword!,
+                EmailAddress = EmailAddress!
+            };
+        newpassword = await studentRecordApi.StudentNewPassword(dto);
+        if (newpassword is false)
+        {
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_code_failed').checked = true;");
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_forgotpassword_success').checked = true;");
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_new_password').checked = false;");
+        }
+    }
+
+    public async Task HandlePassword(string email)
+    {
+        EmailAddress = email;
+        forgotPassword = await studentRecordApi.StudentForgotPassword(email);
+        if (forgotPassword is null)
+        {
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_wrong_email').checked = true;");
+        }
+        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_send_code').checked = true;");
+        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_new_password').checked = true;");
+        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_forgotpassword').checked = false;");
     }
     private async Task HandleLogin()
     {

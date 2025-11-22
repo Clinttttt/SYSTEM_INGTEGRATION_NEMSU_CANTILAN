@@ -10,6 +10,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos
   public  class StudentMiniInfoDto
     {
         public Guid StudentId { get; set; }
+
         [Required(ErrorMessage = "Photo Required")]
         public byte[]? Photo { get; set; }
         public string? PhotoContentType { get; set; }

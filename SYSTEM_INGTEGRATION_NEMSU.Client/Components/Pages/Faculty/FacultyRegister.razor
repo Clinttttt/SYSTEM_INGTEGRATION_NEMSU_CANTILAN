@@ -42,7 +42,7 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
 
         <div class="w-full lg:w-1/2 p-8 lg:p-10 flex items-center">
             <div class="max-w-md mx-auto w-full">
-                <h3 class="text-3xl font-bold text-stone-700 mb-2">Create Account</h3>
+                <h3 class="text-3xl font-bold text-gray-700 mb-2">Create Account</h3>
                 <p class="text-gray-600 mb-8">Register as faculty or staff member</p>
 
                 <EditForm Model="@Register" OnValidSubmit="@HandleRegister" FormName="RegisterFaculty">
@@ -57,7 +57,8 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                     </svg>
                                 </div>
                                 <input @bind="Register.UserName"
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                       class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg
+                                       focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                 placeholder="johndoe" />
                             </div>
                         </div>
@@ -73,7 +74,8 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                 </div>
                                 <input type="@(showPassword ? "text" : "password")"
                                 @bind="Register.Password"
-                                       class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                       class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg
+                                       focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                 placeholder="••••••••" />
                                 <button type="button" @onclick="() => showPassword = !showPassword"
                                 class="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -116,7 +118,7 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
             <div class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
                 <div class="text-center">
                     <div class="relative">
-                        <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                        <div class="w-20 h-20 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin mx-auto"></div>
                     </div>
                     <p class="text-white mt-6 text-lg font-semibold">Logging In...</p>
                 </div>
@@ -156,4 +158,3 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
 }
 
 
-} 

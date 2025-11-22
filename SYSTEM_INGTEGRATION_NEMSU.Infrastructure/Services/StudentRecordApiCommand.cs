@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -130,7 +131,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         public async Task<MiniDisplayMenuDto?> MiniDisplayMenuAsync()
         {
             await _authApi.SetAuthHeaderAsync(_http);
-            return await _http.GetFromJsonAsync<MiniDisplayMenuDto>("api/StudentRecord/Display%20MiniDetailsMenu");
+            var response =  await _http.GetAsync("api/StudentRecord/Display%20MiniDetailsMenu");
+            if (response.StatusCode == HttpStatusCode.NoContent)
+                return null;
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<MiniDisplayMenuDto>();
         }
         public async Task<bool> CheckInformationAsync()
         {
@@ -142,5 +149,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await _authApi.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<FacultyPhotoId>("api/StudentRecord/Student%20PhotoID");
         }
-    }
+        public async Task<string?> StudentForgotPassword(string EmailAddress)
+        {
+             var request = await _http.PostAsJsonAsync("api/StudentRecord/Student%20ForgotPassword", new { email = EmailAddress });
+            if (!request.IsSuccessStatusCode)
+                return null;
+            return await request.Content.ReadAsStringAsync();
+        }
+        public async Task<bool> StudentNewPassword(NewPasswordDto dto)
+        {
+            var request = await _http.PatchAsJsonAsync("api/StudentRecord/Student%20NewPassword", dto);
+            if (!request.IsSuccessStatusCode)
+                return false;
+            return request.IsSuccessStatusCode;
+        }
+        }
 }

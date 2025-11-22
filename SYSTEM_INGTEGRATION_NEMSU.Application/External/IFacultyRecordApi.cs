@@ -14,6 +14,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<FacultyRecordDto?> DisplayFacultyDetailsAsync();
         Task<FacultyPhotoId?> FacultyPhotoIDAsync();
         Task<string?> ForgotPassword(string EmailAddress);
-        Task<bool> NewPassword(string Password, string EmailAdress);
+        Task<bool> NewPassword(NewPasswordDto dto);
     }
 }

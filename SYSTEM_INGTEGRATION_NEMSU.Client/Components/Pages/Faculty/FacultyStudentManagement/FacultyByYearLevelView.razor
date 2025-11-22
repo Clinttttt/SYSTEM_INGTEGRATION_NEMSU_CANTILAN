@@ -45,7 +45,7 @@
                         </div>
                     </div>
 
-                    <!-- Table -->
+             
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead class="bg-gray-50 border-b border-gray-200">
@@ -89,9 +89,9 @@
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                <button class="text-teal-600 hover:text-teal-900 font-medium text-sm">
+                                                <NavLink href="@($"/facultyviewtudents/{student.StudentId}")" class="text-teal-600 hover:text-teal-900 font-medium text-sm">
                                                     View Details
-                                                </button>
+                                                </NavLink>
                                             </td>
                                         </tr>
                                     }
@@ -148,6 +148,10 @@
                 </div>
             </div>
         </div>
+
+        <LogoutRespond />
+
+
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <div class="min-h-full w-64 bg-white shadow-xl flex flex-col border-r border-r-gray-200">
@@ -218,12 +222,12 @@
                             <span class="font-medium">Settings</span>
                         </a>
 
-                        <a class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
+                      <label for="my_modal_logout" class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                             <span class="font-medium">Logout</span>
-                        </a>
+                        </label>
                     </div>
                 </nav>
 

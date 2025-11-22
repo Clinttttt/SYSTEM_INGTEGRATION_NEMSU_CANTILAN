@@ -4,6 +4,9 @@
 @page "/enrollment"
 @using SYSTEM_INGTEGRATION_NEMSU.Client.Components.Pages.ModalRespond
 @inject IStudentRecordApiCommand studentRecordApi
+@inject IAuthApiServices authApi
+@inject ProtectedLocalStorage localStorage
+@inject NavigationManager navigation
 
 <div class="relative overflow-hidden  h-screen content ">
     <div class="drawer lg:drawer-open h-screen">
@@ -277,6 +280,7 @@
 
         <EnrollDirectSuccessfully callback="UpdatedRender" />
         <PayProvisionRespond PreviewCourse="SelectedProvision" />
+        <LogoutRespond  />
 
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -289,17 +293,17 @@
 
                     <div class="flex flex-col items-center">
                         @if (!string.IsNullOrEmpty(preview))
-                    {
-                             
+                        {
+
                             <div class="w-20 h-20"><img src="@preview" alt="Student Photo" class=" w-full h-full object-cover rounded-full " /></div>
-                    }
-                    else{
+                        }
+                        else{
                             <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
                                 <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
                             </div>
-                    }
-                        
-                        
+                        }
+
+
                         <h3 class="text-white font-bold text-sm">Student Dashboard</h3>
                     </div>
                 </div>
@@ -352,12 +356,12 @@
                             <span class="font-medium">Settings</span>
                         </a>
 
-                        <a class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
+                        <label for="my_modal_logout" class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                             <span class="font-medium">Logout</span>
-                        </a>
+                        </label>
                     </div>
                 </nav>
 
@@ -416,7 +420,7 @@
                     SelectedProvision.Id = c.Id;
                 }
             }
-           
+
 
             StateHasChanged();
 
@@ -475,6 +479,10 @@
     {
         SelectedCourse = CourseId;
     }
+
+
+  
+
 
 
 

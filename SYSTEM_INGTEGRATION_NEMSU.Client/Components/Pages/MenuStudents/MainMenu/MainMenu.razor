@@ -3,6 +3,7 @@
 @rendermode InteractiveServer
 @inject IJSRuntime JS
 @inject IStudentRecordApiCommand studentRecordApi
+@inject NavigationManager Navigation
 
 <div class="h-screen content   overflow-hidden" style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
 
@@ -181,8 +182,8 @@
                     </p>
 
 
-                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-                        @NewAnnouncementsCount New
+                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-cyan-100 text-cyan-700">
+                      view announcements!
                     </span>
                 </NavLink>
 
@@ -209,7 +210,7 @@
 
 
                     <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                        @EnrolledCoursesCount Courses
+                        view courses
                     </span>
                 </NavLink>
 
@@ -233,17 +234,28 @@
     { 
         if (!hasrender && firstrender)
         { 
-            hasrender = true;
-            photo = await studentRecordApi.StudentPhotoIDAsync();
-            miniDisplayMenu = await studentRecordApi.MiniDisplayMenuAsync(); 
-            if (string.IsNullOrEmpty(miniDisplayMenu?.StudentId)) 
+            hasrender = true;                
+            miniDisplayMenu = await studentRecordApi.MiniDisplayMenuAsync();
+
+            if (miniDisplayMenu is null || string.IsNullOrEmpty(miniDisplayMenu.FirstName))
             {
-                await ActivateStudentId(); 
-            }        
+                Navigation.NavigateTo("/FillOutRegistration", forceLoad: true);
+                return;
+            }
+
+          
+            if (string.IsNullOrEmpty(miniDisplayMenu.StudentId))
+            {
+            
+                await Task.Delay(50);
+                await ActivateStudentId();
+            }
+            photo = await studentRecordApi.StudentPhotoIDAsync();
             if(photo?.Photo is not null) 
             {
                 preview = $"data:{photo?.PhotoContentType};base64,{Convert.ToBase64String(photo!.Photo)}";
-            } 
+            }
+         
         } 
         StateHasChanged();
 
@@ -265,14 +277,11 @@
     }
 
   
-    private string StudentName { get; set; } = "Clint Villanueva";
-    private string StudentId { get; set; } = "2024-12345";
-    private string FirstName { get; set; } = "Clint";
-    private string StudentInitials { get; set; } = "CV";
+
     
   
     private bool HasNewAnnouncements { get; set; } = true;
-    private int NewAnnouncementsCount { get; set; } = 3;
+
     private int EnrolledCoursesCount { get; set; } = 5;
 
    

@@ -41,6 +41,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
         Task<bool> CheckInformationAsync(Guid StudentId);
         Task<EnrollmentFormDto?> UpdateEnrollmentFormAsync(EnrollmentFormDto studentUpdate);
         Task<FacultyPhotoId?> StudentPhotoIDAsync(Guid StudentId);
-
+        Task<string?> StudentForgotPassword(string EmailAddress);
+        Task<bool> StudentNewPassword(string Password, string EmailAdress);
     }
 }

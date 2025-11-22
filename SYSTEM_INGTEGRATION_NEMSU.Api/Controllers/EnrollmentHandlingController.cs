@@ -274,8 +274,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var UserId = Guid.Parse(FindUser.Value);
             var request = await enrollmentservices.CourseTrackerAsync(UserId, CourseId);
             return Ok(request);
-        } 
-
+        }
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize]
         [HttpPost("Direct EnrollAsync")]
         public async Task<IActionResult> DirectEnrollAsync(Guid CourseId)

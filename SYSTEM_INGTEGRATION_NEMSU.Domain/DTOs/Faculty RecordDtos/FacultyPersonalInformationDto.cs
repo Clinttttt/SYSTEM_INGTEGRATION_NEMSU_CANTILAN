@@ -33,7 +33,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos
         public byte[]? Photo { get; set; }
         public string? PhotoContentType { get; set; }
         [EnumDataType(typeof(EmploymentStatus), ErrorMessage = "Please select a valid Employment Status")]
-        public EmploymentStatus? employmentStatus { get; set; }
+        public EmploymentStatus? EmploymentStatus { get; set; }
 
     }
 }

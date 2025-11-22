@@ -14,12 +14,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos
         public Guid FacultyId { get; set; }
         [Required(ErrorMessage = "Department Required")]
         [EnumDataType(typeof(FacultyDepartment), ErrorMessage = "Please select a valid Position")]
-        public FacultyDepartment FacultyDepartment { get; set; }
+        public FacultyDepartment? FacultyDepartment { get; set; }
         [Required(ErrorMessage = "Position Required")]
         [EnumDataType(typeof(Position), ErrorMessage = "Please select a valid Position")]
-        public Position Position { get; set; }
+        public Position? Position { get; set; }
         [Required(ErrorMessage = "Years or Teaching Required")]
-        public string? YearsOfTeaching { get; set; }
+        public int YearsOfTeaching { get; set; }
       
     }
 }

@@ -1,0 +1,251 @@
+﻿@inject IFacultyRecordApi facultyRecord
+@inject IJSRuntime JS
+
+
+<dialog id="my_modal_faculty_edit_profile" class="modal">
+    <div class="modal-box w-11/12 max-w-5xl">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-gray-700">Edit Profile</h3>
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost">✕</button>
+            </form>
+        </div>
+
+        @if (info?.FacultyPersonalInformationDto is not null && info?.FacultyAcademicInformationDto is not null)
+        {
+            <div class="space-y-6">
+
+                <div>
+                    <h4 class="text-lg font-semibold text-orange-600 mb-4 border-b-2 border-orange-500 pb-2">Personal Information</h4>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <div class="md:col-span-2 flex items-center gap-4">
+                            <div class="relative">
+                                @if (!string.IsNullOrEmpty(Preview))
+                                {
+                                    <img src="@Preview" alt="Profile" class="w-24 h-24 rounded-full object-cover border-4 border-orange-500">
+                                }
+                                else
+                                {
+                                    <img src="https://via.placeholder.com/100" alt="Profile" class="w-24 h-24 rounded-full object-cover border-4 border-orange-500">
+                                }
+                                <label for="fileInput" class="absolute bottom-0 right-0 bg-orange-600 hover:bg-orange-700 text-white p-2 rounded-full cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </label>
+                                <InputFile id="fileInput" OnChange="HandleFileSelected" accept="image/*" class="hidden" />
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Upload your profile photo</p>
+                                <p class="text-xs text-gray-500">JPG, PNG (Max 5MB)</p>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                            <input type="text" @bind="info.FacultyPersonalInformationDto!.FirstName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Middle Name</label>
+                            <input type="text" @bind="info.FacultyPersonalInformationDto.MiddleName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                            <input type="text" @bind="info.FacultyPersonalInformationDto.LastName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Gender *</label>
+                            <select @bind="info.FacultyPersonalInformationDto.FacultyGender" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                <option value="">Select Gender</option>
+                                <option value="@FacultyGender.Male">Male</option>
+                                <option value="@FacultyGender.Female">Female</option>
+                                <option value="@FacultyGender.Prefer_not_to_say">Prefer not to say</option>
+                            </select>
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth *</label>
+                            <input type="date" @bind="info.FacultyPersonalInformationDto.DateofBirth" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Employment Status *</label>
+                            <select @bind="info.FacultyPersonalInformationDto.EmploymentStatus" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                <option value="">Select Status</option>
+                                <option value="@EmploymentStatus.Active">Active</option>
+                                <option value="@EmploymentStatus.Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div>
+                    <h4 class="text-lg font-semibold text-orange-600 mb-4 border-b-2 border-orange-500 pb-2">Contact Information</h4>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mobile Number *</label>
+                            <input type="text" @bind="info.FacultyPersonalInformationDto.ContactNumber" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" @bind="info.FacultyPersonalInformationDto.EmailAddress" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Permanent Address *</label>
+                            <textarea rows="2" @bind="info.FacultyPersonalInformationDto.Address" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div>
+                    <h4 class="text-lg font-semibold text-orange-600 mb-4 border-b-2 border-orange-500 pb-2">Academic Information</h4>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Faculty School ID *</label>
+                            <input type="text" @bind="info.FacultyAcademicInformationDto!.FacultySchoolId" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Department *</label>
+                            <select @bind="info.FacultyAcademicInformationDto.FacultyDepartment" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                <option value="">Select Department</option>
+                                <option value="@FacultyDepartment.CCJE">College of Criminal Justice Education</option>
+                                <option value="@FacultyDepartment.DIT">Department of Industrial Technology</option>
+                                <option value="@FacultyDepartment.DGTT">Department of Digital Teacher Training</option>
+                                <option value="@FacultyDepartment.DBM">Department of Business and Management</option>
+                                <option value="@FacultyDepartment.DCS">Department of Computer Studies</option>
+                            </select>
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Position *</label>
+                            <select @bind="info.FacultyAcademicInformationDto.Position" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                <option value="">Select Position</option>
+                                <option value="@Position.Contractual">Contractual</option>
+                                <option value="@Position.Instructor_I">Instructor I</option>
+                                <option value="@Position.Instructor_II">Instructor II</option>
+                                <option value="@Position.Instructor_III">Instructor III</option>
+                                <option value="@Position.Assistant_Professor_I">Assistant Professor I</option>
+                                <option value="@Position.Assistant_Professor_II">Assistant Professor II</option>
+                                <option value="@Position.Assistant_Professor_III">Assistant Professor III</option>
+                                <option value="@Position.Assistant_Professor_IV">Assistant Professor IV</option>
+                                <option value="@Position.Associate_Professor_I">Associate Professor I</option>
+                                <option value="@Position.Associate_Professor_II">Associate Professor II</option>
+                                <option value="@Position.Associate_Professor_III">Associate Professor III</option>
+                                <option value="@Position.Associate_Professor_IV">Associate Professor IV</option>
+                                <option value="@Position.Associate_Professor_V">Associate Professor V</option>
+                                <option value="@Position.Professor_I">Professor I</option>
+                                <option value="@Position.Professor_II">Professor II</option>
+                                <option value="@Position.Professor_III">Professor III</option>
+                                <option value="@Position.Professor_IV">Professor IV</option>
+                                <option value="@Position.Professor_V">Professor V</option>
+                            </select>
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Years of Teaching *</label>
+                            <input type="number" @bind="info.FacultyAcademicInformationDto.YearsOfTeaching" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="flex justify-end gap-3 mt-8 pt-6 border-t">
+                <form method="dialog">
+                    <button class="btn btn-ghost">Cancel</button>
+                </form>
+                <button @onclick="()=> UpdateInfo()" class="btn bg-orange-600 hover:bg-orange-700 text-white border-none px-8">Save Changes</button>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-8">
+                <p class="text-gray-500">Loading profile data...</p>
+            </div>
+        }
+    </div>
+</dialog>
+
+@code {
+
+    [Parameter]
+    public FacultyRecordDto? info { get; set; }
+
+    public string? Preview { get; set; }
+
+    [Parameter]
+    public EventCallback<string> PreviewChanged { get; set; }
+
+    public byte[]? Photo { get; set; }
+    public string? PhotoContentType { get; set; }
+
+    [Parameter]
+    public EventCallback Updateinfo { get; set; }
+
+    protected override void OnParametersSet()
+    {
+
+        if (info?.FacultyPersonalInformationDto?.Photo is not null)
+        {
+            Preview = $"data:{info.FacultyPersonalInformationDto.PhotoContentType};base64,{Convert.ToBase64String(info.FacultyPersonalInformationDto.Photo)}";
+        }
+    }
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        if (file.Size > 5 * 1024 * 1024)
+        {
+
+            return;
+        }
+
+        using var stream = file.OpenReadStream(maxAllowedSize: 5 * 1024 * 1024);
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+
+        Photo = ms.ToArray();
+        PhotoContentType = file.ContentType;
+        Preview = $"data:{PhotoContentType};base64,{Convert.ToBase64String(Photo)}";
+
+        info!.FacultyPersonalInformationDto!.Photo = Photo;
+        info.FacultyPersonalInformationDto!.PhotoContentType = PhotoContentType;
+
+        await PreviewChanged.InvokeAsync(Preview);
+        StateHasChanged();
+    }
+    public async Task UpdateInfo()
+    {
+
+        await facultyRecord.UpdateFacultyInformationAsync(info!);
+        await Updateinfo.InvokeAsync();
+        await JS.InvokeVoidAsync("dialogHelper.closeDialog", "my_modal_faculty_edit_profile");
+    }
+}

@@ -1,0 +1,28 @@
+﻿<input type="checkbox" id="my_modal_fillout_failed" class="modal-toggle" />
+<div class="modal" role="dialog">
+    <div class="modal-box max-w-md rounded-md">
+        <div class="flex flex-col items-center text-center">
+           
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-700 mb-2">Incomplete Registration</h3>
+            <p class="text-gray-600 mb-6">Please complete all required fields before submitting your registration.</p>
+
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 w-full">
+                <p class="text-sm text-red-800">
+                    <span class="font-semibold">Note:</span> All fields marked with an asterisk (*) are required to complete your registration.
+                </p>
+            </div>
+        </div>
+
+        <div class="modal-action justify-center">
+            <label for="my_modal_fillout_failed" class="btn bg-teal-600 hover:bg-teal-700 text-white border-none px-8">
+                OK, I'll Complete It
+            </label>
+        </div>
+    </div>
+</div>

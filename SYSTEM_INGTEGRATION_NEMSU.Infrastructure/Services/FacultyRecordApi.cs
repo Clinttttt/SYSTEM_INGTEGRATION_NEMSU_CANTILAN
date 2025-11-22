@@ -62,13 +62,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             return await request.Content.ReadAsStringAsync();
 
         }
-        public async Task<bool> NewPassword(string Password, string EmailAdress)
+        public async Task<bool> NewPassword(NewPasswordDto dto)
         {
-            var payload = new { Password, EmailAdress };
-            var request = await _http.PatchAsJsonAsync("api/FacultyRecord/NewPassword", payload);
+            var request = await _http.PatchAsJsonAsync("api/FacultyRecord/NewPassword", dto);
             if (!request.IsSuccessStatusCode)
                 return false;
-            return await request.Content.ReadFromJsonAsync<bool>();
+            return request.IsSuccessStatusCode; 
         }
 
     }

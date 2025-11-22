@@ -175,6 +175,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             filter.TotalActive = distinctStudent.Where(s => s.StudentCourseStatus == StudentCourseStatus.Active).Count();
             filter.TotalInactive = distinctStudent.Where(s => s.StudentCourseStatus == StudentCourseStatus.Inactive).Count();
             filter.TotalDepartment = 5;
+            filter.TotalCourse = course.Count;
             return filter;
         }
 
@@ -266,7 +267,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     && s.Course.AdminId == AdminId
                     && s.Student.StudentAcademicDetails.YearLevel == yearLevel);
 
-            // Apply search filter if searchQuery is provided
+         
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
                 var search = searchQuery.ToLower();
@@ -279,13 +280,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 );
             }
 
-            // Get total count BEFORE pagination
+            
             var totalCount = await query.CountAsync();
 
-            // Apply pagination and select
+
             var students = await query
-                .Skip((pageNumber - 1) * pageSize)  // Skip previous pages
-                .Take(pageSize)                      // Take only 10 for current page
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .Select(s => new HandlingStudentsDto
                 {
                     StudentName = s.Student.StudentsDetails!.FirstName + " " +
@@ -298,10 +299,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     studentCourseStatus = s.StudentCourseStatus,
                     Coursedepartment = s.Course.Department.GetDisplayName(),
                     ProfileColor = s.ProfileColor,
+                    StudentId = s.StudentId,
                 })
                 .ToListAsync();
-
-            // Return both students list and total count
+      
             return (students, totalCount);
         }
 

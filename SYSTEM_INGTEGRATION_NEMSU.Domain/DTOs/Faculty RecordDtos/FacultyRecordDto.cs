@@ -10,9 +10,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos
     public class FacultyRecordDto
     {
         public Guid FacultyId { get; set; }
-        public FacultyAcademicInformationDto? FacultyAcademicInformationDto { get; set; } = new();
-        public FacultyPersonalInformationDto? FacultyPersonalInformationDto { get; set; } = new();
+        public FacultyAcademicInformationDto? FacultyAcademicInformationDto { get; set; } 
+        public FacultyPersonalInformationDto? FacultyPersonalInformationDto { get; set; } 
         public FacultySaveStatus facultySaveStatus { get; set; }
+
 
     }
 }

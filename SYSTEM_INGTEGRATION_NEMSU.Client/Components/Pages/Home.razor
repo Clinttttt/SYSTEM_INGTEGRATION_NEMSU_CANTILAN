@@ -1,11 +1,18 @@
 ﻿@page "/"
+@using System.Security.Claims
+@inject ProtectedLocalStorage localStorage
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+@inject AuthStateProvider authStateProvider
+@inject IFacultyRecordApi faculty
+
 
 <div class="relative flex justify-center h-screen">
 
 
-    <!--container-->
+
     <div class="w-[85%] border h-45 top-5 absolute flex justify-center items-center rounded-sm overflow-hidden m-0"
-         style="border:solid 1px rgba(0,0,0,0.2);
+    style="border:solid 1px rgba(0,0,0,0.2);
             box-shadow: -10px 0 20px rgba(0,0,0,0.08), 10px 0 20px rgba(0,0,0,0.08), 0 8px 15px rgba(0,0,0,0.1);
             background-image: linear-gradient(rgba(135, 206, 235, 0.4), rgba(30, 144, 255, 0.4)), url('/img/dcs_building.png');
             background-size: cover;
@@ -57,16 +64,11 @@
 
 
     <div class="max-w-6xl mx-auto px-6 mt-55">
-        <!--  <div class="text-center ">
-              <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-4">
-                  Getting Started
-              </h2>
-              <p class="text-gray-600 text-lg">Choose your path to access student services</p>
-          </div>-->
+      
 
 
         <div class="grid md:grid-cols-3 gap-8 mt-1">
-            <!-- New Student -->
+          
             <div style="background-color:rgb(210, 239, 255); background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(246, 239, 230, 0.9)), url('/img/new_student.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;" class="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-cyan-400 hover:border-cyan-500 hover:scale-101">
 
                 <div class="w-16 h-16 bg-gradient-to-t from-sky-400 to-cyan-500 rounded-full flex items-center justify-center mb-6 mx-auto">
@@ -81,7 +83,7 @@
                 </NavLink>
             </div>
 
-            <!-- Current Student -->
+          
             <div style="background-color:rgb(246, 239, 230); background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(246, 239, 230, 0.9)), url('/img/students_nemsu.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;" class="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-amber-400 hover:border-amber-500 hover:scale-101">
                 <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,12 +92,12 @@
                 </div>
                 <h3 class="text-xl font-semibold text-amber-600 mb-4 text-center">Current Student</h3>
                 <p class="text-gray-700 mb-6 text-center font-medium">Log in to complete enrollment, update information, and access your student records</p>
-                <NavLink href="/loginuser" class=" btn w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-6 rounded-lg font-semibold hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <button @onclick="()=> ViewTokenStudent()" class=" btn w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-6 rounded-lg font-semibold hover:from-amber-600 hover:to-amber-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                     Login
-                </NavLink>
+                </button>
             </div>
 
-            <!-- Faculty/Staff -->
+        
             <div style="background-color:rgb(219, 235, 232); background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(246, 239, 230, 0.9)), url('/img/faculty_nemsu.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;" class="bg-white rounded-lg p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-teal-400 hover:border-cyan-500 hover:scale-101">
 
                 <div class="w-16 h-16  bg-gradient-to-r from-cyan-500 to-teal-600 rounded-full flex items-center justify-center mb-6 mx-auto">
@@ -106,128 +108,111 @@
                 <h3 class="text-xl font-semibold text-teal-600 mb-4 text-center">Faculty/Staff</h3>
                 <p class="text-gray-700 mb-6 text-center ">Assist in managing enrollment, verifying student data, and overseeing academic records</p>
 
-                <NavLink href="/facultyregister" class=" btn w-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white py-6 rounded-lg font-semibold hover:from-teal-600 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                      Access Portal
-                </NavLink>
+                <button @onclick="()=> ViewTokenFaculty()" class=" btn w-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white py-6 rounded-lg font-semibold hover:from-teal-600 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Access Portal
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*@page "/"
-@using SYSTEM_INGTEGRATION_NEMSU.Application.External
-@using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
-@using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.DTOs
-
-@rendermode InteractiveServer
-@inject NavigationManager navigationManager
-@inject IAuthApiServices authApiServices
-
-
-<EditForm Model="@user" OnValidSubmit="@Register" FormName="register">
-    <div class="justify-content-center align-items-center">
-        <div class="border-1 rounded-2 ">
-            <input type="text" @bind="user.UserName" placeholder="Create Username" />
-            <input type="password" @bind="user.Password" placeholder="Create Password" />
-            <button type="submit">Create</button>
-        </div>
-    </div>
-
-</EditForm>
-
-
-
-
-
-
-@if (!string.IsNullOrEmpty(Error))
-{
-    <p class="text-danger">@Error</p>
-}
-
-
-
-
-
-@code {
-    private UserDtos user = new();
-    private string? Error { get; set; }
-
-    private async Task Register()
+@code{
+
+    private IEnumerable<Claim> claims = [];
+    private string? userRole;
+    protected override async Task OnInitializedAsync()
     {
-        var results = await authApiServices.RegisterAsync(user);
-        if (results is null)
+        var state = await authStateProvider.GetAuthenticationStateAsync();
+        claims = state.User.Claims;
+        userRole = state.User.FindFirst(ClaimTypes.Role)?.Value;
+    }
+    public async Task ViewTokenStudent()
+    {
+
+
+        var token = await localStorage.GetAsync<string>("AccessToken");
+        if(token.Success && !string.IsNullOrEmpty(token.Value) && userRole == "Student")
         {
-            Error = "User already Exists";
+            navigation.NavigateTo("/studentmenu");
         }
         else
         {
-            navigationManager.NavigateTo("/login");
+            navigation.NavigateTo("/loginuser");
         }
+        StateHasChanged();
+    }
+    public async Task ViewTokenFaculty()
+    {
 
+        
+        var token = await localStorage.GetAsync<string>("AccessToken");
+       
+        if (token.Success && !string.IsNullOrEmpty(token.Value) && userRole == "Admin")
+        {
+            navigation.NavigateTo("/facultymainmenu");
+        }
+        else
+        {
+            navigation.NavigateTo("/facultylogin");
+        }
+        StateHasChanged();
     }
 }
 
 
 
-*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

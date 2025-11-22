@@ -42,7 +42,7 @@
                         <div class="flex justify-center items-center py-32">
                             <div class="text-center">
                                 <div class="relative">
-                                    <div class="w-20 h-20 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto"></div>
+                                    <div class="w-20 h-20 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin mx-auto"></div>
                                 </div>
                                 <p class="text-gray-600 mt-6 text-lg font-semibold">Loading data...</p>
                             </div>
@@ -76,7 +76,7 @@
                                             </svg>
                                         </div>
                                     }
-                                  
+
                                     <div class="absolute bottom-0 right-0 w-10 h-10 bg-amber-400 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
@@ -106,7 +106,7 @@
                                     </div>
                                 </div>
 
-                                <button onclick="my_modal_4.showModal()" class="btn btn-outline  text-white hover:bg-white hover:text-cyan-600 gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
+                                <button onclick="my_modal_faculty_edit_profile.showModal()" class="btn btn-outline  text-white hover:bg-white hover:text-cyan-600 gap-2 shadow-lg hover:shadow-xl transition-all duration-300">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                     </svg>
@@ -148,7 +148,7 @@
                                         <h4 class="font-semibold text-orange-600 text-lg mb-4 pb-2 border-b-2 border-orange-200">Academic Information</h4>
                                         <div><label class="text-xs font-bold text-gray-500 uppercase">Department</label><p class=" font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.FacultyDepartment</p></div>
                                         <div><label class="text-xs font-bold text-gray-500 uppercase">Position</label><p class="font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.Position.GetDisplayName()</p></div>
-                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Year of Teaching</label><p class="font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.YearsOfTeaching</p></div>
+                                        <div><label class="text-xs font-bold text-gray-500 uppercase">Year of Teaching</label><p class="font-light text-gray-800">@facultyRecord.FacultyAcademicInformationDto.YearsOfTeaching Years</p></div>
 
                                     </div>
 
@@ -186,13 +186,12 @@
                             </div>
                         </div>
                     }
-
-
-
-
                 </div>
             </div>
         </div>
+
+        <LogoutRespond />
+
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <div class="min-h-full w-64 bg-white shadow-xl flex flex-col border-r border-r-gray-200">
@@ -224,7 +223,6 @@
                     </div>
                 </div>
 
-
                 <nav class="flex-1 p-4 overflow-y-auto">
 
 
@@ -232,21 +230,21 @@
 
                     <div class="space-y-1 mb-6">
 
-                        <NavLink href="/profileinformation" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                        <NavLink href="/facultyprofile" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
                             <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                             <span class="font-medium">Profile</span>
                         </NavLink>
 
-                        <NavLink href="/enrolledcourse" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                        <NavLink href="/studentmanagement" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
                             <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             <span class="font-medium">Students Records</span>
                         </NavLink>
 
-                        <NavLink href="/paymenthistory" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                        <NavLink href="/coursemanagemnt" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
                             <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                             </svg>
@@ -255,13 +253,14 @@
 
 
 
-                        <NavLink href="/announcement" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
+                        <NavLink href="/facultyannouncement" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors group">
                             <svg class="w-5 h-5 text-gray-400 group-hover:text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                             </svg>
                             <span class="font-medium">Announcements</span>
                         </NavLink>
                     </div>
+
 
                     <div class="border-t border-gray-200 my-4"></div>
 
@@ -275,14 +274,15 @@
                             <span class="font-medium">Settings</span>
                         </a>
 
-                        <a class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
+                        <label for="my_modal_logout" class="flex items-center gap-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors group cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                             <span class="font-medium">Logout</span>
-                        </a>
+                        </label>
                     </div>
                 </nav>
+
 
 
                 <div class="p-4 border-t border-gray-200 bg-gray-50">
@@ -294,7 +294,7 @@
     </div>
 
 </div>
-
+<FacultyEditProfile info="facultyRecord" PreviewChanged="LoadImage" Updateinfo="ReloadInfo" />
 
 @code {
     public bool hasrender = false;
@@ -329,5 +329,17 @@
         StateHasChanged();
 
     }
-   
+    public async Task ReloadInfo()
+    {
+        facultyRecord = await facultyRecordApi.DisplayFacultyDetailsAsync();
+        Fullname = $"{facultyRecord?.FacultyPersonalInformationDto?.FirstName} " +
+                        $"{facultyRecord?.FacultyPersonalInformationDto?.MiddleName} " +
+                        $"{facultyRecord?.FacultyPersonalInformationDto?.LastName}";
+        StateHasChanged();
+    }
+    public void LoadImage(string image)
+    {
+        PreviewUrl = image;
+        StateHasChanged();
+    }
 }

@@ -10,6 +10,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Client.Helper;
 using SYSTEM_INGTEGRATION_NEMSU.Client.Services;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.BackGroundHelper;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Helper;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services;
 
@@ -21,7 +22,8 @@ builder.Services.AddScoped<AuthStateProvider>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<PageState>();
 builder.Services.AddHostedService<InvoiceMonitorService>();
-
+builder.Services.AddScoped<PageState>();
+builder.Services.AddScoped<LogoutService>();
 
 builder.Services.AddHttpClient<IAuthApiServices, AuthApiServices>(client =>
 {

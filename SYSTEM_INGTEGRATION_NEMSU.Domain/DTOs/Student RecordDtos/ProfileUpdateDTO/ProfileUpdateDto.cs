@@ -53,7 +53,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder
         public string? EmailAddress { get; set; }
         [Required(ErrorMessage = "Emergency Contact Required")]
         public string? EmergencyContactNumber { get; set; }
-
+        public string? StudentSchoolId { get; set; }
 
 
 
