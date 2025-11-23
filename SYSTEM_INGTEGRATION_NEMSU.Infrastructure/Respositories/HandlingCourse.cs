@@ -39,6 +39,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Category = await context.category.FindAsync(request.CategoryId)
                 ?? throw new Exception("Category not found"),
                 MaxCapacity = request.MaxCapacity,
+                Instructor = request.Instructor
             };
          
             context.course.Add(course);
@@ -87,6 +88,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             request.Room = course.Room;
             request.CourseStatus = course.CourseStatus;
             request.MaxCapacity = course.MaxCapacity;
+            request.Instructor = course.Instructor;
             context.Update(request);
             await context.SaveChangesAsync();
             return request.Adapt<CourseDto>();

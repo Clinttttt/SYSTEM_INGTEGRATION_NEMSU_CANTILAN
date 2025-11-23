@@ -24,6 +24,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public string? Schedule { get; set; }
         public string? Room { get; set; }
         public int MaxCapacity { get; set; }
-
+        public string? Instructor { get; set; }
     }
 }

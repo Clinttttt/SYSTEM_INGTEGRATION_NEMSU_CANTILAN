@@ -138,7 +138,7 @@
                                             <div class="mt-auto">
 
 
-                                                @if (coursestatus == CourseTrack.not_enrolled)
+                                                @if (C.Status == CourseTrack.not_enrolled)
                                                 {
                                                     <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
                                                     class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
@@ -149,7 +149,7 @@
                                                         @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Enroll for  ₱{@C.Cost}.00")
                                                     </label>
                                                 }
-                                                else if (coursestatus == CourseTrack.Course_Already_Paid)
+                                                else if (C.Status == CourseTrack.Course_Already_Paid)
                                                 {
                                                     <label class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
@@ -159,7 +159,7 @@
                                                         @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Enrolled")
                                                     </label>
                                                 }
-                                                else if (coursestatus == CourseTrack.Course_Already_Provisioned)
+                                                else if (C.Status == CourseTrack.Course_Already_Provisioned)
                                                 {
                                                     <div onclick="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_pay_provision.showModal()")" 
                                                     class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
@@ -170,9 +170,9 @@
                                                         @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Trial Ongoing")
                                                     </div>
                                                 }
-                                                else if (coursestatus == CourseTrack.Deleted_Paid)
+                                                else if (C.Status == CourseTrack.Deleted_Paid)
                                                 {
-                                                    <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
+                                                    <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_direct_enroll")"
                                                     class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
                                                         <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -181,7 +181,7 @@
                                                         @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Enroll Now")
                                                     </label>
                                                 }
-                                                else if (coursestatus == CourseTrack.Deleted_Provisioned)
+                                                else if (C.Status == CourseTrack.Deleted_Provisioned)
                                                 {
 
                                                     <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
@@ -243,9 +243,9 @@
                         @if (coursestatus == CourseTrack.Deleted_Paid)
                         {
                             <div class="flex flex-col sm:flex-row gap-3 w-full">
-                                <button @onclick="()=> DirectEnroll()" class="btn bg-teal-600 text-white  flex-1 rounded-lg hover:bg-cyan-600  transition-all">
+                                <label for="my_modal_direct_enroll" class="btn bg-teal-600 text-white  flex-1 rounded-lg hover:bg-cyan-600  transition-all">
                                     Enroll Now
-                                </button>
+                                </label>
                                 <label for="my_modal_5" class="btn btn-outline btn-primary flex-1 rounded-lg hover:bg-cyan-600 hover:text-white transition-all">
                                     Cancel
                                 </label>
@@ -281,6 +281,7 @@
         <EnrollDirectSuccessfully callback="UpdatedRender" />
         <PayProvisionRespond PreviewCourse="SelectedProvision" />
         <LogoutRespond  />
+        <DirectEnroll directEnroll="DirectEnroll" />
 
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -309,8 +310,6 @@
                 </div>
 
                 <nav class="flex-1 p-4 overflow-y-auto">
-
-
 
 
                     <div class="space-y-1 mb-6">
@@ -427,6 +426,7 @@
         }
 
     }
+
     public async Task PayProvisionAsync()
     {
         foreach (var C in course!)
@@ -442,21 +442,26 @@
     {
 
         await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_5').checked = false");
+        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_direct_enroll').checked = false");
         await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_direct_enroll_successfully').checked = true");
         foreach (var C in course!)
         {
             enroll = await enrollmentApi.DirectEnrollAsync(C.Id);
+            coursestatus = await enrollmentApi.CourseTrackerAsync(C.Id);
         }
+     
         StateHasChanged();
     }
 
     public async Task UpdatedRender()
     {
+        course = await enrollmentApi.DisplayAllCourseDetailsAsync();
         filtered = course?.ToList();
         foreach (var c in filtered!)
         {
             coursestatus = await enrollmentApi.CourseTrackerAsync(c.Id);
         }
+
         StateHasChanged();
     }
 

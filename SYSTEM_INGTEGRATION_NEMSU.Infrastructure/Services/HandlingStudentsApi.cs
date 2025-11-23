@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
@@ -71,5 +72,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 
             return await _http.GetFromJsonAsync<StudentsByYearLevelResponse>(url);
         }
+        public async Task<FacultyPhotoId?> StudentPhotoIDAsync(Guid StudentId)
+        {         
+            return await _http.GetFromJsonAsync<FacultyPhotoId>($"api/HandlingStudents/Get%20StudentId/{StudentId}");
+        }
+     
     }
 }

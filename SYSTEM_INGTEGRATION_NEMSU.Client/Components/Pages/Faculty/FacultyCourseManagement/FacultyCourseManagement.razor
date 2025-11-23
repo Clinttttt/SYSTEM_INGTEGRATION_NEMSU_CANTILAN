@@ -100,15 +100,14 @@
                     </div>
                 }
 
-
-
-                else
-                {
-                    @if (Filtered?.Any() == true)
+                  @if (Filtered?.Any() == true)
                     {
                         @foreach (var course in Filtered)
                         {
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-13">
+                         
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-13">
+               
+                  
 
 
 
@@ -153,14 +152,14 @@
                                     </div>
                                 </div>
 
-
-
                             </div>
 
-                        }
 
                     }
-                    else
+
+                }
+
+                else
                     {
                         <div class="bg-gray-50 rounded-lg shadow border border-gray-200 p-12 text-center">
                             <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,7 +170,7 @@
                         </div>
 
                     }
-                }
+                
             </div>
         </div>
 

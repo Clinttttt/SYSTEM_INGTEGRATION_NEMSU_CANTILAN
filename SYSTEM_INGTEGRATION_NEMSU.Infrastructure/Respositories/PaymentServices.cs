@@ -29,11 +29,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (alreadyEnrolled) return null;
        
            
-          
             var request  = await enrollmentServices.EnrollCourseAsync(paymentdetails.StudentId, paymentdetails.CourseCode!, EnrollmentStatus.Enrolled);
             if (request is null) return null;
             var purchase = await enrollmentServices.AddPaymentAsync(paymentdetails);
-             await enrollmentServices.CourseTrackAdd(paymentdetails.StudentId, request.CourseId, EnrollmentStatus.Enrolled);
+
+            await enrollmentServices.CourseTrackAdd(paymentdetails.StudentId, request.CourseId, EnrollmentStatus.Enrolled);
 
             if (request is null) return null;
             if (purchase is null) return null;
@@ -71,6 +71,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
           var request = await enrollmentServices.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Provisioned);
             if (request is null) return null;
+         
             await enrollmentServices.CourseTrackAdd(studentId, request.CourseId, EnrollmentStatus.Provisioned);
             var invoice = new Domain.Entities.Invoice
             {

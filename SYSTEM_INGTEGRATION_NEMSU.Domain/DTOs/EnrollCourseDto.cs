@@ -10,7 +10,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
 {
     public class EnrollCourseDto
     {
-    
+        public string? Instructor { get; set; }
         public Guid StudentId { get; set; }      
         public Guid CourseId { get; set; }    
         public string? FacultyFullName { get; set; }

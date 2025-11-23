@@ -147,7 +147,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
+       
         [Authorize]
         [HttpGet("Display PreviewCourse")]
         public async Task<ActionResult<CourseDto>> PreviewCourseAsync(Guid CourseId)
@@ -275,7 +275,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await enrollmentservices.CourseTrackerAsync(UserId, CourseId);
             return Ok(request);
         }
-        [ApiExplorerSettings(IgnoreApi = true)]
+      
         [Authorize]
         [HttpPost("Direct EnrollAsync")]
         public async Task<IActionResult> DirectEnrollAsync(Guid CourseId)

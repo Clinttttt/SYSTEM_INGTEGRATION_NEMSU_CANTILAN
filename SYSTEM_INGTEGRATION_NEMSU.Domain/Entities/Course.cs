@@ -20,17 +20,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public string? Title { get; set; }
         public int Unit { get; set; }
         public CourseDepartment Department { get; set; }
-        public string? CourseDescriptiion { get; set; }
-       
-   
+        public string? CourseDescriptiion { get; set; }       
+        public string? Instructor { get; set; }
         public CourseSemester Semester { get; set; }
         public string? SchoolYear { get; set; }
         public string? Schedule { get; set; }
         public string? Room { get; set; }
         public Guid? FacultyPersonalsId { get; set; }
         [JsonIgnore]
-        public FacultyPersonalInformation? FacultyPersonals { get; set; } 
-     
+        public FacultyPersonalInformation? FacultyPersonals { get; set; }
+   
 
         public Guid? CategoryId { get; set; }
         [JsonIgnore]

@@ -29,8 +29,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities
         public Guid? StudentContactsId { get; set; }
         [JsonIgnore]
         public ContactInformation? StudentContactDetails { get; set; }
-        [JsonIgnore]
-        public FacultyPersonalInformation? FacultyPersonalInformation { get; set; }
+  
     }
     public enum UserRole
     { 

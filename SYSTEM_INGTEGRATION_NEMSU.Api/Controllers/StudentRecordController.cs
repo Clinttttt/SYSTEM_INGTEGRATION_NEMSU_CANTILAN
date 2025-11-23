@@ -197,7 +197,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecordCommand.MiniDisplayMenuAsync(StudentId);
             if (request is null) { return BadRequest("error"); }
             return Ok(request);
-        }
+        } 
       
         [Authorize]
         [HttpGet("Check Information")]

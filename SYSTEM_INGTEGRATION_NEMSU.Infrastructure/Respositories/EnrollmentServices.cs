@@ -35,13 +35,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 ProfileColor = RandomColor.Generate(),
                 enrolledCourseStatus = EnrolledCourseStatus.Inprogress,
             };
-            var coursestatus = await context.courseTrackers.FirstOrDefaultAsync(s=> s.StudentId == StudentId && s.CourseId == CourseId);
-         
+            var coursestatus = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
+
             if (coursestatus is null) return false;
             coursestatus.CourseTrack = CourseTrack.Course_Already_Paid;
-  
+
             var provision = await context.announcements.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId && s.Type == AnnouncementType.provision);
-           if(provision is not null)
+            if (provision is not null)
             {
                 context.announcements.Remove(provision);
             }
@@ -75,7 +75,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             if (announcemntCheck is null)
             {
                 context.announcements.Add(save);
-            }          
+            }
             await context.Database.ExecuteSqlInterpolatedAsync(
         $"UPDATE Course SET TotalEnrolled = TotalEnrolled + 1 WHERE Id = {CourseId}");
             context.enrollcourse.Add(enrollment);
@@ -84,69 +84,60 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         }
         public async Task<CourseTrack> CourseTrackerAsync(Guid StudentId, Guid CourseId)
         {
-            var enroll = await context.enrollcourse.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
-            var coursetracker = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
-            var coursetrack = new CourseTrack();
-            if (enroll is null && coursetracker is null)
+            var enroll = await context.enrollcourse
+                .FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
+
+            var tracker = await context.courseTrackers
+                .FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
+
+      
+            if (enroll is null && tracker is null)
+                return CourseTrack.not_enrolled;
+
+        
+            if (tracker is not null)
+                return tracker.CourseTrack;
+
+
+            return CourseTrack.not_enrolled;
+        }
+
+        public async Task<bool> CourseTrackAdd(Guid StudentId, Guid CourseId, EnrollmentStatus status)
+        {
+            var tracker = await context.courseTrackers
+                .FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
+
+            var course = await context.course.FirstOrDefaultAsync(c => c.Id == CourseId);
+            if (course is null) return false;
+
+            var courseTrackStatus = status switch
             {
-                coursetrack = CourseTrack.not_enrolled;
-            }
-            else if (enroll is not null && coursetracker?.CourseTrack == CourseTrack.Course_Already_Paid)
+                EnrollmentStatus.Enrolled => CourseTrack.Course_Already_Paid,
+                EnrollmentStatus.Provisioned => CourseTrack.Course_Already_Provisioned,
+                _ => CourseTrack.not_enrolled
+            };
+
+            if (tracker is null)
             {
-                coursetrack = CourseTrack.Course_Already_Paid;
-            }
-            else if (enroll is not null && coursetracker?.CourseTrack == CourseTrack.Course_Already_Provisioned)
-            {
-                coursetrack = CourseTrack.Course_Already_Provisioned;
-            }
-            else if (coursetracker?.CourseTrack == CourseTrack.Deleted_Paid)
-            {
-                coursetrack = CourseTrack.Deleted_Paid;
-            }
-            else if (coursetracker?.CourseTrack == CourseTrack.Deleted_Provisioned)
-            {
-                coursetrack = CourseTrack.Deleted_Provisioned;
+                tracker = new CourseTracker
+                {
+                    StudentId = StudentId,
+                    CourseId = CourseId,
+                    CourseName = course.Title,
+                    CourseTrack = courseTrackStatus
+                };
+
+                context.courseTrackers.Add(tracker);
             }
             else
             {
-                coursetrack = CourseTrack.not_enrolled;
+                tracker.CourseTrack = courseTrackStatus;
             }
-            return coursetrack;
-        }
-        public async Task<bool> CourseTrackAdd(Guid StudentId, Guid CourseId, EnrollmentStatus status)
-        {
-            var checkcourse = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
-            var course = await context.course
-             .FirstOrDefaultAsync(c => c.Id == CourseId);
-            if (course is null) return false;
 
-            if (checkcourse is null)
-            {
-                var coursetracker = new CourseTracker();
-                coursetracker.Id = new Guid();
-                coursetracker.StudentId = StudentId;
-                coursetracker.CourseId = CourseId;
-                coursetracker.CourseName = course.Title;
-
-                if (status == EnrollmentStatus.Provisioned)
-                {
-                    coursetracker.CourseTrack = CourseTrack.Course_Already_Provisioned;
-                }
-                else if (status == EnrollmentStatus.Enrolled)
-                {
-                    coursetracker.CourseTrack = CourseTrack.Course_Already_Paid;
-                }
-                context.courseTrackers.Add(coursetracker);           
-            }
-            else if (checkcourse is not null)
-            {
-                if (status == EnrollmentStatus.Enrolled)
-                {
-                    checkcourse.CourseTrack = CourseTrack.Course_Already_Paid;
-                }
-            }
-                return true;           
+            await context.SaveChangesAsync();
+            return true;
         }
+
         public async Task<EnrollCourseDto?> EnrollCourseAsync(Guid studentId, string courseCode, EnrollmentStatus status = EnrollmentStatus.Provisioned)
         {
 
@@ -207,7 +198,45 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .Include(s => s.Category)
                 .Where(s => s.CourseStatus == Domain.Entities.CourseStatus.Active)
                 .ToListAsync();
-            return course.Adapt<List<CourseDto>>();
+
+            var result = new List<CourseDto>();
+
+            foreach (var c in course)
+            {
+                var status = await CourseTrackerAsync(StudentId, c.Id);
+
+                var dto = new CourseDto
+                {
+                    Id = c.Id,
+                    AdminId = c.AdminId,
+                    Cost = c.Cost,
+                    CourseCode = c.CourseCode,
+                    Title = c.Title,
+                    Unit = c.Unit,
+                    Department = c.Department,
+                    CourseDescriptiion = c.CourseDescriptiion,
+                    MaxCapacity = c.MaxCapacity,
+                    TotalEnrolled = c.TotalEnrolled,
+                    SchoolYear = c.SchoolYear,
+                    Semester = c.Semester,
+                    Schedule = c.Schedule,
+                    Room = c.Room,
+                    CourseStatus = c.CourseStatus,
+                    Status = status,
+                    Instructor = c.Instructor,
+                    Category = new CategoryDto
+                    {
+                        Id = c.Category!.Id,
+                        Name = c.Category.Name,
+                        Icon = c.Category.Icon,
+                        Color = c.Category.Color,
+                    }
+                };
+
+                result.Add(dto);
+            }
+
+            return result;
         }
         public async Task<List<EnrollCourseDto>?> DisplayAllCourseEnrolledAsync(Guid StudentId)
         {
@@ -238,6 +267,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                         FacultyFullName = s.FacultyPersonals!.FirstName + " " + s.FacultyPersonals.LastName,
                         Schedule = s.Schedule,
                         Room = s.Room,
+                         Instructor = s.Instructor,
 
                     }).ToListAsync();
                 E.AddRange(course);
@@ -270,6 +300,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 CourseDescription = retrieve.CourseDescriptiion,
                 Category = retrieve.Category,
                 StudentStatus = request.StudentCourseStatus,
+                Instructor = retrieve.Instructor,
             };
             return filter;
         }
@@ -308,7 +339,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var coursestatus = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == studentId && s.CourseId == enrollment.CourseId);
             if (coursestatus is null) return false;
 
-            if(coursestatus.CourseTrack == CourseTrack.Course_Already_Paid)
+            if (coursestatus.CourseTrack == CourseTrack.Course_Already_Paid)
             {
                 coursestatus.CourseTrack = CourseTrack.Deleted_Paid;
             }
@@ -317,7 +348,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 coursestatus.CourseTrack = CourseTrack.Deleted_Provisioned;
             }
 
-            context.enrollcourse.Remove(enrollment);           
+            context.enrollcourse.Remove(enrollment);
             await context.SaveChangesAsync();
             return true;
         }

@@ -1,5 +1,31 @@
-﻿<h3>DirectEnroll</h3>
+﻿<input type="checkbox" id="my_modal_direct_enroll" class="modal-toggle" />
+<div class="modal" role="dialog">
+    <div class="modal-box max-w-md rounded-md">
+        <div class="flex flex-col items-center text-center">
 
-@code {
+            <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
 
+            <h3 class="text-2xl font-bold text-gray-700 mb-2">Confirm Enrollment</h3>
+            <p class="text-gray-600 mb-6">Are you sure you want to enroll in this course? This action will add the course to your schedule.</p>
+
+            <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-6 w-full">
+                <p class="text-sm text-teal-800">
+                    <span class="font-semibold">Note:</span> Since you already paid for this course, you can enroll instantly at no additional cost.
+                </p>
+            </div>
+        </div>
+
+        <div class="flex gap-3 justify-center">
+            <label for="my_modal_direct_enroll" class="btn btn-ghost px-6">Cancel</label>
+            <button @onclick="()=> directEnroll.InvokeAsync()" class="btn bg-teal-600 hover:bg-teal-700 text-white border-none px-8">Enroll Now</button>
+        </div>
+    </div>
+</div>
+@code{
+    [Parameter]
+    public EventCallback directEnroll { get; set; }
 }

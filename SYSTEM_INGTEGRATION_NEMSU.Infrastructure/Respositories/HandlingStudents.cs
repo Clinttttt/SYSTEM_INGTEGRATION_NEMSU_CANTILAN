@@ -100,7 +100,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var retrieve = new HandlingAllStudentsDetailsDto
             {
                 StudentId = request.StudentId,
-                FullName = request.Student.StudentsDetails != null ? request.Student.StudentsDetails.FirstName + " " + request.Student.StudentsDetails.LastName : "N/A",
+                FullName = request.Student.StudentsDetails != null ? request.Student.StudentsDetails.FirstName + " "  + request.Student.StudentsDetails.MiddleName + "," + " " +  request.Student.StudentsDetails.LastName : "N/A",
                 DateOfBirth = request.Student.StudentsDetails?.DateOfBirth,
                 Gender = request.Student.StudentsDetails?.Gender,
                 CivilStatus = request.Student.StudentsDetails?.CivilStatus,

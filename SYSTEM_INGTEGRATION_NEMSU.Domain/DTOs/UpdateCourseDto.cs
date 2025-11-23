@@ -23,7 +23,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public string? Room { get; set; }
         public Guid Id { get; set; }
         public Guid AdminId { get; set; }
-
+        public string? Instructor { get; set; }
         public int MaxCapacity { get; set; }
         
         public CourseStatus CourseStatus { get; set; }

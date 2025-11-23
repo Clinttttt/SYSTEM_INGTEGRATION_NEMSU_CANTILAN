@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 {
@@ -78,7 +79,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<IEnumerable<CourseDto>>("api/CourseHandling/Display%20ArchiveCourse");
         }
-
-
+     
     }
 }

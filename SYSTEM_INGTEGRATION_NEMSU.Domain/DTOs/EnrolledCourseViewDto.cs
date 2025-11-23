@@ -23,7 +23,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
        
         public string? CourseDescription { get; set; }
         public Category? Category { get; set; }
-
+        public string? Instructor { get; set; }
 
 
     }

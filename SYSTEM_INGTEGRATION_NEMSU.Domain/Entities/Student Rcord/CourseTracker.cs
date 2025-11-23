@@ -12,7 +12,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord
         public Guid StudentId {get;set;}
         public Guid CourseId { get; set; }
         public string? CourseName { get; set; }
-        public CourseTrack CourseTrack { get; set; } = CourseTrack.not_enrolled;
+        public CourseTrack CourseTrack { get; set; } 
     }
     public enum CourseTrack
     {   not_enrolled,

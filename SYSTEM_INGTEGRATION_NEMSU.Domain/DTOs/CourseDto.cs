@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
 {
@@ -22,16 +23,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public string? CourseDescriptiion { get; set; }
         public int MaxCapacity { get; set; }
         public int TotalEnrolled { get; set; }
-    
+        public string? Instructor { get; set; }
         public string? SchoolYear { get; set; }
         public CourseSemester? Semester { get; set; }
         public string? Schedule { get; set; }
         public string? Room { get; set; }
 
         [JsonIgnore]
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         public CourseStatus CourseStatus { get; set; }
         public EnrolledCourseStatus enrolledCourseStatus { get; set; }
+        public CourseTrack Status { get; set; }
     }
 
 public class CategoryDto

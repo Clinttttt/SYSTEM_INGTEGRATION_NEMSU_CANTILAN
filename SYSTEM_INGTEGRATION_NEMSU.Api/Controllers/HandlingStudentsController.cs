@@ -6,6 +6,7 @@ using System.Security.Claims;
 using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
@@ -15,7 +16,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HandlingStudentsController(IHandlingStudents handlingStudents, IUserRespository user) : ControllerBase
+    public class HandlingStudentsController(IHandlingStudents handlingStudents, IUserRespository user, IStudentRecordCommand studentRecord) : ControllerBase
     {
         [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize]
@@ -120,6 +121,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
                 Students = result.Students,
                 TotalCount = result.TotalCount
             });
+        }
+
+      
+        [HttpGet("Get StudentId/{StudentId}")]
+        public async Task<ActionResult<FacultyPhotoId>> GetStudentPhoto(Guid StudentId)
+        {
+            var request = await studentRecord.StudentPhotoIDAsync(StudentId);
+            return Ok(request);
         }
     }
 }

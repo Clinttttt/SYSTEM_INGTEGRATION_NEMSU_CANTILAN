@@ -5,6 +5,7 @@
 @inject NavigationManager navigation
 @rendermode InteractiveServer
 @inject IFacultyRecordApi facultyRecord
+@inject IHandlingStudentsApi handlingStudents
 
 <div class="relative h-screen content overflow-hidden ">
     <div class="drawer lg:drawer-open h-screen">
@@ -192,9 +193,16 @@
                                                 <div class="inline-block">
                                                     <div class="relative">
                                                         <div class="avatar placeholder ">
-                                                            <img src="/img/student_logo.jpg" class=" bg-contain rounded-full !w-16 !h-16 flex items-center justify-center shadow-xl border-3 border-white ring-2 " style="box-shadow: 0 0 0 1px @student.ProfileColor;" />
-                                                            @*   <span class="text-2xl   font-extrabold">@GetInitials(student.Name)</span>*@
 
+                                                            @*   <span class="text-2xl   font-extrabold">@GetInitials(student.Name)</span>*@
+                                                            @if (!string.IsNullOrEmpty(StudentPhoto))
+                                                            {
+                                                                <img src="@StudentPhoto" class=" bg-contain rounded-full !w-16 !h-16 flex items-center justify-center shadow-xl ring-2 " style="box-shadow: 0 0 0 1px @student.ProfileColor;" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <img src="/img/student_logo.jpg" class=" bg-contain rounded-full !w-16 !h-16 flex items-center justify-center shadow-xl ring-2 " style="box-shadow: 0 0 0 1px @student.ProfileColor;" />
+                                                            }
                                                         </div>
                                                         <div class="absolute bottom-0  right-0 w-4 h-4 @(student.studentCourseStatus == StudentCourseStatus.Inactive ? "bg-amber-500" : "bg-green-500") rounded-full border-2 border-white"></div>
                                                     </div>
@@ -369,7 +377,8 @@
     private string? Error { get; set; }
     public FacultyPhotoId? facultyPhoto { get; set; }
     public string? PreviewUrl { get; set; }
-
+    public FacultyPhotoId? studentphoto { get; set; }
+    public string? StudentPhoto { get; set; }
     private List<HandlingStudentsDto>? FilteredStudents = new();
 
 
@@ -389,6 +398,15 @@
             quickStats = await handlingApiCourse.DisplayStatsAsync(Course.CourseCode!);
             StudentEnrolled = studentlist!.Count();
             await  LoadStudents();
+            foreach (var f in FilteredStudents!)
+            {
+                studentphoto = await handlingStudents.StudentPhotoIDAsync(f.StudentId);
+                if (studentphoto?.Photo is not null)
+                {
+                    StudentPhoto = $"data:{studentphoto?.PhotoContentType};base64,{Convert.ToBase64String(studentphoto!.Photo)}";
+                }
+            }
+           
         }
         StateHasChanged();
 
