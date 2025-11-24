@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
 {
@@ -18,5 +19,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<bool> ArchivedCourseAsync(string CourseCode);
         Task<IEnumerable<CourseDto>?> DisplayArchiveCourseAsync();
         Task<bool> ActiveCourseAsync(string CourseCode);
+        Task<IEnumerable<CourseDto>?> DisplayCourseByDepartment(CourseDepartment department);
     }
 }

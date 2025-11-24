@@ -24,4 +24,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NSwag.Annotations" Version="14.6.3" />
+  </ItemGroup>
+
 </Project>

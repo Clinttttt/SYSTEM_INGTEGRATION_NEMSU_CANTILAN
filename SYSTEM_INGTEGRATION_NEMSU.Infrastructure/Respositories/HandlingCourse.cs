@@ -69,7 +69,14 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             return retrieve.Adapt<List<CourseDto>>();
         }
-
+        public async Task<IEnumerable<CourseDto>> DisplayCourseByDepartmentAsync(Guid adminid, CourseDepartment department )
+        {
+            var retrieve = await context.course
+                .Include(s => s.Category)
+                .Where(s => s.AdminId == adminid && s.Department == department).ToListAsync();
+            return retrieve.Adapt<List<CourseDto>>();
+        }
+ 
         public async Task<CourseDto?> UpdateCourseAsync(UpdateCourseDto course)
         {
             var request = await context.course.FirstOrDefaultAsync(s => s.AdminId == course.AdminId && s.Id == course.Id);

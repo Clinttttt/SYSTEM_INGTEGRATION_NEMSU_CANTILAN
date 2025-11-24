@@ -10,6 +10,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Application.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Application.External;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Faculty_RecordDtos;
+using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 {
@@ -37,6 +38,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         {
             await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<IEnumerable<CourseDto>>($"api/CourseHandling/Display%20Course");
+        }
+        public async Task<IEnumerable<CourseDto>?> DisplayCourseByDepartment(CourseDepartment department)
+        {
+            await _authHelper.SetAuthHeaderAsync(_http);
+            return await _http.GetFromJsonAsync<IEnumerable<CourseDto>>($"api/CourseHandling/Display%20CourseByDepartment?department={department}");
         }
         public async Task<CourseDto?> UpdateCourse(UpdateCourseDto course)
         {

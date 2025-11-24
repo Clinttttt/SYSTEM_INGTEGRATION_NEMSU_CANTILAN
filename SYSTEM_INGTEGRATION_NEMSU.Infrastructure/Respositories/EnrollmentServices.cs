@@ -36,8 +36,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 enrolledCourseStatus = EnrolledCourseStatus.Inprogress,
             };
             var coursestatus = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
-
             if (coursestatus is null) return false;
+
             coursestatus.CourseTrack = CourseTrack.Course_Already_Paid;
 
             var provision = await context.announcements.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId && s.Type == AnnouncementType.provision);

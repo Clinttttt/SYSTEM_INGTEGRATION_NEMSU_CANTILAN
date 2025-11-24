@@ -48,11 +48,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                             <input type="text"
-                            @bind="SearchQuery"
-                            @bind:event="oninput"
-                            @onkeyup="HandlingQuery"
-                            placeholder="Search courses by Name or Course Code..."
-                            class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all shadow-sm hover:shadow-md" />
+                                   @bind="SearchQuery"
+                                   @bind:event="oninput"
+                                   @onkeyup="HandlingQuery"
+                                   placeholder="Search courses by Name or Course Code..."
+                                   class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all shadow-sm hover:shadow-md" />
                         </div>
                     </div>
                     @if (!hasrender)
@@ -141,7 +141,7 @@
                                                 @if (C.Status == CourseTrack.not_enrolled)
                                                 {
                                                     <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
-                                                    class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
                                                         <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
@@ -161,19 +161,30 @@
                                                 }
                                                 else if (C.Status == CourseTrack.Course_Already_Provisioned)
                                                 {
-                                                    <div onclick="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_pay_provision.showModal()")" 
-                                                    class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+                                                    <div @onclick="() => TryOpenModal(C)"
+                                                         class="@(C.TotalEnrolled == C.MaxCapacity
+                                                         ? "bg-gray-400 cursor-not-allowed"
+                                                         : $"rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 text-white py-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 group">
 
-                                                        <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+                                                        <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform"
+                                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                  d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168 .75-.375 .75S9 10.164 9 9.75 9.168 9 9.375 9s.375 .336 .375 .75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168 .75-.375 .75s-.375-.336-.375-.75.168-.75.375-.75.375 .336.375 .75Zm-.375 0h.008v.015h-.008V9.75Z" />
                                                         </svg>
-                                                        @(C.TotalEnrolled == C.MaxCapacity ? "Course Full" : $"Trial Ongoing")
+
+                                                        @(
+                                                            C.TotalEnrolled == C.MaxCapacity
+                                                            ? "Course Full"
+                                                            : "Trial Ongoing"
+                                                            )
+
                                                     </div>
+
                                                 }
                                                 else if (C.Status == CourseTrack.Deleted_Paid)
                                                 {
                                                     <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_direct_enroll")"
-                                                    class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
                                                         <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
@@ -185,7 +196,7 @@
                                                 {
 
                                                     <label for="@(C.TotalEnrolled == C.MaxCapacity ? "" : "my_modal_5")" @onclick="()=> OpenModal(C.Id)"
-                                                    class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
+                                                           class=" @(C.TotalEnrolled == C.MaxCapacity ? "bg-gray-400 cursor-not-allowed" : $" rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer bg-gradient-to-r {GetButtonGradient(C.Category?.Color)}") w-full relative btn border-0 bg-gradient-to-r  text-white py-3 rounded-xl  font-semibold text-xs flex items-center justify-center gap-2 group ">
 
                                                         <svg class="w-5 h-5 left-2 absolute group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
@@ -280,7 +291,7 @@
 
         <EnrollDirectSuccessfully callback="UpdatedRender" />
         <PayProvisionRespond PreviewCourse="SelectedProvision" />
-        <LogoutRespond  />
+        <LogoutRespond />
         <DirectEnroll directEnroll="DirectEnroll" />
 
         <div class="drawer-side">
@@ -298,7 +309,8 @@
 
                             <div class="w-20 h-20"><img src="@preview" alt="Student Photo" class=" w-full h-full object-cover rounded-full " /></div>
                         }
-                        else{
+                        else
+                        {
                             <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
                                 <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
                             </div>
@@ -407,16 +419,13 @@
             }
             course = await enrollmentApi.DisplayAllCourseDetailsAsync();
             filtered = course?.ToList();
-            if(course is not null)
+            if (course is not null)
             {
                 foreach (var c in course)
                 {
                     coursestatus = await enrollmentApi.CourseTrackerAsync(c.Id);
-                    SelectedProvision.Cost = c.Cost;
-                    SelectedProvision.CourseCode = c.CourseCode;
-                    SelectedProvision.Unit = c.Unit;
-                    SelectedProvision.Title = c.Title;
-                    SelectedProvision.Id = c.Id;
+
+
                 }
             }
 
@@ -449,7 +458,7 @@
             enroll = await enrollmentApi.DirectEnrollAsync(C.Id);
             coursestatus = await enrollmentApi.CourseTrackerAsync(C.Id);
         }
-     
+
         StateHasChanged();
     }
 
@@ -484,9 +493,24 @@
     {
         SelectedCourse = CourseId;
     }
+    private async Task TryOpenModal(CourseDto course)
+    {
+        if (course.TotalEnrolled == course.MaxCapacity)
+            return;
+
+        SelectedProvision.Id = course.Id;
+        SelectedProvision.Cost = course.Cost;
+        SelectedProvision.CourseCode = course.CourseCode;
+        SelectedProvision.Unit = course.Unit;
+        SelectedProvision.Title = course.Title;
 
 
-  
+
+        await JS.InvokeVoidAsync("eval", "my_modal_pay_provision.showModal()");
+    }
+
+
+
 
 
 

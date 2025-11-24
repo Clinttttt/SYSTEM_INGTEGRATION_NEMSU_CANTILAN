@@ -11,21 +11,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HandlingMessageController(IUserRespository respository, IRespondCommand respondCommand) : ControllerBase
+    public class HandlingMessageController( IRespondCommand respondCommand) : BaseController
     {
       
         [Authorize]
         [HttpPost("Auto Response")]
-        public async Task<ActionResult<AutoResponsetDto>> AutoResponse(string CourseCode)
+        public async Task<ActionResult<AutoResponsetDto>> AutoResponse([FromQuery] string CourseCode)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) return BadRequest("User not found or Student ID missing");
-
-            var AdminId = user.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var AdminId = userId.Value;
             var response = await respondCommand.AutoResponseAsync(AdminId, CourseCode);
             if (response is null) { return BadRequest("Something went wrong"); }
             return Ok(response);
@@ -33,16 +28,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
        
         [Authorize]
         [HttpPost("Announcement")]
-        public async Task<ActionResult<AnnouncementDto>> Announcement(CreateAnnouncementDto announcement)
+        public async Task<ActionResult<AnnouncementDto>> Announcement( [FromBody] CreateAnnouncementDto announcement)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) return BadRequest("User not found or Student ID missing");
-
-            var AdminId = user.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var AdminId = userId.Value;
             announcement.AdminId = AdminId;
             var response = await respondCommand.AddAnnouncementAsync(announcement);
             return Ok(response);
@@ -52,41 +42,29 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Display Announcement")]
         public async Task<ActionResult<AnnouncementDto>> DisplayAnnouncementAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) return BadRequest("User not found or Student ID missing");
-            var response = await respondCommand.DisplayAnnouncementAsync(user.Id);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await respondCommand.DisplayAnnouncementAsync(userId.Value);
             return Ok(response);
         }
       
         [Authorize]
         [HttpDelete("Delete Announcement/{AnnouncementId}")]
-        public async Task<ActionResult<bool>> DeleteAnnouncementAsync(Guid AnnouncementId)
+        public async Task<ActionResult<bool>> DeleteAnnouncementAsync( [FromRoute] Guid AnnouncementId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) return BadRequest("User not found or Student ID missing");
-            var response = await respondCommand.DeleteAnnouncementAsync(user.Id, AnnouncementId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await respondCommand.DeleteAnnouncementAsync(userId.Value, AnnouncementId);
             return Ok(response);
         }
        
         [Authorize]
         [HttpPatch("Edit Announcement")]
-        public async Task<ActionResult<AnnouncementDto>> EditAnnouncementAsync(EditAnnouncementDto editAnnouncement)
+        public async Task<ActionResult<AnnouncementDto>> EditAnnouncementAsync( [FromBody] EditAnnouncementDto editAnnouncement)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) return BadRequest("User not found or Student ID missing");
-            editAnnouncement.AdminId = user.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            editAnnouncement.AdminId = userId.Value;
             var response = await respondCommand.EditAnnouncementAsync(editAnnouncement);
             return Ok(response);
         }
@@ -95,11 +73,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Provision Announcement")]
         public async Task<ActionResult<AnnouncementDto>> ProvisionAnnouncementAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var response = await respondCommand.ProvisionAnnouncementAsync(GetUserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await respondCommand.ProvisionAnnouncementAsync(userId.Value);
             return Ok(response);
 
         }

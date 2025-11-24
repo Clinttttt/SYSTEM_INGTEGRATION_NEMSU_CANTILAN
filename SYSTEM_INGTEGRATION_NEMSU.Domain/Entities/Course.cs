@@ -67,6 +67,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
     public enum CourseStatus
     {   
         Active,
+        [Display(Name = "Locked")]
         Archived,
     };
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
@@ -13,31 +14,39 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseHandlingController(IHandlingCourse handlingCourse, IUserRespository respository) : ControllerBase
+    public class CourseHandlingController(IHandlingCourse handlingCourse) : BaseController
     {
 
         [Authorize]
         [HttpGet("Display Course")]
-        public async Task<ActionResult<CourseDto>> DisplayAllCourse()
+        public async Task<ActionResult> DisplayAllCourse()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var response = await handlingCourse.DisplayCourseAsync(UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await handlingCourse.DisplayCourseAsync(userId.Value);
             if (response is null) return BadRequest("nothing to dispaly");
             return Ok(response);
         }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [Authorize]
+        [HttpGet("Display CourseByDepartment")]
+        public async Task <ActionResult<IEnumerable<CourseDto>>> DisplayCourseByDepartmentAsync([FromQuery] CourseDepartment department)
+        {
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await handlingCourse.DisplayCourseByDepartmentAsync(userId.Value,department);
+            if (response is null) return BadRequest("nothing to dispaly");
+            return Ok(response);
+        }
+        
         [Authorize]
         [HttpGet("GetCourse Admin/{CourseId}")]
-        public async Task<ActionResult<CourseDto>> GetCourseAsync(Guid CourseId)
+        public async Task<ActionResult<CourseDto>> GetCourseAsync([FromRoute] Guid CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var AdminId = await respository.UserInfo(UserId);
-            if (AdminId is null) return BadRequest("User not Found");
-            var StudentId = AdminId.Id;
-            var response = await handlingCourse.GetCourseAsync(StudentId, CourseId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await handlingCourse.GetCourseAsync(userId.Value, CourseId);
             if (response is null)
             {
                 return BadRequest("Nothings To Display");
@@ -48,14 +57,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpPost("Add Course")]
         public async Task<ActionResult<CourseDto>> AddCourse([FromBody] CreateCourseDto course)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null)
-            {
-                return BadRequest("Login First");
-            }
-            var UserId = Guid.Parse(FindUser.Value);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
             var filter = course.Adapt<Course>();
-            filter.AdminId = UserId;
+            filter.AdminId = userId.Value;
             var response = await handlingCourse.AddCourseAsync(filter);
             return Ok(response);
         }
@@ -63,15 +68,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         [Authorize]
         [HttpPatch("Update Course")]
-        public async Task<ActionResult<CourseDto>> UpdateCourse(UpdateCourseDto course)
+        public async Task<ActionResult<CourseDto>> UpdateCourse([FromBody] UpdateCourseDto course)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            var userid = Guid.Parse(FindUser!.Value);
-            var user = await respository.UserInfo(userid);
-            if (user is null) return BadRequest("user not found");
-            course.AdminId = user.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            course.AdminId = userId.Value;
             var response = await handlingCourse.UpdateCourseAsync(course);
-
             if (response is null) { return BadRequest("Something went wrong"); }
             return Ok(response);
         }
@@ -79,60 +81,39 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpDelete("Delete Course/{course}")]
         public async Task<IActionResult> DeleteCourse(Guid course)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null)
-            {
-                return Unauthorized("Login First");
-            }
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null)
-            {
-                return BadRequest("User not found ");
-            }
-            var AdminId = user.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var AdminId = userId.Value;
             var response = await handlingCourse.DeleteCourseAsycnc(AdminId, course);
             if (response is false) { return BadRequest("Nothing to Delete"); }
             return Ok(response);
         }
         [Authorize]
         [HttpGet("Quick Stats")]
-        public async Task<ActionResult<QuickStatsDto>> DisplayStatsAsync(string CourseCode)
+        public async Task<ActionResult<QuickStatsDto>> DisplayStatsAsync([FromQuery] string CourseCode)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) { return BadRequest("User not found "); }
-            var response = await handlingCourse.DisplayStatsAsync(user.Id, CourseCode);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await handlingCourse.DisplayStatsAsync(userId.Value, CourseCode);
             if (response is null) return BadRequest("Nothing to display");
             return Ok(response);
         }
         [Authorize]
         [HttpPatch("Archive Course")]
-        public async Task<ActionResult<bool>> ArchivedCourseAsync(string CourseCode)
+        public async Task<ActionResult<bool>> ArchivedCourseAsync([FromQuery] string CourseCode)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) { return BadRequest("User not found "); }
-            var response = await handlingCourse.ArchivedCourseAsync(user.Id, CourseCode);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await handlingCourse.ArchivedCourseAsync(userId.Value, CourseCode);
             return Ok(response);
         }
         [Authorize]
         [HttpPatch("Active CourseAsync")]
-        public async Task<ActionResult<bool>> ActiveCourseAsync(string CourseCode)
+        public async Task<ActionResult<bool>> ActiveCourseAsync([FromQuery] string CourseCode)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) { return BadRequest("User not found "); }
-            var response = await handlingCourse.ActiveCourseAsync(user.Id, CourseCode);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await handlingCourse.ActiveCourseAsync(userId.Value, CourseCode);
             return Ok(response);
         }
 
@@ -141,10 +122,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Display ArchiveCourse")]
         public async Task<ActionResult<CourseDto>> DisplayAllArchiveCourse()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var response = await handlingCourse.DisplayArchiveCourseAsync(UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await handlingCourse.DisplayArchiveCourseAsync(userId.Value);
             if (response is null) return BadRequest("nothing to dispaly");
             return Ok(response);
         }

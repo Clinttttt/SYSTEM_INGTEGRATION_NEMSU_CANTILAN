@@ -20,30 +20,28 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentRecordController(IStudentRecordCommand studentRecordCommand, IUserRespository user) : ControllerBase
+    public class StudentRecordController(IStudentRecordCommand studentRecordCommand ) : BaseController
     {
      
         [Authorize]
         [HttpPost("Add Personal Details")]
         public async Task<ActionResult<PersonalInformation>> AddPersonalDetailsAsync([FromBody] PersonalInformationDto personalInformation)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
             var filter = personalInformation.Adapt<PersonalInformation>();
-            filter.StudentId = UserId;
+            filter.StudentId = userId.Value;
             var response = await studentRecordCommand.AddPersonalDetailsAsync(filter);         
             return Ok(filter);
         }
        
         [Authorize]
         [HttpPatch("Update Personal Details")]
-        public async Task<ActionResult<PersonalInformation>> UpdatePersonalDetailsAsync( PersonalInformationDto personalInformationDto)
+        public async Task<ActionResult<PersonalInformation>> UpdatePersonalDetailsAsync( [FromBody] PersonalInformationDto personalInformationDto)
         {
-            var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (Finduser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(Finduser.Value);
-            personalInformationDto.StudentId = UserId;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            personalInformationDto.StudentId = userId.Value;
             var response = await studentRecordCommand.UpdatePersonalInformationAsync(personalInformationDto);
             return Ok(response);
         }
@@ -52,10 +50,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Display Personal Details")]
         public async Task<ActionResult<PersonalInformationDto>> DispalyPersonalDetailsAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var response = await studentRecordCommand.DisplayPersonalInformationAsync(UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await studentRecordCommand.DisplayPersonalInformationAsync(userId.Value);
             return Ok(response);
         }
      
@@ -63,23 +60,21 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpPost("Add Academic Details")]
         public async Task<ActionResult<PersonalInformation>> AddAcademicDetailsAsync([FromBody] AcademicInformationDto academicInformation)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
             var filter = academicInformation.Adapt<AcademicInformation>();
-            filter.StudentId = UserId;
+            filter.StudentId = userId.Value;
             var response = await studentRecordCommand.AddAcademicInformationAsync(filter);
             return Ok(filter);
         }
        
         [Authorize]
         [HttpPatch("Update Academic Details")]
-        public async Task<ActionResult<PersonalInformation>> UpdateAcademicDetailsAsync(AcademicInformationDto academicInformation)
+        public async Task<ActionResult<PersonalInformation>> UpdateAcademicDetailsAsync([FromBody] AcademicInformationDto academicInformation)
         {
-            var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (Finduser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(Finduser.Value);
-            academicInformation.StudentId = UserId;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            academicInformation.StudentId = userId.Value;
             var response = await studentRecordCommand.UpdateAcademicInformationAsync(academicInformation);
             return Ok(response);
         }
@@ -89,10 +84,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
       
         public async Task<ActionResult<AcademicInformationDto>> DispalyAcademicDetailsAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var response = await studentRecordCommand.DisplayAcademicInformation(UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await studentRecordCommand.DisplayAcademicInformation(userId.Value);
             return Ok(response);
         }
       
@@ -100,11 +94,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpPost("Add Contact Details")]
         public async Task<ActionResult<PersonalInformation>> AddContactDetailsAsync([FromBody] ContactInformationDto contactInformation)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
             var filter = contactInformation.Adapt<ContactInformation>();
-            filter.StudentId = UserId;
+            filter.StudentId = userId.Value;
             var response = await studentRecordCommand.AddContactInformationAsync(filter);
             if (response is null) return BadRequest("Fill Up All Requirements");
             return Ok(filter);
@@ -112,12 +105,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
       
         [Authorize]
         [HttpPatch("Update Contact Details")]
-        public async Task<ActionResult<PersonalInformation>> UpdateContactDetailsAsync(ContactInformationDto contactInformationDto)
+        public async Task<ActionResult<PersonalInformation>> UpdateContactDetailsAsync( [FromBody] ContactInformationDto contactInformationDto)
         {
-            var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (Finduser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(Finduser.Value);
-            contactInformationDto.StudentId = UserId;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            contactInformationDto.StudentId = userId.Value;
             var response = await studentRecordCommand.UpdateContactInformationAsync(contactInformationDto);
             return Ok(response);
         }
@@ -126,51 +118,41 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Display Contact Details")]
         public async Task<ActionResult<PersonalInformationDto>> DispalyContactDetailsAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var response = await studentRecordCommand.DisplayContactInformationAsync(UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var response = await studentRecordCommand.DisplayContactInformationAsync(userId.Value);
             return Ok(response);
         }
        
         [Authorize]
         [HttpPost("Assign StudentID")]
-        public async Task<ActionResult<SchoolIdDto>?> StudentSchoolIdAsync(StudentMiniInfoDto data)
+        public async Task<ActionResult<SchoolIdDto>?> StudentSchoolIdAsync( [FromBody] StudentMiniInfoDto data)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var StudentId = await user.UserInfo(UserId);
-            if (StudentId is null) return BadRequest("User Cannot Find");
-            data.StudentId = StudentId.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            data.StudentId = userId.Value;
             var request = await studentRecordCommand.StudentSchoolIdAsync(data);
             return Ok(request);
         }
   
         [Authorize]
         [HttpPatch("UpdateAllDetails")]
-        public async Task<ActionResult<ProfileUpdateDto>> UpdateAllDetailsAsync(ProfileUpdateDto udpate)
+        public async Task<ActionResult<ProfileUpdateDto>> UpdateAllDetailsAsync([FromBody] ProfileUpdateDto udpate)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var StudentId = await user.UserInfo(UserId);
-            if (StudentId is null) return BadRequest("User Cannot Find");
-            udpate.StudentId = StudentId.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            udpate.StudentId = userId.Value;
             var request = await studentRecordCommand.UpdateAllDetailsAsync(udpate);           
             return Ok(request);
         }
         
         [Authorize]
         [HttpPatch("Update EnrollmentForm")]
-        public async Task<ActionResult<EnrollmentFormDto>> UpdateEnrollmentFormAsyn(EnrollmentFormDto udpate)
+        public async Task<ActionResult<EnrollmentFormDto>> UpdateEnrollmentFormAsyn( [FromBody] EnrollmentFormDto udpate)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var StudentId = await user.UserInfo(UserId);
-            if (StudentId is null) return BadRequest("User Cannot Find");
-            udpate.StudentId = StudentId.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            udpate.StudentId = userId.Value;
             var request = await studentRecordCommand.UpdateEnrollmentFormAsync(udpate);
             return Ok(request);
         }
@@ -180,10 +162,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpPatch("Student SaveInformationAsync")]
         public async Task<ActionResult<bool>> StudentSaveInformationAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if(FindUser is null) { return BadRequest("Login First"); }
-            var StudentId = Guid.Parse(FindUser.Value);
-            var request = await studentRecordCommand.StudentSaveInformationAsync(StudentId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await studentRecordCommand.StudentSaveInformationAsync(userId.Value);
             return Ok(request);
         }
         [ApiExplorerSettings(IgnoreApi = true)]
@@ -191,10 +172,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Display MiniDetailsMenu")]
         public async Task<ActionResult<MiniDisplayMenuDto>> MiniDisplayMenuAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("Login First"); }
-            var StudentId = Guid.Parse(FindUser.Value);
-            var request = await studentRecordCommand.MiniDisplayMenuAsync(StudentId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await studentRecordCommand.MiniDisplayMenuAsync(userId.Value);
             if (request is null) { return BadRequest("error"); }
             return Ok(request);
         } 
@@ -203,20 +183,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Check Information")]
         public async Task<ActionResult<bool>> CheckInformationAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("Login First"); }
-            var StudentId = Guid.Parse(FindUser.Value);
-            var request = await studentRecordCommand.CheckInformationAsync(StudentId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await studentRecordCommand.CheckInformationAsync(userId.Value);
             return Ok(request);
         }
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize]
         [HttpGet("Student PhotoID")]
         public async Task<ActionResult> StudentPhotoIDAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("Login First"); }
-            var StudentId = Guid.Parse(FindUser.Value);
-            var request = await studentRecordCommand.StudentPhotoIDAsync(StudentId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await studentRecordCommand.StudentPhotoIDAsync(userId.Value);
             if (request is null) { return BadRequest("Something went wrong"); }
             return Ok(request);
         }

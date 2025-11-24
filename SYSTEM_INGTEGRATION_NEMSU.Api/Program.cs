@@ -22,6 +22,7 @@ builder.Services.AddControllers()
      
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
+
 builder.Services.ConfigureHttpJsonOptions(options => {
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });

@@ -16,60 +16,47 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HandlingStudentsController(IHandlingStudents handlingStudents, IUserRespository user, IStudentRecordCommand studentRecord) : ControllerBase
+    public class HandlingStudentsController(IHandlingStudents handlingStudents,  IStudentRecordCommand studentRecord) : BaseController
     {
         [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize]
         [HttpGet("Display Students")]
         public async Task<ActionResult<HandlingStudentsDto>> DisplayStudents()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-          
-    
-            var request = await handlingStudents.DisplayStudentsAsync(UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await handlingStudents.DisplayStudentsAsync(userId.Value);
             return Ok(request);
         }
        
         [Authorize]
         [HttpGet("Display Students ByCourses")]
-        public async Task<ActionResult<HandlingStudentsDto>> DisplayStudentsByCourses(string CourseCode)
+        public async Task<ActionResult<HandlingStudentsDto>> DisplayStudentsByCourses( [FromQuery] string CourseCode)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var AdminId = await user.UserInfo(UserId);
-            if (AdminId is null) return BadRequest("User Cannot Find");
-            var request = await handlingStudents.DisplayStudentByCoursesAsync(AdminId.Id,CourseCode);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await handlingStudents.DisplayStudentByCoursesAsync(userId.Value,CourseCode);
             return Ok(request);
         }
       
         [Authorize]
         [HttpGet("GetAll StudentDetails")]
-        public async Task<ActionResult<HandlingAllStudentsDetailsDto>> DisplayAllStudentsDetails(Guid StudentId)
+        public async Task<ActionResult<HandlingAllStudentsDetailsDto>> DisplayAllStudentsDetails( [FromQuery] Guid StudentId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-
-            var UserId = Guid.Parse(FindUser.Value);
-            var AdminId = await user.UserInfo(UserId);
-            if (AdminId is null) return BadRequest("User not found");
-            var request = await handlingStudents.DisplayAllStudentsDetailsAsync(AdminId.Id, StudentId);      
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await handlingStudents.DisplayAllStudentsDetailsAsync(userId.Value, StudentId);      
             return Ok(request);
         }
 
       
         [Authorize]
         [HttpGet("Display Students ByDepartment")]
-        public async Task<ActionResult<HandlingStudentsDto>> DisplayStudentByDepartmentAsync(CourseDepartment department)
+        public async Task<ActionResult<HandlingStudentsDto>> DisplayStudentByDepartmentAsync( [FromQuery] CourseDepartment department)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("Login First");
-            var UserId = Guid.Parse(FindUser.Value);
-            var AdminId = await user.UserInfo(UserId);
-            if (AdminId is null) return BadRequest("User Cannot Find");
-            var request = await handlingStudents.DisplayStudentByDepartmentAsync(AdminId.Id, department);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await handlingStudents.DisplayStudentByDepartmentAsync(userId.Value, department);
             return Ok(request);
         }
     
@@ -77,12 +64,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Summary Statistics")]
         public async Task<ActionResult<SummaryStatisticsDto>> SummaryStatisticsAsync()
         {
-            var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if(Finduser is null) { return BadRequest("Login First"); }
-            var UserId = Guid.Parse(Finduser.Value);
-            var AdminId = await user.UserInfo(UserId);
-            if(AdminId is null) { return BadRequest("User Cannot Find"); }
-            var request = await handlingStudents.SummaryStatisticsAsync(AdminId.Id);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await handlingStudents.SummaryStatisticsAsync(userId.Value);
             return Ok(request);
         }
         
@@ -90,25 +74,20 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Department Statistics")]
         public async Task<ActionResult<DepartmentStatsDto>> DepartmentStatsAsync()
         {
-            var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (Finduser is null) { return BadRequest("Login First"); }
-            var UserId = Guid.Parse(Finduser.Value);
-            var AdminId = await user.UserInfo(UserId);
-            if (AdminId is null) { return BadRequest("User Cannot Find"); }
-            var request = await handlingStudents.DepartmentStatsAsync(AdminId.Id);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await handlingStudents.DepartmentStatsAsync(userId.Value);
             return Ok(request);
         }
         [Authorize]
         [HttpGet("Display StudentByYearLevel")]
-        public async Task<ActionResult<object>> StudentByYearLevelAsync( CourseProgram choice, YearLevelChoice yearLevel, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchQuery = "")
+        public async Task<ActionResult<object>> StudentByYearLevelAsync( [FromQuery] CourseProgram choice, YearLevelChoice yearLevel, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string searchQuery = "")
         {
-            var Finduser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (Finduser is null) { return BadRequest("Login First"); }
-
-            var UserId = Guid.Parse(Finduser.Value);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
 
             var result = await handlingStudents.StudentByYearLevelAsync(
-                UserId,
+                userId.Value,
                 choice,
                 yearLevel,
                 pageNumber,
@@ -123,9 +102,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             });
         }
 
-      
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("Get StudentId/{StudentId}")]
-        public async Task<ActionResult<FacultyPhotoId>> GetStudentPhoto(Guid StudentId)
+        public async Task<ActionResult<FacultyPhotoId>> GetStudentPhoto( [FromRoute] Guid StudentId)
         {
             var request = await studentRecord.StudentPhotoIDAsync(StudentId);
             return Ok(request);

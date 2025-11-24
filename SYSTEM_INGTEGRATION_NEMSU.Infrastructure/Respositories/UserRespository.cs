@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using SYSTEM_INGTEGRATION_NEMSU.Application.Interface;
@@ -17,7 +18,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         public async Task<User?> UserInfo(Guid UserId)
         {
             return await context.users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == UserId);
-        }    
+        }
+      
       
     }
 

@@ -120,7 +120,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var coursetracker = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == paymentDetails.StudentId && s.CourseId == paymentDetails.CourseId);
             if (coursetracker is null) return false;
             coursetracker.CourseTrack = Domain.Entities.Student_Rcord.CourseTrack.Course_Already_Paid;
-           
+            var announcements = await context.announcements.Where(s => s.StudentId == paymentDetails.StudentId && s.CourseId == paymentDetails.CourseId && (s.InformationType == InformationType.Warning || s.InformationType == InformationType.System)).ToListAsync();
+          if(announcements is not null)
+            {
+                foreach (var a in announcements)
+                {
+                    context.announcements.Remove(a);
+                }
+            }
+          
             var payment = new PaymentDetails
             {
                 StudentId = paymentDetails.StudentId,

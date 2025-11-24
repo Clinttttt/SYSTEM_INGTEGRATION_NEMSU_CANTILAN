@@ -1,9 +1,6 @@
-﻿
-
-<input type="checkbox" id="my_modal_provision" class="modal-toggle" />
+﻿<input type="checkbox" id="my_modal_provision" class="modal-toggle" />
 <div class="modal" role="dialog">
     <div class="modal-box max-w-md rounded-sm">
-
         <div class="flex justify-center mb-4">
             <div class="w-13 h-13 bg-orange-500 rounded-full flex items-center justify-center">
                 <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -11,13 +8,10 @@
                 </svg>
             </div>
         </div>
-
-
         <h3 class="text-xl font-semibold text-center mb-2 text-gray-800">Provisional Enrollment</h3>
         <p class="text-center text-base-content/70 mb-5 text-sm">
             You're enrolling with conditional access for 15 days
         </p>
-
         <div class="bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg p-6 mb-5">
             <div class="text-center">
                 <p class="text-white/90 text-sm font-medium mb-3">Access Valid For</p>
@@ -29,8 +23,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="alert alert-warning mb-5">
             <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -41,20 +33,41 @@
             </div>
         </div>
 
-      
-
-        <!-- Actions -->
         <div class="modal-action flex gap-2">
             <label for="my_modal_provision" class="btn btn-outline flex-1">Cancel</label>
-            <button @onclick="()=> ConfirmProvision.InvokeAsync(true)" class="text-xs btn bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white border-0 flex-1">
-                Confirm Provisional Access
+            <button @onclick="HandleConfirmProvision" disabled="@isLoading" class="text-xs btn bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white border-0 flex-1 disabled:opacity-70 disabled:cursor-not-allowed">
+                @if (isLoading)
+                {
+                    <span class="loading loading-spinner loading-sm"></span>
+                    <span>Processing...</span>
+                }
+                else
+                {
+                    <span>Confirm Provisional Access</span>
+                }
             </button>
         </div>
     </div>
 </div>
-
-@code{
+@code {
     [Parameter]
     public EventCallback<bool> ConfirmProvision { get; set; }
 
+    private bool isLoading = false;
+
+    private async Task HandleConfirmProvision()
+    {
+        isLoading = true;
+        StateHasChanged();
+
+        try
+        {
+            await ConfirmProvision.InvokeAsync(true);
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
 }

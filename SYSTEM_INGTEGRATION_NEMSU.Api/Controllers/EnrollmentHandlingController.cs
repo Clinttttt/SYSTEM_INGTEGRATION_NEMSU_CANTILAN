@@ -15,23 +15,18 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EnrollmentHandlingController(IPaymentServices enrollmenthandling, IEnrollmentServices enrollmentservices, IUserRespository respository) : ControllerBase
+    public class EnrollmentHandlingController(IPaymentServices enrollmenthandling, IEnrollmentServices enrollmentservices) : BaseController
     {
         [Authorize]
         [HttpPost("Enroll Course")]
-        public async Task<ActionResult<PaymentDetailsDto>> EnrollCourse(PaymentDetailsDto paymentdetails)
+        public async Task<ActionResult<PaymentDetailsDto>> EnrollCourse([FromBody] PaymentDetailsDto paymentdetails)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            paymentdetails.StudentId = GetUserId;
-
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            paymentdetails.StudentId = userId.Value;
             if (string.IsNullOrWhiteSpace(paymentdetails.AccountNumber) || paymentdetails.cost <= 0)
                 return BadRequest("Invalid account number or cost.");
-
             var response = await enrollmenthandling.InvoiceAsync(paymentdetails);
-
             if (response == null)
                 return Conflict("Already enrolled.");
             return Ok(response);
@@ -39,12 +34,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         [Authorize]
         [HttpPost("ProvisionEnrollCourse")]
-        public async Task<ActionResult<ProvisionDto>?> ProvisionAsync(string courseCode)
+        public async Task<ActionResult<ProvisionDto>?> ProvisionAsync([FromQuery] string courseCode)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-            var GetUserId = Guid.Parse(FindUser.Value);           
-            var StudentId = GetUserId;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var StudentId = userId.Value;
             var response = await enrollmenthandling.ProvisionAsync(StudentId, courseCode);
             if (response == null)
                 return Conflict("Already enrolled.");
@@ -53,12 +47,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         [Authorize]
         [HttpPost("Pay ProvisionAsync")]
-        public async Task<ActionResult<bool>?> PayProvisionAsync(PaymentDetailsDto paymentDetails, Guid CourseId)
+        public async Task<ActionResult<bool>?> PayProvisionAsync([FromBody] PaymentDetailsDto paymentDetails)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-            var GetUserId = Guid.Parse(FindUser.Value);
-            paymentDetails.StudentId = GetUserId;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            paymentDetails.StudentId = userId.Value;
             var response = await enrollmenthandling.PayProvisionAsync(paymentDetails);
             return Ok(response);
         }
@@ -67,14 +60,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Display AllCourseDetails")]
         public async Task<ActionResult<CourseDto>> DisplayCourse()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null) return BadRequest("User not found or Student ID missing");
-
-            var StudentId = user.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var StudentId = userId.Value;
             var response = await enrollmentservices.DisplayCourseAsync(StudentId);
             if (response is null) { return BadRequest("Nothing to Display"); }
             return Ok(response);
@@ -82,17 +70,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         [Authorize]
         [HttpGet("Get Course")]
-        public async Task<ActionResult<EnrolledCourseViewDto>> GetCourse(Guid CourseId)
+        public async Task<ActionResult<EnrolledCourseViewDto>> GetCourse([FromQuery] Guid CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null)
-            {
-                return BadRequest("Login First");
-            }
-            var UserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(UserId);
-            if (user is null) return BadRequest("User not found or Student ID missing");
-            var StudentId = user.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var StudentId = userId.Value;
             var response = await enrollmentservices.GetCourse(CourseId, StudentId);
             if (response is null) return BadRequest("Something went wrong ");
             return Ok(response);
@@ -100,16 +82,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         [Authorize]
         [HttpDelete("UnEnroll Course/{CourseId}")]
-        public async Task<IActionResult> UnenrollCourse(string CourseId)
+        public async Task<IActionResult> UnenrollCourse([FromRoute] string CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return Unauthorized("Login First");
-
-            var GetUserId = Guid.Parse(FindUser.Value);
-            var user = await respository.UserInfo(GetUserId);
-            if (user is null || string.IsNullOrEmpty(CourseId)) return BadRequest("User not found or Student ID missing");
-
-            var StudentId = user.Id;
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var StudentId = userId.Value;
             var response = await enrollmentservices.UnEnrollCourseAsync(StudentId, CourseId);
             if (response is false) return BadRequest("Something went wrong");
             return Ok(response);
@@ -117,59 +94,45 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
         [Authorize]
         [HttpPatch("Inactive Course")]
-        public async Task<ActionResult<bool>> InactiveCourse(Guid CourseId)
+        public async Task<ActionResult<bool>> InactiveCourse([FromQuery] Guid CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("User not found"); }
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.InactiveCourseAsync(UserId, CourseId);
-            if (request is false)
-            {
-                return BadRequest("Something went wrong");
-            }
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.InactiveCourseAsync(userId.Value, CourseId);
+            if (request is false) { return BadRequest("Something went wrong"); }
             return Ok(request);
 
         }
 
         [Authorize]
         [HttpPatch("Active Course")]
-        public async Task<ActionResult<bool>> ActiveCourse(Guid CourseId)
+        public async Task<ActionResult<bool>> ActiveCourse([FromQuery] Guid CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("User not found"); }
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.ActiveCourseAsync(UserId, CourseId);
-            if(request is false)
-            {
-                return BadRequest("Something went wrong");
-            }
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.ActiveCourseAsync(userId.Value, CourseId);
+            if (request is false) { return BadRequest("Something went wrong"); }
             return Ok(request);
 
         }
 
-       
+
         [Authorize]
         [HttpGet("Display PreviewCourse")]
-        public async Task<ActionResult<CourseDto>> PreviewCourseAsync(Guid CourseId)
+        public async Task<ActionResult<CourseDto>> PreviewCourseAsync([FromQuery] Guid CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("User not found"); }
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.PreviewCourseAsync(UserId, CourseId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.PreviewCourseAsync(userId.Value, CourseId);
             return Ok(request);
         }
         [Authorize]
         [HttpPost("Add Payment")]
-        public async Task<ActionResult<PaymentDetailsDto>> AddPaymentAsync(PaymentDetailsDto payment)
+        public async Task<ActionResult<PaymentDetailsDto>> AddPaymentAsync([FromBody] PaymentDetailsDto payment)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("User not found"); }
-            var UserId = Guid.Parse(FindUser.Value);
-            payment.StudentId = UserId;
-            if (UserId != payment.StudentId)
-            {
-                return BadRequest("User Not found");
-            }
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            payment.StudentId = userId.Value;         
             var request = await enrollmentservices.AddPaymentAsync(payment);
             return Ok(request);
         }
@@ -178,21 +141,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Display Payment")]
         public async Task<ActionResult<PaymentDetailsDto>> DisplayPaymentAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("User not found"); }
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DisplayPaymentAsync(UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.DisplayPaymentAsync(userId.Value);
             return Ok(request);
         }
 
         [Authorize]
         [HttpDelete("Delete PaymentDetails")]
-        public async Task<ActionResult<bool>> DeletePaymentAsync(Guid PaymentId)
+        public async Task<ActionResult<bool>> DeletePaymentAsync([FromQuery] Guid PaymentId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) { return BadRequest("User not found"); }
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DeletePaymentAsync(UserId,PaymentId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.DeletePaymentAsync(userId.Value, PaymentId);
             return Ok(request);
         }
 
@@ -202,43 +163,39 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Display AllAnnouncement")]
         public async Task<ActionResult<AnnouncementDto>> DisplayAllAnnouncementAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("User not found");
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DisplayAllAnnouncementAsync(UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.DisplayAllAnnouncementAsync(userId.Value);
             return Ok(request);
         }
 
         [Authorize]
         [HttpGet("Display CourseAnnouncement")]
-        public async Task<ActionResult<AnnouncementDto>> DisplayCourseAnnouncementAsync(Guid CourseId)
+        public async Task<ActionResult<AnnouncementDto>> DisplayCourseAnnouncementAsync([FromQuery] Guid CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("User not found");
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DisplayAnnouncementAsync(CourseId, UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.DisplayAnnouncementAsync(CourseId, userId.Value);
             return Ok(request);
         }
 
         [Authorize]
         [HttpGet("Display AnnouncementByType")]
-        public async Task<ActionResult<AnnouncementDto>> DisplayAnnouncementByType(InformationType type)
+        public async Task<ActionResult<AnnouncementDto>> DisplayAnnouncementByType([FromQuery] InformationType type)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("User not found");
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DisplayAnnouncementByType(UserId, type);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.DisplayAnnouncementByType(userId.Value, type);
             return Ok(request);
         }
 
         [Authorize]
         [HttpGet("Display DisplayAllTypeAnnouncementAsync")]
-        public async Task<ActionResult<AnnouncementDto>> DisplayAllTypeAnnouncementAsync(Guid CourseId)
+        public async Task<ActionResult<AnnouncementDto>> DisplayAllTypeAnnouncementAsync([FromQuery] Guid CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("User not found");
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DisplayAllTypeAnnouncementAsync( CourseId, UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.DisplayAllTypeAnnouncementAsync(CourseId, userId.Value);
             return Ok(request);
         }
 
@@ -246,50 +203,42 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         [HttpGet("Display AllEnrolledCourse")]
         public async Task<ActionResult<EnrollCourseDto>> DisplayAllCourseEnrolledAsync()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("User not found");
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DisplayAllCourseEnrolledAsync(UserId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.DisplayAllCourseEnrolledAsync(userId.Value);
             return Ok(request);
         }
-        
+
         [Authorize]
         [HttpPost("Generate StudentId")]
         public async Task<ActionResult<SchoolIdDto>> GenerateStudentId()
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("User not found");
-            var UserId = Guid.Parse(FindUser.Value);      
-            var request = await enrollmentservices.GenerateStudentId(UserId);
-            if(request is null) { return BadRequest("null"); }
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.GenerateStudentId(userId.Value);
+            if (request is null) { return BadRequest("null"); }
             return Ok(request);
         }
-    
+
         [Authorize]
         [HttpGet("Course TrackerAsync")]
-        public async Task<ActionResult<CourseTrack>> CourseTrackerAsync(Guid CourseId)
+        public async Task<ActionResult<CourseTrack>> CourseTrackerAsync([FromQuery] Guid CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("User not found");
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.CourseTrackerAsync(UserId, CourseId);
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.CourseTrackerAsync(userId.Value, CourseId);
             return Ok(request);
         }
-      
+
         [Authorize]
         [HttpPost("Direct EnrollAsync")]
-        public async Task<IActionResult> DirectEnrollAsync(Guid CourseId)
+        public async Task<IActionResult> DirectEnrollAsync([FromQuery] Guid CourseId)
         {
-            var FindUser = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (FindUser is null) return BadRequest("User not found");
-            var UserId = Guid.Parse(FindUser.Value);
-            var request = await enrollmentservices.DirectEnrollAsync(UserId, CourseId);
-            if(request is false) return BadRequest("Something went wrong");
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await enrollmentservices.DirectEnrollAsync(userId.Value, CourseId);
+            if (request is false) return BadRequest("Something went wrong");
             return Ok(request);
         }
-
-
-
-
     }
 }
