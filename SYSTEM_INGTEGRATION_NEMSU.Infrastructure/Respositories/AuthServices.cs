@@ -42,6 +42,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 return null;
                 
             }
+            if(string.IsNullOrEmpty(request.UserName) || string.IsNullOrEmpty(request.Password))
+            {
+                return null;
+            }
+
             var user = new User();
             var passwordhasher = new PasswordHasher<User>()
                 .HashPassword(user, request.Password);

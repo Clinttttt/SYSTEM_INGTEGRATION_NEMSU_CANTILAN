@@ -14,7 +14,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
     {
       
         [HttpPost("Register")]
-        public async Task<ActionResult<User>> RegisterAsync(UserDtos request)
+        public async Task<ActionResult<User>> RegisterAsync( [FromBody] UserDtos request)
         {
             var response = await authservice.RegisterAsync(request);
             if (response is null)
@@ -25,7 +25,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
       
         [HttpPost("Login")]
-        public async Task<ActionResult<User>> LoginAsync(LoginDto request)
+        public async Task<ActionResult<User>> LoginAsync([FromBody] LoginDto request)
         {
             var response = await authservice.LoginAsync(request);
             if (response is null)
@@ -36,7 +36,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         }
      
         [HttpPost("Refreshtoken")]
-        public async Task<ActionResult<TokenResponseDto>> RefreshTokenAsync(RefreshTokenDto request)
+        public async Task<ActionResult<TokenResponseDto>> RefreshTokenAsync([FromBody] RefreshTokenDto request)
         {
             var user = await authservice.RefreshTokenAsync(request);
             if (user is null || user.RefreshToken is null || request.RefreshToken is null)

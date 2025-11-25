@@ -10,7 +10,7 @@
 @inject IJSRuntime JS
 
 <div class="h-screen content overflow-hidden flex items-center justify-center p-4"
-style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+     style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
     <div class="w-full max-w-5xl flex rounded-3xl overflow-hidden shadow-2xl bg-white h-[90%]">
 
 
@@ -79,12 +79,12 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                     </svg>
                                 </div>
                                 <input type="@(showPassword ? "text" : "password")"
-                                @bind="Login.Password"
+                                       @bind="Login.Password"
                                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg
                                        focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                placeholder="••••••••" />
+                                       placeholder="••••••••" />
                                 <button type="button" @onclick="() => showPassword = !showPassword"
-                                class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                     @if (showPassword)
                                     {
                                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,12 +108,12 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                                 <input type="checkbox" class="w-4 h-4 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500" />
                                 <span class="ml-2 text-sm text-gray-600">Remember me</span>
                             </label>
-                            <label for="my_modal_forgotpassword" class="text-sm text-cyan-600 hover:text-cyan-700 font-semibold">Forgot password?</label>
+                            <label for="my_modal_forgotpassword" class="text-sm text-cyan-600 hover:text-cyan-700 font-semibold cursor-pointer">Forgot password?</label>
                         </div>
 
 
                         <button type="submit"
-                        class="w-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl">
+                                class="w-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl">
                             Sign In
                         </button>
 
@@ -150,8 +150,7 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
 <ForgotPasswordCodeFailed />
 <ForgotPasswordFailed />
 <ForgotPasswordSuccess />
-
-
+<FacultyLoginFailed/>
 
 @code {
     private LoginDto Login = new();
@@ -161,19 +160,22 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
     private bool render = false;
     private bool spinner = false;
     public FacultyRecordDto? facultyRecord { get; set; }
-    public bool newpassword {get;set;}
+    public bool newpassword { get; set; }
     public string? AssignedCode { get; set; }
     public string? forgotPassword { get; set; }
     public string? EmailAddress { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         var state = await authState.GetAuthenticationStateAsync();
         claims = state.User.Claims;
     }
+
     public void HandleCode(string Code)
     {
-        AssignedCode = Code;     
+        AssignedCode = Code;
     }
+
     public async Task NewPassword(string newPassword)
     {
         if (AssignedCode != forgotPassword)
@@ -188,7 +190,7 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
                 EmailAddress = EmailAddress!
             };
         newpassword = await faculty.NewPassword(dto);
-        if(newpassword is false)
+        if (newpassword is false)
         {
             await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_code_failed').checked = true;");
         }
@@ -198,7 +200,7 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
             await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_new_password').checked = false;");
         }
     }
-     
+
     public async Task HandlePassword(string email)
     {
         EmailAddress = email;
@@ -211,29 +213,35 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
         await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_new_password').checked = true;");
         await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_forgotpassword').checked = false;");
     }
-    
+
     private async Task HandleLogin()
     {
         spinner = true;
+
         if (string.IsNullOrEmpty(Login.UserName) || string.IsNullOrEmpty(Login.Password))
         {
             spinner = false;
-            Error = "Enter Username and Password";
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_faculty_login_failed').checked = true;");
             return;
         }
+
         var request = await authApi.LoginAsync(Login);
+
         if (request is null)
         {
             spinner = false;
-            Error = "User Not Found";
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_faculty_login_failed').checked = true;");
             return;
         }
+
         await storage.SetAsync("AccessToken", request.AccessToken!);
         await storage.SetAsync("RefreshToken", request.RefreshToken!);
         await Task.Delay(100);
         authState.NotifyUserChanged();
         await Task.Delay(100);
+
         var facultyRecord = await faculty.DisplayFacultyDetailsAsync();
+
         if (string.IsNullOrEmpty(facultyRecord?.FacultyPersonalInformationDto?.FirstName))
         {
             Navigation.NavigateTo("/facultyfillout");
@@ -242,8 +250,8 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
         {
             Navigation.NavigateTo("/facultymainmenu");
         }
-
     }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!render && firstRender)
@@ -254,192 +262,3 @@ style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 5
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*@page "/loginfaculty"
-
-
-@using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
-@using System.Security.Claims
-@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
-
-@using SYSTEM_INGTEGRATION_NEMSU.Application.External
-
-@using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
-
-@inject IAuthApiServices authApiService
-@inject ProtectedLocalStorage localStorage
-@inject AuthStateProvider authProvider
-@inject NavigationManager Navigation
-@rendermode InteractiveServer
-<h3>Login</h3>
-
-
-
-
-<EditForm Model="@user" OnValidSubmit="HandleLogin" FormName="logins">
-
-
-    <div>
-        <label>Username</label><br />
-        <input type="text" @bind="user.UserName" />
-    </div>
-    <div>
-        <label>Password</label><br />
-        <input type="password" @bind="user.Password" />
-    </div>
-    <button type="submit">Login</button>
-</EditForm>
-
-@if (!string.IsNullOrWhiteSpace(Error))
-{
-    <p class="text-danger">@Error</p>
-}
-
-@foreach (var claim in claims)
-{
-    <li><b>@claim.Type</b>: @claim.Value</li>
-
-}
-
-<CascadingAuthenticationState>
-    <AuthorizeView>
-        <Authorized>
-            <p>hi</p>
-        </Authorized>
-        <NotAuthorized>
-            <hello>hello</hello>
-        </NotAuthorized>
-    </AuthorizeView>
-</CascadingAuthenticationState>
-
-@code {
-    private LoginDto user = new();
-    private string? Error;
-    private bool _hasRendered = false;
-    private IEnumerable<Claim> claims = [];
-
-    protected override async Task OnInitializedAsync()
-    {
-    var state = await authProvider.GetAuthenticationStateAsync();
-    claims = state.User.Claims;
-    }
-
-    private async Task HandleLogin()
-    {
-    Error = null;
-
-    if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.Password))
-    {
-    Error = "❌ Username and password are required.";
-    return;
-    }
-
-    try
-    {
-    var result = await authApiService.LoginAsync(user);
-
-    if (result is null)
-    {
-    Error = "❌ Invalid username or password.";
-    return;
-    }
-
-    await localStorage.SetAsync("access_token", result.AccessToken!);
-    await localStorage.SetAsync("refresh_token", result.RefreshToken!);
-
-    await Task.Delay(100); 
-    authProvider.NotifyUserChanged();
-    await Task.Delay(500); // gives time for state update
-    Navigation.NavigateTo("/Menu", forceLoad: true);
-    }
-    catch (Exception ex)
-    {
-    Error = "❌ Login failed.";
-    Console.WriteLine("Login error: " + ex.Message);
-    }
-    }
-
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-    if (firstRender && !_hasRendered)
-    {
-    _hasRendered = true;
-
-    try
-    {
-    var result = await localStorage.GetAsync<string>("access_token");
-    var token = result.Success ? result.Value : null;
-
-    if (!string.IsNullOrWhiteSpace(token))
-    {
-    Console.WriteLine(" Access Token: " + token);
-
-
-    }
-    }
-    catch (Exception ex)
-    {
-    Console.WriteLine("Storage error: " + ex.Message);
-    }
-
-    StateHasChanged();
-    }
-    }
-}
-
-
-*@

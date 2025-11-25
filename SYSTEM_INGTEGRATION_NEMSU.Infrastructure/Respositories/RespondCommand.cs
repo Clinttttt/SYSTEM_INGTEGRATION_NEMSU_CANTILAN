@@ -106,7 +106,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Message = announcement.Message,
                 Type = AnnouncementType.instructor,
                 InformationType = announcement.InformationType,
-                DateCreated = DateTime.UtcNow,
+                DateCreated = DateTime.UtcNow.AddHours(8),
                 CourseCode = course.CourseCode,
                 StudentId = null
             };
@@ -206,7 +206,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         }
         public async Task CheckUnpaidInvoicesAsync()
         {
-            var datenow = DateTime.UtcNow;
+            var datenow = DateTime.UtcNow.AddHours(8);
             var expiredInvoices = await context.invoice
                 .Where(s => s.Status == InvoiceStatus.Unpaid &&
                             s.PaymentDeadline < datenow )
@@ -264,7 +264,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                         Message = $"Please ensure payment for the provision invoice is" +
                         $" completed by {i.PaymentDeadline}, to avoid course unenrollment",
                         InformationType = InformationType.Warning,
-                        DateCreated = DateTime.UtcNow,
+                        DateCreated = DateTime.UtcNow.AddHours(8),
                     };
                     context.announcements.Add(announcement);
                     await context.SaveChangesAsync();

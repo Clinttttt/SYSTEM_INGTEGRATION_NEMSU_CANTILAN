@@ -3,15 +3,16 @@
 @rendermode InteractiveServer
 @inject IAuthApiServices Authservice
 @inject NavigationManager navigationManager
+@inject IJSRuntime JS
 
 <div class="relative h-screen content bg-gradient-to-br overflow-y-hidden from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-6">
     <div class="w-full max-w-7xl flex items-center h-screen overflow-y-hidden ">
         <div class="grid lg:grid-cols-3 gap-8 w-full h-screen mt-10 items-start p-5">
 
-          
+
             <div class="lg:col-span-1">
                 <div class="bg-white rounded-2xl shadow-2xl p-3 border border-slate-300">
-                 
+
                     <div class="text-center ">
                         <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,7 +26,7 @@
 
                     <EditForm Model="@User" OnValidSubmit="@Registers" FormName="register">
                         <div class="space-y-4">
-                          
+
                             <div>
                                 <label class="block text-sm font-normal text-slate-700 mb-2">Username</label>
                                 <div class="relative">
@@ -41,7 +42,7 @@
                                 </div>
                             </div>
 
-                        
+
                             <div>
                                 <label class="block text-sm font-normal text-slate-700 mb-2">Password</label>
                                 <div class="relative">
@@ -56,7 +57,7 @@
                                 </div>
                             </div>
 
-                        
+
                             <div>
                                 <label class="block text-sm font-normal text-slate-700 mb-2">Confirm Password</label>
                                 <div class="relative">
@@ -71,14 +72,14 @@
                                 </div>
                             </div>
 
-                          
 
-                        
+
+
                             <button type="submit" class="w-full bg-gradient-to-r from-cyan-600 to-teal-700 hover:from-teal-700 hover:to-cyan-800 text-white font-semibold py-2 rounded-lg transition-all shadow-lg hover:shadow-xl mt-2">
                                 Create Account
                             </button>
 
-                        
+
                             <div class="text-center pt-4 border-t border-slate-200">
                                 <p class="text-sm text-slate-600">
                                     Already have an account?
@@ -104,7 +105,7 @@
             }
             <div class="lg:col-span-1 flex items-center justify-center scale-100  -mt-1">
                 <ul class="space-y-8">
-                 
+
                     <li class="flex items-center gap-4">
                         <div class="flex-1 text-right">
                             <div class="inline-block bg-white border-1 border-cyan-500 rounded-lg px-4 py-3 shadow-md">
@@ -122,7 +123,7 @@
                         <div class="flex-1"></div>
                     </li>
 
-                 
+
                     <li class="flex items-center gap-4">
                         <div class="flex-1"></div>
                         <div class="flex flex-col items-center">
@@ -140,7 +141,7 @@
                         </div>
                     </li>
 
-                  
+
                     <li class="flex items-center gap-4">
                         <div class="flex-1 text-right">
                             <div class="inline-block bg-white border-1 border-cyan-500 rounded-lg px-4 py-3 shadow-md">
@@ -158,7 +159,7 @@
                         <div class="flex-1"></div>
                     </li>
 
-                 
+
                     <li class="flex items-center gap-4">
                         <div class="flex-1"></div>
                         <div class="flex flex-col items-center">
@@ -176,13 +177,13 @@
                         </div>
                     </li>
 
-                  
+
                 </ul>
             </div>
 
-        
+
             <div class="lg:col-span-1 space-y-5 ">
-                
+
                 <div class="relative  bg-gradient-to-br from-cyan-500 to-teal-600 rounded-2xl shadow-xl p-6 border border-slate-300 text-center">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
                     <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
@@ -195,7 +196,7 @@
                     <div class="h-1 w-16 bg-amber-500 mx-auto rounded-full"></div>
                 </div>
 
-              
+
 
 
                 <div class="bg-gradient-to-br from-cyan-50 to-slate-50 border-2 border-cyan-200 rounded-2xl p-6 shadow-lg">
@@ -215,7 +216,7 @@
                     </div>
                 </div>
 
-               
+
                 <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-3 -mt-3 scale-80">
                     <div class="flex items-start gap-3">
                         <svg class="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,15 +233,19 @@
     </div>
 </div>
 
+<RegisterFailed/>
 @code {
     public UserDtos User { get; set; } = new();
     public string? Error { get; set; }
     public bool spinner = false;
+    private string ErrorMessage { get; set; } = "Registration failed. Please check your information and try again.";
+
     public async Task Registers()
     {
         if (User.Password != User.ConfirmPassword)
         {
-            Error = "Passwords do not match.";
+            ErrorMessage = "Passwords do not match. Please try again.";
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_register_failed').checked = true");
             return;
         }
         var spinnerTask = Task.Delay(50).ContinueWith(_ =>
@@ -252,9 +257,10 @@
         User.Role = UserRole.Student;
         var Results = await Authservice.RegisterAsync(User!);
 
-        if (Results is null)
+        if (Results is null || string.IsNullOrEmpty(Results.Username) || string.IsNullOrEmpty(Results.Password))
         {
-            Error = "User Already Exists";
+            ErrorMessage = "Registration failed. Username may already exist or server error occurred.";
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_register_failed').checked = true");
             spinner = false;
         }
         else

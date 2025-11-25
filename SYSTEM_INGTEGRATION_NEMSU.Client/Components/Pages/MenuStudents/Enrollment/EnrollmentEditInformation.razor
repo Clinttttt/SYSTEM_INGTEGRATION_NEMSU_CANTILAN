@@ -8,16 +8,15 @@
         <ValidationSummary />
 
         <div class="modal-box w-11/12 max-w-5xl max-h-[90vh] p-0 overflow-hidden rounded-md">
-            <!-- HEADER -->
+        
             <div class="bg-gradient-to-r from-cyan-600 to-teal-700 p-6 sticky top-0 z-10">
                 <h3 class="text-2xl font-bold text-white">Edit Student Details</h3>
                 <p class="text-teal-100 text-sm mt-1">Update your personal and academic information</p>
             </div>
 
-            <!-- BODY -->
+        
             <div class="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
 
-                <!-- PERSONAL INFORMATION -->
                 <div class="bg-gray-50 rounded-lg p-5 border border-gray-200 mb-6">
                     <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                         <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
@@ -79,7 +78,7 @@
                     </div>
                 </div>
 
-                <!-- CONTACT INFORMATION -->
+           
                 <div class="bg-gray-50 rounded-lg p-5 border border-gray-200 mb-6">
                     <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                         <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
@@ -107,7 +106,7 @@
                     </div>
                 </div>
 
-                <!-- ACADEMIC INFORMATION -->
+              
                 <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
                     <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
                         <span class="bg-teal-100 text-teal-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">3</span>
@@ -167,12 +166,12 @@
                             <InputSelect @bind-Value="studentUpdateInformation.Program" class="inputfield">
                                 <option value="">-- Select Program --</option>
 
-                                <!-- DCS -->
+                             
                                 <option value="@CourseProgram.Computer_Engineering">Bachelor of Science in Computer Engineering</option>
                                 <option value="@CourseProgram.Computer_Science">Bachelor of Science in Computer Science</option>
                                 <option value="@CourseProgram.Information_Technology">Bachelor of Science in Information Technology</option>
 
-                                <!-- DIT -->
+                         
                                 <option value="@CourseProgram.BSIT_ArchitecturalDraftingTechnology">BS in Industrial Technology Major in Architectural Drafting Technology</option>
                                 <option value="@CourseProgram.BSIT_AutomotiveTechnology">BS in Industrial Technology Major in Automotive Technology</option>
                                 <option value="@CourseProgram.BSIT_ComputerTechnology">BS in Industrial Technology Major in Computer Technology</option>
@@ -182,13 +181,13 @@
                                 <option value="@CourseProgram.BSIT_GarmentsTechnology">BS in Industrial Technology Major in Garments Technology</option>
                                 <option value="@CourseProgram.BSIT_MechanicalTechnology">BS in Industrial Technology Major in Mechanical Technology</option>
 
-                                <!-- DGTT - BSEd -->
+                             
                                 <option value="@CourseProgram.BSEd_Filipino">Bachelor of Secondary Education Major in Filipino</option>
                                 <option value="@CourseProgram.BSEd_English">Bachelor of Secondary Education Major in English</option>
                                 <option value="@CourseProgram.BSEd_Mathematics">Bachelor of Secondary Education Major in Mathematics</option>
                                 <option value="@CourseProgram.BSEd_Science">Bachelor of Secondary Education Major in Science</option>
 
-                                <!-- DGTT - BTVTEd -->
+                         
                                 <option value="@CourseProgram.BTVTEd_AutomotiveTechnology">BTVTEd Major in Automotive Technology</option>
                                 <option value="@CourseProgram.BTVTEd_GarmentsAndFashionDesign">BTVTEd Major in Garments and Fashion Design</option>
                                 <option value="@CourseProgram.BTVTEd_ElectricalTechnology">BTVTEd Major in Electrical Technology</option>
@@ -196,14 +195,14 @@
                                 <option value="@CourseProgram.BTVTEd_FoodAndServicesManagement">BTVTEd Major in Food and Services Management</option>
                                 <option value="@CourseProgram.BTVTEd_MechanicalTechnology">BTVTEd Major in Mechanical Technology</option>
 
-                                <!-- DGTT - BTLEd -->
+                              
                                 <option value="@CourseProgram.BTLEd_HomeEconomics">BTLEd Major in Home Economics</option>
                                 <option value="@CourseProgram.BTLEd_IndustrialArts">BTLEd Major in Industrial Arts</option>
 
-                                <!-- CCJE -->
+                             
                                 <option value="@CourseProgram.BS_Criminology">Bachelor of Science in Criminology</option>
 
-                                <!-- DBM -->
+                       
                                 <option value="@CourseProgram.BSHM_HospitalityManagement">Bachelor of Science in Hospitality Management</option>
                                 <option value="@CourseProgram.BSTM_TourismManagement">Bachelor of Science in Tourism Management</option>
                                 <option value="@CourseProgram.BSBA_FinancialManagement">BSBA Major in Financial Management</option>
@@ -216,7 +215,7 @@
                 </div>
             </div>
 
-            <!-- FOOTER -->
+            
             <div class="bg-gray-50 border-t border-gray-200 p-5 flex justify-end gap-3 sticky bottom-0">
                 <form method="dialog">
                     <button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium">

@@ -69,7 +69,7 @@
 
 
                 <div class="flex justify-between text-sm mt-2">
-                    <label for="my_modal_forgotpassword" class="text-amber-600 hover:underline">Forgot password?</label>
+                    <label for="my_modal_forgotpassword" class="text-amber-600 hover:underline cursor-pointer">Forgot password?</label>
                     <a href="/register" class="text-amber-600 hover:underline">Sign up</a>
                 </div>
             </div>
@@ -159,7 +159,7 @@
 <ForgotPasswordCodeFailed />
 <ForgotPasswordFailed />
 <ForgotPasswordSuccess />
-
+<LoginFailed />
 
 
 @code {
@@ -167,10 +167,12 @@
     public string? Error { get; set; }
     private bool Hasrender = false;
     private IEnumerable<Claim> claims = [];
-    public bool spinner = false; public bool newpassword { get; set; }
+    public bool spinner = false;
+    public bool newpassword { get; set; }
     public string? AssignedCode { get; set; }
     public string? forgotPassword { get; set; }
     public string? EmailAddress { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         var state = await authStateProvider.GetAuthenticationStateAsync();
@@ -182,6 +184,7 @@
     {
         AssignedCode = Code;
     }
+
     public async Task NewPassword(string newPassword)
     {
         if (AssignedCode != forgotPassword)
@@ -219,12 +222,13 @@
         await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_new_password').checked = true;");
         await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_forgotpassword').checked = false;");
     }
+
     private async Task HandleLogin()
     {
 
         if (string.IsNullOrEmpty(login.UserName) || string.IsNullOrEmpty(login.Password))
         {
-            Error = "Empty bai";
+            await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_login_failed').checked = true;");
             return;
         }
         try
@@ -235,7 +239,7 @@
             var results = await authServices.LoginAsync(login);
             if (results is null)
             {
-                Error = "Invalid Username or Password";
+                await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_login_failed').checked = true;");
                 spinner = false;
                 return;
             }
@@ -272,6 +276,7 @@
             Console.WriteLine("Something went wrong:" + ex.Message);
         }
     }
+
     protected override async Task OnAfterRenderAsync(bool render)
     {
         if (render && !Hasrender)
@@ -299,4 +304,3 @@
 
 
 }
-

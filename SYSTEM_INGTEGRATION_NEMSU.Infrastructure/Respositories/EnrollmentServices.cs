@@ -388,7 +388,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 StudentId = payment.StudentId,
                 AccountNumber = payment.AccountNumber ?? "N/A",
                 paymentMethod = payment.paymentMethod,
-                PurchaseDate = DateTime.UtcNow,
+                PurchaseDate = DateTime.UtcNow.AddHours(8),
                 CourseCode = payment.CourseCode,
                 Cost = payment.cost,
                 CategoryId = course?.CategoryId,
