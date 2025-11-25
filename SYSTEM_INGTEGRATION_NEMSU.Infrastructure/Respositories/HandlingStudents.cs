@@ -249,26 +249,26 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         }
 
         public async Task<(List<HandlingStudentsDto> Students, int TotalCount)> StudentByYearLevelAsync(
-            Guid AdminId,
-            CourseProgram choice,
-            YearLevelChoice yearLevel,
-            int pageNumber = 1,
-            int pageSize = 10,
-            string searchQuery = "")
+     Guid AdminId,
+     CourseProgram choice,
+     YearLevelChoice yearLevel,
+     int pageNumber = 1,
+     int pageSize = 10,
+     string searchQuery = "")
         {
-           
             var query = context.enrollcourse
                 .Include(s => s.Student)
-                .ThenInclude(s => s.StudentAcademicDetails)
+                    .ThenInclude(s => s.StudentAcademicDetails)
                 .Include(s => s.Course)
                 .Include(s => s.Student)
-                .ThenInclude(s => s.StudentContactDetails)
+                    .ThenInclude(s => s.StudentContactDetails)
+                .Include(s => s.Student)
+                    .ThenInclude(s => s.StudentsDetails)
                 .AsNoTracking()
                 .Where(s => s.Student.StudentAcademicDetails!.Program == choice
                     && s.Course.AdminId == AdminId
                     && s.Student.StudentAcademicDetails.YearLevel == yearLevel);
 
-         
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
                 var search = searchQuery.ToLower();
@@ -281,35 +281,54 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 );
             }
 
-            
-            var totalCount = await query.CountAsync();
+          
+            var totalCount = await query
+                .Select(s => s.StudentId)
+                .Distinct()
+                .CountAsync();
 
-
-            var students = await query
+           
+            var studentIds = await query
+                .OrderBy(s => s.Student.StudentsDetails!.LastName)
+                .Select(s => s.StudentId)
+                .Distinct()
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .ToListAsync();
+
+           
+            var enrollments = await context.enrollcourse
+                .Include(s => s.Student)
+                    .ThenInclude(s => s.StudentAcademicDetails)
+                .Include(s => s.Course)
+                .Include(s => s.Student)
+                    .ThenInclude(s => s.StudentContactDetails)
+                .Include(s => s.Student)
+                    .ThenInclude(s => s.StudentsDetails)
+                .AsNoTracking()
+                .Where(s => studentIds.Contains(s.StudentId))
+                .ToListAsync(); 
+
+           
+            var students = enrollments
+                .GroupBy(s => s.StudentId)
+                .Select(g => g.First())
                 .Select(s => new HandlingStudentsDto
                 {
-                    StudentName = s.Student.StudentsDetails!.FirstName + " " +
-                                 s.Student.StudentsDetails.MiddleName + " " +
-                                 s.Student.StudentsDetails.LastName,
+                    StudentName = $"{s.Student.StudentsDetails!.FirstName} {s.Student.StudentsDetails.MiddleName} {s.Student.StudentsDetails.LastName}",
                     StudentSchoolId = s.Student.StudentAcademicDetails!.StudentSchoolId,
                     CourseTitle = s.Course.Title!,
                     DateEnrolled = s.DateEnrolled,
                     Email = s.Student.StudentContactDetails!.EmailAddress,
                     studentCourseStatus = s.StudentCourseStatus,
-                    Coursedepartment = s.Course.Department.GetDisplayName(),
+                    Coursedepartment = s.Course.Department.GetDisplayName(), 
                     ProfileColor = s.ProfileColor,
                     StudentId = s.StudentId,
                 })
-                .ToListAsync();
-      
+                .ToList();
+
             return (students, totalCount);
         }
-     
-
-
-
 
 
 
