@@ -109,5 +109,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecord.StudentPhotoIDAsync(StudentId);
             return Ok(request);
         }
+      
     }
 }

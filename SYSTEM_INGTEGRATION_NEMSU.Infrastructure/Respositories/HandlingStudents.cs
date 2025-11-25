@@ -79,6 +79,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     Email = s.Student.StudentContactDetails != null ? s.Student.StudentContactDetails.EmailAddress : "N/A",
                     studentCourseStatus = s.StudentCourseStatus,
                     ProfileColor = s.ProfileColor,
+                    enrollmentStatus = s.EnrollmentStatus,
                 })
                 .ToListAsync();
 
@@ -305,8 +306,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
       
             return (students, totalCount);
         }
+     
 
-      
+
+
 
 
 

@@ -27,6 +27,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
                    int pageSize = 10,
                    string searchQuery = "");
 
-
+       
     }
 }

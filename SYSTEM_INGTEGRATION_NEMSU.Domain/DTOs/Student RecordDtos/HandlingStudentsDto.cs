@@ -19,5 +19,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public StudentCourseStatus studentCourseStatus { get; set; }
         public string? Coursedepartment { get; set; }
         public string? ProfileColor { get; set; }
+        public EnrollmentStatus enrollmentStatus { get; set; }
     }
 }

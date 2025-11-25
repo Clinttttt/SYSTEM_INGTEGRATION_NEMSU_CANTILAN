@@ -34,6 +34,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
         public CourseStatus CourseStatus { get; set; }
         public EnrolledCourseStatus enrolledCourseStatus { get; set; }
         public CourseTrack Status { get; set; }
+      
     }
 
 public class CategoryDto

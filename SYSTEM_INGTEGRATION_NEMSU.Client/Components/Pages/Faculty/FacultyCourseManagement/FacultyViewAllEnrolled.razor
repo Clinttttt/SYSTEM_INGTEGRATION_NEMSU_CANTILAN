@@ -194,10 +194,9 @@
                                                     <div class="relative">
                                                         <div class="avatar placeholder ">
 
-                                                            @*   <span class="text-2xl   font-extrabold">@GetInitials(student.Name)</span>*@
-                                                            @if (!string.IsNullOrEmpty(StudentPhoto))
+                                                            @if (StudentPhotos.ContainsKey(student.StudentId) && !string.IsNullOrEmpty(StudentPhotos[student.StudentId]))
                                                             {
-                                                                <img src="@StudentPhoto" class=" bg-contain rounded-full !w-16 !h-16 flex items-center justify-center shadow-xl ring-2 " style="box-shadow: 0 0 0 1px @student.ProfileColor;" />
+                                                                <img src="@StudentPhotos[student.StudentId]" class=" bg-contain rounded-full !w-16 !h-16 flex items-center justify-center shadow-xl ring-2 " style="box-shadow: 0 0 0 1px @student.ProfileColor;" />
                                                             }
                                                             else
                                                             {
@@ -233,7 +232,7 @@
                                                             </svg>
                                                         </div>
                                                         <div class="flex-1">
-                                                            <p class="text-xs text-gray-500 font-semibold mb-0.5">Enrolled</p>
+                                                            <p class="text-xs text-gray-500 font-semibold mb-0.5">@student.enrollmentStatus.GetDisplayName()</p>
                                                             <p class="text-xs text-gray-700 font-medium">@student.DateEnrolled.ToString("MMM dd, yyyy")</p>
                                                         </div>
                                                     </div>
@@ -364,7 +363,6 @@
     [Parameter]
     public Guid CourseId { get; set; }
 
-
     public bool Hasrender = false;
     private bool IsLoading = true;
     private string SearchQuery = "";
@@ -377,10 +375,11 @@
     private string? Error { get; set; }
     public FacultyPhotoId? facultyPhoto { get; set; }
     public string? PreviewUrl { get; set; }
-    public FacultyPhotoId? studentphoto { get; set; }
-    public string? StudentPhoto { get; set; }
-    private List<HandlingStudentsDto>? FilteredStudents = new();
 
+   
+    private Dictionary<Guid, string> StudentPhotos { get; set; } = new();
+
+    private List<HandlingStudentsDto>? FilteredStudents = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -393,31 +392,30 @@
             {
                 PreviewUrl = $"data:{facultyPhoto?.PhotoContentType};base64,{Convert.ToBase64String(facultyPhoto!.Photo)}";
             }
-            Course = await handlingApiCourse.GetCourseAsync(CourseId);        
+
+            Course = await handlingApiCourse.GetCourseAsync(CourseId);
             studentlist = await handlingStudentsApi.DisplayStudentByCoursesAsync(Course!.CourseCode!);
             quickStats = await handlingApiCourse.DisplayStatsAsync(Course.CourseCode!);
             StudentEnrolled = studentlist!.Count();
-            await  LoadStudents();
-            foreach (var f in FilteredStudents!)
+            await LoadStudents();
+
+          
+            foreach (var student in FilteredStudents!)
             {
-                studentphoto = await handlingStudents.StudentPhotoIDAsync(f.StudentId);
+                var studentphoto = await handlingStudents.StudentPhotoIDAsync(student.StudentId);
                 if (studentphoto?.Photo is not null)
                 {
-                    StudentPhoto = $"data:{studentphoto?.PhotoContentType};base64,{Convert.ToBase64String(studentphoto!.Photo)}";
+                    StudentPhotos[student.StudentId] = $"data:{studentphoto?.PhotoContentType};base64,{Convert.ToBase64String(studentphoto!.Photo)}";
                 }
             }
-           
-        }
-        StateHasChanged();
 
+            StateHasChanged();
+        }
     }
-   
 
     private async Task LoadStudents()
     {
         IsLoading = true;
-
-    
         await Task.Delay(500);
         FilteredStudents = studentlist;
         IsLoading = false;
@@ -450,10 +448,4 @@
     {
         navigation.NavigateTo($"/studentprofile/{studentId}");
     }
-
- 
 }
-
-
-
-

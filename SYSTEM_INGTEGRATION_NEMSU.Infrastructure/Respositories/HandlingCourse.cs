@@ -109,12 +109,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .Include(s => s.Category)          
                 .FirstOrDefaultAsync(s => s.AdminId == request.Id && s.Id == CourseId);
             if (GetCourse is null) return null;
-            var liststudent = await context.enrollcourse.Where(s => s.CourseId == CourseId).ToListAsync();
+  
             var r = GetCourse.Adapt<CourseDto>();
            
             r.Id = GetCourse.Id;
             r.CategoryId = GetCourse.Id;
             r.CourseStatus = GetCourse.CourseStatus;
+
             return r;
         }
         public async Task<bool> DeleteCourseAsycnc(Guid AdminId, Guid course)
