@@ -25,7 +25,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Client.Services
             CurrentStudents,
             AllStudents,
             ByDepartment,
-            SearchStudents
+            SearchStudents,
+            BillRecord
         }
         public void SetViewStudent(StudentsView studentsView)
         {

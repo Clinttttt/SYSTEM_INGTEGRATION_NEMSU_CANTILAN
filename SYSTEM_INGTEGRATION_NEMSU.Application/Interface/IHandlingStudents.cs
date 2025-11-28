@@ -26,7 +26,8 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
                    int pageNumber = 1,
                    int pageSize = 10,
                    string searchQuery = "");
+        Task<List<StudendBillRecordDtoDto>> StudentRecordAsync(Guid AdminId);
 
-       
+
     }
 }

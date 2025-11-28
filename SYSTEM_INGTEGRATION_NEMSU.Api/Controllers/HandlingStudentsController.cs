@@ -109,6 +109,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             var request = await studentRecord.StudentPhotoIDAsync(StudentId);
             return Ok(request);
         }
-      
+        
+        [Authorize]
+        [HttpGet("Student BillRecord")]
+        public async Task<ActionResult<StudendBillRecordDtoDto>> StudentRecordAsync()
+        {
+            var userId = GetUserId();
+            if (userId is null) return Unauthorized("Login First");
+            var request = await handlingStudents.StudentRecordAsync(userId.Value);
+            return Ok(request);
+        }
+
     }
 }

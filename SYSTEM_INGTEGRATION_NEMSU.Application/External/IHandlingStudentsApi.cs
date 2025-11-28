@@ -11,7 +11,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
 {
-   public interface IHandlingStudentsApi
+    public interface IHandlingStudentsApi
     {
         Task<List<HandlingStudentsDto>?> DisplayStudentsAsync();
         Task<List<HandlingStudentsDto>?> DisplayStudentByCoursesAsync(string CourseCode);
@@ -26,5 +26,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
            int pageSize = 10,
            string searchQuery = "");
         Task<FacultyPhotoId?> StudentPhotoIDAsync(Guid StudentId);
+        Task<List<StudendBillRecordDtoDto>?> StudentRecordAsync();
     }
 }

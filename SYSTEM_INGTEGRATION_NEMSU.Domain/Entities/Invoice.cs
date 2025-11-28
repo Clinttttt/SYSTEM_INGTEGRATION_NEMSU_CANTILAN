@@ -17,7 +17,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         [JsonIgnore]
         public User Student { get; set; } = null!;
 
-      
         public Guid CourseId { get; set; }
         [JsonIgnore]
         public Course Course { get; set; } = null!;

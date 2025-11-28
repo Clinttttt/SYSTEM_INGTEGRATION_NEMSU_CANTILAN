@@ -15,10 +15,10 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 {
-   public class HandlingStudentsApi : IHandlingStudentsApi
+    public class HandlingStudentsApi : IHandlingStudentsApi
     {
         private readonly HttpClient _http;
-     
+
         private readonly IAuthHelper _authHelper;
         public HandlingStudentsApi(HttpClient http, IAuthHelper authHelper)
         {
@@ -43,7 +43,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             return await _http.GetFromJsonAsync<HandlingAllStudentsDetailsDto>($"api/HandlingStudents/GetAll%20StudentDetails?StudentId={StudentId}");
 
         }
-        public async Task<List<HandlingStudentsDto>?> DisplayStudentByDepartmentAsync( CourseDepartment department)
+        public async Task<List<HandlingStudentsDto>?> DisplayStudentByDepartmentAsync(CourseDepartment department)
         {
             await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<List<HandlingStudentsDto>>($"api/HandlingStudents/Display%20Students%20ByDepartment?department={department}");
@@ -58,7 +58,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await _authHelper.SetAuthHeaderAsync(_http);
             return await _http.GetFromJsonAsync<List<DepartmentStatsDto>>("api/HandlingStudents/Department%20Statistics");
         }
-    
+
         public async Task<StudentsByYearLevelResponse?> StudentByYearLevelAsync(
         CourseProgram choice,
         YearLevelChoice yearLevel,
@@ -67,15 +67,19 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         string searchQuery = "")
         {
             await _authHelper.SetAuthHeaderAsync(_http);
-
             var url = $"api/HandlingStudents/Display%20StudentByYearLevel?choice={choice}&yearLevel={yearLevel}&pageNumber={pageNumber}&pageSize={pageSize}&searchQuery={Uri.EscapeDataString(searchQuery)}";
 
             return await _http.GetFromJsonAsync<StudentsByYearLevelResponse>(url);
         }
         public async Task<FacultyPhotoId?> StudentPhotoIDAsync(Guid StudentId)
-        {         
+        {
             return await _http.GetFromJsonAsync<FacultyPhotoId>($"api/HandlingStudents/Get%20StudentId/{StudentId}");
         }
-     
+        public async Task<List<StudendBillRecordDtoDto>?> StudentRecordAsync()
+        {
+            await _authHelper.SetAuthHeaderAsync(_http);
+            return await _http.GetFromJsonAsync<List<StudendBillRecordDtoDto>>("api/HandlingStudents/Student%20BillRecord");
+            
+        }
     }
 }

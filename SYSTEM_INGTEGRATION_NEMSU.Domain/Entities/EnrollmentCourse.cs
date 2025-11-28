@@ -19,6 +19,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public Guid CourseId { get; set; }
         [JsonIgnore] 
         public Course Course { get; set; } = null!;
+        public Guid? InvoiceId { get; set; }
+        [JsonIgnore]
+        public Invoice Invoice { get; set; } = null!;
         public string? ProfileColor { get; set; }
         [JsonIgnore]
         public Category? Category { get; set; }

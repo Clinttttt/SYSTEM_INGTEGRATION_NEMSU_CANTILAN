@@ -76,6 +76,24 @@
                         <p class="text-gray-500 text-xs">Manage and view student Enrolled by Department</p>
                     </div>
                 }
+                else if (pageState.Studentsview == PageState.StudentsView.BillRecord)
+                {
+                    <div class="flex justify-between">
+                        <div>
+                            <button @onclick="()=> pageState.SetViewStudent(StudentsView.CurrentStudents)" class="cursor-pointer inline-flex items-center gap-2 text-teal-500 hover:text-teal-700 font-semibold text-sm mb-4">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Back to Dashboard
+                            </button>
+                        </div>
+                        <div class="mb-5 animate-fade-in">
+                            <h1 class="text-2xl font-semibold text-teal-500 mb-0.5">Student Invoices</h1>
+                            <p class="text-gray-500 text-xs">View all student invoice records</p>
+                        </div>
+                    </div>
+
+                }
                 else
                 {
                     <div class="mb-5 animate-fade-in">
@@ -85,8 +103,8 @@
                 }
 
 
-                <div class="grid grid-cols-4 gap-3 mb-4 ">
-                    <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-3 border border-cyan-100">
+                <div class="grid grid-cols-5 gap-3 mb-4 ">
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-3 border border-teal-100">
                         <label class="block text-[10px] font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Search Students</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
@@ -98,11 +116,24 @@
                                    @bind="SearchQuery"
                                    @bind:event="oninput"
                                    @onkeyup="FilterStudent"
-                                   class="w-[100%] pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-cyan-400 focus:ring-1 focus:ring-cyan-200 outline-none transition-all"
+                                   class="w-[100%] pl-9 pr-3 py-1.5 text-xs border border-gray-200 rounded-md focus:border-teal-400 focus:ring-1 focus:ring-teal-200 outline-none transition-all"
                                    placeholder="Search by name, ID, or email..." />
                         </div>
                     </div>
+                    <NavLink @onclick="()=> pageState.SetViewStudent(PageState.StudentsView.BillRecord)" class="btn h-full bg-teal-500 btn-outline btn-teal-600 text-white rounded-lg shadow-sm p-3">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex flex-row items-center gap-3">
+                                <h1 class="text-center font-normal text-xl">Invoice Record</h1>
+                            </div>
+                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h8l4 4v10a2 2 0 01-2 2z" />
+                                </svg>
 
+                            </div>
+                        </div>
+                    </NavLink>
                     <NavLink @onclick="()=> pageState.SetViewStudent(PageState.StudentsView.AllStudents)" class="btn h-full bg-teal-500 btn-outline btn-teal-600 text-white rounded-lg shadow-sm p-3">
                         <div class="flex items-center justify-between gap-2">
                             <div class="flex flex-row items-center gap-3">
@@ -193,6 +224,9 @@
                     else if (pageState.Studentsview == PageState.StudentsView.AllStudents)
                     {
                         <FacultyAllStudents />
+                    }else if(pageState.Studentsview == PageState.StudentsView.BillRecord)
+                    {
+                        <FacultyBillRecord />
                     }
                 }
             </div>

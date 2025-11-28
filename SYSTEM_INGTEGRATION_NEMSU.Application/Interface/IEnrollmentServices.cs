@@ -13,7 +13,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.Interface
 {
     public interface IEnrollmentServices
     {
-        Task<EnrollCourseDto?> EnrollCourseAsync(Guid studentId, string courseCode, EnrollmentStatus status);
+        Task<EnrollCourseDto?> EnrollCourseAsync(Guid InvoiceId, Guid studentId, string courseCode, EnrollmentStatus status);
         Task<IEnumerable<CourseDto>?> DisplayCourseAsync(Guid StudentId);
         Task<List<EnrollCourseDto>?> DisplayAllCourseEnrolledAsync(Guid StudentId);
         Task<bool> UnEnrollCourseAsync(Guid studentId, string courseCode);

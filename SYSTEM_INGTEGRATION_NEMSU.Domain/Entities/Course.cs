@@ -29,7 +29,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.Entities
         public Guid? FacultyPersonalsId { get; set; }
         [JsonIgnore]
         public FacultyPersonalInformation? FacultyPersonals { get; set; }
-   
 
         public Guid? CategoryId { get; set; }
         [JsonIgnore]

@@ -101,7 +101,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var retrieve = new HandlingAllStudentsDetailsDto
             {
                 StudentId = request.StudentId,
-                FullName = request.Student.StudentsDetails != null ? request.Student.StudentsDetails.FirstName + " "  + request.Student.StudentsDetails.MiddleName + "," + " " +  request.Student.StudentsDetails.LastName : "N/A",
+                FullName = request.Student.StudentsDetails != null ? request.Student.StudentsDetails.FirstName + " " + request.Student.StudentsDetails.MiddleName + "," + " " + request.Student.StudentsDetails.LastName : "N/A",
                 DateOfBirth = request.Student.StudentsDetails?.DateOfBirth,
                 Gender = request.Student.StudentsDetails?.Gender,
                 CivilStatus = request.Student.StudentsDetails?.CivilStatus,
@@ -112,7 +112,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 YearLevel = request.Student.StudentAcademicDetails?.YearLevel,
                 Semester = request.Student.StudentAcademicDetails?.Semester,
                 Program = request.Student.StudentAcademicDetails?.Program,
-           
+
                 Strand = request.Student.StudentAcademicDetails?.Strand,
                 MobileNumber = request.Student.StudentContactDetails?.MobileNumber,
                 EmailAddress = request.Student.StudentContactDetails?.EmailAddress,
@@ -149,7 +149,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     StudentName = s.Student.StudentsDetails != null
                         ? s.Student.StudentsDetails.FirstName + " " + s.Student.StudentsDetails.LastName
                         : "N/A",
-                
+
                     DateEnrolled = s.DateEnrolled,
                     Email = s.Student.StudentContactDetails != null ? s.Student.StudentContactDetails.EmailAddress : "N/A",
                     StudentSchoolId = s.Student.StudentAcademicDetails != null ? s.Student.StudentAcademicDetails.StudentSchoolId : "0000-0000",
@@ -185,11 +185,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         {
             var departmentColors = new Dictionary<CourseDepartment, (string Color, string LightColor)>
     {
-        { CourseDepartment.DIT, ("#dc2626", "#f87171") },     
-        { CourseDepartment.DCS, ("#ea580c", "#fb923c") },     
-        { CourseDepartment.DGTT, ("#16a34a", "#4ade80") },   
-        { CourseDepartment.CCJE, ("#0891b2", "#06b6d4") },    
-        { CourseDepartment.DBM, ("#eab308", "#fde047") }     
+        { CourseDepartment.DIT, ("#dc2626", "#f87171") },
+        { CourseDepartment.DCS, ("#ea580c", "#fb923c") },
+        { CourseDepartment.DGTT, ("#16a34a", "#4ade80") },
+        { CourseDepartment.CCJE, ("#0891b2", "#06b6d4") },
+        { CourseDepartment.DBM, ("#eab308", "#fde047") }
     };
 
 
@@ -200,11 +200,11 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             var departmentCounts = await context.enrollcourse
                 .Include(s => s.Course)
-                .Where(s => s.Course.AdminId == AdminId ).ToListAsync();
+                .Where(s => s.Course.AdminId == AdminId).ToListAsync();
 
             var distinctResults = departmentCounts
                 .GroupBy(s => s.StudentId)
-                
+
                 .Select(s => s.OrderByDescending(s => s.DateEnrolled).First()).ToList();
 
 
@@ -224,7 +224,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
 
             var GetData = allDepartments
-             
+
                 .Select((dept, index) =>
             {
                 var deptCount = disctinct.FirstOrDefault(d => d.Department == dept);
@@ -281,13 +281,13 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 );
             }
 
-          
+
             var totalCount = await query
                 .Select(s => s.StudentId)
                 .Distinct()
                 .CountAsync();
 
-           
+
             var studentIds = await query
                 .OrderBy(s => s.Student.StudentsDetails!.LastName)
                 .Select(s => s.StudentId)
@@ -296,7 +296,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .Take(pageSize)
                 .ToListAsync();
 
-           
+
             var enrollments = await context.enrollcourse
                 .Include(s => s.Student)
                     .ThenInclude(s => s.StudentAcademicDetails)
@@ -307,9 +307,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     .ThenInclude(s => s.StudentsDetails)
                 .AsNoTracking()
                 .Where(s => studentIds.Contains(s.StudentId))
-                .ToListAsync(); 
+                .ToListAsync();
 
-           
+
             var students = enrollments
                 .GroupBy(s => s.StudentId)
                 .Select(g => g.First())
@@ -321,7 +321,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     DateEnrolled = s.DateEnrolled,
                     Email = s.Student.StudentContactDetails!.EmailAddress,
                     studentCourseStatus = s.StudentCourseStatus,
-                    Coursedepartment = s.Course.Department.GetDisplayName(), 
+                    Coursedepartment = s.Course.Department.GetDisplayName(),
                     ProfileColor = s.ProfileColor,
                     StudentId = s.StudentId,
                 })
@@ -329,9 +329,27 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             return (students, totalCount);
         }
-
-
-
+        public async Task<List<StudendBillRecordDtoDto>> StudentRecordAsync(Guid AdminId)
+        {
+            var StudentEnrolled = await context.enrollcourse
+                .Include(s => s.Course)
+                .Include(s => s.Invoice)
+                .Include(s=> s.Student)
+                .ThenInclude(s=> s.StudentsDetails)
+                .Where(s => s.Course.AdminId == AdminId)
+                .Select(s => new StudendBillRecordDtoDto
+                {
+                    StudentId = s.Student.StudentAcademicDetails != null ? s.Student.StudentAcademicDetails.StudentSchoolId : "N/A",
+                    DateEnrolled = s.DateEnrolled,
+                    CourseCode = s.Course.CourseCode,
+                    Status = s.Invoice != null ? s.Invoice.Status : InvoiceStatus.Unpaid,
+                    Cost = s.Invoice != null ? s.Invoice.Cost : 0.00,
+                    FullName = s.Student.StudentsDetails != null ? s.Student.StudentsDetails.FirstName + " " + s.Student.StudentsDetails.MiddleName + " " + s.Student.StudentsDetails.LastName : "N/A"
+                })
+                   .OrderByDescending(s => s.DateEnrolled) 
+                   .ToListAsync();
+            return StudentEnrolled;
+        }
     }
 }
 

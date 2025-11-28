@@ -57,9 +57,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
                 .HasPrincipalKey(f => f.FacultyId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-
-
-
             modelBuilder.Entity<Course>()
              .Property(c => c.AvailableSlots)
              .HasComputedColumnSql("[MaxCapacity] - [TotalEnrolled]", stored: true)
@@ -68,6 +65,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Data
             modelBuilder.Entity<Course>()
                 .Property(c => c.TotalEnrolled)
                 .ValueGeneratedNever();
+
+            modelBuilder.Entity<EnrollmentCourse>()
+                .HasOne(s=> s.Invoice)
+                .WithMany()
+                .HasForeignKey(s=> s.InvoiceId)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
         public DbSet<CourseTracker> courseTrackers { get; set; }

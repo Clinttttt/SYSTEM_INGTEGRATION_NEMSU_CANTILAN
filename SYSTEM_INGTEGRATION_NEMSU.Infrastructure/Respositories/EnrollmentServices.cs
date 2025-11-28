@@ -138,7 +138,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return true;
         }
 
-        public async Task<EnrollCourseDto?> EnrollCourseAsync(Guid studentId, string courseCode, EnrollmentStatus status = EnrollmentStatus.Provisioned)
+        public async Task<EnrollCourseDto?> EnrollCourseAsync(Guid InvoiceId, Guid studentId, string courseCode, EnrollmentStatus status = EnrollmentStatus.Provisioned)
         {
 
             var course = await context.course
@@ -152,9 +152,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             if (course.AvailableSlots <= 0) { return null; }
 
-            bool alreadyEnrolled = await context.enrollcourse
-                .AnyAsync(e => e.StudentId == studentId && e.CourseId == course.Id);
-            if (alreadyEnrolled) return null;
+         
 
             var enrollment = new EnrollmentCourse
             {
@@ -166,6 +164,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 StudentCourseStatus = StudentCourseStatus.Active,
                 ProfileColor = RandomColor.Generate(),
                 enrolledCourseStatus = EnrolledCourseStatus.Inprogress,
+                InvoiceId = InvoiceId
             };
             await context.Database.ExecuteSqlInterpolatedAsync(
         $"UPDATE Course SET TotalEnrolled = TotalEnrolled + 1 WHERE Id = {course.Id}");

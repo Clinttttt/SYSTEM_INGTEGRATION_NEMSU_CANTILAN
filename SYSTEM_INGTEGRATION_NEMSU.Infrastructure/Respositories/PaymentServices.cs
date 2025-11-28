@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,34 +28,30 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             bool alreadyEnrolled = await context.enrollcourse
                 .AnyAsync(e => e.StudentId == paymentdetails.StudentId && e.CourseId == course.Id);
             if (alreadyEnrolled) return null;
-       
+
+            var invoice = new Domain.Entities.Invoice
+            {
+                Id = Guid.NewGuid(),
+                StudentId = paymentdetails.StudentId,
+                CourseId = course.Id,
+                CourseCode = course.CourseCode,
+                Cost = course.Cost,
+                DateCreated = DateTime.UtcNow,
+                Status = InvoiceStatus.Paid,
+                DatePaid = DateTime.UtcNow,
+                Standing = "Enrolled",
+                PaymentDeadline = DateTime.MinValue,
+            };
+
+            context.invoice.Add(invoice);
+            await context.SaveChangesAsync();
            
-            var request  = await enrollmentServices.EnrollCourseAsync(paymentdetails.StudentId, paymentdetails.CourseCode!, EnrollmentStatus.Enrolled);
+            var request  = await enrollmentServices.EnrollCourseAsync(invoice.Id, paymentdetails.StudentId, course.CourseCode!, EnrollmentStatus.Enrolled);
             if (request is null) return null;
             var purchase = await enrollmentServices.AddPaymentAsync(paymentdetails);
-
-            await enrollmentServices.CourseTrackAdd(paymentdetails.StudentId, request.CourseId, EnrollmentStatus.Enrolled);
-
-            if (request is null) return null;
             if (purchase is null) return null;
-
-           
-                var invoice = new Domain.Entities.Invoice
-                {
-                    Id = Guid.NewGuid(),
-                    StudentId = paymentdetails.StudentId,
-                    CourseId = course.Id,
-                    CourseCode = course.CourseCode,
-                    Cost = course.Cost,
-                    DateCreated = DateTime.UtcNow,
-                    Status = InvoiceStatus.Paid,
-                    DatePaid = DateTime.UtcNow,
-                    Standing = "Enrolled",
-                    PaymentDeadline = DateTime.MinValue,                
-                };
-
-                context.invoice.Add(invoice);         
-                await context.SaveChangesAsync();
+            await enrollmentServices.CourseTrackAdd(paymentdetails.StudentId, request.CourseId, EnrollmentStatus.Enrolled);
+      
             await respondCommand.AutoResponseAsync(request.StudentId, request.CourseCode!);
             return purchase;
         }
@@ -69,10 +66,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .AnyAsync(e => e.StudentId == studentId && e.CourseId == course.Id);
             if (alreadyEnrolled) return null;
 
-          var request = await enrollmentServices.EnrollCourseAsync(studentId, courseCode, EnrollmentStatus.Provisioned);
-            if (request is null) return null;
-         
-            await enrollmentServices.CourseTrackAdd(studentId, request.CourseId, EnrollmentStatus.Provisioned);
             var invoice = new Domain.Entities.Invoice
             {
                 Id = Guid.NewGuid(),
@@ -86,6 +79,15 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Standing = "Temporary enrollment",
                 PaymentDeadline = DateTime.UtcNow.AddDays(15)
             };
+            context.invoice.Add(invoice);
+            await context.SaveChangesAsync();
+
+
+            var request = await enrollmentServices.EnrollCourseAsync(invoice.Id, studentId, courseCode, EnrollmentStatus.Provisioned);
+            if (request is null) return null;
+         
+            await enrollmentServices.CourseTrackAdd(studentId, request.CourseId, EnrollmentStatus.Provisioned);
+      
 
             var filter = new ProvisionDto
             {
@@ -94,8 +96,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Standing = invoice.Standing,
                
             };
-            context.invoice.Add(invoice);
-            await context.SaveChangesAsync();
+       
+          
+
             await respondCommand.AutoResponseAsync(studentId, courseCode);
             await respondCommand.ProvisionAnnouncementAsync(studentId);
             return filter;

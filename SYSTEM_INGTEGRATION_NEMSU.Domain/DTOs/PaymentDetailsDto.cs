@@ -10,7 +10,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs
 {
   public  class PaymentDetailsDto
     {
-        [JsonIgnore]
+    
         public Guid StudentId { get; set; }
         public string? AccountNumber { get; set; }
         public PaymentMethod paymentMethod { get; set; }
