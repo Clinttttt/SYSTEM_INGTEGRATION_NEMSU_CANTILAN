@@ -279,7 +279,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
         }
         public async Task<string?> StudentForgotPassword(string EmailAddress)
         {
-            var request = await context.contactInformation.FirstOrDefaultAsync();
+            var request = await context.contactInformation.FirstOrDefaultAsync(s=> s.EmailAddress == EmailAddress);
             if (request is null)
                 return null;
          

@@ -59,6 +59,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
             if (string.IsNullOrWhiteSpace(email.Email))
                 return BadRequest("Email is required.");
             var request = await facultyRecord.ForgotPassword(email.Email);
+            if (request is null)
+            {
+                return BadRequest("Something went wrong");
+            }
             return Ok(request);
         }
         [ApiExplorerSettings(IgnoreApi = true)]

@@ -10,7 +10,7 @@
 @inject IJSRuntime JS
 
 <div class="h-screen content overflow-hidden flex items-center justify-center p-4"
-     style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
+style="background: radial-gradient(at 0% 0%, rgb(6, 182, 212) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(14, 116, 144) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(8, 145, 178) 0px, transparent 50%), radial-gradient(at 0% 100%, rgb(21, 94, 117) 0px, transparent 50%), rgb(17, 24, 39);">
     <div class="w-full max-w-5xl flex rounded-3xl overflow-hidden shadow-2xl bg-white h-[90%]">
 
 
@@ -63,9 +63,9 @@
                                     </span>
                                 </div>
                                 <input @bind="Login.UserName"
-                                       class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg
                                        focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                       placeholder="johndoe" />
+                                placeholder="johndoe" />
                             </div>
                         </div>
 
@@ -79,12 +79,12 @@
                                     </svg>
                                 </div>
                                 <input type="@(showPassword ? "text" : "password")"
-                                       @bind="Login.Password"
-                                       class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg
+                                @bind="Login.Password"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg
                                        focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                       placeholder="••••••••" />
+                                placeholder="••••••••" />
                                 <button type="button" @onclick="() => showPassword = !showPassword"
-                                        class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                     @if (showPassword)
                                     {
                                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,7 +113,7 @@
 
 
                         <button type="submit"
-                                class="w-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl">
+                        class="w-full bg-gradient-to-r from-cyan-500 to-teal-600 text-white py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl">
                             Sign In
                         </button>
 
@@ -208,6 +208,7 @@
         if (forgotPassword is null)
         {
             await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_wrong_email').checked = true;");
+            return;
         }
         await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_send_code').checked = true;");
         await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_new_password').checked = true;");

@@ -203,8 +203,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
         public async Task<ActionResult<string>> ForgotPassword([FromBody] ForgotPasswordDto email)
         {
             if (string.IsNullOrWhiteSpace(email.Email))
-                return BadRequest("Email is required.");
+                return BadRequest("Email is required");
             var request = await studentRecordCommand.StudentForgotPassword(email.Email);
+            if(request is null)
+            {
+                return BadRequest("Something went wrong");
+            }
             return Ok(request);
         }
         [HttpPatch("Student NewPassword")]

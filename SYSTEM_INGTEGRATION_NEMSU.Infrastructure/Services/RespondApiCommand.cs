@@ -62,9 +62,5 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         }
     }
 
-
-
-
-   
 }
 
