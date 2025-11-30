@@ -351,10 +351,19 @@
                             {
                                 <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                                     <div class="flex items-start gap-3">
-                                        <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-teal-600 rounded-full flex items-center justify-center flex-shrink-0">
-                                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                            </svg>
+                                        <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+                                            @if (!string.IsNullOrEmpty(PreviewUrl))
+                                            {
+                                                <img src="@PreviewUrl" alt="Faculty Photo" class="w-full h-full object-cover" />
+                                            }
+                                            else
+                                            {
+                                                <div class="w-full h-full bg-gradient-to-br from-cyan-400 to-teal-600 flex items-center justify-center">
+                                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            }
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center justify-between mb-1">
@@ -362,7 +371,10 @@
                                                 <span class="text-[10px] text-gray-400">@announcement.DateCreated.ToString("MMM dd, h:mm tt")</span>
                                             </div>
                                             <h1 class="text-md text-gray-700 italic font-semibold mb-1">@announcement.Title</h1>
-                                            <p class="text-sm text-gray-600 break-words">@announcement.Message</p>
+                                         <p class="text-sm text-gray-600 whitespace-pre-wrap">
+                                        @announcement.Message
+                                           </p>
+
 
                                             <span class="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded text-[10px] font-semibold
                                                   @(announcement.InformationType == InformationType.Important

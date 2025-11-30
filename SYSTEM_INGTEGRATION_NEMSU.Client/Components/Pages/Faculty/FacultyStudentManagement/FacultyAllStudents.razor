@@ -25,12 +25,28 @@
                     <div class="flex items-start justify-between mb-2">
                         <div class="flex items-center gap-2">
 
-                            <div class="w-10 h-10  rounded-lg flex items-center justify-center text-white font-bold text-xs" style="background-color: @student.ProfileColor;">
-                                @(
-                                        student.StudentName.Split(' ').Length >= 2
-                                        ? $"{student.StudentName.Split(' ')[0][0]}{student.StudentName.Split(' ')[1][0]}"
-                                        : student.StudentName[0].ToString())
+                            @{
+                                var initials = "NA"; // default initials
+                                if (!string.IsNullOrWhiteSpace(student.StudentName))
+                                {
+                                    var names = student.StudentName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                                    if (names.Length >= 2)
+                                    {
+                                        initials = $"{names[0][0]}{names[1][0]}";
+                                    }
+                                    else if (names.Length == 1 && names[0].Length > 0)
+                                    {
+                                        initials = $"{names[0][0]}";
+                                    }
+                                }
+
+                                var profileColor = string.IsNullOrWhiteSpace(student.ProfileColor) ? "#4F46E5" : student.ProfileColor; // default color
+                            }
+                            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-xs" style="background-color: @profileColor;">
+                                @initials
                             </div>
+
+
 
 
                             <div>
@@ -57,7 +73,7 @@
 
     </div>
 }
-else
+@if (studentsDetailsDto == null || !studentsDetailsDto.Any())
 {
     <div class="bg-gray-50 rounded-lg shadow border border-gray-200 p-12 text-center">
         <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,6 +83,7 @@ else
         <p class="text-gray-600">You haven't any Enrolled Student yet.</p>
     </div>
 }
+
 
 
 

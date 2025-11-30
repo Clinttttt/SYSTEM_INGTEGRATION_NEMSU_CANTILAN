@@ -6079,6 +6079,9 @@
   .whitespace-pre-line {
     white-space: pre-line;
   }
+  .whitespace-pre-wrap {
+    white-space: pre-wrap;
+  }
   .checkbox-error {
     color: var(--color-error-content);
     --input-color: var(--color-error);

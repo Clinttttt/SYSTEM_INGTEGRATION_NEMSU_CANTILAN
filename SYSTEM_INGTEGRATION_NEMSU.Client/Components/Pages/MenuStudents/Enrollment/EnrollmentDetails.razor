@@ -246,17 +246,18 @@
 
                 <div class="p-6 bg-gradient-to-br from-cyan-500 to-teal-600">
                     <div class="flex flex-col items-center">
-                        <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
-                            @if (string.IsNullOrEmpty(preview))
+                  
+                            @if (!string.IsNullOrEmpty(preview))
                             {
                                 <div class="w-20 h-20"><img src="@preview" alt="Student Photo" class=" w-full h-full object-cover rounded-full " /></div>
                             }
                             else
                             {
+                            <div class="w-20 h-20 rounded-full bg-white p-1 shadow-lg mb-3">
                                 <img src="/img/student_logo.jpg" class="w-full h-full object-contain rounded-full" />
+                            </div>
                             }
-                     
-                        </div>
+                                           
                         <h3 class="text-white font-bold text-sm">Student Dashboard</h3>
                     </div>
                 </div>

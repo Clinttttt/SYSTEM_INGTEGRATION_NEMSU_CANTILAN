@@ -26,7 +26,7 @@ else if (FilteredStudents == null || !FilteredStudents.Any())
 else
 {
     <div class="flex-1 mt-6 pb-18 relative" >
-     
+
         <div class="mb-2 border-t border-gray-200">
             <p class="text-sm py-3 text-gray-600 font-light">
                 Appeared <span class="font-semibold text-cyan-700">@FilteredStudents.Count</span>
@@ -38,16 +38,16 @@ else
             @foreach (var student in FilteredStudents)
             {
                 <NavLink href="@($"facultyviewtudents/{student.StudentId}")"
-                         class="bg-white rounded-lg shadow-sm border border-cyan-100 p-3 hover:shadow-md transition-all hover:border-cyan-300">
+                class="bg-white rounded-lg shadow-sm border border-cyan-100 p-3 hover:shadow-md transition-all hover:border-cyan-300">
                     <div class="flex items-start justify-between mb-2">
                         <div class="flex items-center gap-2">
                             <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-xs"
-                                 style="@($"background-color: {student.ProfileColor}")">
+                            style="@($"background-color: {student.ProfileColor}")">
                                 @(
-                                    student.StudentName.Split(' ').Length >= 2
-                                    ? $"{student.StudentName.Split(' ')[0][0]}{student.StudentName.Split(' ')[1][0]}"
-                                    : student.StudentName[0].ToString()
-                                    )
+                                        student.StudentName.Split(' ').Length >= 2
+                                        ? $"{student.StudentName.Split(' ')[0][0]}{student.StudentName.Split(' ')[1][0]}"
+                                        : student.StudentName[0].ToString()
+                                        )
                             </div>
                             <div>
                                 <p class="text-xs font-semibold text-gray-800">@student.StudentName</p>
@@ -67,6 +67,7 @@ else
                     </div>
                 </NavLink>
             }
+         
         </div>
     </div>
 }

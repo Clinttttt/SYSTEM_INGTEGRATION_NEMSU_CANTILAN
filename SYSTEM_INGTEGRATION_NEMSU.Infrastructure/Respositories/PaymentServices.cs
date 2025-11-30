@@ -29,6 +29,10 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 .AnyAsync(e => e.StudentId == paymentdetails.StudentId && e.CourseId == course.Id);
             if (alreadyEnrolled) return null;
 
+            if(course.Cost > paymentdetails.cost)
+            {
+                return null;
+            }
             var invoice = new Domain.Entities.Invoice
             {
                 Id = Guid.NewGuid(),

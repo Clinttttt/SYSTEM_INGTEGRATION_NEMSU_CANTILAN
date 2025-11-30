@@ -389,7 +389,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 paymentMethod = payment.paymentMethod,
                 PurchaseDate = DateTime.UtcNow.AddHours(8),
                 CourseCode = payment.CourseCode,
-                Cost = payment.cost,
+                Cost = course != null ? course.Cost : 0,
                 CategoryId = course?.CategoryId,
             };
             context.paymentDetails.Add(Add);
@@ -401,7 +401,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 paymentMethod = payment.paymentMethod,
                 PurchaseDate = Add.PurchaseDate,
                 CourseCode = payment.CourseCode,
-                cost = payment.cost,
+                cost = course != null ? course.Cost : 0,
                 Category = course?.Category,
             };
             return filter;
@@ -542,7 +542,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
 
             var Id = new SchoolIdDto
             {
-                StudentSchoolId = $"{currentYear}-{nextNumber:D4}"
+                StudentSchoolId = $"{currentYear}-{nextNumber:D5}"
             };
             request.StudentSchoolId = Id.StudentSchoolId;
             await context.SaveChangesAsync();
