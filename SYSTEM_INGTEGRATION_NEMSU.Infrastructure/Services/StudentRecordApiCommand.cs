@@ -52,7 +52,9 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
         public async Task<PersonalInformationDto?> DisplayPersonalInformationAsync()
         {
             await _authApi.SetAuthHeaderAsync(_http);
+
             return await _http.GetFromJsonAsync<PersonalInformationDto>("api/StudentRecord/Display%20Personal%20Details");
+
         }
         public async Task<AcademicInformation?> AddAcademicDetailsAsync(AcademicInformationDto academicInformation)
         {

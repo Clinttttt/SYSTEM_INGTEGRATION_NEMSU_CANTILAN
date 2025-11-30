@@ -258,6 +258,7 @@
                 var personal = await studentRecordApi.DisplayPersonalInformationAsync();
                 var academic = await studentRecordApi.DisplayAcademicInformation();
                 var contact = await studentRecordApi.DisplayContactInformationAsync();
+
                 if (personal is not null)
                 {
                     var Getuser = await GetUser.UserInfo(personal.StudentId);
@@ -265,22 +266,20 @@
                     {
                         userRole = Getuser.Role;
                     }
-                    if (userRole != UserRole.Student || Getuser is null)
-                    {
-                        await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_login_failed').checked = true;");
-                        spinner = false;
-                        return;
-                    }
                 }
-                
-                 if (personal is null && academic is null && contact is null)
+
+                if (userRole != UserRole.Student)
+                {
+                    await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_login_failed').checked = true;");
+                    spinner = false;
+                    return;
+                }
+                else if (personal is null && academic is null && contact is null)
                 {
                     navigation.NavigateTo("/FillOutRegistration");
                 }
                 else
                 {
-
-
                     navigation.NavigateTo("/studentmenu");
                 }
             }
@@ -289,6 +288,7 @@
                 await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_login_failed').checked = true;");
                 spinner = false;
             }
+        
 
         }
         catch (Exception ex)
