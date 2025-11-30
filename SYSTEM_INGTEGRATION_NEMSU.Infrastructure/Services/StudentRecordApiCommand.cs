@@ -18,6 +18,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
 {
@@ -163,5 +164,16 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
                 return false;
             return request.IsSuccessStatusCode;
         }
-        }
+        /*     public async Task<UserRole> UserIdentity()
+            {
+
+                var roleString = await _http.GetFromJsonAsync<string>("api/StudentRecord/UserIdentity");
+
+                if (string.IsNullOrEmpty(roleString))
+                    return UserRole.Student; 
+                var userRole = Enum.Parse<UserRole>(roleString!);
+                return userRole;
+            }*/
+
+    }
 }

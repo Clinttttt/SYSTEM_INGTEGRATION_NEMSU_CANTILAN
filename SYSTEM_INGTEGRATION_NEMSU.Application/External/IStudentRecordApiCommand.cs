@@ -11,6 +11,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 
 namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
 {
@@ -34,6 +35,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Application.External
         Task<FacultyPhotoId?> StudentPhotoIDAsync();
         Task<string?> StudentForgotPassword(string EmailAddress);
         Task<bool> StudentNewPassword(NewPasswordDto dto);
+    
     } 
             
 }

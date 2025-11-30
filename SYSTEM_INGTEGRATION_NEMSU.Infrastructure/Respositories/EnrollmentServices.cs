@@ -24,17 +24,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
     {
         public async Task<bool> DirectEnrollAsync(Guid StudentId, Guid CourseId)
         {
-            var enrollment = new EnrollmentCourse
-            {
-                Id = Guid.NewGuid(),
-                StudentId = StudentId,
-                CourseId = CourseId,
-                DateEnrolled = DateTime.UtcNow,
-                EnrollmentStatus = EnrollmentStatus.Enrolled,
-                StudentCourseStatus = StudentCourseStatus.Active,
-                ProfileColor = RandomColor.Generate(),
-                enrolledCourseStatus = EnrolledCourseStatus.Inprogress,
-            };
+           
             var coursestatus = await context.courseTrackers.FirstOrDefaultAsync(s => s.StudentId == StudentId && s.CourseId == CourseId);
             if (coursestatus is null) return false;
 
@@ -48,7 +38,34 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             var course = await context.announcements
                  .Include(s => s.course)
                  .FirstOrDefaultAsync(s => s.CourseId == CourseId);
+            var course_info = await context.course.FirstOrDefaultAsync(s => s.Id == CourseId && course != null && s.AdminId == course.AdminId);
+            var invoice = new Domain.Entities.Invoice
+            {
+                Id = Guid.NewGuid(),
+                StudentId = StudentId,
+                CourseId = CourseId,
+                CourseCode = course_info?.CourseCode,
+                Cost = course_info != null ? course_info.Cost : 0,
+                DateCreated = DateTime.UtcNow,
+                Status = InvoiceStatus.Paid,
+                DatePaid = DateTime.UtcNow,
+                Standing = "Enrolled",
+                PaymentDeadline = DateTime.MinValue,
+            };
+            context.invoice.Add(invoice);
 
+            var enrollment = new EnrollmentCourse
+            {
+                Id = Guid.NewGuid(),
+                StudentId = StudentId,
+                CourseId = CourseId,
+                DateEnrolled = DateTime.UtcNow,
+                EnrollmentStatus = EnrollmentStatus.Enrolled,
+                StudentCourseStatus = StudentCourseStatus.Active,
+                ProfileColor = RandomColor.Generate(),
+                enrolledCourseStatus = EnrolledCourseStatus.Inprogress,
+                InvoiceId = invoice.Id,
+            };
             var Response = new AutoResponsetDto();
             Response.Message = "Welcome, everyone! It’s great to have you all here. Each new term brings " +
                 "fresh opportunities to learn and connect," +

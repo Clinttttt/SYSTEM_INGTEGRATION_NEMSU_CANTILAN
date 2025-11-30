@@ -13,6 +13,7 @@ using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.EnrollmentFormDto
 using SYSTEM_INGTEGRATION_NEMSU.Domain.DTOs.Student_RecordDtos.NewFolder;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Domain.Entities.Student_Rcord;
+using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Entities;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Migrations;
 using SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories;
 
@@ -222,5 +223,17 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Api.Controllers
 
             return Ok(new { message = "Password updated successfully." });
         }
+    
+     
+
     }
 }
+/*   [HttpGet("UserIdentity")]
+        public async Task<ActionResult<string>> UserIdentity()
+        {
+            var userId = GetUserId();
+            if (userId is null) return BadRequest("Login First");
+            var Request = await user.UserInfo(userId.Value);
+          
+            return Ok(Request?.Role.ToString());
+        }*/

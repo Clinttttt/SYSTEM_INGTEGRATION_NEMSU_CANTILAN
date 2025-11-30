@@ -20,7 +20,6 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
             return await context.users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == UserId);
         }
       
-      
     }
 
 }

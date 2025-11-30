@@ -17,11 +17,12 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
     {
         private readonly HttpClient _http;
         private readonly ProtectedLocalStorage _localstorage;
+     
         public AuthApiServices(HttpClient httpClient, ProtectedLocalStorage localstorage)
         {
             _http = httpClient;
             _localstorage = localstorage;
-
+         
         }
         public async Task<User?> RegisterAsync(UserDtos reqest)
         {
@@ -65,7 +66,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Services
             await _localstorage.SetAsync("RefreshToken", NewToken.RefreshToken!);
             return true;
         }
- 
+       
 
     }
 }
