@@ -285,7 +285,7 @@
             }
             catch
             {
-                await JS.InvokeVoidAsync("eval", "document.getElementById('my_modal_login_failed').checked = true;");
+                    navigation.NavigateTo("/FillOutRegistration");
                 spinner = false;
             }
         

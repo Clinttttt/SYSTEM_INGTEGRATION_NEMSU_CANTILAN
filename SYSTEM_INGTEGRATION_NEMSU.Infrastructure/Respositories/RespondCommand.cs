@@ -39,7 +39,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 var Response = new AutoResponsetDto();
                 Response.Message = "Your Course will Automaticaly Unenrolled if not paid After 15 Days";
                 Response.Type = AnnouncementType.System;
-                Response.DateCreated = DateTime.UtcNow;
+                Response.DateCreated = DateTime.UtcNow.AddHours(8);
                 Response.CourseName = request.Course.Title;
 
                 var save_unpaid = new InstructorAnnouncement
@@ -68,7 +68,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                     " and I’m excited to see what we’ll accomplish together. Stay open, " +
                     "stay curious, and let’s make this a great start.";
                 Response.Type = AnnouncementType.System;
-                Response.DateCreated = DateTime.UtcNow;
+                Response.DateCreated = DateTime.UtcNow.AddHours(8);
                 Response.CourseCode = request.CourseCode;
                 Response.StudentId = StudentId;
                 var save = new InstructorAnnouncement

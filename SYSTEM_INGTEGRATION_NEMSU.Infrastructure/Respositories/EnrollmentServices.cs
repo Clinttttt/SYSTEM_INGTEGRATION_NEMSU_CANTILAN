@@ -48,7 +48,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Cost = course_info != null ? course_info.Cost : 0,
                 DateCreated = DateTime.UtcNow,
                 Status = InvoiceStatus.Paid,
-                DatePaid = DateTime.UtcNow,
+                DatePaid = DateTime.UtcNow.AddHours(8),
                 Standing = "Enrolled",
                 PaymentDeadline = DateTime.MinValue,
             };
@@ -59,7 +59,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Id = Guid.NewGuid(),
                 StudentId = StudentId,
                 CourseId = CourseId,
-                DateEnrolled = DateTime.UtcNow,
+                DateEnrolled = DateTime.UtcNow.AddHours(8),
                 EnrollmentStatus = EnrollmentStatus.Enrolled,
                 StudentCourseStatus = StudentCourseStatus.Active,
                 ProfileColor = RandomColor.Generate(),
@@ -72,7 +72,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 " and I’m excited to see what we’ll accomplish together. Stay open, " +
                 "stay curious, and let’s make this a great start.";
             Response.Type = AnnouncementType.System;
-            Response.DateCreated = DateTime.UtcNow;
+            Response.DateCreated = DateTime.UtcNow.AddHours(8);
             Response.CourseCode = course?.course.CourseCode;
             Response.StudentId = StudentId;
             var save = new InstructorAnnouncement
@@ -176,7 +176,7 @@ namespace SYSTEM_INGTEGRATION_NEMSU.Infrastructure.Respositories
                 Id = Guid.NewGuid(),
                 StudentId = studentId,
                 CourseId = course.Id,
-                DateEnrolled = DateTime.UtcNow,
+                DateEnrolled = DateTime.UtcNow.AddHours(8),
                 EnrollmentStatus = status,
                 StudentCourseStatus = StudentCourseStatus.Active,
                 ProfileColor = RandomColor.Generate(),
